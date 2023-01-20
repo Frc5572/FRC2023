@@ -13,6 +13,10 @@ public final class Constants {
      * Motor CAN id's.
      */
     public static final class Motors {
+        public final int LeftElevatorMotorID = 0;
+        public final int RightElevatorMotorID = 0;
+
+
     }
 
     /**
