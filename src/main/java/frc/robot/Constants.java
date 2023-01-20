@@ -13,6 +13,9 @@ public final class Constants {
      * Motor CAN id's.
      */
     public static final class Motors {
+        public static final int motorID1 = 0;
+        public static final int motorID2 = 0;
+        // ...
     }
 
     /**
@@ -30,4 +33,5 @@ public final class Constants {
         public static final double targetHeight = 0;
         public static final double limelightAngle = 0;
     }
+
 }
