@@ -13,8 +13,8 @@ public final class Constants {
      * Motor CAN id's.
      */
     public static final class Motors {
-        public final int LeftElevatorMotorID = 0;
-        public final int RightElevatorMotorID = 0;
+        public static final int leftElevatorMotorID = 0;
+        public static final int rightElevatorMotorID = 0;
 
 
     }
@@ -33,5 +33,17 @@ public final class Constants {
         public static final double limelightHeight = 0;
         public static final double targetHeight = 0;
         public static final double limelightAngle = 0;
+    }
+
+    /**
+     * Motor constants for neo calculations.
+     */
+    public static final class Elevator {
+        public static final double motorExtendSpeed = 0;
+        public static final double motorRetractSpeed = 0;
+        public static final double pos1EncoderTics = 0;
+        public static final double pos2EncoderTics = 0;
+        public static final double pos3EncoderTics = 0;
+        public static final double pos4EncoderTics = 0;
     }
 }
