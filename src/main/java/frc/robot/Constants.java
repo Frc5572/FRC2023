@@ -39,11 +39,22 @@ public final class Constants {
      * Motor constants for neo calculations.
      */
     public static final class Elevator {
-        public static final double motorExtendSpeed = 0;
-        public static final double motorRetractSpeed = 0;
-        public static final double pos1EncoderTics = 0;
-        public static final double pos2EncoderTics = 0;
-        public static final double pos3EncoderTics = 0;
-        public static final double pos4EncoderTics = 0;
+        // Encoder ticks.
+        public static final double elevatorPos0 = 0;
+        public static final double elevatorPos1 = 0;
+        public static final double elevatorPos2 = 0;
+        public static final double elevatorPos3 = 0;
+
+
+
+        // Need someone to review my use of this array, I'm unsure about the use
+        public static final double[] elevatorEncoderPos =
+            {elevatorPos0, elevatorPos1, elevatorPos2, elevatorPos3};
+
+
+
+        // Motor speed.
+        public static final double elevatorSpeed = 0;
+        public static final double elevatorStop = 0;
     }
 }
