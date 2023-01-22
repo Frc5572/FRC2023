@@ -2,6 +2,8 @@ package frc.robot.modules;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.lib.math.CTREmodules;
 import frc.lib.math.SwerveModuleConstants;
 
 public class SwerveModule {
@@ -22,4 +24,7 @@ public class SwerveModule {
 
     }
 
+    public void DesiredState(SwerveModuleState DesiredState, Boolean openLoop) {
+        DesiredState = CTREmodules.optimize(DesiredState, null);
+    }
 }
