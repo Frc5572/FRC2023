@@ -40,18 +40,23 @@ public final class Constants {
      */
     public static final class Elevator {
         // Encoder ticks.
-        public static final double elevatorPos0 = 0;
-        public static final double elevatorPos1 = 0;
-        public static final double elevatorPos2 = 0;
-        public static final double elevatorPos3 = 0;
+        public static final double elevatorPos0 = 0.0;
+        public static final double elevatorPos1 = 0.0;
+        public static final double elevatorPos2 = 0.0;
+        public static final double elevatorPos3 = 0.0;
         // Motor speed.
-        public static final double elevatorSpeed = 0;
-        public static final double elevatorStop = 0;
+        public static final double elevatorSpeed = 0.0;
+        public static final double elevatorStop = 0.0;
     }
 
+    /**
+     * Motor constants for neo calculations.
+     */
     public static final class ElevatorPID {
-        public static final double kP = 0;
-        public static final double kI = 0;
-        public static final double kD = 0;
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kMaxVelocityRadPerSecond = 0.0;
+        public static final double kMaxAccelerationRadPerSecSquared = 0.0;
     }
 }
