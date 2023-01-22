@@ -33,20 +33,11 @@ public class Elevator extends ProfiledPIDSubsystem {
 
     }
 
-
-    @Override
-    public void periodic() {
-        // This method is called periodically by the CommandScheduler
-
-    }
-
-
     @Override
     protected double getMeasurement() {
         // TODO Auto-generated method stub
         return 0;
     }
-
 
     @Override
     protected void useOutput(double output, State setpoint) {
