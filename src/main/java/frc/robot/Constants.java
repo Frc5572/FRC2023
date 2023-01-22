@@ -44,17 +44,14 @@ public final class Constants {
         public static final double elevatorPos1 = 0;
         public static final double elevatorPos2 = 0;
         public static final double elevatorPos3 = 0;
-
-
-
-        // Need someone to review my use of this array, I'm unsure about the use
-        public static final double[] elevatorEncoderPos =
-            {elevatorPos0, elevatorPos1, elevatorPos2, elevatorPos3};
-
-
-
         // Motor speed.
         public static final double elevatorSpeed = 0;
         public static final double elevatorStop = 0;
+    }
+
+    public static final class ElevatorPID {
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
     }
 }
