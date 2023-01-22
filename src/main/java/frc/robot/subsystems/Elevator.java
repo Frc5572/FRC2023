@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
@@ -19,7 +20,9 @@ public class Elevator extends ProfiledPIDSubsystem {
     private final CANSparkMax rightElevatorMotor =
         new CANSparkMax(Constants.Motors.rightElevatorMotorID, MotorType.kBrushless);
     private final CANCoder elevatorCANCoder = new CANCoder(0);
-
+    private final ElevatorFeedforward elevatorFF =
+        new ElevatorFeedforward(Constants.ElevatorPID.kSVolts, Constants.ElevatorPID.kGVolts,
+            Constants.ElevatorPID.kVVoltsSecondsPerRotation);
 
     /**
      * Elevator subsystem.
@@ -34,15 +37,15 @@ public class Elevator extends ProfiledPIDSubsystem {
     }
 
     @Override
-    protected double getMeasurement() {
+    public double getMeasurement() {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    protected void useOutput(double output, State setpoint) {
-        // TODO Auto-generated method stub
-
+    public void useOutput(double output, State setpoint) {
+        leftElevatorMotor.setVoltage(output + elevatorFF.calculate(setpoint.velocity));
+        rightElevatorMotor.setVoltage(output + elevatorFF.calculate(setpoint.velocity));
     }
 
 }

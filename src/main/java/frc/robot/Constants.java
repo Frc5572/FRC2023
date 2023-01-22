@@ -36,7 +36,7 @@ public final class Constants {
     }
 
     /**
-     * Motor constants for neo calculations.
+     * Elevator Motor constants for neo calculations.
      */
     public static final class Elevator {
         // Encoder ticks.
@@ -50,7 +50,7 @@ public final class Constants {
     }
 
     /**
-     * Motor constants for neo calculations.
+     * Elevator Motor PID constants.
      */
     public static final class ElevatorPID {
         public static final double kP = 0.0;
@@ -58,5 +58,9 @@ public final class Constants {
         public static final double kD = 0.0;
         public static final double kMaxVelocityRadPerSecond = 0.0;
         public static final double kMaxAccelerationRadPerSecSquared = 0.0;
+        public static final double kSVolts = 0.0;
+        public static final double kGVolts = 0.0;
+        public static final double kVVoltsSecondsPerRotation = 0.0;
+
     }
 }
