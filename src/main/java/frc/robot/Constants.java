@@ -2,8 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import frc.lib.math.SwerveModuleConstants;
 import edu.wpi.first.math.util.Units;
+import frc.lib.math.SwerveModuleConstants;
 
 /**
  * Constants file.
@@ -67,12 +67,29 @@ public final class Constants {
         public static final SwerveModuleConstants Constants =
             new SwerveModuleConstants(angleMotorID, driveMotorID, CANCoderID, driverID);
     }
+
     public static final double maxSpeed = 4;
     public static final double trackWidth = Units.inchesToMeters(27);
     public static final double wheelBase = Units.inchesToMeters(27);
-    public static SwerveDriveKinematics swerveDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(wheelBase / 2.0, trackWidth / 2.0), new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-        new Translation2d(wheelBase / 2.0, -trackWidth / 2.0), new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
-    public static final double maxAngularVelocity = 2;
+    public static SwerveDriveKinematics swerveDriveKinematics =
+        new SwerveDriveKinematics(new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+
+
+
+    public static final class Swerve {
+        public static final edu.wpi.first.wpilibj.SPI.Port navXID =
+            edu.wpi.first.wpilibj.SPI.Port.kMXP;
+        public static final boolean invertGyro = true;
+        public static final double maxAngularVelocity = 2;
+        public static final double wheelCircumference = Units.inchesToMeters(3.94) * Math.PI;
+        public static final double angleGearRatio = (12.8 / 1.0);
+        public static final double driveGearRatio = (8.14 / 1.0); // 6.86:1
+
+
+    }
+
 
 }

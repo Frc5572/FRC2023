@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -16,7 +17,7 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveKinematics swerveDriveKinematics;
     public SwerveModule[] swerveModule;
     public SwerveDrivePoseEstimator swerveDrivePoseEstimator;
-    public AHRS gyro;
+    public AHRS gyro = new AHRS(Constants.Swerve.navXID);
 
     public Swerve() {
         swerveModule = new SwerveModule[] {new SwerveModule(0, Constants.ModuleZero.Constants),
@@ -73,6 +74,14 @@ public class Swerve extends SubsystemBase {
 
     public double getRotation() {
         return getYaw().getDegrees();
+    }
+    public SwerveModulePosition [] getPositions() {
+        SwerveModulePosition [] positions = new SwerveModulePosition[4];
+
+        for (SwerveModule mod : swerveModule) {
+            positions[mod.moduleNumber] = mod.getPosition();
+        }
+        return positions;
     }
 
 
