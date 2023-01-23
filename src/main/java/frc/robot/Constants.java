@@ -31,13 +31,20 @@ public final class Constants {
         public static final double targetHeight = 0;
         public static final double limelightAngle = 0;
     }
-
+    /*
+     * Arm PID constants
+     */
     public static final class ArmPID {
         public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double kF = 0;
+        public static final double kGVolts = 0;
+        public static final double kSVolts = 0;
         public static final double kMaxVelocityRadPerSecond = 0;
         public static final double kMaxAccelerationRadPerSecSquared = 0;
+        public static final double kVVoltSecondPerRad = 0;
+        public static final double kAVoltSecondSquaredPerRad = 0;
+        public static final double kEncoderDistancePerPulse = 0;
     }
 }
