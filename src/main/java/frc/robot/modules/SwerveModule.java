@@ -29,12 +29,18 @@ public class SwerveModule {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS,
         Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
+    /**
+     * Creates an instance of a Swerve Module
+     *
+     * @param moduleNumber Swerve Module ID. Must be unique
+     * @param constants Constants specific to the swerve module
+     */
     public SwerveModule(int moduleNumber, SwerveModuleConstants constants) {
         this.moduleNumber = moduleNumber;
         this.constants = constants;
         angleMotor = new TalonFX(constants.angleMotorID);
         driveMotor = new TalonFX(constants.driveMotorID);
-        angleCANCoder = new CANCoder(constants.CANCoderID);
+        angleCANCoder = new CANCoder(constants.canCoderID);
     }
 
     /**
@@ -57,6 +63,11 @@ public class SwerveModule {
         }
     }
 
+    /**
+     * Gets the Swerve module position
+     *
+     * @return Swerve module position
+     */
     public SwerveModulePosition getPosition() {
         double position = Conversions.falconToMeters(driveMotor.getSelectedSensorPosition(),
             Constants.Swerve.driveGearRatio, Constants.Swerve.wheelCircumference);
@@ -66,6 +77,11 @@ public class SwerveModule {
         return new SwerveModulePosition(position, angle);
     }
 
+    /**
+     * Gets the Swerve module state
+     *
+     * @return Swerve module state
+     */
     public SwerveModuleState getState() {
         double velocity = Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(),
             Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
