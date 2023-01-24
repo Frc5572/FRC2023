@@ -13,12 +13,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.modules.SwerveModule;
 
+/**
+ * Creates swerve drive and commands for drive.
+ */
 public class Swerve extends SubsystemBase {
     public SwerveDriveKinematics swerveDriveKinematics;
     public SwerveModule[] swerveModule;
     public SwerveDrivePoseEstimator swerveDrivePoseEstimator;
     public AHRS gyro = new AHRS(Constants.Swerve.navXID);
 
+    /**
+     * Initializes swerve modules.
+     */
     public Swerve() {
         swerveModule = new SwerveModule[] {new SwerveModule(0, Constants.ModuleZero.Constants),
             new SwerveModule(1, Constants.ModuleOne.Constants),
@@ -26,6 +32,14 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.ModuleThree.Constants),};
     }
 
+    /**
+     * Moves the swerve drive train
+     *
+     * @param translation The 2d translation in the X-Y plane
+     * @param rotation The amount of rotation in the Z axis
+     * @param fieldRelative Whether the movement is relative to the field or absolute
+     * @param isOpenLoop Open or closed loop system
+     */
     public void Drive(Translation2d translation2d, Boolean fieldRelative, Double Rotation,
         Boolean openLoop) {
         SwerveModuleState[] swerveModuleState =
@@ -34,49 +48,95 @@ public class Swerve extends SubsystemBase {
                     Rotation, Rotation2d.fromDegrees(0))
                 : new ChassisSpeeds(translation2d.getX(), translation2d.getY(), Rotation));
         for (SwerveModule num : swerveModule) {
-            num.DesiredState(swerveModuleState[num.moduleNumber], openLoop);
+            num.desiredState(swerveModuleState[num.moduleNumber], openLoop);
         }
     }
 
+    /**
+     * New command to set wheels inward.
+     */
     public void wheelsIn() {
-        swerveModule[0].DesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
-        swerveModule[1].DesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
-        swerveModule[2].DesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
-        swerveModule[3].DesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[0].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[1].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[2].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[3].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
 
     }
 
-    public void setMotorZero() {
+    /**
+     * Sets motors to 0 or inactive.
+     *
+     * @param isOpenLoop Open or closed loop system
+     * @param fieldRelative Whether the movement is relative to the field or absolute
+     */
+    public void setMotorZero(boolean isOpenLoop, boolean fieldRelative) {
         SwerveModuleState[] swerveModuleState =
-            Constants.swerveDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
+            Constants.swerveDriveKinematics.toSwerveModuleStates(
+                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getYaw())
+                    : new ChassisSpeeds(0, 0, 0));
+        for (SwerveModule mod : swerveModule) {
+            mod.desiredState(swerveModuleState[mod.moduleNumber], isOpenLoop);
+        }
     }
 
+    /**
+     * Used by SwerveControllerCommand in Auto
+     *
+     * @param desiredStates The desired states of the swerve modules
+     */
     public void setModuleStates(SwerveModuleState[] desiStates) {
         swerveDriveKinematics.desaturateWheelSpeeds(desiStates, Constants.maxSpeed);
     }
 
+    /**
+     * Returns the position of the robot on the field.
+     *
+     * @return The pose of the robot (x and y are in meters).
+     */
     public Pose2d getPose() {
         return swerveDrivePoseEstimator.getEstimatedPosition();
     }
 
+    /**
+     * Resets the robot's position on the field.
+     *
+     * @param pose The position on the field that your robot is at.
+     */
     public void resetOdometry(Pose2d pose2d) {
-        swerveDrivePoseEstimator.resetPosition(getYaw(), null, pose2d);
+        swerveDrivePoseEstimator.resetPosition(getYaw(), getPositions(), pose2d);
     }
 
+    /**
+     * Resets the gryo to 0 offset
+     */
     public void zeroGyro() {
         gyro.zeroYaw();
     }
 
+    /**
+     * Gets the rotation degree from swerve modules.
+     */
     public Rotation2d getYaw() {
         float yaw = gyro.getYaw();
         return Rotation2d.fromDegrees(yaw);
     }
 
+    /**
+     * Get rotation in Degrees of Gyro
+     *
+     * @return Rotation of gyro in Degrees
+     */
     public double getRotation() {
         return getYaw().getDegrees();
     }
-    public SwerveModulePosition [] getPositions() {
-        SwerveModulePosition [] positions = new SwerveModulePosition[4];
+
+    /**
+     * Get position of all swerve modules
+     *
+     * @return Array of Swerve Module Positions
+     */
+    public SwerveModulePosition[] getPositions() {
+        SwerveModulePosition[] positions = new SwerveModulePosition[4];
 
         for (SwerveModule mod : swerveModule) {
             positions[mod.moduleNumber] = mod.getPosition();
