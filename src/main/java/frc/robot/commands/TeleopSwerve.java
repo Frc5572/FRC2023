@@ -6,9 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Swerve;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class TeleopSwerve extends CommandBase {
     Translation2d translation2d;
@@ -24,7 +24,6 @@ public class TeleopSwerve extends CommandBase {
     /** Creates a new TeleopSwerve. */
     public TeleopSwerve(Boolean fieldRelative, double Rotation, Boolean openloop, Swerve swerve,
         CommandXboxController xboxController) {
-        this.translation2d = translation2d;
         this.fieldRelative = fieldRelative;
         this.Rotation = Rotation;
         this.openLoop = openloop;
@@ -43,8 +42,8 @@ public class TeleopSwerve extends CommandBase {
         xAxis = Math.abs(xAxis) < Constants.stickDeadband ? 0 : xAxis;
         rAxis = Math.abs(rAxis) < Constants.stickDeadband ? 0 : rAxis;
         translation2d = new Translation2d(yAxis, xAxis).times(Constants.maxSpeed);
-        Rotation = rAxis * Constants.maxAngularVelocity;
+        Rotation = rAxis * Constants.Swerve.maxAngularVelocity;
         swerve.Drive(translation2d, fieldRelative, Rotation, openLoop);
 
-  }
-  }
+    }
+}
