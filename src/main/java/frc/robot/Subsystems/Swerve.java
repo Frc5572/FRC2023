@@ -35,18 +35,18 @@ public class Swerve extends SubsystemBase {
     /**
      * Moves the swerve drive train
      *
-     * @param translation The 2d translation in the X-Y plane
+     * @param translation2d The 2d translation in the X-Y plane
      * @param rotation The amount of rotation in the Z axis
      * @param fieldRelative Whether the movement is relative to the field or absolute
-     * @param isOpenLoop Open or closed loop system
+     * @param openLoop Open or closed loop system
      */
-    public void Drive(Translation2d translation2d, Boolean fieldRelative, Double Rotation,
+    public void drive(Translation2d translation2d, Boolean fieldRelative, Double rotation,
         Boolean openLoop) {
         SwerveModuleState[] swerveModuleState =
             Constants.swerveDriveKinematics.toSwerveModuleStates(fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(translation2d.getX(), translation2d.getY(),
-                    Rotation, Rotation2d.fromDegrees(0))
-                : new ChassisSpeeds(translation2d.getX(), translation2d.getY(), Rotation));
+                    rotation, Rotation2d.fromDegrees(0))
+                : new ChassisSpeeds(translation2d.getX(), translation2d.getY(), rotation));
         for (SwerveModule num : swerveModule) {
             num.setDesiredState(swerveModuleState[num.moduleNumber], openLoop);
         }
@@ -82,7 +82,7 @@ public class Swerve extends SubsystemBase {
     /**
      * Used by SwerveControllerCommand in Auto
      *
-     * @param desiredStates The desired states of the swerve modules
+     * @param desiStates The desired states of the swerve modules
      */
     public void setModuleStates(SwerveModuleState[] desiStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiStates, Constants.maxSpeed);
@@ -105,7 +105,7 @@ public class Swerve extends SubsystemBase {
     /**
      * Resets the robot's position on the field.
      *
-     * @param pose The position on the field that your robot is at.
+     * @param pose2d The position on the field that your robot is at.
      */
     public void resetOdometry(Pose2d pose2d) {
         swerveDrivePoseEstimator.resetPosition(getYaw(), getPositions(), pose2d);

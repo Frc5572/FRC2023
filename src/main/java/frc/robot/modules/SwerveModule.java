@@ -47,7 +47,7 @@ public class SwerveModule {
      * Sets the desired state for the swerve module for speed and angle
      *
      * @param desiredState The desired state (speed and angle)
-     * @param isOpenLoop Whether to use open or closed loop formula
+     * @param openLoop Whether to use open or closed loop formula
      */
     public void setDesiredState(SwerveModuleState desiredState, Boolean openLoop) {
         desiredState = CTREmodules.optimize(desiredState, getState().angle);

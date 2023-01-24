@@ -10,10 +10,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
+/**
+ * Creates an command for driving the swerve drive during tele-op
+ */
 public class TeleopSwerve extends CommandBase {
     Translation2d translation2d;
     Boolean fieldRelative;
-    double Rotation;
+    double rotation;
     Boolean openLoop;
     Swerve swerve;
     CommandXboxController xboxController;
@@ -22,10 +25,10 @@ public class TeleopSwerve extends CommandBase {
     double rAxis;
 
     /** Creates a new TeleopSwerve. */
-    public TeleopSwerve(Boolean fieldRelative, double Rotation, Boolean openloop, Swerve swerve,
+    public TeleopSwerve(Boolean fieldRelative, double rotation, Boolean openloop, Swerve swerve,
         CommandXboxController xboxController) {
         this.fieldRelative = fieldRelative;
-        this.Rotation = Rotation;
+        this.rotation = rotation;
         this.openLoop = openloop;
         this.swerve = swerve;
         this.xboxController = xboxController;
@@ -42,8 +45,8 @@ public class TeleopSwerve extends CommandBase {
         xAxis = Math.abs(xAxis) < Constants.stickDeadband ? 0 : xAxis;
         rAxis = Math.abs(rAxis) < Constants.stickDeadband ? 0 : rAxis;
         translation2d = new Translation2d(yAxis, xAxis).times(Constants.maxSpeed);
-        Rotation = rAxis * Constants.Swerve.maxAngularVelocity;
-        swerve.Drive(translation2d, fieldRelative, Rotation, openLoop);
+        rotation = rAxis * Constants.Swerve.maxAngularVelocity;
+        swerve.drive(translation2d, fieldRelative, rotation, openLoop);
 
     }
 }
