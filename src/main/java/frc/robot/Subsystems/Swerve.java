@@ -48,7 +48,7 @@ public class Swerve extends SubsystemBase {
                     Rotation, Rotation2d.fromDegrees(0))
                 : new ChassisSpeeds(translation2d.getX(), translation2d.getY(), Rotation));
         for (SwerveModule num : swerveModule) {
-            num.desiredState(swerveModuleState[num.moduleNumber], openLoop);
+            num.setDesiredState(swerveModuleState[num.moduleNumber], openLoop);
         }
     }
 
@@ -56,10 +56,10 @@ public class Swerve extends SubsystemBase {
      * New command to set wheels inward.
      */
     public void wheelsIn() {
-        swerveModule[0].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
-        swerveModule[1].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
-        swerveModule[2].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
-        swerveModule[3].desiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[0].setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[1].setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[2].setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
+        swerveModule[3].setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(0)), false);
 
     }
 
@@ -75,7 +75,7 @@ public class Swerve extends SubsystemBase {
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getYaw())
                     : new ChassisSpeeds(0, 0, 0));
         for (SwerveModule mod : swerveModule) {
-            mod.desiredState(swerveModuleState[mod.moduleNumber], isOpenLoop);
+            mod.setDesiredState(swerveModuleState[mod.moduleNumber], isOpenLoop);
         }
     }
 
@@ -88,7 +88,7 @@ public class Swerve extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiStates, Constants.maxSpeed);
 
         for (SwerveModule mod : swerveModule) {
-            mod.desiredState(desiStates[mod.moduleNumber], false);
+            mod.setDesiredState(desiStates[mod.moduleNumber], false);
         }
 
     }

@@ -35,6 +35,10 @@ public final class Constants {
         public static final double targetHeight = 0;
         public static final double limelightAngle = 0;
     }
+
+    /**
+     * Front Left Module - Module 0.
+     */
     public static class ModuleZero {
         public static final int angleMotorID = 50;
         public static final int driveMotorID = 8;
@@ -43,6 +47,10 @@ public final class Constants {
         public static final SwerveModuleConstants Constants =
             new SwerveModuleConstants(angleMotorID, driveMotorID, CANCoderID, driverID);
     }
+
+    /**
+     * Front Right Module - Module 1.
+     */
     public static class ModuleOne {
         public static final int angleMotorID = 51;
         public static final int driveMotorID = 52;
@@ -51,6 +59,10 @@ public final class Constants {
         public static final SwerveModuleConstants Constants =
             new SwerveModuleConstants(angleMotorID, driveMotorID, CANCoderID, driverID);
     }
+
+    /**
+     * Back Left Module - Module 2.
+     */
     public static class ModuleTwo {
         public static final int angleMotorID = 4;
         public static final int driveMotorID = 2;
@@ -59,6 +71,10 @@ public final class Constants {
         public static final SwerveModuleConstants Constants =
             new SwerveModuleConstants(angleMotorID, driveMotorID, CANCoderID, driverID);
     }
+
+    /**
+     * Back Right Module - Module 3.
+     */
     public static class ModuleThree {
         public static final int angleMotorID = 3;
         public static final int driveMotorID = 53;
@@ -78,7 +94,9 @@ public final class Constants {
             new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
 
-
+    /**
+     * Swerve ID's
+     */
     public static final class Swerve {
         public static final edu.wpi.first.wpilibj.SPI.Port navXID =
             edu.wpi.first.wpilibj.SPI.Port.kMXP;

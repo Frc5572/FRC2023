@@ -14,6 +14,9 @@ import frc.lib.math.SwerveModuleConstants;
 import frc.robot.Constants;
 
 
+/**
+ * Base Swerve Module Class. Creates an instance of the swerve module
+ */
 
 public class SwerveModule {
     public TalonFX angleMotor;
@@ -40,7 +43,7 @@ public class SwerveModule {
      * @param desiredState The desired state (speed and angle)
      * @param isOpenLoop Whether to use open or closed loop formula
      */
-    public void desiredState(SwerveModuleState desiredState, Boolean openLoop) {
+    public void setDesiredState(SwerveModuleState desiredState, Boolean openLoop) {
         desiredState = CTREmodules.optimize(desiredState, getState().angle);
 
         if (openLoop) {

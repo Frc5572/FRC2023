@@ -3,6 +3,9 @@ package frc.lib.math;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
+/**
+ * Grabs module states from swerve.
+ */
 public class CTREmodules {
     /**
      * Minimize the change in heading the desired swerve module state would require by potentially
@@ -26,7 +29,7 @@ public class CTREmodules {
     }
 
     /**
-     * @param scopeReference Current Angle
+     * @param referenceScope Current Angle
      * @param newAngle Target Angle
      * @return Closest angle within scope
      */
