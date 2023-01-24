@@ -38,28 +38,49 @@ public class LEDs extends SubsystemBase {
         }
     }
 
+    // LED turns on once a piece in detected in the intake system
     public void PieceLoaded() {
-
+        for (var i = 0; i < controLedBuffer.getLength(); i++) {
+            controLedBuffer.setLED(i, Color.kBrown);
+        }
     }
 
+    // The LEDD that is always on
+    // Red?
     public void defaultLED() {
+        for (var i = 0; i < controLedBuffer.getLength(); i++) {
+            controLedBuffer.setLED(i, Color.kRed);
+        }
 
     }
 
+    // Light turns on when the robot goes to balance on the ramp to alert other teams of intentions
+    // maybe green?
     public void balancing() {
-
+        for (var i = 0; i < controLedBuffer.getLength(); i++) {
+            controLedBuffer.setLED(i, Color.kGreen);
+        }
     }
 
+    // Depicts a color coordinated with a cone to alert human players at the feeding station.
     public void ConeRequest() {
-
+        for (var i = 0; i < controLedBuffer.getLength(); i++) {
+            controLedBuffer.setLED(i, Color.kYellow);
+        }
     }
 
+    // Depicts a color coordinated with a cube to alert human players at the feeding station.
     public void CubeRequest() {
-
+        for (var i = 0; i < controLedBuffer.getLength(); i++) {
+            controLedBuffer.setLED(i, Color.kBlueViolet);
+        }
     }
 
+    // if the camera aligned with the target signaling that we are good to place our game piece.
     public void VisionAligned() {
-
+        for (var i = 0; i < controLedBuffer.getLength(); i++) {
+            controLedBuffer.setLED(i, Color.kAntiqueWhite);
+        }
     }
 
 
