@@ -29,7 +29,7 @@ public class Swerve extends SubsystemBase {
         swerveModule = new SwerveModule[] {new SwerveModule(0, Constants.ModuleZero.Constants),
             new SwerveModule(1, Constants.ModuleOne.Constants),
             new SwerveModule(2, Constants.ModuleTwo.Constants),
-            new SwerveModule(3, Constants.ModuleThree.Constants),};
+            new SwerveModule(3, Constants.ModuleThree.Constants)};
     }
 
     /**
