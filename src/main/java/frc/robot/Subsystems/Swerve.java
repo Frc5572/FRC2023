@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -85,7 +85,12 @@ public class Swerve extends SubsystemBase {
      * @param desiredStates The desired states of the swerve modules
      */
     public void setModuleStates(SwerveModuleState[] desiStates) {
-        swerveDriveKinematics.desaturateWheelSpeeds(desiStates, Constants.maxSpeed);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiStates, Constants.maxSpeed);
+
+        for (SwerveModule mod : swerveModule) {
+            mod.desiredState(desiStates[mod.moduleNumber], false);
+        }
+
     }
 
     /**

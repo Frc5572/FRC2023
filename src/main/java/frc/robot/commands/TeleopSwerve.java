@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.Subsystems.Swerve;
+import frc.robot.subsystems.Swerve;
 
 public class TeleopSwerve extends CommandBase {
     Translation2d translation2d;

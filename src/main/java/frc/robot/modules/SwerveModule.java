@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -22,6 +23,8 @@ public class SwerveModule {
     public double angleOffset;
     public double lastAngle;
     public SwerveModuleConstants constants;
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS,
+        Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants constants) {
         this.moduleNumber = moduleNumber;
@@ -29,7 +32,6 @@ public class SwerveModule {
         angleMotor = new TalonFX(constants.angleMotorID);
         driveMotor = new TalonFX(constants.driveMotorID);
         angleCANCoder = new CANCoder(constants.CANCoderID);
-
     }
 
     /**
@@ -39,7 +41,7 @@ public class SwerveModule {
      * @param isOpenLoop Whether to use open or closed loop formula
      */
     public void desiredState(SwerveModuleState desiredState, Boolean openLoop) {
-        desiredState = CTREmodules.optimize(desiredState,  getState().angle);
+        desiredState = CTREmodules.optimize(desiredState, getState().angle);
 
         if (openLoop) {
             double percentOutput = desiredState.speedMetersPerSecond / Constants.maxSpeed;
@@ -49,6 +51,7 @@ public class SwerveModule {
                 Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
             driveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
                 feedforward.calculate(desiredState.speedMetersPerSecond));
+        }
     }
 
     public SwerveModulePosition getPosition() {
