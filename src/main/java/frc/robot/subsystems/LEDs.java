@@ -21,7 +21,6 @@ public class LEDs extends SubsystemBase {
      * 
      * @param length length of the addressable LEDS
      * @param port port ID for PWM
-     * 
      */
 
     public LEDs(int length, int port) {
@@ -53,7 +52,6 @@ public class LEDs extends SubsystemBase {
      * sets color of LED string to moving
      * 
      * @param color color set for the LEDs
-     * 
      */
     public void setColor(Color color) {
         for (var i = 0; i < controLedBuffer.getLength(); i++) {
