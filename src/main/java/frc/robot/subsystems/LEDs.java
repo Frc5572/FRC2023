@@ -18,7 +18,7 @@ public class LEDs extends SubsystemBase {
 
     /**
      * constructs a LED Subsystem
-     * 
+     *
      * @param length length of the addressable LEDS
      * @param port port ID for PWM
      */
@@ -35,7 +35,7 @@ public class LEDs extends SubsystemBase {
 
     /**
      * Sets RGB Color
-     * 
+     *
      * @param index index of the LEDs
      * @param r - [0 - 255]
      * @param g - [0 - 255]
@@ -50,7 +50,7 @@ public class LEDs extends SubsystemBase {
 
     /**
      * sets color of LED string to moving
-     * 
+     *
      * @param color color set for the LEDs
      */
     public void setColor(Color color) {
@@ -61,7 +61,7 @@ public class LEDs extends SubsystemBase {
 
     /**
      * sets the LEDs to change to one color from another
-     * 
+     *
      * @param color color sets for the LEDs
      * @param count the count number of LEDs to be moved
      * @param inverted whether to invert the color choices
