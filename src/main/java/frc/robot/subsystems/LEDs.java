@@ -21,6 +21,7 @@ public class LEDs extends SubsystemBase {
      * 
      * @param length length of the addressable LEDS
      * @param port port ID of PWM
+     * 
      */
 
     public LEDs(int length, int port) {
@@ -40,6 +41,7 @@ public class LEDs extends SubsystemBase {
      * @param r - [0 - 255]
      * @param g - [0 - 255]
      * @param b - [0 - 255]
+     * 
      */
     public void setRGB(int index, int r, int g, int b) {
         for (var i = 0; i < controLedBuffer.getLength(); i++) {
@@ -52,6 +54,7 @@ public class LEDs extends SubsystemBase {
      * sets color of LED string to moving
      * 
      * @param color color set for the LEDs
+     * 
      */
     public void setColor(Color color) {
         for (var i = 0; i < controLedBuffer.getLength(); i++) {
@@ -64,17 +67,18 @@ public class LEDs extends SubsystemBase {
      * 
      * @param color color sets for the LEDs
      * @param count the count number of LEDs to be moved
-     * @param inverted wheter to invert the color choices
+     * @param inverted whether to invert the color choices
+     * 
      */
     public void movingColor(Color color, int count, boolean inverted) {
         Color theColor = inverted ? Color.kBlack : color;
-        Color SecondColor = inverted ? color : Color.kBlack;
+        Color secondColor = inverted ? color : Color.kBlack;
         if (movingColorDelay == 0) {
             for (var i = 0; i < controLedBuffer.getLength(); i++) {
                 if (Math.abs(i - movingLED) < count) {
                     controLedBuffer.setLED(i, theColor);
                 } else {
-                    controLedBuffer.setLED(i, SecondColor);
+                    controLedBuffer.setLED(i, secondColor);
                 }
             }
             if (movingDirection) {
