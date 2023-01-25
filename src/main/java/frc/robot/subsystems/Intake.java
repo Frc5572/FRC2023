@@ -26,17 +26,17 @@ public class Intake extends SubsystemBase {
 
     // Runs intake to intake objects.
     public void intakeIn() {
-        this.intakeMotors.set(1);
+        this.intakeMotors.set(Constants.Pneumatics.IntakeConstants.intakeInSpeed);
     }
 
     // Runs intake in the opposite direction, thus spiting out objects.
     private void intakeOut() {
-        intakeMotors.set(-1);
+        intakeMotors.set(Constants.Pneumatics.IntakeConstants.intakeOutSpeed);
     }
 
     // Stops the intake from running.
     public void stop() {
-        this.intakeMotors.set(0);
+        this.intakeMotors.set(Constants.Pneumatics.IntakeConstants.intakeStopSpeed);
     }
 }
 
