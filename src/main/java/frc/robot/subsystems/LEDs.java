@@ -19,8 +19,8 @@ public class LEDs extends SubsystemBase {
     /**
      * constructs a LED Subsystem *
      * 
-     * @param length
-     * @param port
+     * @param length length of the addressable LEDS
+     * @param port port ID of PWM
      */
 
     public LEDs(int length, int port) {
@@ -36,7 +36,7 @@ public class LEDs extends SubsystemBase {
     /**
      * sets RGB Color
      * 
-     * @param index
+     * @param index index of the LEDs
      * @param r - [0 - 255]
      * @param g - [0 - 255]
      * @param b - [0 - 255]
@@ -51,7 +51,7 @@ public class LEDs extends SubsystemBase {
     /**
      * sets color of LED string to moving
      * 
-     * @param color
+     * @param color color set for the LEDs
      */
     public void setColor(Color color) {
         for (var i = 0; i < controLedBuffer.getLength(); i++) {
@@ -62,9 +62,9 @@ public class LEDs extends SubsystemBase {
     /**
      * sets the LEDs to change to one color from another
      * 
-     * @param color
-     * @param count
-     * @param inverted
+     * @param color color sets for the LEDs
+     * @param count the count number of LEDs to be moved
+     * @param inverted wheter to invert the color choices
      */
     public void movingColor(Color color, int count, boolean inverted) {
         Color theColor = inverted ? Color.kBlack : color;
