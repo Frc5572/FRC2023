@@ -17,11 +17,10 @@ public class LEDs extends SubsystemBase {
     private int flashingDelay = 0;
 
     /**
-     * constructs a LED Subsystem *
+     * constructs a LED Subsystem
      * 
      * @param length length of the addressable LEDS
      * @param port port ID of PWM
-     * 
      */
 
     public LEDs(int length, int port) {
@@ -35,13 +34,12 @@ public class LEDs extends SubsystemBase {
 
 
     /**
-     * sets RGB Color
+     * Sets RGB Color
      * 
      * @param index index of the LEDs
      * @param r - [0 - 255]
      * @param g - [0 - 255]
      * @param b - [0 - 255]
-     * 
      */
     public void setRGB(int index, int r, int g, int b) {
         for (var i = 0; i < controLedBuffer.getLength(); i++) {
@@ -68,7 +66,6 @@ public class LEDs extends SubsystemBase {
      * @param color color sets for the LEDs
      * @param count the count number of LEDs to be moved
      * @param inverted whether to invert the color choices
-     * 
      */
     public void movingColor(Color color, int count, boolean inverted) {
         Color theColor = inverted ? Color.kBlack : color;
