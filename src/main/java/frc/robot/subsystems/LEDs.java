@@ -15,6 +15,9 @@ public class LEDs extends SubsystemBase {
     private int movingLED = 0;
     private boolean movingDirection = true;
     private int flashingDelay = 0;
+    private int m_rainbowFirstPixelHue = 0;
+    private int policeDelay = 0;
+    public int pattern = 0;
 
     /**
      * constructs a LED Subsystem
@@ -31,6 +34,10 @@ public class LEDs extends SubsystemBase {
         addressableLED.setData(controLedBuffer);
         addressableLED.start();
     }
+
+    /**
+     * Set the LED strop to a moving rainbow pattern
+     */
 
 
     /**
@@ -94,10 +101,10 @@ public class LEDs extends SubsystemBase {
     /**
      * flashes on and off the color white
      */
-    public void flashingLED() {
+    public void flashingLED(Color color) {
         if (flashingDelay < 10) {
             for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                controLedBuffer.setLED(i, Color.kWhite);
+                controLedBuffer.setLED(i, color);
             }
         } else {
             for (var i = 0; i < controLedBuffer.getLength(); i++) {
@@ -107,5 +114,40 @@ public class LEDs extends SubsystemBase {
         addressableLED.setData(controLedBuffer);
         flashingDelay++;
         flashingDelay %= 20;
+    }
+
+    public void rainbow() {
+        for (var i = 1; i < controLedBuffer.getLength(); i++) {
+            // calculate the hue
+            final var hue =
+                (m_rainbowFirstPixelHue + (i * 180 / controLedBuffer.getLength())) % 180;
+            controLedBuffer.setHSV(i, hue, 255, 128);
+        }
+        // increase by to make the rainbow "move"
+        m_rainbowFirstPixelHue += 3;
+        // check bounds
+        m_rainbowFirstPixelHue %= 180;
+        addressableLED.setData(controLedBuffer);
+    }
+
+    public void policeSirens() {
+        if (policeDelay < 10) {
+            for (var i = 0; i < controLedBuffer.getLength(); i++) {
+                controLedBuffer.setLED(i, Color.kRed);
+            }
+            for (var i = 0; i < controLedBuffer.getLength(); i++) {
+                controLedBuffer.setLED(i, Color.kBlack);
+            }
+        } else {
+            for (var i = 0; i < controLedBuffer.getLength(); i++) {
+                controLedBuffer.setLED(i, Color.kBlack);
+            }
+            for (var i = 0; i < controLedBuffer.getLength(); i++) {
+                controLedBuffer.setLED(i, Color.kBlue);
+            }
+        }
+        addressableLED.setData(controLedBuffer);
+        policeDelay += 1;
+        policeDelay %= 21;
     }
 }

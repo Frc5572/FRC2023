@@ -20,7 +20,10 @@ public final class Constants {
      */
     public static final class Pneumatics {
     }
-
+    public static final class LEDsConstants {
+        public static final int PWMPort = 9;
+        public static final int LEDcount = 42;
+    }
     /**
      * Vision constants for limelight calculations.
      */
