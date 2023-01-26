@@ -34,4 +34,15 @@ public final class Constants {
         public static final double limelightAngle = 0;
     }
 
+    public static final class wristPID {
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kMaxVelocityRadPerSecond = 0;
+        public static final double kMaxAccelerationRadPerSecond = 0;
+        public static final double kF = 0.0;
+        public static final double kSVolts = 0.0;
+        public static final double kVVoltSecondsPerRotation = 0.0;
+    }
+
 }
