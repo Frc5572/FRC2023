@@ -13,10 +13,6 @@ public final class Constants {
      * Motor CAN id's.
      */
     public static final class Motors {
-        public static final int leftElevatorMotorID = 0;
-        public static final int rightElevatorMotorID = 0;
-
-
     }
 
     /**
@@ -39,11 +35,15 @@ public final class Constants {
      * Elevator Motor constants for neo calculations.
      */
     public static final class Elevator {
+        // Motor ID's
+        public static final int leftElevatorMotorID = 0;
+        public static final int rightElevatorMotorID = 0;
         // Encoder ticks.
-        public static final double elevatorPos0 = 0.0;
-        public static final double elevatorPos1 = 0.0;
-        public static final double elevatorPos2 = 0.0;
-        public static final double elevatorPos3 = 0.0;
+        public static final double stowedAway = 0.0;
+        public static final double ground = 0.0;
+        public static final double middleLevel = 0.0;
+        public static final double highLevel = 0.0;
+        public static final double humanPlayerStation = 0.0;
         // Motor speed.
         public static final double elevatorSpeed = 0.0;
         public static final double elevatorStop = 0.0;
