@@ -9,7 +9,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.robot.Constants;
 
-
 public class Arm extends ProfiledPIDSubsystem {
     private final CANSparkMax armMotor =
         new CANSparkMax(Constants.Motors.armID, MotorType.kBrushless);
@@ -25,19 +24,24 @@ public class Arm extends ProfiledPIDSubsystem {
                 new TrapezoidProfile.Constraints(Constants.ArmPID.kMaxVelocityRadPerSecond,
                     Constants.ArmPID.kMaxAccelerationRadPerSecSquared),
                 Constants.ArmPID.kF));
-        armEncoder.setDistancePerPulse(Constants.ArmPID.kEncoderDistancePerPulse);
     }
 
-    public void useOutput(double output){
-        double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity)
+    public void useOutput(double output, TrapezoidProfile.State trapState){
+        double feedforward = m_feedforward.calculate(trapState.position, trapState.velocity)
         armMotor.setVoltage(output+feedforward);
     }
 
     @Override
-    protected double getMeasurement() {
-        // TODO Auto-generated method stub
+    // this class is supposed to return a double
+    public double getMeasurement() { //
 
         return 0;
     }
+
+    public void getAngleMeasurement() {// TODO Auto-generated method stub{
+
+    }
+
+
 
 }
