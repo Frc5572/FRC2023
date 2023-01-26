@@ -10,6 +10,13 @@ public final class Constants {
     public static final int operatorID = 1;
 
     /**
+     * LED constants
+     */
+    public static final class LEDConstants {
+        public static final int PWMPort = 0;
+        public static final int LEDCount = 0;
+    }
+    /**
      * Motor CAN id's.
      */
     public static final class Motors {
