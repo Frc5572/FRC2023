@@ -1,10 +1,10 @@
-package frc.lib.util;
+package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /**
- * Retrieve and set module states on CTRE devices
+ * Grabs module states from swerve.
  */
 public class CTREModuleState {
 
