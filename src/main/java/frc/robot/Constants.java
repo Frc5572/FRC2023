@@ -47,4 +47,9 @@ public final class Constants {
         public static final double kAVoltSecondSquaredPerRad = 0;
         public static final double kEncoderDistancePerPulse = 0;
     }
+    public static final class ArmConstants {
+        public static final int channelA = 0;
+        public static final int channelB = 1;
+        public static final int index = 2;
+    }
 }
