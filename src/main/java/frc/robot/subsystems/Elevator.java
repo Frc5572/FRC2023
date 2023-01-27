@@ -27,7 +27,7 @@ public class Elevator extends ProfiledPIDSubsystem {
             Constants.ElevatorPID.kVVoltsSecondsPerRotation);
 
     /**
-     * Create elevator class for PID
+     * Creates elevator class for PID
      */
     public Elevator() {
         super(new ProfiledPIDController(Constants.ElevatorPID.kP, Constants.ElevatorPID.kI,
@@ -36,13 +36,15 @@ public class Elevator extends ProfiledPIDSubsystem {
                 Constants.ElevatorPID.kMaxAccelerationRadPerSecSquared)));
     }
 
+    /**
+     * Creates elevator method for moving
+     */
     public void moveElevator(int currentEncoderTick, int stateEncoderTick) {
-        while (currentEncoderTick != stateEncoderTick) {
-            if (Math.abs(currentEncoderTick - stateEncoderTick) < 500) {
-                // Moves the motor mor in the positive direction
-            } else {
-                // Moves the motor mor in the negative direction
-            }
+
+        if (Math.abs(currentEncoderTick - stateEncoderTick) < 500) {
+            // Moves the motor more in the positive direction
+        } else {
+            // Moves the motor more in the negative direction
         }
     }
 
