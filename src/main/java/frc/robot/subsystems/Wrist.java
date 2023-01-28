@@ -44,7 +44,8 @@ public class Wrist extends ProfiledPIDSubsystem {
      * Sets the wrist speed to zero
      */
     public void stopWrist() {
-        m_controller.setGoal(0);
+        wristMotor.set(0);
+        disable();
     }
 
 
@@ -84,6 +85,9 @@ public class Wrist extends ProfiledPIDSubsystem {
         return alignment;
     }
 
+    public boolean atGoal() {
+        return m_controller.atGoal();
+    }
 
 
 }

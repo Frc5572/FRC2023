@@ -39,7 +39,7 @@ public class RobotContainer {
     public RobotContainer() {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-        wrist.setDefaultCommand(new WristMovement(wrist, operator));
+        wrist.setDefaultCommand(new WristMovement(wrist));
         // Configure the button bindings
         configureButtonBindings();
 
@@ -53,6 +53,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         operator.y().whileTrue(new WristAlignment(wrist));
+
 
     }
 
