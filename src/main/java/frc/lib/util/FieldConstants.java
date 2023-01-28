@@ -317,19 +317,20 @@ public class FieldConstants {
     /**
      * https://www.youtube.com/watch?v=62-pRVZuS5c
      *
-     * @param P P
+     * @param p P
      * @param p0 P0
      * @param p1 P1
      * @return Box SDF
      */
-    private static double boxSdf(Translation2d P, Translation2d p0, Translation2d p1) {
+    private static double boxSdf(Translation2d p, Translation2d p0, Translation2d p1) {
         Translation2d min =
             new Translation2d(Math.min(p0.getX(), p1.getX()), Math.min(p0.getY(), p1.getY()));
         Translation2d max =
             new Translation2d(Math.max(p0.getX(), p1.getX()), Math.max(p0.getY(), p1.getY()));
         Translation2d b = max.minus(min).times(0.5);
-        Translation2d p = P.minus(b).minus(min);
-        Translation2d d = new Translation2d(Math.abs(p.getX()), Math.abs(p.getY())).minus(b);
+        Translation2d p_diff = p.minus(b).minus(min);
+        Translation2d d =
+            new Translation2d(Math.abs(p_diff.getX()), Math.abs(p_diff.getY())).minus(b);
         return max(d, new Translation2d()).getNorm() + Math.min(Math.max(d.getX(), d.getY()), 0.0);
     }
 
