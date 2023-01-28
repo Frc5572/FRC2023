@@ -19,6 +19,9 @@ public final class Constants {
      * Pneumatics CAN id constants.
      */
     public static final class Pneumatics {
+        public static final int intakeReverseChannel = 0;
+        public static int intakeFowardChannel = 1;
+
     }
 
     /**
@@ -29,5 +32,16 @@ public final class Constants {
         public static final double limelightHeight = 0;
         public static final double targetHeight = 0;
         public static final double limelightAngle = 0;
+    }
+
+    /**
+     * Constants for the Intake.
+     */
+    public static final class IntakeConstants {
+        public static final int intakeMotorNumA = 0;
+        public static final int intakeMotorNumB = 0;
+        public static final int intakeInSpeed = 1;
+        public static final int intakeOutSpeed = -1;
+        public static final int intakeStopSpeed = 0;
     }
 }
