@@ -177,5 +177,8 @@ public final class Constants {
         public static final double elevatorKSVolts = 0.0;
         public static final double elevatorKGVolts = 0.0;
         public static final double elevatorKVVoltsSecondsPerRotation = 0.0;
+
+        /* Elevator Encoder */
+        public static final double encoderOffSet = 0.0;
     }
 }

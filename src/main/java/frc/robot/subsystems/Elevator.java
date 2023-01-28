@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,9 +18,9 @@ public class Elevator extends SubsystemBase {
         new CANSparkMax(Constants.Elevator.leftElevatorMotorID, MotorType.kBrushless);
     private final CANSparkMax rightElevatorMotor =
         new CANSparkMax(Constants.Elevator.rightElevatorMotorID, MotorType.kBrushless);
-    private int elevatorEncoderTick;
+    private double elevatorElevatorRotation;
 
-    private final Encoder elevatorEncoder = new Encoder(null, null);
+    private final DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(99);
 
     private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(
         Constants.Elevator.elevatorKSVolts, Constants.Elevator.elevatorKGVolts,
@@ -32,24 +32,25 @@ public class Elevator extends SubsystemBase {
             Constants.Elevator.elevatorKMaxAccelerationRadPerSecSquared));
 
 
-    /**
-     * Creates moveElevator method to move the motors.
-     */
-    public void moveElevator(int currentEncoderTick, int stateEncoderTick) {
-        if (Math.abs(currentEncoderTick - stateEncoderTick) < 500) {
-            // Moves the motor more in the positive direction
-        } else {
-            // Moves the motor more in the negative direction
-        }
+
+    public Elevator() {
+
     }
 
     /**
-     * Creates getElevatorTick method to return the current encoder tick.
+     * Creates runMotor method to move the motors.
      */
-    public int getElevatorTick() {
-        // Uses the .get() method to get the count of the encoder and stores it in
-        // elevatorEncoderTick which then is returned
-        elevatorEncoderTick = elevatorEncoder.get();
-        return elevatorEncoderTick;
+    public void runMotor(double currentVal, double goal) {
+        leftElevatorMotor.set(elevatorPID.calculate(currentVal * 360, goal));
+        rightElevatorMotor.set(elevatorPID.calculate(currentVal * 360, goal));
+    }
+
+    /**
+     * Creates getElevatorRotation method to return the current encoder rotation.
+     */
+    public double getElevatorRotation() {
+        elevatorElevatorRotation =
+            elevatorEncoder.getAbsolutePosition() - Constants.Elevator.encoderOffSet;
+        return elevatorElevatorRotation;
     }
 }
