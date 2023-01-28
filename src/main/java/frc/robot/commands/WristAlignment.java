@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Wrist;
 
+/**
+ * Creates a new Command for Wrist Alignment
+ */
 public class WristAlignment extends CommandBase {
     /** Creates a new WristAlignment. */
     Wrist wristAlignment;
