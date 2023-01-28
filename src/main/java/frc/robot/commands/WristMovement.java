@@ -9,11 +9,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.subsystems.Wrist;
 
+/**
+ * Creates a new command for WristMovement
+ */
 public class WristMovement extends CommandBase {
-    /** Creates a new WristMovement. */
+
     Wrist wristMovement;
     CommandXboxController xboxController;
 
+    /** Creates a new WristMovement. */
     public WristMovement(Wrist wristMovement, CommandXboxController xboxController) {
         // Use addRequirements() here to declare subsystem dependencies.
         this.wristMovement = wristMovement;

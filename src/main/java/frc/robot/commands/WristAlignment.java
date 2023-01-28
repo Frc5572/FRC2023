@@ -26,7 +26,7 @@ public class WristAlignment extends CommandBase {
     @Override
     public void execute() {
         if (!(this.wristAlignment.getAlignment())) {
-            this.wristAlignment.setWrist(Constants.wristPID.TargetEncoderDegree);
+            this.wristAlignment.setWrist(Constants.WristPID.TargetEncoderDegree);
         }
     }
 
