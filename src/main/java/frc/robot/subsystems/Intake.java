@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Pneumatics;
 
 /*
  * Possible Functions to include: - Intakein - Intake out (Varying power levels based on
@@ -26,7 +25,7 @@ public class Intake extends SubsystemBase {
 
     // Defines intake subsystem pneumatics
     DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
-        Constants.Pneumatics.intakeFowardChannel, Pneumatics.intakeReverseChannel);
+        Constants.Pneumatics.intakeFowardChannel, Constants.Pneumatics.intakeReverseChannel);
 
     // Hopefully lets the DoubleSolenoid know where to start.
     public Intake(PneumaticHub ph) {
@@ -38,24 +37,18 @@ public class Intake extends SubsystemBase {
     private final MotorControllerGroup intakeMotors =
         new MotorControllerGroup(intakeMotorA, intakeMotorB);
 
-
-    /*
-     * Code for pottentially tracking voltage. [Note: This is untested code] // Find this value
-     * through testing. public static final double intakeVNormal = 1;
-     *
-     * // Gets the current voltage of the motors and compares them to the normal voltage to
-     * determine if a game piece is fully in. public void intakeVoltage(){ double intakeVA =
-     * (this.intakeMotorA.getBusVoltage()); if (intakeVA>intakeVNormal)
-     * System.out.println("Game piece is fully in! :)"); }
-     */
-
-
     public static final double intakeAMPNormal = 1;
+    // Use this code to determine the Normal intake motor AMP (AKA: the AMP of a motor that is not
+    // stalling)
+    /*
+     * public void intakeAMPN(){ double intakeAMPAN = (this.intakeMotorA.getAppliedOutput());
+     * System.out.println("The AMP of the motor is "+ intakeAMPAN); }
+     */
 
     // Gets the current voltage of the motors and compares them to the normal voltage to determine
     // if a game piece is fully in
     public void intakeAMP() {
-        double intakeAMPA = (this.intakeMotorA.getBusVoltage());
+        double intakeAMPA = (this.intakeMotorA.getAppliedOutput());
         if (intakeAMPA > intakeAMPNormal)
             System.out.println("Game piece is fully in! :)");
     }

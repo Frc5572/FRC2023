@@ -135,7 +135,8 @@ public final class Constants {
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
 
-<<<<<<< HEAD
+    }
+
     /**
      * Pneumatics CAN id constants.
      */
@@ -143,8 +144,6 @@ public final class Constants {
         public static final int intakeReverseChannel = 0;
         public static int intakeFowardChannel = 1;
 
-=======
->>>>>>> origin/main
     }
 
 
