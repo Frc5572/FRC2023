@@ -23,17 +23,43 @@ public class Wrist extends ProfiledPIDSubsystem {
             new TrapezoidProfile.Constraints(Constants.wristPID.kMaxVelocityRadPerSecond,
                 Constants.wristPID.kMaxAccelerationRadPerSecond),
             Constants.wristPID.kF));
+        wristMotor.setInverted(true);
+        getController().setTolerance(getMeasurement());
     }
+
+    public void setWristUp(double num) {
+        enable();
+        wristMotor.set(num);
+    }
+
+    public void setWristDown(double num) {
+        enable();
+        wristMotor.set(num);
+    }
+
+    public void stopWrist() {
+        wristMotor.set(0);
+    }
+
 
     @Override
     public void useOutput(double output, State setpoint) {
-        wristMotor.setVoltage(output + wristFeed.calculate(setpoint.position));
+        wristMotor.setVoltage(output + wristFeed.calculate(setpoint.velocity));
     }
 
     @Override
     public double getMeasurement() {
 
-        return 0;
+        return wristCANCoder.getPosition();
+    }
+
+    @Override
+    public void periodic() {
+        if (m_enabled) {
+
+
+            useOutput(m_controller.calculate(getMeasurement(), null), null);
+        }
     }
 
 
