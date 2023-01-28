@@ -44,7 +44,7 @@ public class Intake extends SubsystemBase {
      * through testing. public static final double intakeVNormal = 1;
      *
      * // Gets the current voltage of the motors and compares them to the normal voltage to
-     * determine if a game piece is fully in public void intakeVoltage(){ double intakeVA =
+     * determine if a game piece is fully in. public void intakeVoltage(){ double intakeVA =
      * (this.intakeMotorA.getBusVoltage()); if (intakeVA>intakeVNormal)
      * System.out.println("Game piece is fully in! :)"); }
      */
