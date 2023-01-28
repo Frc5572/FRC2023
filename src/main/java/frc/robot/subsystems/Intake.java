@@ -2,9 +2,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Pneumatics;
 
 /*
  * Possible Functions to include: - Intakein - Intake out (Varying power levels based on
@@ -13,30 +18,45 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
-    // An attempt to define the motor is as follows...
+    // An attempt to define the motors is as follows...
     CANSparkMax intakeMotorA =
-        new CANSparkMax(Constants.Pneumatics.IntakeConstants.intakeMotorNumA, MotorType.kBrushless);
+        new CANSparkMax(Constants.IntakeConstants.intakeMotorNumA, MotorType.kBrushless);
     CANSparkMax intakeMotorB =
-        new CANSparkMax(Constants.Pneumatics.IntakeConstants.intakeMotorNumB, MotorType.kBrushless);
+        new CANSparkMax(Constants.IntakeConstants.intakeMotorNumB, MotorType.kBrushless);
 
-    // Creation of the intake MotorControllerGroup .
+    // Defines intake subsystem pneumatics
+    DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+        Constants.Pneumatics.intakeFowardChannel, Pneumatics.intakeReverseChannel);
+
+    // Hopefully lets the DoubleSolenoid know where to start.
+    public Intake(PneumaticHub ph) {
+        this.intakeSolenoid.set(Value.kForward);
+    }
+
+
+    // Creation of the intake MotorControllerGroup.
     private final MotorControllerGroup intakeMotors =
         new MotorControllerGroup(intakeMotorA, intakeMotorB);
 
 
-    // Runs intake to intake objects.
+    // Runs intake motors to intake objects and reverses the solenoid.
     public void intakeIn() {
-        this.intakeMotors.set(Constants.Pneumatics.IntakeConstants.intakeInSpeed);
+        intakeSolenoid.toggle();
+        intakeMotors.set(Constants.IntakeConstants.intakeInSpeed);
+
+
     }
 
-    // Runs intake in the opposite direction, thus spiting out objects.
-    private void intakeOut() {
-        intakeMotors.set(Constants.Pneumatics.IntakeConstants.intakeOutSpeed);
+    // Runs intake motors in the opposite direction, thus spiting out objects.
+    public void intakeOut() {
+        intakeMotors.set(Constants.IntakeConstants.intakeOutSpeed);
+        intakeSolenoid.toggle();
     }
 
-    // Stops the intake from running.
+    // Stops the intake motors from running.
     public void stop() {
-        this.intakeMotors.set(Constants.Pneumatics.IntakeConstants.intakeStopSpeed);
+        intakeMotors.set(Constants.IntakeConstants.intakeStopSpeed);
     }
+
 }
 
