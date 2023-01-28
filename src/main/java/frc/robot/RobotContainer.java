@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.WristMovement;
 import frc.robot.commands.WristAlignment;
-import frc.robot.subsystems.Wrist; 
+import frc.robot.commands.WristMovement;
+import frc.robot.subsystems.Wrist;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +32,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Wrist wrist = new Wrist();
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -41,7 +42,7 @@ public class RobotContainer {
         wrist.setDefaultCommand(new WristMovement(wrist, operator));
         // Configure the button bindings
         configureButtonBindings();
-        
+
     }
 
     /**
