@@ -34,6 +34,9 @@ public final class Constants {
         public static final double limelightAngle = 0;
     }
 
+    /*
+     * WristPID id Constants
+     */
     public static final class wristPID {
         public static final double kP = 0.0;
         public static final double kI = 0.0;
