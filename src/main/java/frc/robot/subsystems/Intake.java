@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /*
- * Possible Functions to include: - Intakein - Intake out (Varying power levels based on
- * objectloaded) - SpitObject
+ * Possible Functions to include: - SpitObject
  */
 
 public class Intake extends SubsystemBase {
@@ -23,7 +22,7 @@ public class Intake extends SubsystemBase {
     CANSparkMax intakeMotorB =
         new CANSparkMax(Constants.IntakeConstants.intakeMotorNumB, MotorType.kBrushless);
 
-    // Defines intake subsystem pneumatics
+    // Defines intake subsystem pneumatics.
     DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
         Constants.Pneumatics.intakeFowardChannel, Constants.Pneumatics.intakeReverseChannel);
 
@@ -39,14 +38,14 @@ public class Intake extends SubsystemBase {
 
     public static final double intakeAMPNormal = 1;
     // Use this code to determine the Normal intake motor AMP (AKA: the AMP of a motor that is not
-    // stalling)
+    // stalling).
     /*
      * public void intakeAMPN(){ double intakeAMPAN = (this.intakeMotorA.getAppliedOutput());
      * System.out.println("The AMP of the motor is "+ intakeAMPAN); }
      */
 
     // Gets the current voltage of the motors and compares them to the normal voltage to determine
-    // if a game piece is fully in
+    // if a game piece is fully in.
     public void intakeAMP() {
         double intakeAMPA = (this.intakeMotorA.getAppliedOutput());
         if (intakeAMPA > intakeAMPNormal)
@@ -59,10 +58,16 @@ public class Intake extends SubsystemBase {
         intakeMotors.set(Constants.IntakeConstants.intakeInSpeed);
     }
 
-    // Runs intake motors in the opposite direction, thus spiting out objects.
-    public void intakeOut() {
+    // Runs intake motors in the opposite direction to spit out a cone.
+    public void intakeOutCone() {
         intakeSolenoid.toggle();
-        intakeMotors.set(Constants.IntakeConstants.intakeOutSpeed);
+        intakeMotors.set(Constants.IntakeConstants.intakeOutSpeedCone);
+    }
+
+    // Runs intake motors in the opposite direction to spit out a cube.
+    public void intakeOutCube() {
+        intakeSolenoid.toggle();
+        intakeMotors.set(Constants.IntakeConstants.intakeOutSpeedCube);
     }
 
     // Stops the intake motors from running.

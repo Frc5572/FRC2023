@@ -162,7 +162,8 @@ public final class Constants {
         public static final int intakeMotorNumA = 0;
         public static final int intakeMotorNumB = 0;
         public static final int intakeInSpeed = 1;
-        public static final int intakeOutSpeed = -1;
+        public static final int intakeOutSpeedCone = -1;
+        public static final int intakeOutSpeedCube = -1;
         public static final int intakeStopSpeed = 0;
     }
 }
