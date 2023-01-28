@@ -39,18 +39,37 @@ public class Intake extends SubsystemBase {
         new MotorControllerGroup(intakeMotorA, intakeMotorB);
 
 
+    /*
+     * Code for pottentially tracking voltage. [Note: This is untested code] // Find this value
+     * through testing. public static final double intakeVNormal = 1;
+     *
+     * // Gets the current voltage of the motors and compares them to the normal voltage to
+     * determine if a game piece is fully in public void intakeVoltage(){ double intakeVA =
+     * (this.intakeMotorA.getBusVoltage()); if (intakeVA>intakeVNormal)
+     * System.out.println("Game piece is fully in! :)"); }
+     */
+
+
+    public static final double intakeAMPNormal = 1;
+
+    // Gets the current voltage of the motors and compares them to the normal voltage to determine
+    // if a game piece is fully in
+    public void intakeAMP() {
+        double intakeAMPA = (this.intakeMotorA.getBusVoltage());
+        if (intakeAMPA > intakeAMPNormal)
+            System.out.println("Game piece is fully in! :)");
+    }
+
     // Runs intake motors to intake objects and reverses the solenoid.
     public void intakeIn() {
         intakeSolenoid.toggle();
         intakeMotors.set(Constants.IntakeConstants.intakeInSpeed);
-
-
     }
 
     // Runs intake motors in the opposite direction, thus spiting out objects.
     public void intakeOut() {
-        intakeMotors.set(Constants.IntakeConstants.intakeOutSpeed);
         intakeSolenoid.toggle();
+        intakeMotors.set(Constants.IntakeConstants.intakeOutSpeed);
     }
 
     // Stops the intake motors from running.
