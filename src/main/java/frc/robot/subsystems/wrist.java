@@ -27,14 +27,9 @@ public class Wrist extends ProfiledPIDSubsystem {
         getController().setTolerance(getMeasurement());
     }
 
-    public void setWristUp(double num) {
+    public void setWrist(double num) {
+        m_controller.setGoal(num);
         enable();
-        wristMotor.set(num);
-    }
-
-    public void setWristDown(double num) {
-        enable();
-        wristMotor.set(num);
     }
 
     public void stopWrist() {
@@ -58,10 +53,15 @@ public class Wrist extends ProfiledPIDSubsystem {
         if (m_enabled) {
 
 
-            useOutput(m_controller.calculate(getMeasurement(), null), null);
+            useOutput(m_controller.calculate(getMeasurement(), m_controller.getGoal()), m_controller.getSetpoint());
         }
     }
-
+   
+    public boolean getAlignment() {
+            boolean alignment = (wristCANCoder.getPosition()-0 == 0) ?  true :  false;
+            return alignment;
+    }
+    
 
 
 }
