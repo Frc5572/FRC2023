@@ -180,6 +180,7 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Gyro Yaw", getYaw().getDegrees());
         SmartDashboard.putNumber("Field Offset", fieldOffset);
         SmartDashboard.putNumber("Gyro Yaw - Offset", getYaw().getDegrees() - fieldOffset);
+        SmartDashboard.putNumber("Gyro roll", gyro.getRoll());
 
 
         for (SwerveModule mod : swerveMods) {
