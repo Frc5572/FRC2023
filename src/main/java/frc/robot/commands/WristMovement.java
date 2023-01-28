@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants;
 import frc.robot.subsystems.Wrist;
 
 /**
@@ -14,21 +13,22 @@ import frc.robot.subsystems.Wrist;
  */
 public class WristMovement extends CommandBase {
 
-    Wrist wristMovement;
+    Wrist wrist;
     CommandXboxController xboxController;
 
     /** Creates a new WristMovement. */
-    public WristMovement(Wrist wristMovement, CommandXboxController xboxController) {
+    public WristMovement(Wrist wrist, CommandXboxController xboxController) {
         // Use addRequirements() here to declare subsystem dependencies.
-        this.wristMovement = wristMovement;
+        this.wrist = wrist;
         this.xboxController = xboxController;
     }
 
     @Override
     public void execute() {
-        double rotation = -xboxController.getLeftY();
-        rotation = (Math.abs(rotation) < Constants.stickDeadband) ? 0 : rotation;
-        this.wristMovement.setWrist(rotation);
+        // double rotation = -xboxController.getLeftY();
+        // rotation = (Math.abs(rotation) < Constants.stickDeadband) ? 0 : rotation;
+        // this.wrist.setWrist(rotation);
+
     }
 
 }
