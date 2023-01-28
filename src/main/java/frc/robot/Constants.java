@@ -146,36 +146,36 @@ public final class Constants {
 
     }
 
+
+
     /**
-     * Elevator Motor constants for neo calculations.
+     * Elevator Motor constants.
      */
     public static final class Elevator {
-        // Motor ID's
+        /* Motor ID's. */
         public static final int leftElevatorMotorID = 0;
         public static final int rightElevatorMotorID = 0;
-        // Encoder ticks.
+
+        /* Encoder ticks. */
         public static final double stowedAway = 0.0;
         public static final double ground = 0.0;
         public static final double middleLevel = 0.0;
         public static final double highLevel = 0.0;
         public static final double humanPlayerStation = 0.0;
-        // Motor speed.
+
+        /* Elevator motor speed. */
         public static final double elevatorSpeed = 0.0;
         public static final double elevatorStop = 0.0;
-    }
 
-    /**
-     * Elevator Motor PID constants.
-     */
-    public static final class ElevatorPID {
-        public static final double kP = 0.0;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
-        public static final double kMaxVelocityRadPerSecond = 0.0;
-        public static final double kMaxAccelerationRadPerSecSquared = 0.0;
-        public static final double kSVolts = 0.0;
-        public static final double kGVolts = 0.0;
-        public static final double kVVoltsSecondsPerRotation = 0.0;
+        /* Elevator motor PID's. */
+        public static final double elevatorKP = 0.0;
+        public static final double elevatorKI = 0.0;
+        public static final double elevatorKD = 0.0;
 
+        public static final double elevatorKMaxVelocityRadPerSecond = 0.0;
+        public static final double elevatorKMaxAccelerationRadPerSecSquared = 0.0;
+        public static final double elevatorKSVolts = 0.0;
+        public static final double elevatorKGVolts = 0.0;
+        public static final double elevatorKVVoltsSecondsPerRotation = 0.0;
     }
 }
