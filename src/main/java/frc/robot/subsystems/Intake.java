@@ -70,6 +70,12 @@ public class Intake extends SubsystemBase {
         intakeMotors.set(Constants.IntakeConstants.intakeOutSpeedCube);
     }
 
+    // Runs intake motors in the opposite direction to gently spit out an unintentional game piece.
+    public void SpitObject() {
+        intakeSolenoid.toggle();
+        intakeMotors.set(Constants.IntakeConstants.intakeSpitSpeed);
+    }
+
     // Stops the intake motors from running.
     public void stop() {
         intakeMotors.set(Constants.IntakeConstants.intakeStopSpeed);

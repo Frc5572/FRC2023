@@ -164,6 +164,8 @@ public final class Constants {
         public static final int intakeInSpeed = 1;
         public static final int intakeOutSpeedCone = -1;
         public static final int intakeOutSpeedCube = -1;
+        public static final int intakeSpitSpeed = -1;
         public static final int intakeStopSpeed = 0;
+
     }
 }
