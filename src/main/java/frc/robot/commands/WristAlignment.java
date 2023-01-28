@@ -16,8 +16,8 @@ public class WristAlignment extends CommandBase {
     Wrist wristAlignment;
 
     public WristAlignment(Wrist wristAlignment) {
-        // Use addRequirements() here to declare subsystem dependencies.
         this.wristAlignment = wristAlignment;
+        addRequirements(wristAlignment);
     }
 
 

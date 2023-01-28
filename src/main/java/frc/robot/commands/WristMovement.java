@@ -21,6 +21,7 @@ public class WristMovement extends CommandBase {
         // Use addRequirements() here to declare subsystem dependencies.
         this.wrist = wrist;
         this.xboxController = xboxController;
+        addRequirements(wrist);
     }
 
     @Override
