@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Wrist;
 
 /**
@@ -14,11 +13,13 @@ import frc.robot.subsystems.Wrist;
 public class WristMovement extends CommandBase {
 
     Wrist wrist;
+    double distance;
 
     /** Creates a new WristMovement. */
-    public WristMovement(Wrist wrist) {
+    public WristMovement(Wrist wrist, double distance) {
         // Use addRequirements() here to declare subsystem dependencies.
         this.wrist = wrist;
+        this.distance = distance;
 
         addRequirements(wrist);
     }
@@ -33,19 +34,17 @@ public class WristMovement extends CommandBase {
         // double rotation = -xboxController.getLeftY();
         // rotation = (Math.abs(rotation) < Constants.stickDeadband) ? 0 : rotation;
         // this.wrist.setWrist(rotation);
-        if (!(this.wrist.atGoal())) {
-            this.wrist.setWrist(Constants.WristPID.TargetEncoderDegree);
-        }
+        this.wrist.setWrist(distance);
     }
 
     @Override
     public void end(boolean interrupted) {
-        wrist.stopWrist();
+        this.wrist.stopWrist();
     }
 
     @Override
     public boolean isFinished() {
-        return wrist.atGoal();
+        return this.wrist.atGoal();
     }
 
 

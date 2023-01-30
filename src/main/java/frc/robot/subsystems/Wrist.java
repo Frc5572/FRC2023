@@ -14,8 +14,9 @@ import frc.robot.Constants;
  * Creates new ProfiledPIDSubsystem and methods for the Wrist
  */
 public class Wrist extends ProfiledPIDSubsystem {
-    private final CANSparkMax wristMotor = new CANSparkMax(0, MotorType.kBrushless);
-    private final CANCoder wristCANCoder = new CANCoder(0);
+    private final CANSparkMax wristMotor =
+        new CANSparkMax(Constants.Motors.wristMotorID, MotorType.kBrushless);
+    private final CANCoder wristCANCoder = new CANCoder(Constants.Motors.wristCoderID);
     private final SimpleMotorFeedforward wristFeed = new SimpleMotorFeedforward(
         Constants.WristPID.kSVolts, Constants.WristPID.kVVoltSecondsPerRotation);
 
@@ -58,7 +59,7 @@ public class Wrist extends ProfiledPIDSubsystem {
     }
 
     /**
-     * Returns the rotation of the Wrist Encoder
+     * @return the rotation of the Wrist Encoder
      */
     @Override
     public double getMeasurement() {
@@ -77,17 +78,22 @@ public class Wrist extends ProfiledPIDSubsystem {
         }
     }
 
-    /*
-     * Returns whether or not the wrist Encoder is align with the arm Encoder
+    /**
+     * @return whether or not the wrist Encoder is align with the arm Encoder (will later replace
+     *         with the cancoder of the arm)
      */
     public boolean getAlignment() {
         boolean alignment = (wristCANCoder.getPosition() - 0 == 0) ? true : false;
         return alignment;
     }
 
+    /**
+     * @return whether the wrist has reached its certain goal or not
+     */
     public boolean atGoal() {
         return m_controller.atGoal();
     }
+
 
 
 }
