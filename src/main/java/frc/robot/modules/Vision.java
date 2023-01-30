@@ -10,10 +10,10 @@ import frc.robot.Constants;
 
 public class Vision {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    double deadPocket = Constants.VisionConstants.deadPocket;
-    double h1 = Constants.VisionConstants.limelightHeight;
-    double h2 = Constants.VisionConstants.targetHeight;
-    double a1 = Constants.VisionConstants.limelightAngle;
+    double deadPocket = Constants.VisionConstants.DEAD_POCKET;
+    double h1 = Constants.VisionConstants.LIME_LIGHT_HEIGHT;
+    double h2 = Constants.VisionConstants.TARGET_HEIGHT;
+    double a1 = Constants.VisionConstants.LIME_LIGHT_ANGLE;
     double calculatedValue;
     double a2;
     double distance = 0.0;
