@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.math.Conversions;
-import frc.lib.util.CTREModuleState;
+import frc.lib.util.SecondOrderSwerveModuleStates;
 
 /**
  * Base Swerve Module Class. Creates an instance of the swerve module
@@ -57,8 +57,9 @@ public class SwerveModule {
      * @param desiredState The desired state (speed and angle)
      * @param isOpenLoop Whether to use open or closed loop formula
      */
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        desiredState = CTREModuleState.optimize(desiredState, getState().angle);
+    public void setDesiredState(SecondOrderSwerveModuleState desiredState, boolean isOpenLoop) {
+        desiredState =
+            SecondOrderSwerveModuleStates.toSwerveModuleState(desiredState, getState().angle);
         // Custom optimize
         // command, since
         // default WPILib
