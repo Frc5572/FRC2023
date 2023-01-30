@@ -30,9 +30,6 @@ public class RobotContainer {
     // Subsystems
     private LEDs leds = new LEDs(Constants.LEDsConstants.PWMPort, Constants.LEDsConstants.LEDcount);
 
-    /* Subsystems */
-    private LEDs leds = new LEDs(Constants.LEDConstants.PWMPort, Constants.LEDConstants.LEDCount);
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
