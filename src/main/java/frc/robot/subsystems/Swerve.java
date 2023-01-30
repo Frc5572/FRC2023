@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -164,7 +165,7 @@ public class Swerve extends SubsystemBase {
         var res = cam.getLatestResult();
         if (res.hasTargets()) {
             var imageCaptureTime = res.getTimestampSeconds();
-            if (!hasInitialized) {
+            if (!hasInitialized || DriverStation.isDisabled()) {
                 var target = res.getBestTarget();
                 var camToTargetTrans = target.getBestCameraToTarget();
                 var aprilTagPose = FieldConstants.aprilTags.get(target.getFiducialId());
