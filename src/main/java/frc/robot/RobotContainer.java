@@ -28,7 +28,7 @@ public class RobotContainer {
     boolean openLoop;
 
     // Subsystems
-    private LEDs leds = new LEDs(Constants.LEDsConstants.PWMPort, Constants.LEDsConstants.LEDcount);
+    private LEDs leds = new LEDs(Constants.LEDsConstants.LEDcount, Constants.LEDsConstants.PWMPort);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

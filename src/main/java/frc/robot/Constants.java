@@ -14,7 +14,7 @@ public final class Constants {
      */
     public static final class LEDConstants {
         public static final int PWMPort = 0;
-        public static final int LEDCount = 0;
+        public static final int LEDCount = 42;
     }
     /**
      * Motor CAN id's.
