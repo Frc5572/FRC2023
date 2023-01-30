@@ -23,12 +23,11 @@ import frc.robot.Constants;
  * Creates swerve drive and commands for drive.
  */
 public class Swerve extends SubsystemBase {
-    public AHRS gyro = new AHRS(Constants.Swerve.navXID);
-    public SwerveDrivePoseEstimator swerveOdometry;
+    private AHRS gyro = new AHRS(Constants.Swerve.navXID);
+    private SwerveDrivePoseEstimator swerveOdometry;
     private PhotonCamera cam = new PhotonCamera(Constants.CameraConstants.cameraName);
-    public SwerveModule[] swerveMods;
+    private SwerveModule[] swerveMods;
     private double fieldOffset = gyro.getYaw();
-    ChassisSpeeds chassisSpeeds;
     private final Field2d field = new Field2d();
     private boolean hasInitialized = false;
 
@@ -57,7 +56,7 @@ public class Swerve extends SubsystemBase {
         swerveMods[2].setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-45)), false);
         swerveMods[3].setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-135)),
             false);
-        this.setMotorsZero(Constants.Swerve.isOpenLoop, Constants.Swerve.isFieldRelative);
+        this.setMotorsZero();
     }
 
     /**
@@ -83,8 +82,7 @@ public class Swerve extends SubsystemBase {
      * @param isOpenLoop Open or closed loop system
      * @param fieldRelative Whether the movement is relative to the field or absolute
      */
-    public void setMotorsZero(boolean isOpenLoop, boolean fieldRelative) {
-        System.out.println("Setting Zero!!!!!!");
+    public void setMotorsZero() {
         setModuleStates(new ChassisSpeeds(0, 0, 0));
     }
 
@@ -118,7 +116,7 @@ public class Swerve extends SubsystemBase {
      * @return The pose of the robot (x and y are in meters).
      */
     public Pose2d getPose() {
-        return swerveOdometry.getEstimatedPosition();
+        return getPose();
     }
 
     /**
@@ -147,7 +145,6 @@ public class Swerve extends SubsystemBase {
      * Resets the gyro field relative driving offset
      */
     public void resetFieldRelativeOffset() {
-        // gyro.zeroYaw();
         fieldOffset = getYaw().getDegrees();
     }
 
@@ -158,11 +155,6 @@ public class Swerve extends SubsystemBase {
         float yaw = gyro.getYaw();
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(-yaw)
             : Rotation2d.fromDegrees(yaw);
-    }
-
-    public String getStringYaw() {
-        float yaw = gyro.getYaw();
-        return (Constants.Swerve.invertGyro) ? "Yaw: " + (360 - yaw) : "Yaw: " + yaw;
     }
 
     @Override
@@ -223,13 +215,12 @@ public class Swerve extends SubsystemBase {
         }
 
 
-        field.setRobotPose(swerveOdometry.getEstimatedPosition());
+        field.setRobotPose(getPose());
 
         SmartDashboard.putBoolean("Has Initialized", hasInitialized);
-        SmartDashboard.putNumber("Robot X", swerveOdometry.getEstimatedPosition().getX());
-        SmartDashboard.putNumber("Robot Y", swerveOdometry.getEstimatedPosition().getY());
-        SmartDashboard.putNumber("Robot Rotation",
-            swerveOdometry.getEstimatedPosition().getRotation().getDegrees());
+        SmartDashboard.putNumber("Robot X", getPose().getX());
+        SmartDashboard.putNumber("Robot Y", getPose().getY());
+        SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
         SmartDashboard.putNumber("Gyro Yaw", yaw.getDegrees());
         SmartDashboard.putNumber("Field Offset", fieldOffset);
         SmartDashboard.putNumber("Gyro Yaw - Offset", yaw.getDegrees() - fieldOffset);
@@ -263,6 +254,9 @@ public class Swerve extends SubsystemBase {
         return positions;
     }
 
+    /**
+     * Reset April Tag position initialization
+     */
     public void resetInitialized() {
         this.hasInitialized = false;
     }
