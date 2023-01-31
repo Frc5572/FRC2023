@@ -72,7 +72,7 @@ public class Swerve extends SubsystemBase {
         boolean isOpenLoop) {
         ChassisSpeeds chassisSpeeds = fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(),
-                rotation, Rotation2d.fromDegrees(getYaw().getDegrees() - fieldOffset))
+                rotation, getFieldRelativeHeading())
             : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         setModuleStates(chassisSpeeds);
     }
@@ -146,6 +146,10 @@ public class Swerve extends SubsystemBase {
         fieldOffset = getYaw().getDegrees();
     }
 
+    public Rotation2d getFieldRelativeHeading() {
+        return Rotation2d.fromDegrees(getYaw().getDegrees() - fieldOffset);
+    }
+
     /**
      * Gets the rotation degree from swerve modules.
      */
@@ -213,8 +217,8 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
         SmartDashboard.putNumber("Gyro Yaw", yaw.getDegrees());
         SmartDashboard.putNumber("Field Offset", fieldOffset);
-        SmartDashboard.putNumber("Gyro Yaw - Offset", yaw.getDegrees() - fieldOffset);
-        SmartDashboard.putNumber("Gyro roll", gyro.getRoll());
+        SmartDashboard.putNumber("Gyro Yaw - Offset", getFieldRelativeHeading().getDegrees());
+        SmartDashboard.putNumber("Gyro roll", getRoll());
 
 
         for (SwerveModule mod : swerveMods) {

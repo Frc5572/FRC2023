@@ -30,12 +30,17 @@ public class ClimbPlatform extends CommandBase {
 
     @Override
     public void execute() {
-        double speed = -2;
-        if (Math.abs(swerve.getRoll()) > 10) {
+        double speed = -1.5;
+        if (!beenTilted && Math.abs(swerve.getRoll()) > 10) {
             beenTilted = true;
+        }
+        if (beenTilted && Math.abs(swerve.getRoll()) < 10) {
+            speed = -.5;
         }
         SmartDashboard.putBoolean("Been Tilted", beenTilted);
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speed, 0, 0);
+        chassisSpeeds =
+            ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, swerve.getFieldRelativeHeading());
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         swerve.setModuleStates(swerveModuleStates);
@@ -48,6 +53,6 @@ public class ClimbPlatform extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return beenTilted && Math.abs(swerve.getRoll()) < 5;
+        return beenTilted && Math.abs(swerve.getRoll()) < 3;
     }
 }
