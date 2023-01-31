@@ -48,6 +48,6 @@ public class ClimbPlatform extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return beenTilted && Math.abs(swerve.gyro.getRoll()) < 5;
+        return beenTilted && Math.abs(swerve.getRoll()) < 5;
     }
 }
