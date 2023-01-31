@@ -37,7 +37,7 @@ public final class Constants {
         public static final double limelightAngle = 0;
     }
 
-    /*
+    /**
      * Arm PID constants
      */
     public static final class ArmPID {
