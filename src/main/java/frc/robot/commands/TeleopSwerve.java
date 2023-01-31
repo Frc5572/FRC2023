@@ -40,13 +40,13 @@ public class TeleopSwerve extends CommandBase {
         double raxis = -controller.getRightX();
 
         /* Deadbands */
-        yaxis = MathUtil.applyDeadband(yaxis, Constants.stickDeadband);
-        xaxis = MathUtil.applyDeadband(xaxis, Constants.stickDeadband);
-        raxis = MathUtil.applyDeadband(raxis, Constants.stickDeadband);
+        yaxis = MathUtil.applyDeadband(yaxis, Constants.STICK_DEADBAND);
+        xaxis = MathUtil.applyDeadband(xaxis, Constants.STICK_DEADBAND);
+        raxis = MathUtil.applyDeadband(raxis, Constants.STICK_DEADBAND);
 
         Translation2d translation =
-            new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-        double rotation = raxis * Constants.Swerve.maxAngularVelocity;
+            new Translation2d(yaxis, xaxis).times(Constants.Swerve.MAX_SPEED);
+        double rotation = raxis * Constants.Swerve.MAX_ANGULAR_VELOCITY;
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
 }
