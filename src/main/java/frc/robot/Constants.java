@@ -25,6 +25,7 @@ public final class Constants {
         public static final int PWMPort = 0;
         public static final int LEDCount = 42;
     }
+
     /**
      * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller
      */
@@ -58,10 +59,12 @@ public final class Constants {
         public static final String CAMERA_NAME = "pv2";
         public static final double LARGEST_DISTANCE = 0.1;
     }
+
     public static final class LEDsConstants {
         public static final int PWM_PORT = 9;
         public static final int LED_COUNT = 42;
     }
+
     /**
      * Swerve ID's
      */
