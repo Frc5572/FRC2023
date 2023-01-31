@@ -24,6 +24,8 @@ public final class Constants {
     public static final class Motors {
         public static final int armID = 0;
         public static final int armID2 = 1;
+    }
+
     public static class SwerveTransformPID {
         public static final double pidXkP = 1.5;
         public static final double pidXkI = 0.0;
@@ -196,23 +198,24 @@ public final class Constants {
      * Arm PID constants
      */
     public static final class ArmPID {
-        public static final double kP = 0;
-        public static final double kI = 0;
-        public static final double kD = 0;
-        public static final double kF = 0;
-        public static final double kGVolts = 0;
-        public static final double kSVolts = 0;
-        public static final double kMaxVelocityRadPerSecond = 0;
-        public static final double kMaxAccelerationRadPerSecSquared = 0;
-        public static final double kVVoltSecondPerRad = 0;
-        public static final double kAVoltSecondSquaredPerRad = 0;
-        public static final double kEncoderDistancePerPulse = 0;
+        public static final double KP = -(3.0 / 360.0);
+        public static final double KI = 0.0;
+        public static final double KD = 0.01 / 360.0;
+        public static final double KF = 0.0;
+        public static final double K_GVOLTS = 0.0;
+        public static final double K_SVOLTS = 0.0;
+        public static final double K_MAX_VELOCITY_RAD_PER_SECOND = 0.0;
+        public static final double K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED = 0.0;
+        public static final double K_WOLT_SECOND_PER_RAD = 0.0;
+        public static final double K_AVOLT_SECOND_SUARED_PER_RAD = 0.0;
+        public static final double K_ENCODER_DISTANCE_PER_PULSE = 0.0;
     }
     public static final class ArmConstants {
-        public static final int channelA = 0;
-        public static final int channelB = 1;
-        public static final int index = 2;
-        public static final int homePosition = 0;
-        public static final int secondPosition = 180;
+        public static final int CHANNEL_A = 0;
+        public static final int CHANNEL_B = 1;
+        public static final int INDEX = 2;
+        public static final int HOME_POSITION = 0;
+        public static final int SECOND_POSITION = 180;
     }
+
 }
