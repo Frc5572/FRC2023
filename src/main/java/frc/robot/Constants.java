@@ -60,6 +60,9 @@ public final class Constants {
         public static final double LARGEST_DISTANCE = 0.1;
     }
 
+    /**
+     * LEDs subsystem constants.
+     */
     public static final class LEDsConstants {
         public static final int PWM_PORT = 9;
         public static final int LED_COUNT = 42;
