@@ -6,54 +6,53 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Arm extends ProfiledPIDSubsystem {
+public class Arm extends SubsystemBase {
     public double armAngle;
     private double feedforward;
 
     private final CANSparkMax armMotor =
         new CANSparkMax(Constants.Motors.armID, MotorType.kBrushless);
+    private final CANSparkMax armMotor2 =
+        new CANSparkMax(Constants.Motors.armID2, MotorType.kBrushless);
     private final ArmFeedforward m_feedforward =
         new ArmFeedforward(Constants.ArmPID.kSVolts, Constants.ArmPID.kGVolts,
             Constants.ArmPID.kVVoltSecondPerRad, Constants.ArmPID.kAVoltSecondSquaredPerRad);
     private DutyCycleEncoder ourAbsoluteEncoder;
+    private final ProfiledPIDController pid_controller =
+        new ProfiledPIDController(Constants.ArmPID.kP, Constants.ArmPID.kI, Constants.ArmPID.kD,
+            new TrapezoidProfile.Constraints(Constants.ArmPID.kMaxVelocityRadPerSecond,
+                Constants.ArmPID.kMaxAccelerationRadPerSecSquared),
+            Constants.ArmPID.kF);
 
     public Arm() {
-        super(
-            new ProfiledPIDController(Constants.ArmPID.kP, Constants.ArmPID.kI, Constants.ArmPID.kD,
-                new TrapezoidProfile.Constraints(Constants.ArmPID.kMaxVelocityRadPerSecond,
-                    Constants.ArmPID.kMaxAccelerationRadPerSecSquared),
-                Constants.ArmPID.kF));
         ourAbsoluteEncoder = new DutyCycleEncoder(Constants.ArmConstants.channelA);
-    }
-
-    public void useOutput(double output, TrapezoidProfile.State trapState) {
-        feedforward = m_feedforward.calculate(trapState.position, trapState.velocity);
-        armMotor.setVoltage(output + feedforward);
-    }
-
-    @Override
-    // this class is supposed to return a double
-    public double getMeasurement() { //
-
-        return 0;
     }
 
     /**
      * gets the angle measurement of the arm pivot
      */
-    public void getAngleMeasurement() {// TODO Auto-generated method stub{
-        armAngle = ourAbsoluteEncoder.getAbsolutePosition();
+    public double getAngleMeasurement() {// TODO Auto-generated method stub{
+        armAngle = ourAbsoluteEncoder.getAbsolutePosition() * 360;
+        return armAngle;
     }
 
-    public void ArmAtHome(double output, TrapezoidProfile.State trapState) {
+    public void armAtHome(TrapezoidProfile.State trapState) {
 
-        if (armAngle != 0) {
-            armMotor.setVoltage(output + feedforward);
+        if (armAngle != Constants.ArmConstants.homePosition) {
+            armMotor.setVoltage(feedforward);
         }
 
+    }
+
+    public void Arm2ndPosition() {
+        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.secondPosition) < 5)) {
+            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.secondPosition);
+            armMotor.set(v);
+            armMotor2.set(v);
+        }
     }
 
 

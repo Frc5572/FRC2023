@@ -19,13 +19,14 @@ public class RobotContainer {
     private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
     private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
 
+
+
     // Initialize AutoChooser Sendable
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     // Field Relative and openLoop Variables
     boolean fieldRelative;
     boolean openLoop;
-
 
     /* Subsystems */
 
@@ -37,6 +38,7 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         // Configure the button bindings
         configureButtonBindings();
+
     }
 
     /**
@@ -45,7 +47,11 @@ public class RobotContainer {
      * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+        driver.a().whileTrue(new InstantCommand(
+            () -> SmartDashboard.putNumber("Arm Angle: ", armObject.getAngleMeasurement())));
+        driver.b().whileTrue(new InstantCommand())
+    }
 
     /**
      * Gets the user's selected autonomous command.

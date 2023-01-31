@@ -14,6 +14,7 @@ public final class Constants {
      */
     public static final class Motors {
         public static final int armID = 0;
+        public static final int armID2 = 1;
     }
 
     /**
@@ -51,5 +52,7 @@ public final class Constants {
         public static final int channelA = 0;
         public static final int channelB = 1;
         public static final int index = 2;
+        public static final int homePosition = 0;
+        public static final int secondPosition = 180;
     }
 }
