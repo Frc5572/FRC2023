@@ -155,6 +155,13 @@ public class Swerve extends SubsystemBase {
             : Rotation2d.fromDegrees(yaw);
     }
 
+    /**
+     * Gets the roll (pitch) degree from swerve modules.
+     */
+    public float getRoll() {
+        return gyro.getRoll();
+    }
+
     @Override
     public void periodic() {
         Rotation2d yaw = getYaw();

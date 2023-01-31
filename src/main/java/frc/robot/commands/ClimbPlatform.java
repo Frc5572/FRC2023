@@ -31,13 +31,13 @@ public class ClimbPlatform extends CommandBase {
     @Override
     public void execute() {
         double speed = -2;
-        if (Math.abs(swerve.gyro.getRoll()) > 10) {
+        if (Math.abs(swerve.getRoll()) > 10) {
             beenTilted = true;
         }
         SmartDashboard.putBoolean("Been Tilted", beenTilted);
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speed, 0, 0);
         SwerveModuleState[] swerveModuleStates =
-            Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
+            Constants.Swerve.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         swerve.setModuleStates(swerveModuleStates);
     }
 
