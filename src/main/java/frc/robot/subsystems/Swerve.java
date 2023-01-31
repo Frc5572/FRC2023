@@ -114,7 +114,7 @@ public class Swerve extends SubsystemBase {
      * @return The pose of the robot (x and y are in meters).
      */
     public Pose2d getPose() {
-        return getPose();
+        return swerveOdometry.getEstimatedPosition();
     }
 
     /**
@@ -179,7 +179,6 @@ public class Swerve extends SubsystemBase {
             }
             var pose2dList = new ArrayList<Pose2d>();
             var target = res.getBestTarget();
-            // for (var Target : res.targets) {
 
             var camToTargetTrans = target.getBestCameraToTarget();
             var aprilTagPose = FieldConstants.aprilTags.get(target.getFiducialId());
@@ -188,26 +187,12 @@ public class Swerve extends SubsystemBase {
                 var robotPose =
                     camPose.transformBy(Constants.CameraConstants.kCameraToRobot).toPose2d();
                 pose2dList.add(robotPose);
-                // swerveOdometry.resetPosition(getYaw(), getPositions(), robotPose);
                 if (robotPose.minus(getPose()).getTranslation()
                     .getNorm() < Constants.CameraConstants.largestDistance) {
                     swerveOdometry.addVisionMeasurement(robotPose, imageCaptureTime,
                         VecBuilder.fill(Constants.SwerveTransformPID.stdDevMod / target.getArea(),
                             Constants.SwerveTransformPID.stdDevMod / target.getArea(),
                             Constants.SwerveTransformPID.stdDevMod / target.getArea()));
-                }
-            }
-            // }
-
-
-            outer: for (int i = 0; i < pose2dList.size(); i++) {
-                for (int j = i + 1; j < pose2dList.size(); j++) {
-                    var diff = pose2dList.get(i).minus(pose2dList.get(j));
-                    if (diff.getTranslation()
-                        .getNorm() < Constants.CameraConstants.largestDistance) {
-                        swerveOdometry.resetPosition(getYaw(), getPositions(), pose2dList.get(i));
-                        break outer;
-                    }
                 }
             }
         }

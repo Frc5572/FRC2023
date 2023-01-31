@@ -53,7 +53,7 @@ public class RobotContainer {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.x().whileTrue(new TestTransform(s_Swerve,
-            new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 7));
+            new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
         driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
     }
 
