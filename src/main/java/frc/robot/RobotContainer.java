@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.WristAlignment;
 import frc.robot.commands.WristMovement;
+import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Wrist;
 
 /**
@@ -19,8 +21,10 @@ import frc.robot.subsystems.Wrist;
  */
 public class RobotContainer {
     /* Controllers */
-    private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
-    private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
+
+
+    private final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_ID);
+    private final CommandXboxController operator = new CommandXboxController(Constants.OPERATOR_ID);
 
     // Initialize AutoChooser Sendable
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -32,11 +36,15 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Wrist wrist = new Wrist();
+    private final Swerve s_Swerve = new Swerve();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
+            Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
+        // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         // Configure the button bindings
