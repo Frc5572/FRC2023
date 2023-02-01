@@ -3,11 +3,19 @@ package frc.robot.commands.leds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDs;
 
+/**
+ * Command to create a sliding rainbow pattern
+ */
 public class RainbowLEDs extends CommandBase {
     private LEDs leds;
     private int m_rainbowFirstPixelHue = 0;
     private int ledLength;
 
+    /**
+     * Command to create a sliding rainbow pattern
+     *
+     * @param leds LED subsystem
+     */
     public RainbowLEDs(LEDs leds) {
         this.leds = leds;
         ledLength = leds.getLength();;
@@ -25,6 +33,11 @@ public class RainbowLEDs extends CommandBase {
         // check bounds
         m_rainbowFirstPixelHue %= 180;
         leds.setData();
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }
 

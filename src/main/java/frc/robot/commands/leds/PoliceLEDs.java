@@ -4,12 +4,20 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDs;
 
+/**
+ * Command to flash the LED strip between red and blue like police lights
+ */
 public class PoliceLEDs extends CommandBase {
     private LEDs leds;
     private int policeDelay = 0;
     private int ledLength;
     private int ledLengthHalf;
 
+    /**
+     * Command to flash the LED strip between red and blue like police lights
+     *
+     * @param leds LED subsystem
+     */
     public PoliceLEDs(LEDs leds) {
         this.leds = leds;
         ledLength = leds.getLength();
@@ -36,6 +44,11 @@ public class PoliceLEDs extends CommandBase {
         leds.setData();
         policeDelay += 1;
         policeDelay %= 21;
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }
 

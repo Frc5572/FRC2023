@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDs;
 
+/**
+ * Command to flash the LED strip between 2 colors
+ */
 public class FlashingLEDColor extends CommandBase {
     private LEDs leds;
     private int ledLength;
@@ -11,6 +14,13 @@ public class FlashingLEDColor extends CommandBase {
     private Color color;
     private Color altColor = Color.kBlack;
 
+    /**
+     * Command to flash the LED strip between 2 colors
+     *
+     * @param leds LED Subsystem
+     * @param color The first color
+     * @param altColor The second color
+     */
     public FlashingLEDColor(LEDs leds, Color color, Color altColor) {
         this.leds = leds;
         this.color = color;
@@ -18,6 +28,12 @@ public class FlashingLEDColor extends CommandBase {
         ledLength = leds.getLength();
     }
 
+    /**
+     * Command to flash the LED strip between a color and black
+     *
+     * @param leds LED Subsystem
+     * @param color The color
+     */
     public FlashingLEDColor(LEDs leds, Color color) {
         this.leds = leds;
         this.color = color;
@@ -38,6 +54,11 @@ public class FlashingLEDColor extends CommandBase {
         leds.setData();
         flashingDelay++;
         flashingDelay %= 20;
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }
 

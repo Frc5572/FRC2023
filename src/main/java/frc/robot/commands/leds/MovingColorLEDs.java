@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDs;
 
+/**
+ * Command to move LEDs back and forth like a Cylon eye
+ */
 public class MovingColorLEDs extends CommandBase {
     private final LEDs leds;
     private int ledLength;
@@ -14,6 +17,14 @@ public class MovingColorLEDs extends CommandBase {
     private int movingLED = 0;
     private boolean movingDirection = true;
 
+    /**
+     * Command to move LEDs back and forth like a Cylon eye
+     *
+     * @param leds LED subsystem
+     * @param color Color to which to set the LEDs
+     * @param count The number of LEDs in the moving dot. Best is an odd number.
+     * @param inverted Whether to invert the Color that moves.
+     */
     public MovingColorLEDs(LEDs leds, Color color, int count, boolean inverted) {
         this.leds = leds;
         this.color = color;

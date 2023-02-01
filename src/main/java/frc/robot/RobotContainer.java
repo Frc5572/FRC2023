@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
 import frc.robot.commands.leds.FlashingLEDColor;
@@ -74,16 +75,16 @@ public class RobotContainer {
         driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
         driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
         driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
-        driver.start().onTrue(new InstantCommand(() -> this.ledPattern = 0));
-        driver.povDown().onTrue(new InstantCommand(() -> this.ledPattern = 1));
-        driver.povRight().onTrue(new InstantCommand(() -> this.ledPattern = 2));
-        driver.povLeft().onTrue(new InstantCommand(() -> this.ledPattern = 3));
+        driver.start().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 0));
+        driver.povDown().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 1));
+        driver.povRight().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 2));
+        driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
 
         /* Operator Buttons */
-        operator.leftTrigger().whileTrue(
-            new RepeatCommand(new InstantCommand(() -> leds.setColor(Color.kYellow), leds)));
-        operator.rightTrigger().whileTrue(
-            new RepeatCommand(new InstantCommand(() -> leds.setColor(Color.kPurple), leds)));
+        operator.leftTrigger().whileTrue(new RepeatCommand(
+            new DisabledInstantCommand(() -> leds.setColor(Color.kYellow), leds)));
+        operator.rightTrigger().whileTrue(new RepeatCommand(
+            new DisabledInstantCommand(() -> leds.setColor(Color.kPurple), leds)));
 
 
         /* Triggers */
