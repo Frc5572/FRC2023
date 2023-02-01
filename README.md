@@ -1,7 +1,11 @@
-# Java-Template
-[![CI](https://github.com/Frc5572/Java-Template/actions/workflows/main.yml/badge.svg)](https://github.com/Frc5572/Java-Template/actions/workflows/main.yml)
+# **Code for 2023 Robot** 
 
+## **Controls:** 
 
-Template repo for Java template
+### Driver: 
 
-Good examples can be found https://github.com/wpilibsuite/allwpilib/tree/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples
+*Left Joystick:*  Swerve Translation
+
+*Right Joystick:* Swerve Rotation
+
+### Operator: 
