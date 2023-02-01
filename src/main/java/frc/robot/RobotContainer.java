@@ -45,7 +45,7 @@ public class RobotContainer {
     int ledPattern = 0;
 
     // Subsystems
-    private LEDs leds = new LEDs(Constants.LEDsConstants.LEDcount, Constants.LEDsConstants.PWMPort);
+    private LEDs leds = new LEDs(Constants.LEDConstants.LEDCount, Constants.LEDConstants.PWMPort);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
 

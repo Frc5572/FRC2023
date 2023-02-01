@@ -49,6 +49,13 @@ public class LEDs extends SubsystemBase {
     }
 
     /**
+     * Sets the LED output data.
+     */
+    public void setData() {
+        addressableLED.setData(controLedBuffer);
+    }
+
+    /**
      * Set individual LED color via RGB
      *
      * @param index the LED index to set
@@ -58,23 +65,6 @@ public class LEDs extends SubsystemBase {
      */
     public void setRGB(int index, int r, int g, int b) {
         controLedBuffer.setRGB(index, r, g, b);
-    }
-
-    /**
-     * Set individual LED color via Color
-     *
-     * @param index the LED index to set
-     * @param color The color of the LED
-     */
-    public void setColor(int index, Color color) {
-        controLedBuffer.setLED(index, color);
-    }
-
-    /**
-     * Sets the LED output data.
-     */
-    public void setData() {
-        addressableLED.setData(controLedBuffer);
     }
 
     /**
@@ -89,6 +79,16 @@ public class LEDs extends SubsystemBase {
             setRGB(i, r, g, b);
         }
         setData();
+    }
+
+    /**
+     * Set individual LED color via Color
+     *
+     * @param index the LED index to set
+     * @param color The color of the LED
+     */
+    public void setColor(int index, Color color) {
+        controLedBuffer.setLED(index, color);
     }
 
     /**
