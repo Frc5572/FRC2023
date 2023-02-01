@@ -11,13 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LEDs extends SubsystemBase {
     private AddressableLEDBuffer controLedBuffer;
     private AddressableLED addressableLED;
-    private int movingColorDelay = 0;
-    private int movingLED = 0;
-    private boolean movingDirection = true;
-    private int flashingDelay = 0;
-    private int m_rainbowFirstPixelHue = 0;
-    private int policeDelay = 0;
-    public int pattern = 0;
 
     /**
      * constructs a LED Subsystem
@@ -35,10 +28,25 @@ public class LEDs extends SubsystemBase {
         addressableLED.start();
     }
 
-    /**
-     * Set the LED strop to a moving rainbow pattern
-     */
+    public int getLength() {
+        return controLedBuffer.getLength();
+    }
 
+    public void setHSV(int index, int h, int s, int v) {
+        controLedBuffer.setHSV(index, h, s, v);
+    }
+
+    public void setRGB(int index, int r, int g, int b) {
+        controLedBuffer.setRGB(index, r, g, b);
+    }
+
+    public void setColor(int index, Color color) {
+        controLedBuffer.setLED(index, color);
+    }
+
+    public void setData() {
+        addressableLED.setData(controLedBuffer);
+    }
 
     /**
      * Sets RGB Color
@@ -48,11 +56,11 @@ public class LEDs extends SubsystemBase {
      * @param g - [0 - 255]
      * @param b - [0 - 255]
      */
-    public void setRGB(int index, int r, int g, int b) {
-        for (var i = 0; i < controLedBuffer.getLength(); i++) {
-            controLedBuffer.setRGB(index, r, g, b);
+    public void setRGB(int r, int g, int b) {
+        for (var i = 0; i < getLength(); i++) {
+            setRGB(i, r, g, b);
         }
-        addressableLED.setData(controLedBuffer);
+        setData();
     }
 
     /**
@@ -61,93 +69,9 @@ public class LEDs extends SubsystemBase {
      * @param color color set for the LEDs
      */
     public void setColor(Color color) {
-        for (var i = 0; i < controLedBuffer.getLength(); i++) {
-            controLedBuffer.setLED(i, color);
+        for (var i = 0; i < getLength(); i++) {
+            setColor(i, color);
         }
-    }
-
-    /**
-     * sets the LEDs to change to one color from another
-     *
-     * @param color color sets for the LEDs
-     * @param count the count number of LEDs to be moved
-     * @param inverted whether to invert the color choices
-     */
-    public void movingColor(Color color, int count, boolean inverted) {
-        Color theColor = inverted ? Color.kBlack : color;
-        Color secondColor = inverted ? color : Color.kBlack;
-        if (movingColorDelay == 0) {
-            for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                if (Math.abs(i - movingLED) < count) {
-                    controLedBuffer.setLED(i, theColor);
-                } else {
-                    controLedBuffer.setLED(i, secondColor);
-                }
-            }
-            if (movingDirection) {
-                movingLED++;
-            } else {
-                movingLED--;
-            }
-            if (movingLED >= controLedBuffer.getLength() - 1 || movingLED <= 0) {
-                movingDirection = !movingDirection;
-            }
-            addressableLED.setData(controLedBuffer);
-        }
-        movingColorDelay += 1;
-        movingColorDelay %= 2;
-    }
-
-    /**
-     * flashes on and off the color white
-     */
-    public void flashingLED(Color color) {
-        if (flashingDelay < 10) {
-            for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                controLedBuffer.setLED(i, color);
-            }
-        } else {
-            for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                controLedBuffer.setLED(i, Color.kBlack);
-            }
-        }
-        addressableLED.setData(controLedBuffer);
-        flashingDelay++;
-        flashingDelay %= 20;
-    }
-
-    public void rainbow() {
-        for (var i = 1; i < controLedBuffer.getLength(); i++) {
-            // calculate the hue
-            final var hue =
-                (m_rainbowFirstPixelHue + (i * 180 / controLedBuffer.getLength())) % 180;
-            controLedBuffer.setHSV(i, hue, 255, 128);
-        }
-        // increase by to make the rainbow "move"
-        m_rainbowFirstPixelHue += 3;
-        // check bounds
-        m_rainbowFirstPixelHue %= 180;
-        addressableLED.setData(controLedBuffer);
-    }
-
-    public void policeSirens() {
-        if (policeDelay < 10) {
-            for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                controLedBuffer.setLED(i, Color.kRed);
-            }
-            for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                controLedBuffer.setLED(i, Color.kBlack);
-            }
-        } else {
-            for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                controLedBuffer.setLED(i, Color.kBlack);
-            }
-            for (var i = 0; i < controLedBuffer.getLength(); i++) {
-                controLedBuffer.setLED(i, Color.kBlue);
-            }
-        }
-        addressableLED.setData(controLedBuffer);
-        policeDelay += 1;
-        policeDelay %= 21;
+        setData();
     }
 }

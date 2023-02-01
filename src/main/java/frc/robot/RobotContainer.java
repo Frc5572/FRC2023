@@ -11,9 +11,16 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.FlashingLEDColor;
+import frc.robot.commands.MovingColorLEDs;
+import frc.robot.commands.PoliceLEDs;
+import frc.robot.commands.RainbowLEDs;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
 import frc.robot.subsystems.LEDs;
@@ -35,6 +42,7 @@ public class RobotContainer {
     // Field Relative and openLoop Variables
     boolean fieldRelative;
     boolean openLoop;
+    int ledPattern = 0;
 
     // Subsystems
     private LEDs leds = new LEDs(Constants.LEDsConstants.LEDcount, Constants.LEDsConstants.PWMPort);
@@ -45,6 +53,7 @@ public class RobotContainer {
     public RobotContainer() {
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
+        leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 3, false));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         // Configure the button bindings
@@ -63,6 +72,25 @@ public class RobotContainer {
         driver.x().whileTrue(new TestTransform(s_Swerve,
             new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
         driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
+        driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
+        driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
+        driver.start().onTrue(new InstantCommand(() -> this.ledPattern = 0));
+        driver.povDown().onTrue(new InstantCommand(() -> this.ledPattern = 1));
+        driver.povRight().onTrue(new InstantCommand(() -> this.ledPattern = 2));
+        driver.povLeft().onTrue(new InstantCommand(() -> this.ledPattern = 3));
+
+        /* Operator Buttons */
+        operator.leftTrigger().whileTrue(
+            new RepeatCommand(new InstantCommand(() -> leds.setColor(Color.kYellow), leds)));
+        operator.rightTrigger().whileTrue(
+            new RepeatCommand(new InstantCommand(() -> leds.setColor(Color.kPurple), leds)));
+
+
+        /* Triggers */
+        new Trigger(() -> this.ledPattern == 1).whileTrue(new RainbowLEDs(leds));
+        new Trigger(() -> this.ledPattern == 2).whileTrue(new PoliceLEDs(leds));
+        new Trigger(() -> this.ledPattern == 3)
+            .whileTrue(new FlashingLEDColor(leds, Color.kGhostWhite, Color.kGreen));
     }
 
     /**
