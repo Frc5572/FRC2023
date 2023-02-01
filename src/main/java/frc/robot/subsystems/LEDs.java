@@ -18,7 +18,6 @@ public class LEDs extends SubsystemBase {
      * @param length length of the addressable LEDS
      * @param port port ID for PWM
      */
-
     public LEDs(int length, int port) {
         controLedBuffer = new AddressableLEDBuffer(length);
         addressableLED = new AddressableLED(port);
@@ -28,30 +27,59 @@ public class LEDs extends SubsystemBase {
         addressableLED.start();
     }
 
+    /**
+     * Get LED strip length
+     *
+     * @return number of LEDs
+     */
     public int getLength() {
         return controLedBuffer.getLength();
     }
 
+    /**
+     * Set individual LED color via HSV
+     *
+     * @param index the LED index to set
+     * @param h the h value [0-180)
+     * @param s the s value [0-255]
+     * @param v the v value [0-255]
+     */
     public void setHSV(int index, int h, int s, int v) {
         controLedBuffer.setHSV(index, h, s, v);
     }
 
+    /**
+     * Set individual LED color via RGB
+     *
+     * @param index the LED index to set
+     * @param r the r value [0-255]
+     * @param g the g value [0-255]
+     * @param b the b value [0-255]
+     */
     public void setRGB(int index, int r, int g, int b) {
         controLedBuffer.setRGB(index, r, g, b);
     }
 
+    /**
+     * Set individual LED color via Color
+     *
+     * @param index the LED index to set
+     * @param color The color of the LED
+     */
     public void setColor(int index, Color color) {
         controLedBuffer.setLED(index, color);
     }
 
+    /**
+     * Sets the LED output data.
+     */
     public void setData() {
         addressableLED.setData(controLedBuffer);
     }
 
     /**
-     * Sets RGB Color
+     * Sets RGB Color of the entire LED strip
      *
-     * @param index index of the LEDs
      * @param r - [0 - 255]
      * @param g - [0 - 255]
      * @param b - [0 - 255]
@@ -64,7 +92,7 @@ public class LEDs extends SubsystemBase {
     }
 
     /**
-     * sets color of LED string to moving
+     * Sets the Color of the entire LED strip
      *
      * @param color color set for the LEDs
      */

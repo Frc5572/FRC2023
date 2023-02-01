@@ -17,12 +17,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.FlashingLEDColor;
-import frc.robot.commands.MovingColorLEDs;
-import frc.robot.commands.PoliceLEDs;
-import frc.robot.commands.RainbowLEDs;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
+import frc.robot.commands.leds.FlashingLEDColor;
+import frc.robot.commands.leds.MovingColorLEDs;
+import frc.robot.commands.leds.PoliceLEDs;
+import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
 

@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
