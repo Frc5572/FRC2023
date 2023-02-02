@@ -186,8 +186,6 @@ public final class Constants {
 
     }
 
-
-
     /**
      * Autonomous constants for swerve bot.
      */
@@ -197,8 +195,9 @@ public final class Constants {
         public static final double TARGET_HEIGHT = 0;
         public static final double LIME_LIGHT_ANGLE = 0;
     }
+
     /*
-     * Arm PID constants
+     * Arm PID constants.
      */
     public static final class ArmPID {
         public static final double KP = -(3.0 / 360.0);
@@ -213,6 +212,10 @@ public final class Constants {
         public static final double K_AVOLT_SECOND_SUARED_PER_RAD = 0.0;
         public static final double K_ENCODER_DISTANCE_PER_PULSE = 0.0;
     }
+
+    /**
+     * Constants that are necessary for the arm.
+     */
     public static final class ArmConstants {
         public static final int ARM_ID = 0;
         public static final int ARM_ID_2 = 0;

@@ -3,11 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
-public class armMoving extends CommandBase {
+/**
+ * This command will move the arm to a requested angle.
+ */
+public class ArmMoving extends CommandBase {
     private Arm arm;
     private double angle;
 
-    public armMoving(Arm arm, double goal) {
+    public ArmMoving(Arm arm, double goal) {
         this.arm = arm;
         this.angle = goal;
     }

@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/**
+ * Creates the subsystem for the arm.
+ */
 public class Arm extends SubsystemBase {
     private final CANSparkMax armMotor =
         new CANSparkMax(Constants.ArmConstants.ARM_ID, MotorType.kBrushless);
@@ -16,9 +19,7 @@ public class Arm extends SubsystemBase {
         new CANSparkMax(Constants.ArmConstants.ARM_ID_2, MotorType.kBrushless);
     private final ArmFeedforward m_feedforward =
         new ArmFeedforward(Constants.ArmPID.K_SVOLTS, Constants.ArmPID.K_GVOLTS,
-            Constants.ArmPID.K_WOLT_SECOND_PER_RAD, Constants.ArmPID.K_AVOLT_SECOND_SUARED_PER_RAD); // not
-                                                                                                     // used
-                                                                                                     // yet
+            Constants.ArmPID.K_WOLT_SECOND_PER_RAD, Constants.ArmPID.K_AVOLT_SECOND_SUARED_PER_RAD);
     private DutyCycleEncoder ourAbsoluteEncoder =
         new DutyCycleEncoder(Constants.ArmConstants.ENCODER_CHANNEL);
     private final ProfiledPIDController pid_controller =
@@ -30,17 +31,25 @@ public class Arm extends SubsystemBase {
     public Arm() {}
 
     /**
-     * gets the angle measurement of the arm pivot
+     * Gets the angle measurement of the arm pivot.
      */
     public double getAngleMeasurement() {
         double armAngle = ourAbsoluteEncoder.getAbsolutePosition() * 360;
         return armAngle;
     }
 
+    /**
+     * Manually moves the arm at a certain speed. This will not stop automatically at an angle.
+     */
     public void movingArmManually() {
         armMotor.set(0.1);
     }
 
+    /**
+     * Moves the arm to specified angle and stops when done.
+     * 
+     * @param angle requested angle.
+     */
     public void armToAngle(double angle) {
         if (!(Math.abs(getAngleMeasurement() - angle) < 5)) {
             double v = pid_controller.calculate(getAngleMeasurement(), angle);
@@ -49,6 +58,9 @@ public class Arm extends SubsystemBase {
         }
     }
 
+    /**
+     * Stops the motors from moving.
+     */
     public void motorsStop() {
         armMotor.set(0);
         armMotor2.set(0);
