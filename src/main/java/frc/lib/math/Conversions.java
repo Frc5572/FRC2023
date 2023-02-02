@@ -90,4 +90,40 @@ public class Conversions {
         return goal % 360;
     }
 
+    /*
+     * Apply quadratic curve to swerve inputs
+     */
+    public static double applySwerveCurve(double input) {
+        // For 0.2 Joystick Deadband:
+        // f(x)=0.625*x^2+0.5*x+-0.125
+        // For 0.1 Joystick Deadband:
+        // f(x)=0.778*x^2+0.256*x+-0.033
+
+        boolean negative;
+
+        if (input < 0) {
+            negative = true;
+        } else {
+            negative = false;
+        }
+
+        if (Math.abs(input) >= 0.1 && Math.abs(input) <= 1.0) {
+            double processedInput =
+                (0.778 * Math.pow(Math.abs(input), 2) + 0.256 * Math.abs(input) - 0.033);
+            if (processedInput > 1.0) {
+                processedInput = 1.0;
+            }
+            if (negative == true) {
+                processedInput = -processedInput;
+            }
+            return processedInput;
+        } else if (Math.abs(input) < 0.1) {
+            return 0.0;
+        } else if (Math.abs(input) > 1.0) {
+            return 1.0;
+        } else {
+            return 0.0;
+        }
+    }
+
 }

@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
@@ -41,7 +42,9 @@ public class TeleopSwerve extends CommandBase {
 
         /* Deadbands */
         yaxis = MathUtil.applyDeadband(yaxis, Constants.STICK_DEADBAND);
+        yaxis = Conversions.applySwerveCurve(yaxis);
         xaxis = MathUtil.applyDeadband(xaxis, Constants.STICK_DEADBAND);
+        yaxis = Conversions.applySwerveCurve(xaxis);
         raxis = MathUtil.applyDeadband(raxis, Constants.STICK_DEADBAND);
 
         Translation2d translation =
