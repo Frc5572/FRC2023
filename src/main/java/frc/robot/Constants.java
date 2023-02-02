@@ -179,6 +179,7 @@ public final class Constants {
 
 
     }
+
     /**
      * Motor CAN id's.
      */
@@ -192,6 +193,7 @@ public final class Constants {
 
         // ...
     }
+
     /**
      * Pneumatics CAN id constants.
      */
@@ -233,6 +235,8 @@ public final class Constants {
 
 
     }
+
+
     public static final class VisionConstants {
         public static final double DEAD_POCKET = 0.05;
         public static final double LIME_LIGHT_HEIGHT = 0;
