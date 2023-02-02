@@ -10,11 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.math.Conversions;
 import frc.lib.util.ctre.CTREModuleState;
-<<<<<<< HEAD:src/main/java/frc/robot/SwerveModule.java
-=======
 import frc.robot.Constants;
 import frc.robot.Robot;
->>>>>>> origin/main:src/main/java/frc/lib/util/swerve/SwerveModule.java
 
 /**
  * Base Swerve Module Class. Creates an instance of the swerve module
