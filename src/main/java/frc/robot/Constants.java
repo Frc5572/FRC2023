@@ -230,8 +230,12 @@ public final class Constants {
         public static final int CHANNEL_A = 0;
         public static final int CHANNEL_B = 1;
         public static final int INDEX = 2;
-        public static final int HOME_POSITION = 0;
-        public static final int SECOND_POSITION = 180;
+        // this angle positions are not definite, just using them for testing
+        public static final int HOME_POSITION = 226;
+        public static final int SECOND_POSITION = 200;
+        public static final int THIRD_POSITION = 180;
+        public static final int FOURTH_POSITION = 160;
+        public static final int FIFTH_POSITION = 130;
     }
 
 }

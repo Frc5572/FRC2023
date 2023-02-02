@@ -39,10 +39,15 @@ public class Arm extends SubsystemBase {
         return armAngle;
     }
 
-    public void armAtHome(TrapezoidProfile.State trapState) {
+    public void movingArmManually() {
+        armMotor.set(0.1);
+    }
 
-        if (armAngle != Constants.ArmConstants.HOME_POSITION) {
-            armMotor.setVoltage(feedforward);
+    public void armAtHome() {
+        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.HOME_POSITION) < 5)) {
+            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.HOME_POSITION);
+            armMotor.set(v);
+            armMotor2.set(v);
         }
 
     }
@@ -50,6 +55,30 @@ public class Arm extends SubsystemBase {
     public void Arm2ndPosition() {
         if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.SECOND_POSITION) < 5)) {
             double v = pid_controller.calculate(armAngle, Constants.ArmConstants.SECOND_POSITION);
+            armMotor.set(v);
+            armMotor2.set(v);
+        }
+    }
+
+    public void ArmThirdPosition() {
+        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.THIRD_POSITION) < 5)) {
+            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.THIRD_POSITION);
+            armMotor.set(v);
+            armMotor2.set(v);
+        }
+    }
+
+    public void ArmFourthPosition() {
+        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.FOURTH_POSITION) < 5)) {
+            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.FOURTH_POSITION);
+            armMotor.set(v);
+            armMotor2.set(v);
+        }
+    }
+
+    public void ArmFifthPosition() {
+        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.FIFTH_POSITION) < 5)) {
+            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.FIFTH_POSITION);
             armMotor.set(v);
             armMotor2.set(v);
         }
