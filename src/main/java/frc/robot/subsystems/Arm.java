@@ -34,7 +34,7 @@ public class Arm extends SubsystemBase {
     /**
      * gets the angle measurement of the arm pivot
      */
-    public double getAngleMeasurement() {// TODO Auto-generated method stub{
+    public double getAngleMeasurement() {
         armAngle = ourAbsoluteEncoder.getAbsolutePosition() * 360;
         return armAngle;
     }
@@ -43,47 +43,16 @@ public class Arm extends SubsystemBase {
         armMotor.set(0.1);
     }
 
-    public void armAtHome() {
-        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.HOME_POSITION) < 5)) {
-            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.HOME_POSITION);
-            armMotor.set(v);
-            armMotor2.set(v);
-        }
-
-    }
-
-    public void Arm2ndPosition() {
-        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.SECOND_POSITION) < 5)) {
-            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.SECOND_POSITION);
+    public void armToAngle(double angle) {
+        if (!(Math.abs(getAngleMeasurement() - angle) < 5)) {
+            double v = pid_controller.calculate(getAngleMeasurement(), angle);
             armMotor.set(v);
             armMotor2.set(v);
         }
     }
 
-    public void ArmThirdPosition() {
-        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.THIRD_POSITION) < 5)) {
-            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.THIRD_POSITION);
-            armMotor.set(v);
-            armMotor2.set(v);
-        }
+    public void motorsStop() {
+        armMotor.set(0);
+        armMotor2.set(0);
     }
-
-    public void ArmFourthPosition() {
-        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.FOURTH_POSITION) < 5)) {
-            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.FOURTH_POSITION);
-            armMotor.set(v);
-            armMotor2.set(v);
-        }
-    }
-
-    public void ArmFifthPosition() {
-        if (!(Math.abs(getAngleMeasurement() - Constants.ArmConstants.FIFTH_POSITION) < 5)) {
-            double v = pid_controller.calculate(armAngle, Constants.ArmConstants.FIFTH_POSITION);
-            armMotor.set(v);
-            armMotor2.set(v);
-        }
-    }
-
-
-
 }

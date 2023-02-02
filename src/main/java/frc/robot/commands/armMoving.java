@@ -7,32 +7,26 @@ public class armMoving extends CommandBase {
     private Arm arm;
     private double angle;
 
-    public armMoving(Arm arm) {
+    public armMoving(Arm arm, double goal) {
         this.arm = arm;
+        this.angle = goal;
     }
 
-    public void goHome() {
-        angle = arm.getAngleMeasurement();
-        arm.armAtHome();
+    @Override
+    public void initialize() {}
+
+    @Override
+    public void execute() {
+        arm.armToAngle(angle);
     }
 
-    public void goTo2ndPosition() {
-        angle = arm.getAngleMeasurement();
-        arm.Arm2ndPosition();
+    @Override
+    public void end(boolean interrupt) {
+        arm.motorsStop();
     }
 
-    public void goTo3rdPosition() {
-        angle = arm.getAngleMeasurement();
-        arm.ArmThirdPosition();
-    }
-
-    public void goTo4thPosition() {
-        angle = arm.getAngleMeasurement();
-        arm.ArmFourthPosition();
-    }
-
-    public void goTo5thPosition() {
-        angle = arm.getAngleMeasurement();
-        arm.ArmFifthPosition();
+    @Override
+    public boolean isFinished() {
+        return Math.abs(arm.getAngleMeasurement() - angle) < 3;
     }
 }
