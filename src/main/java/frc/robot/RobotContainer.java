@@ -8,15 +8,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.TeleopSwerve;
-<<<<<<< HEAD
+import frc.robot.commands.TestTransform;
 import frc.robot.commands.WristAlignment;
 import frc.robot.commands.WristMovement;
-=======
-import frc.robot.commands.TestTransform;
->>>>>>> origin/main
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Wrist;
 
@@ -66,18 +64,15 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-<<<<<<< HEAD
         operator.y().whileTrue(new WristAlignment(wrist));
         operator.x().whileTrue(new WristMovement(wrist, 0));
         operator.a().whileTrue(new WristMovement(wrist, -0));
 
-=======
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.x().whileTrue(new TestTransform(s_Swerve,
             new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
         driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
->>>>>>> origin/main
     }
 
     /**
