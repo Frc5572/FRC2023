@@ -22,6 +22,7 @@ public class PoliceLEDs extends CommandBase {
         this.leds = leds;
         ledLength = leds.getLength();
         ledLengthHalf = ledLength / 2;
+        addRequirements(leds);
     }
 
     @Override

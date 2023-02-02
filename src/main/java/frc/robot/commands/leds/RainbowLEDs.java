@@ -19,6 +19,7 @@ public class RainbowLEDs extends CommandBase {
     public RainbowLEDs(LEDs leds) {
         this.leds = leds;
         ledLength = leds.getLength();;
+        addRequirements(leds);
     }
 
     @Override

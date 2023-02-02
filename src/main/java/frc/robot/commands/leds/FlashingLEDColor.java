@@ -12,7 +12,7 @@ public class FlashingLEDColor extends CommandBase {
     private int ledLength;
     private int flashingDelay = 0;
     private Color color;
-    private Color altColor = Color.kBlack;
+    private Color altColor;
 
     /**
      * Command to flash the LED strip between 2 colors
@@ -26,6 +26,7 @@ public class FlashingLEDColor extends CommandBase {
         this.color = color;
         this.altColor = altColor;
         ledLength = leds.getLength();
+        addRequirements(leds);
     }
 
     /**
@@ -35,9 +36,7 @@ public class FlashingLEDColor extends CommandBase {
      * @param color The color
      */
     public FlashingLEDColor(LEDs leds, Color color) {
-        this.leds = leds;
-        this.color = color;
-        ledLength = leds.getLength();
+        this(leds, color, Color.kBlack);
     }
 
     @Override

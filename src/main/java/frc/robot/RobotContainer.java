@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DisabledInstantCommand;
@@ -49,6 +48,7 @@ public class RobotContainer {
     private LEDs leds = new LEDs(Constants.LEDConstants.LEDCount, Constants.LEDConstants.PWMPort);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    private boolean fakeGrabberSensor = false;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -81,17 +81,21 @@ public class RobotContainer {
         driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
 
         /* Operator Buttons */
-        operator.leftTrigger().whileTrue(new RepeatCommand(
-            new DisabledInstantCommand(() -> leds.setColor(Color.kYellow), leds)));
-        operator.rightTrigger().whileTrue(new RepeatCommand(
-            new DisabledInstantCommand(() -> leds.setColor(Color.kPurple), leds)));
+        operator.leftTrigger().whileTrue(new FlashingLEDColor(leds, Color.kYellow));
+        operator.rightTrigger().whileTrue(new FlashingLEDColor(leds, Color.kPurple));
+        operator.povDown().onTrue(
+            new DisabledInstantCommand(() -> this.fakeGrabberSensor = !this.fakeGrabberSensor));
 
 
         /* Triggers */
+        Trigger grabbedGamePiece = new Trigger(() -> this.fakeGrabberSensor);
         new Trigger(() -> this.ledPattern == 1).whileTrue(new RainbowLEDs(leds));
         new Trigger(() -> this.ledPattern == 2).whileTrue(new PoliceLEDs(leds));
         new Trigger(() -> this.ledPattern == 3)
             .whileTrue(new FlashingLEDColor(leds, Color.kGhostWhite, Color.kGreen));
+        grabbedGamePiece.whileTrue(
+            new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
+        grabbedGamePiece.negate().whileTrue(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
     }
 
     /**
