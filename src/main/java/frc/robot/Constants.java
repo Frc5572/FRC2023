@@ -19,19 +19,6 @@ public final class Constants {
     public static final int OPERATOR_ID = 1;
 
     /**
-     * LED constants
-     */
-    public static final class Motors {
-        public static final int armID = 0;
-        public static final int armID2 = 1;
-    }
-
-    public static final class LEDConstants {
-        public static final int PWMPort = 0;
-        public static final int LEDCount = 42;
-    }
-
-    /**
      * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller
      */
     public static class SwerveTransformPID {
@@ -227,9 +214,9 @@ public final class Constants {
         public static final double K_ENCODER_DISTANCE_PER_PULSE = 0.0;
     }
     public static final class ArmConstants {
-        public static final int CHANNEL_A = 0;
-        public static final int CHANNEL_B = 1;
-        public static final int INDEX = 2;
+        public static final int ARM_ID = 0;
+        public static final int ARM_ID_2 = 0;
+        public static final int ENCODER_CHANNEL = 0;
         // this angle positions are not definite, just using them for testing
         public static final int HOME_POSITION = 226;
         public static final int SECOND_POSITION = 200;

@@ -57,10 +57,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        driver.a().onTrue(new armMoving(arm, 90.0));
-
-
-
+        driver.a().onTrue(new armMoving(arm, 90.0)); // test
     }
 
     /**
