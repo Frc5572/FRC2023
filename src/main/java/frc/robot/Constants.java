@@ -196,7 +196,7 @@ public final class Constants {
         public static final double LIME_LIGHT_ANGLE = 0;
     }
 
-    /*
+    /**
      * Arm PID constants.
      */
     public static final class ArmPID {

@@ -47,7 +47,7 @@ public class Arm extends SubsystemBase {
 
     /**
      * Moves the arm to specified angle and stops when done.
-     * 
+     *
      * @param angle requested angle.
      */
     public void armToAngle(double angle) {
