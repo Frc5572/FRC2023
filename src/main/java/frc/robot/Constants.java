@@ -14,6 +14,7 @@ import frc.lib.util.swerve.SwerveModuleConstants;
  */
 
 public final class Constants {
+    // note quadratic curve only applies to deadband of 0.1 and 0.2
     public static final double STICK_DEADBAND = 0.1;
     public static final int DRIVER_ID = 0;
     public static final int OPERATOR_ID = 1;
