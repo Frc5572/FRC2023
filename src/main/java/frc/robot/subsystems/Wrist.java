@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.robot.Constants;
 
@@ -16,7 +16,8 @@ import frc.robot.Constants;
 public class Wrist extends ProfiledPIDSubsystem {
     private final CANSparkMax wristMotor =
         new CANSparkMax(Constants.Motors.wristMotorID, MotorType.kBrushless);
-    private final CANCoder wristCANCoder = new CANCoder(Constants.Motors.wristCoderID);
+    private final DutyCycleEncoder ourAbsoluteEncoder;
+
     private final SimpleMotorFeedforward wristFeed = new SimpleMotorFeedforward(
         Constants.WristPID.kSVolts, Constants.WristPID.kVVoltSecondsPerRotation);
 
@@ -29,6 +30,7 @@ public class Wrist extends ProfiledPIDSubsystem {
             new TrapezoidProfile.Constraints(Constants.WristPID.kMaxVelocityRadPerSecond,
                 Constants.WristPID.kMaxAccelerationRadPerSecond),
             Constants.WristPID.kF));
+        ourAbsoluteEncoder = new DutyCycleEncoder(Constants.Motors.wristCoderID);
         wristMotor.setInverted(true);
         getController().setTolerance(getMeasurement());
     }
@@ -64,7 +66,7 @@ public class Wrist extends ProfiledPIDSubsystem {
     @Override
     public double getMeasurement() {
 
-        return wristCANCoder.getPosition();
+        return ourAbsoluteEncoder.getAbsolutePosition();
     }
 
     /**
@@ -83,7 +85,7 @@ public class Wrist extends ProfiledPIDSubsystem {
      *         with the cancoder of the arm)
      */
     public boolean getAlignment() {
-        boolean alignment = (wristCANCoder.getPosition() - 0 == 0) ? true : false;
+        boolean alignment = (getMeasurement() - 0 == 0) ? true : false;
         return alignment;
     }
 
