@@ -5,10 +5,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-/*
- * Possible Functions to include: - SpitObject
+/**
+ * Creates the subsystem for the dropdown intake.
  */
-
 public class DropIntake extends SubsystemBase {
 
     // An attempt to define the motors is as follows...

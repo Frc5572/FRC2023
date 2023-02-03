@@ -6,10 +6,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-/*
- * Possible Functions to include: - SpitObject
+/**
+ * Creates the subsystem for the wrist intake.
  */
-
 public class WristIntake extends SubsystemBase {
 
     private final CANSparkMax wristMotor =
@@ -26,8 +25,10 @@ public class WristIntake extends SubsystemBase {
 
     public WristIntake() {}
 
-    // Intakes a cube. Does not run if all touch sensors are triggered and runs panic.
-    // Runs until cube is detected in wrist.
+    /**
+     * Intakes a cone. Does not run if all touch sensors are triggered and instead runs panic. Runs
+     * until cone is detected in wrist, unless manually canceled.
+     */
     public void intakeCone() {
         if (coneSensor1.get() && coneSensor2.get() && cubeSensor1.get() && cubeSensor2.get()) {
             System.out.println("2 objects detected, abort!");
@@ -41,8 +42,10 @@ public class WristIntake extends SubsystemBase {
         }
     }
 
-    // Intakes a cube. Does not run if all touch sensors are triggered and runs panic.
-    // Runs until cube is detected in wrist.
+    /**
+     * Intakes a cube. Does not run if all touch sensors are triggered and instead runs panic. Runs
+     * until cube is detected in wrist, unless manually canceled.
+     */
     public void intakeCube() {
         if (coneSensor1.get() && coneSensor2.get() && cubeSensor1.get() && cubeSensor2.get()) {
             System.out.println("2 objects detected, abort!");
