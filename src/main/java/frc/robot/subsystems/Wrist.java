@@ -7,6 +7,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.robot.Constants;
 
@@ -20,6 +22,7 @@ public class Wrist extends ProfiledPIDSubsystem {
 
     private final SimpleMotorFeedforward wristFeed = new SimpleMotorFeedforward(
         Constants.WristPID.kSVolts, Constants.WristPID.kVVoltSecondsPerRotation);
+    private final Solenoid wristSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 0);
 
     /**
      * Creates a new ProfilePIDController
@@ -41,6 +44,7 @@ public class Wrist extends ProfiledPIDSubsystem {
     public void setWrist(double num) {
         m_controller.setGoal(num);
         enable();
+        wristSolenoid.set(m_enabled);
     }
 
     /**
@@ -49,8 +53,17 @@ public class Wrist extends ProfiledPIDSubsystem {
     public void stopWrist() {
         wristMotor.set(0);
         disable();
+        wristSolenoid.set(true);
     }
 
+    /**
+     * Opens the wrist
+     */
+    public void openWrist(double num) {
+        m_controller.setGoal(num);
+        enable();
+        wristSolenoid.set(false);
+    }
 
     /**
      * Uses the output from the ProfiledPIDController
