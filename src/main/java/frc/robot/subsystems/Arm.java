@@ -13,6 +13,8 @@ import frc.robot.Constants;
  * Creates the subsystem for the arm.
  */
 public class Arm extends SubsystemBase {
+    private final double encOffset = 0.949;
+
     private final CANSparkMax armMotor =
         new CANSparkMax(Constants.ArmConstants.ARM_ID, MotorType.kBrushless);
     private final CANSparkMax armMotor2 =
@@ -34,7 +36,7 @@ public class Arm extends SubsystemBase {
      * Gets the angle measurement of the arm pivot.
      */
     public double getAngleMeasurement() {
-        double armAngle = ourAbsoluteEncoder.getAbsolutePosition() * 360;
+        double armAngle = -(ourAbsoluteEncoder.getAbsolutePosition() - encOffset) * 360;
         return armAngle;
     }
 
