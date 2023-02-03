@@ -19,8 +19,6 @@ public final class Constants {
     public static final int OPERATOR_ID = 1;
 
     /**
-<<<<<<< HEAD
-=======
      * LED constants
      */
     public static final class LEDConstants {
@@ -29,7 +27,6 @@ public final class Constants {
     }
 
     /**
->>>>>>> origin/main
      * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller
      */
     public static class SwerveTransformPID {
@@ -223,6 +220,7 @@ public final class Constants {
         public static final int ARM_ID = 0;
         public static final int ARM_ID_2 = 0;
         public static final int ENCODER_CHANNEL = 0;
+        public static final double ENCODER_OFFSET = 0.0;
         // this angle positions are not definite, just using them for testing
         public static final int HOME_POSITION = 226;
         public static final int SECOND_POSITION = 200;
