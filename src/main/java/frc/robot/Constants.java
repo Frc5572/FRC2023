@@ -219,13 +219,20 @@ public final class Constants {
      * Constants for the Intake.
      */
     public static final class IntakeConstants {
-        public static final int intakeMotorNumA = 0;
-        public static final int intakeMotorNumB = 0;
-        public static final int intakeInSpeed = 1;
-        public static final int intakeOutSpeedCone = -1;
-        public static final int intakeOutSpeedCube = -1;
-        public static final int intakeSpitSpeed = -1;
-        public static final int intakeStopSpeed = 0;
+        public static final int DROP_MOTOR_ID = 0;
+        public static final int INTAKE_MOTOR_ID = 0;
+        public static final int W_INTAKE_MOTOR_ID = 0;
 
+        public static final int INTAKE_SPEED = 1;
+        public static final int INTAKE_STOP_SPEED = 0;
+        public static final int M_DROP_SPEED = 1;
+        public static final int M_RETRACT_SPEED = -1;
+
+        public static final int W_CONE_SENSOR_ID = 0;
+        public static final int W_CONE_SENSOR_ID2 = 0;
+        public static final int W_CUBE_SENSOR_ID = 0;
+        public static final int W_CUBE_SENSOR_ID2 = 0;
+        public static final int W_INTAKE_RELEASE_SPEED = -1;
+        public static final int W_INTAKE_PANIC_SPEED = -1;
     }
 }
