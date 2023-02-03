@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -48,7 +49,7 @@ public class RobotContainer {
     private LEDs leds = new LEDs(Constants.LEDConstants.LEDCount, Constants.LEDConstants.PWMPort);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-    private boolean fakeGrabberSensor = false;
+    public DigitalInput testSensor = new DigitalInput(0);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -81,14 +82,13 @@ public class RobotContainer {
         driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
 
         /* Operator Buttons */
-        operator.leftTrigger().whileTrue(new FlashingLEDColor(leds, Color.kYellow));
-        operator.rightTrigger().whileTrue(new FlashingLEDColor(leds, Color.kPurple));
-        operator.povDown().onTrue(
-            new DisabledInstantCommand(() -> this.fakeGrabberSensor = !this.fakeGrabberSensor));
-
+        operator.leftTrigger().onTrue(new FlashingLEDColor(leds, Color.kYellow)
+            .until(() -> this.testSensor.get()).withTimeout(5.0));
+        operator.rightTrigger().onTrue(new FlashingLEDColor(leds, Color.kPurple)
+            .until(() -> this.testSensor.get()).withTimeout(5.0));
 
         /* Triggers */
-        Trigger grabbedGamePiece = new Trigger(() -> this.fakeGrabberSensor);
+        Trigger grabbedGamePiece = new Trigger(() -> this.testSensor.get());
         new Trigger(() -> this.ledPattern == 1).whileTrue(new RainbowLEDs(leds));
         new Trigger(() -> this.ledPattern == 2).whileTrue(new PoliceLEDs(leds));
         new Trigger(() -> this.ledPattern == 3)

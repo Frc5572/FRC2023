@@ -22,8 +22,8 @@ public final class Constants {
      * LED constants
      */
     public static final class LEDConstants {
-        public static final int PWMPort = 0;
-        public static final int LEDCount = 42;
+        public static final int PWMPort = 9;
+        public static final int LEDCount = 36;
     }
 
     /**
@@ -46,7 +46,7 @@ public final class Constants {
     }
 
     /**
-     * \ Camera offset constants
+     * Camera offset constants
      */
     public static class CameraConstants {
 
