@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.MoveElevator;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
 import frc.robot.subsystems.Swerve;
@@ -56,6 +57,8 @@ public class RobotContainer {
         driver.x().whileTrue(new TestTransform(s_Swerve,
             new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
         driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
+        operator.b().onTrue((new MoveElevator(0)));
+        operator.a().onTrue((new MoveElevator(-0)));
     }
 
     /**

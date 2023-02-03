@@ -19,7 +19,7 @@ public class MoveElevator extends CommandBase {
     /**
      * Creates a command for movine the elevator.
      *
-     * @param rotation Current rotaion value to determine where the motor is.
+     * @param rotation Current rotation value to determine where the motor is.
      */
     public MoveElevator(double rotation) {
         this.encoderGoal = rotation;
@@ -28,14 +28,18 @@ public class MoveElevator extends CommandBase {
     @Override
     public void execute() {
         Elevator.runMotor(encVal(), encoderGoal);
+
     }
 
     @Override
-    public void end(boolean taskCompleted) {
-        if (taskCompleted == true) {
-            motor1.set(0);
-            motor2.set(0);
-        }
+    public void end(boolean interrupted) {
+        motor1.set(0);
+        motor2.set(0);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return (this.encoderGoal == 0);
     }
 
     public double encVal() {

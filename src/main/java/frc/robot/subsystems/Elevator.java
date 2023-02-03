@@ -18,10 +18,10 @@ public class Elevator extends SubsystemBase {
         new CANSparkMax(Constants.Elevator.leftElevatorMotorID, MotorType.kBrushless);
     public static final CANSparkMax rightElevatorMotor =
         new CANSparkMax(Constants.Elevator.rightElevatorMotorID, MotorType.kBrushless);
-    private double elevatorElevatorRotation;
 
     public static final DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(99);
 
+    // we'll use it later
     private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(
         Constants.Elevator.elevatorKSVolts, Constants.Elevator.elevatorKGVolts,
         Constants.Elevator.elevatorKVVoltsSecondsPerRotation);
@@ -40,16 +40,15 @@ public class Elevator extends SubsystemBase {
      * Creates runMotor method to move the motors.
      */
     public static void runMotor(double currentVal, double goal) {
-        leftElevatorMotor.set(elevatorPID.calculate(currentVal * 360, goal));
-        rightElevatorMotor.set(elevatorPID.calculate(currentVal * 360, goal));
+        leftElevatorMotor.set(elevatorPID.calculate(currentVal, goal));
+        rightElevatorMotor.set(elevatorPID.calculate(currentVal, goal));
     }
 
     /**
      * Creates getElevatorRotation method to return the current encoder rotation.
      */
     public double getElevatorRotation() {
-        elevatorElevatorRotation =
-            elevatorEncoder.getAbsolutePosition() - Constants.Elevator.encoderOffSet;
-        return elevatorElevatorRotation;
+
+        return elevatorEncoder.getAbsolutePosition() - Constants.Elevator.encoderOffSet;
     }
 }
