@@ -34,6 +34,8 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.lib.math.Edge;
+import frc.lib.math.GraphOfConvexSets;
 
 /**
  * Field Constants
@@ -381,6 +383,13 @@ public class FieldConstants {
             boxSdf(q, Community.chargingStationCorners[0], Community.chargingStationCorners[3]);
 
         return unionSdf(inField, blueGrid, blueRail, blueRamp, redGrid, redRail, redRamp);
+    }
+
+    public static GraphOfConvexSets fieldEdges() {
+
+        Edge loadingZoneEdge = new Edge(
+            new Translation2d(FieldConstants.LoadingZone.outerX, FieldConstants.LoadingZone.midY),
+            new Translation2d(FieldConstants.LoadingZone.outerX, FieldConstants.LoadingZone.leftY));
     }
 
 }
