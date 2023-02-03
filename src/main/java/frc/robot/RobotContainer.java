@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -39,6 +41,9 @@ public class RobotContainer {
     private final CommandXboxController operator = new CommandXboxController(Constants.OPERATOR_ID);
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private AddressableLEDBuffer controLedBuffer = new AddressableLEDBuffer(84);
+    private AddressableLED addressableLED = new AddressableLED(9);
+
 
     // Field Relative and openLoop Variables
     boolean fieldRelative;
@@ -46,7 +51,8 @@ public class RobotContainer {
     int ledPattern = 0;
 
     // Subsystems
-    private LEDs leds = new LEDs(Constants.LEDConstants.LEDCount, Constants.LEDConstants.PWMPort);
+    private LEDs leds = new LEDs(addressableLED, controLedBuffer, 42);
+    private LEDs leds1 = new LEDs(addressableLED, controLedBuffer, 42, 42);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     public DigitalInput testSensor = new DigitalInput(0);
@@ -56,6 +62,7 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 3, false));
+        leds1.setDefaultCommand(new RainbowLEDs(leds1));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         // Configure the button bindings

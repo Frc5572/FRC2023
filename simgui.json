@@ -2,8 +2,13 @@
   "HALProvider": {
     "Addressable LEDs": {
       "0": {
-        "columns": 1
+        "columns": 8
       },
+      "window": {
+        "visible": true
+      }
+    },
+    "DIO": {
       "window": {
         "visible": true
       }

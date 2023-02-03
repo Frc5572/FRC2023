@@ -10,8 +10,7 @@ import frc.robot.subsystems.LEDs;
 public class PoliceLEDs extends CommandBase {
     private LEDs leds;
     private int policeDelay = 0;
-    private int ledLength;
-    private int ledLengthHalf;
+    private int ledLength, ledStart, ledEnd, ledLengthHalf;
 
     /**
      * Command to flash the LED strip between red and blue like police lights
@@ -20,25 +19,27 @@ public class PoliceLEDs extends CommandBase {
      */
     public PoliceLEDs(LEDs leds) {
         this.leds = leds;
-        ledLength = leds.getLength();
-        ledLengthHalf = ledLength / 2;
+        ledEnd = leds.getEnd();
+        ledStart = leds.getStart();
+        ledLength = ledEnd - ledStart;
+        ledLengthHalf = ledStart + ledLength / 2;
         addRequirements(leds);
     }
 
     @Override
     public void execute() {
         if (policeDelay < 10) {
-            for (var i = 0; i < ledLengthHalf; i++) {
+            for (var i = ledStart; i < ledLengthHalf; i++) {
                 leds.setColor(i, Color.kRed);
             }
-            for (var i = ledLengthHalf; i < ledLength; i++) {
+            for (var i = ledLengthHalf; i < ledEnd; i++) {
                 leds.setColor(i, Color.kBlack);
             }
         } else {
-            for (var i = 0; i < ledLengthHalf; i++) {
+            for (var i = ledStart; i < ledLengthHalf; i++) {
                 leds.setColor(i, Color.kBlack);
             }
-            for (var i = ledLengthHalf; i < ledLength; i++) {
+            for (var i = ledLengthHalf; i < ledEnd; i++) {
                 leds.setColor(i, Color.kBlue);
             }
         }

@@ -18,13 +18,13 @@ public class RainbowLEDs extends CommandBase {
      */
     public RainbowLEDs(LEDs leds) {
         this.leds = leds;
-        ledLength = leds.getLength();;
+        ledLength = leds.getEnd();
         addRequirements(leds);
     }
 
     @Override
     public void execute() {
-        for (var i = 1; i < ledLength; i++) {
+        for (var i = leds.getStart(); i < ledLength; i++) {
             // calculate the hue
             final var hue = (m_rainbowFirstPixelHue + (i * 180 / ledLength)) % 180;
             leds.setHSV(i, hue, 255, 128);

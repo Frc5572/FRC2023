@@ -11,17 +11,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LEDs extends SubsystemBase {
     private AddressableLEDBuffer controLedBuffer;
     private AddressableLED addressableLED;
+    private int length;
+    private int start;
 
-    /**
-     * constructs a LED Subsystem
-     *
-     * @param length length of the addressable LEDS
-     * @param port port ID for PWM
-     */
-    public LEDs(int length, int port) {
-        controLedBuffer = new AddressableLEDBuffer(length);
-        addressableLED = new AddressableLED(port);
 
+    public LEDs(AddressableLED addressableLED, AddressableLEDBuffer controLedBuffer, int length) {
+        this(addressableLED, controLedBuffer, length, 0);
+    }
+
+    public LEDs(AddressableLED addressableLED, AddressableLEDBuffer controLedBuffer, int length,
+        int start) {
+        this.controLedBuffer = controLedBuffer;
+        this.addressableLED = addressableLED;
+        this.length = length;
+        this.start = start;
         addressableLED.setLength(controLedBuffer.getLength());
         addressableLED.setData(controLedBuffer);
         addressableLED.start();
@@ -33,7 +36,25 @@ public class LEDs extends SubsystemBase {
      * @return number of LEDs
      */
     public int getLength() {
-        return controLedBuffer.getLength();
+        return length;
+    }
+
+    /**
+     * Get LED strip length
+     *
+     * @return number of LEDs
+     */
+    public int getStart() {
+        return start;
+    }
+
+    /**
+     * Get LED strip length
+     *
+     * @return number of LEDs
+     */
+    public int getEnd() {
+        return start + getLength();
     }
 
     /**

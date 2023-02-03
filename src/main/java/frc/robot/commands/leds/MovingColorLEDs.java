@@ -30,7 +30,7 @@ public class MovingColorLEDs extends CommandBase {
         this.color = color;
         this.count = count;
         this.inverted = inverted;
-        ledLength = leds.getLength();
+        ledLength = leds.getEnd();
         addRequirements(leds);
     }
 
@@ -39,7 +39,7 @@ public class MovingColorLEDs extends CommandBase {
         Color theColor = inverted ? Color.kBlack : color;
         Color secondColor = inverted ? color : Color.kBlack;
         if (movingColorDelay == 0) {
-            for (var i = 0; i < ledLength; i++) {
+            for (var i = leds.getStart(); i < ledLength; i++) {
                 if (Math.abs(i - movingLED) < count) {
                     leds.setColor(i, theColor);
                 } else {

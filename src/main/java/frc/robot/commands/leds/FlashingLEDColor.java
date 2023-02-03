@@ -10,6 +10,7 @@ import frc.robot.subsystems.LEDs;
 public class FlashingLEDColor extends CommandBase {
     private LEDs leds;
     private int ledLength;
+    private int ledStart;
     private int flashingDelay = 0;
     private Color color;
     private Color altColor;
@@ -25,7 +26,8 @@ public class FlashingLEDColor extends CommandBase {
         this.leds = leds;
         this.color = color;
         this.altColor = altColor;
-        ledLength = leds.getLength();
+        ledLength = leds.getEnd();
+        ledStart = leds.getStart();
         addRequirements(leds);
     }
 
@@ -42,11 +44,11 @@ public class FlashingLEDColor extends CommandBase {
     @Override
     public void execute() {
         if (flashingDelay < 10) {
-            for (var i = 0; i < ledLength; i++) {
+            for (var i = ledStart; i < ledLength; i++) {
                 leds.setColor(i, color);
             }
         } else {
-            for (var i = 0; i < ledLength; i++) {
+            for (var i = ledStart; i < ledLength; i++) {
                 leds.setColor(i, altColor);
             }
         }
