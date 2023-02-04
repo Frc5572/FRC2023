@@ -132,6 +132,9 @@ public final class Constants {
         /* Swerve Profiling Values */
         public static final double MAX_SPEED = 4; // meters per second
         public static final double MAX_ANGULAR_VELOCITY = 2;
+        /* Swerve TeleOp Joystick Multiplier Max Speed */
+        public static final double TELEOP_MAX_SPEED = .5;
+
 
         /* Neutral Modes */
         public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Coast;

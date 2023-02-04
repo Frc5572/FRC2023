@@ -1,5 +1,8 @@
 package frc.lib.math;
 
+import edu.wpi.first.math.MathUtil;
+import frc.robot.Constants;
+
 /**
  * Mathematical conversions for swerve calculations
  */
@@ -99,38 +102,22 @@ public class Conversions {
         // For 0.1 Joystick Deadband:
         // f(x)=0.778*x^2+0.256*x+-0.033
 
-        boolean negative;
+        // boolean negative;
         double processedInput = 0.0;
-
-        if (input < 0) {
-            negative = true;
-        } else {
-            negative = false;
-        }
+        input *= Constants.Swerve.TELEOP_MAX_SPEED;
 
         if (Math.abs(input) >= deadband && Math.abs(input) <= 1.0) {
-            if (deadband == 0.1) {
-                processedInput =
-                    (0.778 * Math.pow(Math.abs(input), 2) + 0.256 * Math.abs(input) - 0.033);
-            } else if (deadband == 0.2) {
-                processedInput =
-                    (0.625 * Math.pow(Math.abs(input), 2) + 0.5 * Math.abs(input) - 0.125);
-            }
+            processedInput =
+                (0.778 * Math.pow(Math.abs(input), 2) + 0.256 * Math.abs(input) - 0.033);
 
-            if (processedInput > deadband) {
-                processedInput = deadband;
+            if (processedInput > 1.0) {
+                processedInput = 1.0;
             }
-            if (negative == true) {
-                processedInput = -processedInput;
-            }
-            return processedInput;
-        } else if (Math.abs(input) < deadband) {
-            return 0.0;
-        } else if (Math.abs(input) > 1.0) {
-            return 1.0;
-        } else {
-            return 0.0;
+            processedInput = Math.copySign(processedInput, input);
         }
+        return MathUtil.clamp(processedInput, -1, 1);
+
+
     }
 
 }
