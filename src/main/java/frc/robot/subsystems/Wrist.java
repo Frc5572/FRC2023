@@ -94,20 +94,14 @@ public class Wrist extends SubsystemBase {
     }
 
     /**
-     * @return whether or not the wrist Encoder is align with the arm Encoder (will later replace
+     * @return whether or not the wrist Encoder is align with the desired angle (will later replace
      *         with the cancoder of the arm)
      */
-    public boolean getAlignment() {
-        boolean alignment = (getMeasurement() - 0 == 0) ? true : false;
+    public boolean getAlignment(double angle) {
+        boolean alignment = (Math.abs(getMeasurement() - angle) < 5) ? true : false;
         return alignment;
     }
 
-    /**
-     * @return whether the wrist has reached its certain goal or not
-     */
-    public boolean atGoal() {
-        return pidController.atGoal();
-    }
 
     /** Enables the PID control. Resets the controller. */
     public void enable() {

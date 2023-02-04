@@ -18,7 +18,6 @@ import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
 import frc.robot.commands.WristAlignment;
-import frc.robot.commands.WristMovement;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
@@ -77,9 +76,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        operator.y().whileTrue(new WristAlignment(wrist));
-        operator.x().whileTrue(new WristMovement(wrist, 90));
-        operator.a().whileTrue(new WristMovement(wrist, 0));
+        operator.y().whileTrue(new WristAlignment(wrist, 0));
 
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));

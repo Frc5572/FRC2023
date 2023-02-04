@@ -15,9 +15,11 @@ import frc.robot.subsystems.Wrist;
 public class WristAlignment extends CommandBase {
     /** Creates a new WristAlignment. */
     Wrist wrist;
+    double angle;
 
-    public WristAlignment(Wrist wrist) {
+    public WristAlignment(Wrist wrist, double angle) {
         this.wrist = wrist;
+        this.angle = angle;
         addRequirements(wrist);
     }
 
@@ -29,7 +31,7 @@ public class WristAlignment extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (!this.wrist.getAlignment()) {
+        if (!this.wrist.getAlignment(this.angle)) {
             this.wrist.setWrist(Constants.WristPID.TargetEncoderDegree);
         }
     }
@@ -44,6 +46,6 @@ public class WristAlignment extends CommandBase {
     @Override
     public boolean isFinished() {
 
-        return this.wrist.getAlignment();
+        return this.wrist.getAlignment(this.angle);
     }
 }
