@@ -78,9 +78,6 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         operator.y().whileTrue(new WristAlignment(wrist));
-        /**
-         * These values
-         */
         operator.x().whileTrue(new WristMovement(wrist, 90));
         operator.a().whileTrue(new WristMovement(wrist, 0));
 
