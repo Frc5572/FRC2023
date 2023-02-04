@@ -3,6 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * This command will enable the intake on the wrist and then stop the intake once a set of touch
+ * sensors are being touched.
+ */
 public class IntakeWrist extends CommandBase {
     private WristIntake wIntake;
 

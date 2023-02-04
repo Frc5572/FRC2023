@@ -208,20 +208,29 @@ public final class Constants {
      * Constants for the Intake.
      */
     public static final class IntakeConstants {
-        public static final int DROP_MOTOR_ID = 0;
-        public static final int INTAKE_MOTOR_ID = 0;
-        public static final int W_INTAKE_MOTOR_ID = 0;
+        public static final class DropConstants {
+            public static final int DROP_MOTOR_ID = 0;
+            public static final int DROP_ENCODER_ID = 0;
+            public static final int INTAKE_MOTOR_ID = 0;
 
-        public static final int INTAKE_SPEED = 1;
-        public static final int INTAKE_STOP_SPEED = 0;
-        public static final int M_DROP_SPEED = 1;
-        public static final int M_RETRACT_SPEED = -1;
+            public static final double INTAKE_SPEED = 1;
+            public static final double SPIT_SPEED = -1;
+            public static final double DROP_SPEED = 1;
+            public static final double RETRACT_SPEED = -1;
+            public static final int STOP_SPEED = 0;
+        }
 
-        public static final int W_CONE_SENSOR_ID = 0;
-        public static final int W_CONE_SENSOR_ID2 = 0;
-        public static final int W_CUBE_SENSOR_ID = 0;
-        public static final int W_CUBE_SENSOR_ID2 = 0;
-        public static final int W_INTAKE_RELEASE_SPEED = -1;
-        public static final int W_INTAKE_PANIC_SPEED = -1;
+        public static final class WristConstants {
+            public static final int INTAKE_MOTOR_ID = 0;
+            public static final int CONE_SENSOR_ID = 0;
+            public static final int CONE_SENSOR_ID2 = 0;
+            public static final int CUBE_SENSOR_ID = 0;
+            public static final int CUBE_SENSOR_ID2 = 0;
+
+            public static final double INTAKE_SPEED = 1;
+            public static final int INTAKE_STOP_SPEED = 0;
+            public static final double INTAKE_RELEASE_SPEED = -1;
+            public static final double INTAKE_PANIC_SPEED = -1;
+        }
     }
 }
