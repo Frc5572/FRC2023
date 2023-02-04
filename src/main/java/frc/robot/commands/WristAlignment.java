@@ -24,7 +24,6 @@ public class WristAlignment extends CommandBase {
         addRequirements(wrist);
     }
 
-
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {}
@@ -46,7 +45,6 @@ public class WristAlignment extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-
         return this.wrist.getAlignment(this.angle);
     }
 }

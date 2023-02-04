@@ -18,24 +18,23 @@ import frc.robot.Constants;
 public class Wrist extends SubsystemBase {
     private final CANSparkMax wristMotor =
         new CANSparkMax(Constants.Motors.wristMotorID, MotorType.kBrushless);
-    private final DutyCycleEncoder ourAbsoluteEncoder;
+    private final DutyCycleEncoder wristEncoder =
+        new DutyCycleEncoder(Constants.Motors.wristCoderID);
 
     private final SimpleMotorFeedforward wristFeed = new SimpleMotorFeedforward(
         Constants.WristPID.kSVolts, Constants.WristPID.kVVoltSecondsPerRotation);
     private final Solenoid wristSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 0);
-    private final ProfiledPIDController pidController;
+    private final ProfiledPIDController pidController = new ProfiledPIDController(
+        Constants.WristPID.kP, Constants.WristPID.kI, Constants.WristPID.kD,
+        new TrapezoidProfile.Constraints(Constants.WristPID.kMaxVelocityRadPerSecond,
+            Constants.WristPID.kMaxAccelerationRadPerSecond),
+        Constants.WristPID.kF);
     private boolean m_enabled;
 
     /**
      * Creates a new ProfilePIDController
      */
     public Wrist() {
-        pidController = new ProfiledPIDController(Constants.WristPID.kP, Constants.WristPID.kI,
-            Constants.WristPID.kD,
-            new TrapezoidProfile.Constraints(Constants.WristPID.kMaxVelocityRadPerSecond,
-                Constants.WristPID.kMaxAccelerationRadPerSecond),
-            Constants.WristPID.kF);
-        ourAbsoluteEncoder = new DutyCycleEncoder(Constants.Motors.wristCoderID);
         wristMotor.setInverted(true);
         pidController.setTolerance(getMeasurement());
     }
@@ -78,8 +77,7 @@ public class Wrist extends SubsystemBase {
      * @return the rotation of the Wrist Encoder
      */
     public double getMeasurement() {
-
-        return ourAbsoluteEncoder.getAbsolutePosition();
+        return wristEncoder.getAbsolutePosition();
     }
 
     /**
@@ -101,7 +99,6 @@ public class Wrist extends SubsystemBase {
         boolean alignment = (Math.abs(getMeasurement() - angle) < 5) ? true : false;
         return alignment;
     }
-
 
     /** Enables the PID control. Resets the controller. */
     public void enable() {
