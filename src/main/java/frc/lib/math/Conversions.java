@@ -1,7 +1,6 @@
 package frc.lib.math;
 
 import edu.wpi.first.math.MathUtil;
-import frc.robot.Constants;
 
 /**
  * Mathematical conversions for swerve calculations
@@ -104,7 +103,7 @@ public class Conversions {
 
         // boolean negative;
         double processedInput = 0.0;
-        input *= Constants.Swerve.TELEOP_MAX_SPEED;
+        // input *= Constants.Swerve.TELEOP_MAX_SPEED;
 
         if (Math.abs(input) >= deadband && Math.abs(input) <= 1.0) {
             processedInput =
