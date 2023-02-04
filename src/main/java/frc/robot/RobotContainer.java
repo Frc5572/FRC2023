@@ -78,8 +78,11 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         operator.y().whileTrue(new WristAlignment(wrist));
-        operator.x().whileTrue(new WristMovement(wrist, 0));
-        operator.a().whileTrue(new WristMovement(wrist, -0));
+        /**
+         * These values
+         */
+        operator.x().whileTrue(new WristMovement(wrist, 90));
+        operator.a().whileTrue(new WristMovement(wrist, 0));
 
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));

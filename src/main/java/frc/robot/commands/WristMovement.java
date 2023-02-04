@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Wrist;
 
 /**
- * Creates a new command for WristMovement
+ * Creates a new command for WristMovement NOTE!!!!!
  */
 public class WristMovement extends CommandBase {
 

@@ -244,14 +244,5 @@ public final class Constants {
 
     }
 
-    /**
-     * Vision Constants
-     */
-    public static final class VisionConstants {
-        public static final double DEAD_POCKET = 0.05;
-        public static final double LIME_LIGHT_HEIGHT = 0;
-        public static final double TARGET_HEIGHT = 0;
-        public static final double LIME_LIGHT_ANGLE = 0;
-    }
 }
 

@@ -9,15 +9,16 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Wrist;
 
 /**
- * Creates a new Command for Wrist Alignment
+ * Creates a new Command for Wrist Alignment. NOTE!!!!!!!! (Wrist alignment uses the method
+ * getAlignement) This will align the robot.
  */
 public class WristAlignment extends CommandBase {
     /** Creates a new WristAlignment. */
-    Wrist wristAlignment;
+    Wrist wrist;
 
-    public WristAlignment(Wrist wristAlignment) {
-        this.wristAlignment = wristAlignment;
-        addRequirements(wristAlignment);
+    public WristAlignment(Wrist wrist) {
+        this.wrist = wrist;
+        addRequirements(wrist);
     }
 
 
@@ -28,21 +29,21 @@ public class WristAlignment extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (!(this.wristAlignment.getAlignment())) {
-            this.wristAlignment.setWrist(Constants.WristPID.TargetEncoderDegree);
+        if (!this.wrist.getAlignment()) {
+            this.wrist.setWrist(Constants.WristPID.TargetEncoderDegree);
         }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        this.wristAlignment.stopWrist();
+        this.wrist.stopWrist();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
 
-        return this.wristAlignment.getAlignment();
+        return this.wrist.getAlignment();
     }
 }
