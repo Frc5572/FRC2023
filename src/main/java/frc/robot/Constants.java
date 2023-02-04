@@ -186,27 +186,12 @@ public final class Constants {
 
     }
 
-
-
-    /**
-     * Autonomous constants for swerve bot.
-     */
-    public static final class VisionConstants {
-        public static final double DEAD_POCKET = 0.05;
-        public static final double LIME_LIGHT_HEIGHT = 0;
-        public static final double TARGET_HEIGHT = 0;
-        public static final double LIME_LIGHT_ANGLE = 0;
-    }
-
-
-
     /**
      * Elevator Motor constants.
      */
     public static final class Elevator {
         /* Motor ID's. */
-        public static final int leftElevatorMotorID = 0;
-        public static final int rightElevatorMotorID = 0;
+        public static final int elevatorMotorID = 0;
 
         /* Encoder ticks. */
         public static final double stowedAway = 0.0;
@@ -219,16 +204,20 @@ public final class Constants {
         public static final double elevatorSpeed = 0.0;
         public static final double elevatorStop = 0.0;
 
-        /* Elevator motor PID's. */
-        public static final double elevatorKP = 0.0;
-        public static final double elevatorKI = 0.0;
-        public static final double elevatorKD = 0.0;
+        /**
+         * Constants for the PID portion of the elevator.
+         */
+        public static final class PID {
+            public static final double elevatorKP = 0.0;
+            public static final double elevatorKI = 0.0;
+            public static final double elevatorKD = 0.0;
 
-        public static final double elevatorKMaxVelocityRadPerSecond = 0.0;
-        public static final double elevatorKMaxAccelerationRadPerSecSquared = 0.0;
-        public static final double elevatorKSVolts = 0.0;
-        public static final double elevatorKGVolts = 0.0;
-        public static final double elevatorKVVoltsSecondsPerRotation = 0.0;
+            public static final double elevatorKMaxVelocityRadPerSecond = 0.0;
+            public static final double elevatorKMaxAccelerationRadPerSecSquared = 0.0;
+            public static final double elevatorKSVolts = 0.0;
+            public static final double elevatorKGVolts = 0.0;
+            public static final double elevatorKVVoltsSecondsPerRotation = 0.0;
+        }
 
         /* Elevator Encoder */
         public static final double encoderOffSet = 0.0;

@@ -24,7 +24,7 @@ public class MoveElevator extends CommandBase {
 
     @Override
     public void execute() {
-        this.elevator.runMotor(this.elevator.getElevatorRotation(), encoderGoal);
+        this.elevator.runMotor(this.elevator.getAbsolutePosition(), encoderGoal);
 
     }
 

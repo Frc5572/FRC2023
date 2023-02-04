@@ -13,26 +13,25 @@ import frc.robot.Constants;
  */
 public class Elevator extends SubsystemBase {
 
-    private static final CANSparkMax leftElevatorMotor =
-        new CANSparkMax(Constants.Elevator.leftElevatorMotorID, MotorType.kBrushless);
-    private static final CANSparkMax rightElevatorMotor =
-        new CANSparkMax(Constants.Elevator.rightElevatorMotorID, MotorType.kBrushless);
+    private static final CANSparkMax elevatorMotor =
+        new CANSparkMax(Constants.Elevator.elevatorMotorID, MotorType.kBrushless);
     private static final DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(99);
-    private static final ProfiledPIDController elevatorPID = new ProfiledPIDController(
-        Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI, Constants.Elevator.elevatorKD,
-        new TrapezoidProfile.Constraints(Constants.Elevator.elevatorKMaxVelocityRadPerSecond,
-            Constants.Elevator.elevatorKMaxAccelerationRadPerSecSquared));
+    private static final ProfiledPIDController elevatorPID =
+        new ProfiledPIDController(Constants.Elevator.PID.elevatorKP,
+            Constants.Elevator.PID.elevatorKI, Constants.Elevator.PID.elevatorKD,
+            new TrapezoidProfile.Constraints(
+                Constants.Elevator.PID.elevatorKMaxVelocityRadPerSecond,
+                Constants.Elevator.PID.elevatorKMaxAccelerationRadPerSecSquared));
 
     public Elevator() {
-
+        elevatorPID.setTolerance(3);
     }
 
     /**
      * Creates runMotor method to move the motors.
      */
     public void runMotor(double currentVal, double goal) {
-        leftElevatorMotor.set(elevatorPID.calculate(currentVal, goal));
-        rightElevatorMotor.set(elevatorPID.calculate(currentVal, goal));
+        elevatorMotor.set(elevatorPID.calculate(currentVal, goal));
     }
 
     /**
@@ -41,31 +40,20 @@ public class Elevator extends SubsystemBase {
      * @param speed The speed of the motors.
      */
     public void set(double speed) {
-        leftElevatorMotor.set(speed);
-        rightElevatorMotor.set(speed);
+        elevatorMotor.set(speed);
     }
 
     /**
-     * @return return the current encoder rotation in contrast with the off set.
-     */
-    public double getElevatorRotation() {
-
-        return elevatorEncoder.getAbsolutePosition() - Constants.Elevator.encoderOffSet;
-    }
-
-    /**
-     * @return the absolute balue of the elevator encoder.
+     * @return the absolute value of the elevator encoder.
      */
     public double getAbsolutePosition() {
-
-        return elevatorEncoder.getAbsolutePosition();
+        return (elevatorEncoder.getAbsolutePosition() - Constants.Elevator.encoderOffSet) * 360;
     }
 
     /**
      * @return whether the Elevator PID is at the goal or not
      */
     public boolean atGoal() {
-
         return elevatorPID.atGoal();
     }
 }
