@@ -108,7 +108,7 @@ public class Conversions {
             negative = false;
         }
 
-        if (Math.abs(input) >= deadband && Math.abs(input) <= deadband) {
+        if (Math.abs(input) >= deadband && Math.abs(input) <= 1.0) {
             if (deadband == 0.1) {
                 processedInput =
                     (0.778 * Math.pow(Math.abs(input), 2) + 0.256 * Math.abs(input) - 0.033);

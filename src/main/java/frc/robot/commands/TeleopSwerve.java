@@ -44,7 +44,7 @@ public class TeleopSwerve extends CommandBase {
         // yaxis = MathUtil.applyDeadband(yaxis, Constants.STICK_DEADBAND);
         yaxis = Conversions.applySwerveCurve(yaxis, Constants.STICK_DEADBAND);
         // xaxis = MathUtil.applyDeadband(xaxis, Constants.STICK_DEADBAND);
-        yaxis = Conversions.applySwerveCurve(xaxis, Constants.STICK_DEADBAND);
+        xaxis = Conversions.applySwerveCurve(xaxis, Constants.STICK_DEADBAND);
         raxis = MathUtil.applyDeadband(raxis, Constants.STICK_DEADBAND);
 
         Translation2d translation =
