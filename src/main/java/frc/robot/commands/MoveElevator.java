@@ -16,9 +16,9 @@ public class MoveElevator extends CommandBase {
      *
      * @param rotation Current rotation value to determine where the motor is.
      */
-    public MoveElevator(double rotation, Elevator elevator) {
-        this.encoderGoal = rotation;
+    public MoveElevator(Elevator elevator, double rotation) {
         this.elevator = elevator;
+        this.encoderGoal = rotation;
         addRequirements(elevator);
     }
 
