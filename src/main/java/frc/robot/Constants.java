@@ -190,9 +190,6 @@ public final class Constants {
      * Pneumatics CAN id constants.
      */
     public static final class Pneumatics {
-        public static final int intakeReverseChannel = 0;
-        public static int intakeFowardChannel = 1;
-
     }
 
 

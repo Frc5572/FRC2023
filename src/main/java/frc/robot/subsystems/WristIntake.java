@@ -25,38 +25,9 @@ public class WristIntake extends SubsystemBase {
 
     public WristIntake() {}
 
-    /**
-     * Intakes a cone. Does not run if all touch sensors are triggered and instead runs panic. Runs
-     * until cone is detected in wrist, unless manually canceled.
-     */
-    public void intakeCone() {
-        if (coneSensor1.get() && coneSensor2.get() && cubeSensor1.get() && cubeSensor2.get()) {
-            System.out.println("2 objects detected, abort!");
-            panic();
-        } else {
-            if (!(coneSensor1.get() && coneSensor2.get())) {
-                wristMotor.set(Constants.IntakeConstants.INTAKE_SPEED);
-            } else {
-                stop();
-            }
-        }
-    }
-
-    /**
-     * Intakes a cube. Does not run if all touch sensors are triggered and instead runs panic. Runs
-     * until cube is detected in wrist, unless manually canceled.
-     */
-    public void intakeCube() {
-        if (coneSensor1.get() && coneSensor2.get() && cubeSensor1.get() && cubeSensor2.get()) {
-            System.out.println("2 objects detected, abort!");
-            panic();
-        } else {
-            if (!(cubeSensor1.get() && cubeSensor2.get())) {
-                wristMotor.set(Constants.IntakeConstants.INTAKE_SPEED);
-            } else {
-                stop();
-            }
-        }
+    // Runs wrist intake motor to intake a game piece.
+    public void intake() {
+        wristMotor.set(Constants.IntakeConstants.INTAKE_SPEED);
     }
 
     // Runs wrist intake motor to gently spit out game piece.
@@ -73,5 +44,14 @@ public class WristIntake extends SubsystemBase {
     // Primarily used to prevent the accidental holding of multiple GPs penalty.
     public void panic() {
         wristMotor.set(Constants.IntakeConstants.W_INTAKE_PANIC_SPEED);
+    }
+
+    // Get and return the status of the cone sensors.
+    public boolean getConeSensor() {
+        return coneSensor1.get() && coneSensor2.get();
+    }
+
+    public boolean getCubeSensor() {
+        return cubeSensor1.get() && cubeSensor2.get();
     }
 }
