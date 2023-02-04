@@ -12,7 +12,7 @@ import frc.robot.subsystems.LEDs;
  */
 public class MorseCode extends CommandBase {
     private LEDs leds;
-    private int unit = 10;
+    private int unit = 5;
     private int dot = unit;
     private int dash = unit * 3;
     // Space between each dot or dash in a character
@@ -22,7 +22,7 @@ public class MorseCode extends CommandBase {
     private int word_space = unit * 7;
     private int index = 0;
     private int counter = 1;
-    private String word = "SOS";
+    private String word = "SOS SOS";
     private ArrayList<Integer> finalWord = new ArrayList<Integer>();
     private boolean breakBool = false;
 
@@ -30,7 +30,8 @@ public class MorseCode extends CommandBase {
     private Map<String, ArrayList<Integer>> letters =
         Map.of("b", new ArrayList<Integer>(List.of(dash, dot, dot, dot)), "o",
             new ArrayList<Integer>(List.of(dash, dash, dash)), "s",
-            new ArrayList<Integer>(List.of(dot, dot, dot)));
+            new ArrayList<Integer>(List.of(dot, dot, dot)), " ",
+            new ArrayList<Integer>(List.of(word_space)));
 
     /**
      * Command to flash the LED strip between 2 colors
@@ -43,10 +44,23 @@ public class MorseCode extends CommandBase {
         this.leds = leds;
         addRequirements(leds);
         word = word.toLowerCase();
-        char[] ch = word.toCharArray();
-        for (char x : ch) {
-            finalWord.addAll(letters.get(String.valueOf(x)));
-            finalWord.add(0);
+        String[] parts = word.split(" ");
+        for (int a = 0; a < parts.length; a++) {
+            char[] ch = parts[a].toCharArray();
+            for (int x = 0; x < ch.length; x++) {
+                for (int y = 0; y < letters.get(String.valueOf(ch[x])).size(); y++) {
+                    finalWord.add(letters.get(String.valueOf(ch[x])).get(y));
+                    if (y < letters.get(String.valueOf(ch[x])).size() - 1) {
+                        finalWord.add(0);
+                    }
+                }
+                if (x < ch.length - 1) {
+                    finalWord.add(0);
+                }
+            }
+            if (a < parts.length - 1) {
+                finalWord.add(-2);
+            }
         }
     }
 
@@ -55,21 +69,26 @@ public class MorseCode extends CommandBase {
         index = 0;
         counter = 1;
         breakBool = false;
+        System.out.println(finalWord);
     }
 
 
     @Override
     public void execute() {
-        if (index > finalWord.size()) {
-            initialize();
-        }
-        int maxCount = intra_character;
+        // if (index > finalWord.size()) {
+        // initialize();
+        // }
         int x = finalWord.get(index);
-        if (x == 0) {
-            maxCount = inter_character;
+        int maxCount = x;
+        if (x <= 0) {
             breakBool = true;
-        } else if (!breakBool) {
-            maxCount = x;
+        }
+        if (x == 0) {
+            maxCount = intra_character;
+        } else if (x == -1) {
+            maxCount = inter_character;
+        } else if (x == -2) {
+            maxCount = word_space;
         }
         if (!breakBool && counter <= maxCount) {
             leds.setColor(Color.kRed);
@@ -90,7 +109,7 @@ public class MorseCode extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return index == finalWord.size();
+        return index >= finalWord.size();
     }
 
     @Override
