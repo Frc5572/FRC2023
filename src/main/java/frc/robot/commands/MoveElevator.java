@@ -1,9 +1,6 @@
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
 
 /**
@@ -11,9 +8,7 @@ import frc.robot.subsystems.Elevator;
  */
 public class MoveElevator extends CommandBase {
 
-    private CANSparkMax motor1 = Elevator.leftElevatorMotor;
-    private CANSparkMax motor2 = Elevator.rightElevatorMotor;
-    private DutyCycleEncoder dutyCycleEncoder = Elevator.elevatorEncoder;
+    private final Elevator elevator;
     private double encoderGoal;
 
     /**
@@ -21,28 +16,26 @@ public class MoveElevator extends CommandBase {
      *
      * @param rotation Current rotation value to determine where the motor is.
      */
-    public MoveElevator(double rotation) {
+    public MoveElevator(double rotation, Elevator elevator) {
         this.encoderGoal = rotation;
+        this.elevator = elevator;
+        addRequirements(elevator);
     }
 
     @Override
     public void execute() {
-        Elevator.runMotor(encVal(), encoderGoal);
+        this.elevator.runMotor(this.elevator.getElevatorRotation(), encoderGoal);
 
     }
 
     @Override
     public void end(boolean interrupted) {
-        motor1.set(0);
-        motor2.set(0);
+        this.elevator.set(0);
     }
 
     @Override
     public boolean isFinished() {
-        return (this.encoderGoal == 0);
+        return this.elevator.atGoal();
     }
 
-    public double encVal() {
-        return (dutyCycleEncoder.getAbsolutePosition() - Constants.Elevator.encoderOffSet);
-    }
 }

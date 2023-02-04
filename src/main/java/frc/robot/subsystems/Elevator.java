@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -14,23 +13,15 @@ import frc.robot.Constants;
  */
 public class Elevator extends SubsystemBase {
 
-    public static final CANSparkMax leftElevatorMotor =
+    private static final CANSparkMax leftElevatorMotor =
         new CANSparkMax(Constants.Elevator.leftElevatorMotorID, MotorType.kBrushless);
-    public static final CANSparkMax rightElevatorMotor =
+    private static final CANSparkMax rightElevatorMotor =
         new CANSparkMax(Constants.Elevator.rightElevatorMotorID, MotorType.kBrushless);
-
-    public static final DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(99);
-
-    // we'll use it later
-    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(
-        Constants.Elevator.elevatorKSVolts, Constants.Elevator.elevatorKGVolts,
-        Constants.Elevator.elevatorKVVoltsSecondsPerRotation);
-
+    private static final DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(99);
     private static final ProfiledPIDController elevatorPID = new ProfiledPIDController(
         Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI, Constants.Elevator.elevatorKD,
         new TrapezoidProfile.Constraints(Constants.Elevator.elevatorKMaxVelocityRadPerSecond,
             Constants.Elevator.elevatorKMaxAccelerationRadPerSecSquared));
-
 
     public Elevator() {
 
@@ -39,16 +30,42 @@ public class Elevator extends SubsystemBase {
     /**
      * Creates runMotor method to move the motors.
      */
-    public static void runMotor(double currentVal, double goal) {
+    public void runMotor(double currentVal, double goal) {
         leftElevatorMotor.set(elevatorPID.calculate(currentVal, goal));
         rightElevatorMotor.set(elevatorPID.calculate(currentVal, goal));
     }
 
     /**
-     * Creates getElevatorRotation method to return the current encoder rotation.
+     * Sets both of the elevator motors to a specific speed.
+     * 
+     * @param speed the speed of the motors
+     */
+    public void set(double speed) {
+        leftElevatorMotor.set(speed);
+        rightElevatorMotor.set(speed);
+    }
+
+    /**
+     * @return return the current encoder rotation in constrast with the off set.
      */
     public double getElevatorRotation() {
 
         return elevatorEncoder.getAbsolutePosition() - Constants.Elevator.encoderOffSet;
+    }
+
+    /**
+     * @return the absolute balue of the elevator encoder.
+     */
+    public double getAbsolutePosition() {
+
+        return elevatorEncoder.getAbsolutePosition();
+    }
+
+    /**
+     * @return whether the Elevator PID is at the goal or not
+     */
+    public boolean atGoal() {
+
+        return elevatorPID.atGoal();
     }
 }
