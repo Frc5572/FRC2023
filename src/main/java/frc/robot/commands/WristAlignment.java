@@ -17,6 +17,7 @@ public class WristAlignment extends CommandBase {
     Wrist wrist;
     double angle;
 
+    /** Creates the constructor of the wrist alignment */
     public WristAlignment(Wrist wrist, double angle) {
         this.wrist = wrist;
         this.angle = angle;
