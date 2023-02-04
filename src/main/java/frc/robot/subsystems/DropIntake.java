@@ -23,7 +23,9 @@ public class DropIntake extends SubsystemBase {
 
     public DropIntake() {}
 
-    // Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
+    /**
+     * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
+     */
     public void intakeConeDeploy() {
         dropMotor.set(Constants.IntakeConstants.DropConstants.DROP_SPEED);
         if (Math.abs(getAngleMeasurement() - coneDeployGoal) < 3) {
@@ -31,7 +33,9 @@ public class DropIntake extends SubsystemBase {
         }
     }
 
-    // Deploy the dropdown intake to the specified height for a cube. Stops when within threshold.
+    /**
+     * Deploy the dropdown intake to the specified height for a cube. Stops when within threshold.
+     */
     public void intakeCubeDeploy() {
         dropMotor.set(Constants.IntakeConstants.DropConstants.DROP_SPEED);
         if (Math.abs(getAngleMeasurement() - cubeDeployGoal) < 3) {
@@ -39,7 +43,9 @@ public class DropIntake extends SubsystemBase {
         }
     }
 
-    // Retracts the dropdown intake to the default height. Stops when within threshold.
+    /**
+     * Retracts the dropdown intake to the default height. Stops when within threshold.
+     */
     public void intakeRetract() {
         dropMotor.set(Constants.IntakeConstants.DropConstants.RETRACT_SPEED);
         if (Math.abs(getAngleMeasurement() - defaultGoal) < 3) {

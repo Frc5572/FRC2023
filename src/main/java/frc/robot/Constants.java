@@ -208,6 +208,9 @@ public final class Constants {
      * Constants for the Intake.
      */
     public static final class IntakeConstants {
+        /**
+         * Constants for the dropdown intake.
+         */
         public static final class DropConstants {
             public static final int DROP_MOTOR_ID = 0;
             public static final int DROP_ENCODER_ID = 0;
@@ -220,6 +223,9 @@ public final class Constants {
             public static final int STOP_SPEED = 0;
         }
 
+        /**
+         * Constants for the wrist intake.
+         */
         public static final class WristConstants {
             public static final int INTAKE_MOTOR_ID = 0;
             public static final int CONE_SENSOR_ID = 0;
