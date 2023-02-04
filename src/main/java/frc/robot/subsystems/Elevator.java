@@ -38,7 +38,7 @@ public class Elevator extends SubsystemBase {
     /**
      * Sets both of the elevator motors to a specific speed.
      * 
-     * @param speed The desired speed of the motors.
+     * @param speed The speed of the motors.
      */
     public void set(double speed) {
         leftElevatorMotor.set(speed);
