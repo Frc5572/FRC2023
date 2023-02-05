@@ -1,25 +1,17 @@
 package frc.robot.commands.leds;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.lib.util.MorseCode;
 import frc.robot.subsystems.LEDs;
 
 /**
  * Command to flash the LED strip between 2 colors
  */
-public class MorseCode extends CommandBase {
+public class MorseCodeFlash extends CommandBase {
     private LEDs leds;
-    private int unit = 5;
-    private int dot = unit;
-    private int dash = unit * 3;
-    // Space between each dot or dash in a character
-    private int intra_character = unit;
-    // Space between each character
-    private int inter_character = unit * 3;
-    private int word_space = unit * 7;
     private int index = 0;
     private int counter = 1;
     private String word = "SOS SOS";
@@ -27,11 +19,7 @@ public class MorseCode extends CommandBase {
     private boolean breakBool = false;
 
 
-    private Map<String, ArrayList<Integer>> letters =
-        Map.of("b", new ArrayList<Integer>(List.of(dash, dot, dot, dot)), "o",
-            new ArrayList<Integer>(List.of(dash, dash, dash)), "s",
-            new ArrayList<Integer>(List.of(dot, dot, dot)), " ",
-            new ArrayList<Integer>(List.of(word_space)));
+    private Map<String, ArrayList<Integer>> letters = MorseCode.generateMorseCodeFlash();
 
     /**
      * Command to flash the LED strip between 2 colors
@@ -40,7 +28,7 @@ public class MorseCode extends CommandBase {
      * @param color The first color
      * @param altColor The second color
      */
-    public MorseCode(LEDs leds) {
+    public MorseCodeFlash(LEDs leds) {
         this.leds = leds;
         addRequirements(leds);
         word = word.toLowerCase();
@@ -69,6 +57,7 @@ public class MorseCode extends CommandBase {
         index = 0;
         counter = 1;
         breakBool = false;
+        System.out.println(letters);
         System.out.println(finalWord);
     }
 
@@ -84,11 +73,11 @@ public class MorseCode extends CommandBase {
             breakBool = true;
         }
         if (x == 0) {
-            maxCount = intra_character;
+            maxCount = MorseCode.intra_character;
         } else if (x == -1) {
-            maxCount = inter_character;
+            maxCount = MorseCode.inter_character;
         } else if (x == -2) {
-            maxCount = word_space;
+            maxCount = MorseCode.word_space;
         }
         if (!breakBool && counter <= maxCount) {
             leds.setColor(Color.kRed);
