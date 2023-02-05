@@ -14,7 +14,6 @@ public class MorseCodeFlash extends CommandBase {
     private LEDs leds;
     private int index = 0;
     private int counter = 1;
-    private String word = "SOS SOS";
     private ArrayList<Integer> finalWord = new ArrayList<Integer>();
     private boolean breakBool = false;
 
@@ -28,7 +27,7 @@ public class MorseCodeFlash extends CommandBase {
      * @param color The first color
      * @param altColor The second color
      */
-    public MorseCodeFlash(LEDs leds) {
+    public MorseCodeFlash(LEDs leds, String word) {
         this.leds = leds;
         addRequirements(leds);
         word = word.toLowerCase();

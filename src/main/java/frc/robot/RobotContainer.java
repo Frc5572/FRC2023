@@ -97,7 +97,7 @@ public class RobotContainer {
         grabbedGamePiece.whileTrue(
             new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
         grabbedGamePiece.negate().whileTrue(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
-        operator.povDown().whileTrue(new MorseCodeFlash(leds));
+        operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
     }
 
     /**
