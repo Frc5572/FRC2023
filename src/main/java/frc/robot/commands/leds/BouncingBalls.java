@@ -10,65 +10,108 @@ import frc.robot.subsystems.LEDs;
  */
 public class BouncingBalls extends CommandBase {
     private final LEDs leds;
-    private int ballCount = 3;
-    private double Gravity = -9.81;
-    private int StartHeight = 1;
-    private double[] Height = new double[ballCount];
-    private double ImpactVelocityStart = Math.sqrt(-2 * Gravity * StartHeight);
-    private double[] ImpactVelocity = new double[ballCount];
-    private double[] TimeSinceLastBounce = new double[ballCount];
-    private int[] Position = new int[ballCount];
-    private double[] ClockTimeSinceLastBounce = new double[ballCount];
-    private double[] Dampening = new double[ballCount];
+    private int ballCount;
+    private double gravity = -9.81;
+    private int startHeight;
+    private double[] height;
+    private double impactVelocityStart;
+    private double[] impactVelocity;
+    private double[] timeSinceLastBounce;
+    private int[] position;
+    private double[] clocktimeSinceLastBounce;
+    private double[] dampening;
+    private Color[] colors;
 
     /**
-     * Command to move LEDs back and forth like a Cylon eye
+     * Command to create a bouncing ball effect
      *
-     * @param leds LED subsystem
-     * @param color Color to which to set the LEDs
-     * @param count The number of LEDs in the moving dot. Best is an odd number.
-     * @param inverted Whether to invert the Color that moves.
+     * @param leds The LED Subsystem.
+     * @param ballCount The number of balls.
+     * @param colors The color of the balls.
+     * @param startHeight The height from which to drop the balls
+     */
+    public BouncingBalls(LEDs leds, int ballCount, Color[] colors, int startHeight) {
+        this.leds = leds;
+        this.ballCount = ballCount;
+        this.startHeight = startHeight;
+        this.height = new double[ballCount];
+        this.impactVelocityStart = Math.sqrt(-2 * gravity * startHeight);
+        this.impactVelocity = new double[ballCount];
+        this.timeSinceLastBounce = new double[ballCount];
+        this.position = new int[ballCount];
+        this.clocktimeSinceLastBounce = new double[ballCount];
+        this.dampening = new double[ballCount];
+        this.colors = colors;
+        addRequirements(leds);
+    }
+
+    /**
+     * Command to create a bouncing ball effect
+     *
+     * @param leds The LED Subsystem.
+     * @param ballCount The number of balls.
+     * @param colors The color of the balls.
+     */
+    public BouncingBalls(LEDs leds, int ballCount, Color[] colors) {
+        this(leds, ballCount, colors, 1);
+    }
+
+    /**
+     * Command to create a bouncing ball effect
+     *
+     * @param leds The LED Subsystem.
+     * @param ballCount The number of balls.
+     */
+    public BouncingBalls(LEDs leds, int ballCount) {
+        this(leds, ballCount, new Color[] {Color.kRed}, 1);
+    }
+
+
+    /**
+     * Command to create a bouncing ball effect
+     *
+     * @param leds The LED Subsystem.
      */
     public BouncingBalls(LEDs leds) {
-        this.leds = leds;
-        addRequirements(leds);
+        this(leds, 1, new Color[] {Color.kRed}, 1);
     }
 
     @Override
     public void initialize() {
         for (int i = 0; i < ballCount; i++) {
-            ClockTimeSinceLastBounce[i] = Timer.getFPGATimestamp();
-            Height[i] = StartHeight;
-            Position[i] = 0;
-            ImpactVelocity[i] = ImpactVelocityStart;
-            TimeSinceLastBounce[i] = 0;
-            Dampening[i] = 0.90 - i / Math.pow(ballCount, 2);
+            clocktimeSinceLastBounce[i] = Timer.getFPGATimestamp();
+            height[i] = startHeight;
+            position[i] = 0;
+            impactVelocity[i] = impactVelocityStart;
+            timeSinceLastBounce[i] = 0;
+            dampening[i] = 0.90 - i / Math.pow(ballCount, 2);
         }
     }
 
     @Override
     public void execute() {
         for (int i = 0; i < ballCount; i++) {
-            TimeSinceLastBounce[i] = Timer.getFPGATimestamp() - ClockTimeSinceLastBounce[i];
-            Height[i] = 0.5 * Gravity * Math.pow(TimeSinceLastBounce[i], 2.0)
-                + ImpactVelocity[i] * TimeSinceLastBounce[i];
+            timeSinceLastBounce[i] = Timer.getFPGATimestamp() - clocktimeSinceLastBounce[i];
+            height[i] = 0.5 * gravity * Math.pow(timeSinceLastBounce[i], 2.0)
+                + impactVelocity[i] * timeSinceLastBounce[i];
 
-            if (Height[i] < 0) {
-                Height[i] = 0;
-                ImpactVelocity[i] = Dampening[i] * ImpactVelocity[i];
-                ClockTimeSinceLastBounce[i] = Timer.getFPGATimestamp();
+            if (height[i] < 0) {
+                height[i] = 0;
+                impactVelocity[i] = dampening[i] * impactVelocity[i];
+                clocktimeSinceLastBounce[i] = Timer.getFPGATimestamp();
 
-                if (ImpactVelocity[i] < 0.01) {
-                    ImpactVelocity[i] = ImpactVelocityStart;
+                if (impactVelocity[i] < 0.01) {
+                    impactVelocity[i] = impactVelocityStart;
                 }
             }
-            Position[i] = (int) Math.round(Height[i] * (leds.getLength() - 1) / StartHeight);
+            position[i] = (int) Math.round(height[i] * (leds.getLength() - 1) / startHeight);
         }
         for (int i = 0; i < leds.getLength(); i++) {
             leds.setColor(Color.kBlack);
         }
         for (int i = 0; i < ballCount; i++) {
-            leds.setColor(Position[i], Color.kRed);
+            Color c = i >= colors.length ? Color.kRed : colors[i];
+            leds.setColor(position[i], c);
         }
         leds.setData();
     }

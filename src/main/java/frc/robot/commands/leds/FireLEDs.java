@@ -1,6 +1,6 @@
 package frc.robot.commands.leds;
 
-import java.util.Arrays;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDs;
 
@@ -10,34 +10,44 @@ import frc.robot.subsystems.LEDs;
 public class FireLEDs extends CommandBase {
     private final LEDs leds;
     private int end, start;
-    private int cooling, sparking, speedDelay;
+    private int cooling = 100;
+    private int sparking = 50;
+    private int speedDelay = 15;
     private int[] heat;
 
     /**
-     * Command to move LEDs back and forth like a Cylon eye
+     * Command to make a fire-esque display for a single column of LEDs
      *
-     * @param leds LED subsystem
-     * @param color Color to which to set the LEDs
-     * @param count The number of LEDs in the moving dot. Best is an odd number.
-     * @param inverted Whether to invert the Color that moves.
+     * @param leds The LED subsystem
+     * @param cooling Indicates how fast a flame cools down. More cooling means shorter flames.
+     * @param sparking Indicates the chance (out of 255) that a spark will ignite. A higher value
+     *        makes the fire more active.
+     * @param speedDelay Delay in ms. Allows you to slow down the fire activity … a higher value
+     *        makes the flame appear slower
      */
-    public FireLEDs(LEDs leds) {
+    public FireLEDs(LEDs leds, int cooling, int sparking, int speedDelay) {
         this.leds = leds;
         this.end = leds.getLength();
         this.start = 0;
-        this.cooling = 100;
-        this.sparking = 50;
-        this.speedDelay = 15;
+        this.cooling = cooling;
+        this.sparking = sparking;
+        this.speedDelay = speedDelay;
         this.heat = new int[leds.getLength()];
         addRequirements(leds);
     }
 
+    /**
+     * Command to make a fire-esque display for a single column of LEDs
+     *
+     * @param leds The LED subsystem
+     */
+    public FireLEDs(LEDs leds) {
+        this(leds, 100, 50, 15);
+    }
+
     @Override
     public void initialize() {
-        Arrays.fill(heat, (int) 127);
-        for (int i = start; i < end; i++) {
-            // System.out.println((int) heat[i]);
-        }
+        this.heat = new int[leds.getLength()];
     }
 
     @Override
@@ -60,14 +70,13 @@ public class FireLEDs extends CommandBase {
         if (random(255, 0) < this.sparking) {
             int y = random(7, 0);
             heat[y] = heat[y] + random(255, 160);
-            // heat[y] = random(160,255);
         }
         // Step 4. Convert heat to LED colors
         for (int j = start; j < end; j++) {
             setPixelHeatColor(j, heat[j]);
         }
         leds.setData();
-        // Timer.delay(1 / 5);
+        Timer.delay(speedDelay / 1000);
     }
 
 
