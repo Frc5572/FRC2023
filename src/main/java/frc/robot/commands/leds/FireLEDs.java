@@ -88,10 +88,10 @@ public class FireLEDs extends CommandBase {
     }
 
     /**
-     * Set the "Heat" of the individaul LED
+     * Set the "Heat" of the individual LED
      *
      * @param index The index of the LED to change
-     * @param temperature The tempature of the LED
+     * @param temperature The temperature of the LED
      */
     private void setPixelHeatColor(int index, int temperature) {
         // Scale 'heat' down from 0-255 to 0-191

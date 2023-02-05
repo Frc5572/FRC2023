@@ -23,7 +23,7 @@ public class MeteorRain extends CommandBase {
      * Create a Meteor Rain effect like
      * https://www.tweaking4all.com/hardware/arduino/adruino-led-strip-effects/#LEDStripEffectMeteorRain
      *
-     * @param leds The LED subsytem
+     * @param leds The LED subsystem
      */
     public MeteorRain(LEDs leds) {
         this.leds = leds;
