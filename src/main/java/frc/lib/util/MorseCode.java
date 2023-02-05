@@ -12,6 +12,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.wpilibj.Filesystem;
 
+/**
+ * A library for using Morse Code
+ */
 public class MorseCode {
 
     public static JsonNode morseJSON =
@@ -39,6 +42,11 @@ public class MorseCode {
         }
     }
 
+    /**
+     * Generate a Map of dots and dashes for each character in the Morse Code Alphabet
+     *
+     * @return A map of characters to dot-dash codes
+     */
     public static Map<String, ArrayList<Integer>> generateMorseCodeFlash() {
         HashMap<String, ArrayList<Integer>> letters = new HashMap<String, ArrayList<Integer>>();
         Iterator<Entry<String, JsonNode>> iterator = morseJSON.fields();

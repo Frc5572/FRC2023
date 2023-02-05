@@ -16,6 +16,7 @@ public class MorseCodeFlash extends CommandBase {
     private int counter = 1;
     private ArrayList<Integer> finalWord = new ArrayList<Integer>();
     private boolean breakBool = false;
+    private Color color;
 
 
     private Map<String, ArrayList<Integer>> letters = MorseCode.generateMorseCodeFlash();
@@ -24,11 +25,12 @@ public class MorseCodeFlash extends CommandBase {
      * Command to flash the LED strip between 2 colors
      *
      * @param leds LED Subsystem
-     * @param color The first color
-     * @param altColor The second color
+     * @param word The word or sentance to flash in Morse Code
+     * @param color The color to flash
      */
-    public MorseCodeFlash(LEDs leds, String word) {
+    public MorseCodeFlash(LEDs leds, String word, Color color) {
         this.leds = leds;
+        this.color = color;
         addRequirements(leds);
         word = word.toLowerCase();
         String[] parts = word.split(" ");
@@ -51,13 +53,22 @@ public class MorseCodeFlash extends CommandBase {
         }
     }
 
+    /**
+     * Command to flash the LED strip between 2 colors
+     *
+     * @param leds LED Subsystem
+     * @param word The word or sentance to flash in Morse Code
+     */
+    public MorseCodeFlash(LEDs leds, String word) {
+        this(leds, word, Color.kRed);
+    }
+
     @Override
     public void initialize() {
         index = 0;
         counter = 1;
         breakBool = false;
-        System.out.println(letters);
-        System.out.println(finalWord);
+        leds.setColor(Color.kBlack);
     }
 
 
