@@ -2,6 +2,7 @@ package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.lib.math.Conversions;
 import frc.robot.subsystems.LEDs;
 
 /**
@@ -54,7 +55,7 @@ public class FireLEDs extends CommandBase {
     public void execute() {
         // Step 1. Cool down every cell a little
         for (int i = start; i < end; i++) {
-            int cooldown = random(((cooling * 10) / leds.getLength()) + 2, 0);
+            int cooldown = Conversions.random(((cooling * 10) / leds.getLength()) + 2, 0);
             if (cooldown > heat[i]) {
                 heat[i] = 0;
             } else {
@@ -67,16 +68,16 @@ public class FireLEDs extends CommandBase {
             heat[i] = (int) ((heat[i - 1] + heat[i - 2] + heat[i - 2]) / 3);
         }
         // Step 3. Randomly ignite new 'sparks' near the bottom
-        if (random(255, 0) < this.sparking) {
-            int y = random(7, 0);
-            heat[y] = heat[y] + random(255, 160);
+        if (Conversions.random(255, 0) < this.sparking) {
+            int y = Conversions.random(7, 0);
+            heat[y] = heat[y] + Conversions.random(255, 160);
         }
         // Step 4. Convert heat to LED colors
         for (int j = start; j < end; j++) {
             setPixelHeatColor(j, heat[j]);
         }
         leds.setData();
-        Timer.delay(speedDelay / 1000);
+        Timer.delay(speedDelay / 1000.0);
     }
 
 
@@ -101,9 +102,5 @@ public class FireLEDs extends CommandBase {
         } else { // coolest
             leds.setRGB(Pixel, heatramp, 0, 0);
         }
-    }
-
-    public int random(int upper, int lower) {
-        return (int) (Math.random() * (upper - lower)) + lower;
     }
 }

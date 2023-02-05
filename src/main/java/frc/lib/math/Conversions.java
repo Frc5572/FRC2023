@@ -90,4 +90,12 @@ public class Conversions {
         return goal % 360;
     }
 
+
+    public static int random(int upper, int lower) {
+        return (int) (Math.random() * (upper - lower)) + lower;
+    }
+
+    public static int random(int upper) {
+        return random(upper, 0);
+    }
 }
