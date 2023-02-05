@@ -86,7 +86,13 @@ public class FireLEDs extends CommandBase {
         return true;
     }
 
-    void setPixelHeatColor(int Pixel, int temperature) {
+    /**
+     * Set the "Heat" of the individaul LED
+     *
+     * @param index The index of the LED to change
+     * @param temperature The tempature of the LED
+     */
+    private void setPixelHeatColor(int index, int temperature) {
         // Scale 'heat' down from 0-255 to 0-191
         int t192 = (int) Math.round((temperature / 255.0) * 191);
 
@@ -96,11 +102,11 @@ public class FireLEDs extends CommandBase {
 
         // figure out which third of the spectrum we're in:
         if (t192 > 0x80) { // hottest
-            leds.setRGB(Pixel, 255, 255, heatramp);
+            leds.setRGB(index, 255, 255, heatramp);
         } else if (t192 > 0x40) { // middle
-            leds.setRGB(Pixel, 255, heatramp, 0);
+            leds.setRGB(index, 255, heatramp, 0);
         } else { // coolest
-            leds.setRGB(Pixel, heatramp, 0, 0);
+            leds.setRGB(index, heatramp, 0, 0);
         }
     }
 }

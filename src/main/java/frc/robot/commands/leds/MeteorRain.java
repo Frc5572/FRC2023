@@ -8,18 +8,26 @@ import frc.robot.subsystems.LEDs;
 
 /**
  * Command to move LEDs back and forth like a Cylon eye
+ *
+ * <p>
+ * Doesn't really work
  */
 public class MeteorRain extends CommandBase {
     private final LEDs leds;
-    private int NUM_LEDS, start;
+    private int numLEDs;
     private boolean meteorRandomDecay = true;
     private int meteorTrailDecay = 64;
     private int meteorSize = 10;
 
+    /**
+     * Create a Meteor Rain effect like
+     * https://www.tweaking4all.com/hardware/arduino/adruino-led-strip-effects/#LEDStripEffectMeteorRain
+     *
+     * @param leds The LED subsytem
+     */
     public MeteorRain(LEDs leds) {
         this.leds = leds;
-        this.NUM_LEDS = leds.getLength();
-        this.start = 0;
+        this.numLEDs = leds.getLength();
         addRequirements(leds);
     }
 
@@ -31,11 +39,11 @@ public class MeteorRain extends CommandBase {
     @Override
     public void execute() {
         // leds.setColor(Color.kBlack);
-        for (int i = 0; i < NUM_LEDS + NUM_LEDS; i++) {
+        for (int i = 0; i < numLEDs + numLEDs; i++) {
 
 
             // fade brightness all LEDs one step
-            for (int j = 0; j < NUM_LEDS; j++) {
+            for (int j = 0; j < numLEDs; j++) {
                 if (!meteorRandomDecay || (Conversions.random(10) > 5)) {
                     fadeToBlack(j, meteorTrailDecay);
                 }
@@ -43,7 +51,7 @@ public class MeteorRain extends CommandBase {
 
             // draw meteor
             for (int j = 0; j < meteorSize; j++) {
-                if ((i - j < NUM_LEDS) && (i - j >= 0)) {
+                if ((i - j < numLEDs) && (i - j >= 0)) {
                     leds.setColor(i - j, Color.kWhite);
                 }
             }
@@ -59,11 +67,17 @@ public class MeteorRain extends CommandBase {
         return true;
     }
 
-    private void fadeToBlack(int ledNo, int fadeValue) {
+    /**
+     * Fade an individual LED to black
+     *
+     * @param index The index of the LED to change
+     * @param fadeValue The amount to fade by.
+     */
+    private void fadeToBlack(int index, int fadeValue) {
         Color oldColor;
         int r, g, b;
 
-        oldColor = leds.getColor(ledNo);
+        oldColor = leds.getColor(index);
         r = (int) oldColor.red;
         g = (int) oldColor.green;
         b = (int) oldColor.blue;
@@ -71,6 +85,6 @@ public class MeteorRain extends CommandBase {
         g = (g <= 10) ? 0 : (int) g - (g * fadeValue / 256);
         b = (b <= 10) ? 0 : (int) b - (b * fadeValue / 256);
 
-        leds.setRGB(ledNo, r, g, b);
+        leds.setRGB(index, r, g, b);
     }
 }

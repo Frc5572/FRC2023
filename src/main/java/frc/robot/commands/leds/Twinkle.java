@@ -11,7 +11,7 @@ import frc.robot.subsystems.LEDs;
  */
 public class Twinkle extends CommandBase {
     private final LEDs leds;
-    private int NUM_LEDS;
+    private int numLEDs;
     private int count;
     private Color[] colors = new Color[] {};
 
@@ -24,7 +24,7 @@ public class Twinkle extends CommandBase {
      */
     public Twinkle(LEDs leds, int count, Color[] colors) {
         this.leds = leds;
-        this.NUM_LEDS = leds.getLength();
+        this.numLEDs = leds.getLength();
         this.count = count;
         this.colors = colors;
         addRequirements(leds);
@@ -59,10 +59,10 @@ public class Twinkle extends CommandBase {
         leds.setColor(Color.kBlack);
         for (int i = 0; i < count; i++) {
             if (colors.length > 0) {
-                leds.setColor(Conversions.random(NUM_LEDS),
+                leds.setColor(Conversions.random(numLEDs),
                     colors[Conversions.random(colors.length)]);
             } else {
-                leds.setRGB(Conversions.random(NUM_LEDS), Conversions.random(0, 255),
+                leds.setRGB(Conversions.random(numLEDs), Conversions.random(0, 255),
                     Conversions.random(0, 255), Conversions.random(0, 255));
             }
             leds.setData();
