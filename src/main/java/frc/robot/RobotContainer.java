@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
+import frc.robot.commands.leds.FireLEDs;
 import frc.robot.commands.leds.FlashingLEDColor;
-import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.subsystems.LEDs;
@@ -55,7 +55,7 @@ public class RobotContainer {
     public RobotContainer() {
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
-        leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 3, false));
+        leds.setDefaultCommand(new FireLEDs(leds));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         // Configure the button bindings
