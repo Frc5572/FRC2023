@@ -10,7 +10,8 @@ import frc.robot.subsystems.LEDs;
  */
 public class FireLEDs extends CommandBase {
     private final LEDs leds;
-    private int end, start;
+    private int end;
+    private int start;
     private int cooling = 100;
     private int sparking = 50;
     private int speedDelay = 15;

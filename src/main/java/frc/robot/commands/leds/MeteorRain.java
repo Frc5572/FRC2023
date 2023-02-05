@@ -74,17 +74,13 @@ public class MeteorRain extends CommandBase {
      * @param fadeValue The amount to fade by.
      */
     private void fadeToBlack(int index, int fadeValue) {
-        Color oldColor;
-        int r, g, b;
-
-        oldColor = leds.getColor(index);
-        r = (int) oldColor.red;
-        g = (int) oldColor.green;
-        b = (int) oldColor.blue;
+        Color oldColor = leds.getColor(index);
+        int r = (int) oldColor.red;
+        int g = (int) oldColor.green;
+        int b = (int) oldColor.blue;
         r = (r <= 10) ? 0 : (int) r - (r * fadeValue / 256);
         g = (g <= 10) ? 0 : (int) g - (g * fadeValue / 256);
         b = (b <= 10) ? 0 : (int) b - (b * fadeValue / 256);
-
         leds.setRGB(index, r, g, b);
     }
 }
