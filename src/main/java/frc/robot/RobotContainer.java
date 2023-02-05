@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
+import frc.robot.commands.leds.BouncingBalls;
 import frc.robot.commands.leds.FlashingLEDColor;
-import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.subsystems.LEDs;
@@ -51,18 +51,21 @@ public class RobotContainer {
     int ledPattern = 0;
 
     // Subsystems
-    private LEDs leds = new LEDs(addressableLED, controLedBuffer, 42);
-    private LEDs leds1 = new LEDs(addressableLED, controLedBuffer, 42, 42);
+    private LEDs leds = new LEDs(addressableLED, controLedBuffer, 84);
+    // private LEDs leds1 = new LEDs(addressableLED, controLedBuffer, 42, 42);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     public DigitalInput testSensor = new DigitalInput(0);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+        addressableLED.setLength(controLedBuffer.getLength());
+        addressableLED.setData(controLedBuffer);
+        addressableLED.start();
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
-        leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 3, false));
-        leds1.setDefaultCommand(new RainbowLEDs(leds1));
+        // leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 3, false));
+        leds.setDefaultCommand(new BouncingBalls(leds));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         // Configure the button bindings

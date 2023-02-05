@@ -13,6 +13,7 @@ public class LEDs extends SubsystemBase {
     private AddressableLED addressableLED;
     private int length;
     private int start;
+    private boolean inverted;
 
 
     public LEDs(AddressableLED addressableLED, AddressableLEDBuffer controLedBuffer, int length) {
@@ -21,13 +22,16 @@ public class LEDs extends SubsystemBase {
 
     public LEDs(AddressableLED addressableLED, AddressableLEDBuffer controLedBuffer, int length,
         int start) {
+        this(addressableLED, controLedBuffer, length, start, false);
+    }
+
+    public LEDs(AddressableLED addressableLED, AddressableLEDBuffer controLedBuffer, int length,
+        int start, boolean inverted) {
         this.controLedBuffer = controLedBuffer;
         this.addressableLED = addressableLED;
         this.length = length;
         this.start = start;
-        addressableLED.setLength(controLedBuffer.getLength());
-        addressableLED.setData(controLedBuffer);
-        addressableLED.start();
+        this.inverted = inverted;
     }
 
     /**
