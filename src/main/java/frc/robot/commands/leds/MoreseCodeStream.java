@@ -1,6 +1,7 @@
 package frc.robot.commands.leds;
 
 import java.util.ArrayList;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.util.MorseCode;
@@ -53,26 +54,35 @@ public class MoreseCodeStream extends CommandBase {
     @Override
     public void execute() {
         leds.setColor(Color.kBlack);
+        System.out.println("Index: " + index);
         for (int i = index; i >= 0; i--) {
-            if (index >= 0 && index < leds.getLength()) {
-                leds.setColor(i, finalStrip.get(index - i));
-            } else if (index >= leds.getLength()) {
-                leds.setColor(i - (leds.getLength() - index),
-                    finalStrip.get(i - (leds.getLength() - index)));
+            System.out.println("I: " + i);
+            if (index < leds.getLength()) {
+                int q = index - i;
+                if (q < finalStrip.size()) {
+                    leds.setColor(i, finalStrip.get(q));
+                }
             }
+            // else if (index >= leds.getLength()) {
+            // int q = index - (leds.getLength() - 1);
+            // System.out.println("Q: " + q);
+            // int k = i - q;
+            // int w = k - q;
+            // System.out.println("K: " + k);
+            // if (k >= 0 && k < finalStrip.size()) {
+            // leds.setColor(q, finalStrip.get(k - w));
+            // }
+            // }
         }
+        leds.setData();
         index++;
-        // for (int i = index; i >= 0; i--) {
-        // int q = index - i;
-        // Color x = finalStrip.get(q);
-        // leds.setColor(q, x);
-        // }
+        Timer.delay(.05);
     }
 
-    // @Override
-    // public boolean isFinished() {
-    // return index >= finalWord.size();
-    // }
+    @Override
+    public boolean isFinished() {
+        return false; // index >= finalStrip.size() + leds.getLength() - 1;
+    }
 
     @Override
     public boolean runsWhenDisabled() {
