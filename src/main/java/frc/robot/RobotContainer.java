@@ -21,6 +21,7 @@ import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
 import frc.robot.commands.leds.FlashingLEDColor;
+import frc.robot.commands.leds.MorseCodeFlash;
 import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.subsystems.LEDs;
@@ -94,6 +95,7 @@ public class RobotContainer {
         grabbedGamePiece.whileTrue(
             new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
         grabbedGamePiece.negate().whileTrue(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
+        operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
     }
 
     /**
