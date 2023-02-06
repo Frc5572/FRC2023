@@ -13,7 +13,7 @@ import frc.robot.subsystems.LEDs;
  * <p>
  * DOES NOT WORK YET
  */
-public class MoreseCodeStream extends CommandBase {
+public class MorseCodeStream extends CommandBase {
     private LEDs leds;
     private int index = 0;
     private ArrayList<Boolean> finalWord = new ArrayList<Boolean>();
@@ -26,7 +26,7 @@ public class MoreseCodeStream extends CommandBase {
      * @param word The word or sentence to flash in Morse Code
      * @param color The color to flash
      */
-    public MoreseCodeStream(LEDs leds, String word, Color color) {
+    public MorseCodeStream(LEDs leds, String word, Color color) {
         this.leds = leds;
         finalWord = MorseCode.generateDitArray(word, 1);
         finalStrip = MorseCode.generateDirColorArray(finalWord, color);
@@ -39,7 +39,7 @@ public class MoreseCodeStream extends CommandBase {
      * @param leds LED Subsystem
      * @param word The word or sentence to flash in Morse Code
      */
-    public MoreseCodeStream(LEDs leds, String word) {
+    public MorseCodeStream(LEDs leds, String word) {
         this(leds, word, Color.kRed);
     }
 
