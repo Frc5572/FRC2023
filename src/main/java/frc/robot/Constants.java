@@ -208,8 +208,8 @@ public final class Constants {
         public static final double K_SVOLTS = 0.0;
         public static final double K_MAX_VELOCITY_RAD_PER_SECOND = 0.0;
         public static final double K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED = 0.0;
-        public static final double K_WOLT_SECOND_PER_RAD = 0.0;
-        public static final double K_AVOLT_SECOND_SUARED_PER_RAD = 0.0;
+        public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
+        public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
         public static final double K_ENCODER_DISTANCE_PER_PULSE = 0.0;
     }
 

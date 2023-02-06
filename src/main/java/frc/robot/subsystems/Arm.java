@@ -19,9 +19,9 @@ public class Arm extends SubsystemBase {
     private final CANSparkMax armMotor2 =
         new CANSparkMax(Constants.ArmConstants.ARM_ID_2, MotorType.kBrushless);
     private final MotorControllerGroup armMotors = new MotorControllerGroup(armMotor, armMotor2);
-    private final ArmFeedforward m_feedforward =
-        new ArmFeedforward(Constants.ArmPID.K_SVOLTS, Constants.ArmPID.K_GVOLTS,
-            Constants.ArmPID.K_WOLT_SECOND_PER_RAD, Constants.ArmPID.K_AVOLT_SECOND_SUARED_PER_RAD);
+    private final ArmFeedforward m_feedforward = new ArmFeedforward(Constants.ArmPID.K_SVOLTS,
+        Constants.ArmPID.K_GVOLTS, Constants.ArmPID.K_WVOLT_SECOND_PER_RAD,
+        Constants.ArmPID.K_AVOLT_SECOND_SQUARED_PER_RAD);
     private DutyCycleEncoder ourAbsoluteEncoder =
         new DutyCycleEncoder(Constants.ArmConstants.ENCODER_CHANNEL);
     private final ProfiledPIDController pid_controller =
@@ -37,9 +37,9 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * Gets the angle measurement of the arm pivot.
+     * Gets the angle measurement of the arm pivot in degrees.
      */
-    public double getAngleMeasurement() {
+    public double getDegreeMeasurement() {
         double armAngle = -(ourAbsoluteEncoder.getAbsolutePosition() - encOffset) * 360;
         return armAngle;
     }
@@ -57,9 +57,9 @@ public class Arm extends SubsystemBase {
      * @param angle requested angle.
      */
     public void armToAngle(double angle) {
-        if (!(Math.abs(getAngleMeasurement() - angle) < 5)) {
-            double v = pid_controller.calculate(getAngleMeasurement(), angle);
-            armMotors.set(v);
+        if (!(Math.abs(getDegreeMeasurement() - angle) < 5)) {
+            armMotors.set(pid_controller.calculate(getDegreeMeasurement(), angle)
+                + m_feedforward.calculate(getDegreeMeasurement(), 0));
         }
     }
 
