@@ -1,15 +1,42 @@
-name: Branch Deleted
-on: delete
+# This is a basic workflow to help you get started with Actions
+
+name: Javadoc
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push
+  push:
+    branches:
+      - main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
-  delete:
-    if: github.event.ref_type == 'branch'
-    runs-on: ubuntu-latest
+  javadoc:
+    name: Generate Javadocs
+    # The type of runner that the job will run on
+    runs-on: ubuntu-22.04
+    # This grabs the WPILib docker container
+    container: wpilib/roborio-cross-ubuntu:2023-22.04
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: gh-pages
-      - name: Clean up
-        run: |
-          git config --global user.name "bot"
-          git config --global user.email "bot@frc5572.org"
-          git rm --cached -r "${{ github.event.ref }}" && git commit -m "removed deleted branch ${{ github.event.ref }}" && git push origin gh-pages
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+    # Grant execute permission for gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    # Runs a single command using the runners shell
+    - name: Create Javadocs
+      run: ./gradlew javadoc
+    
+    - name: Extract branch name
+      shell: bash
+      run: echo "::set-output name=BRANCH_NAME::${GITHUB_REF##*/}"
+      id: branch
+    # Deploy javadocs to github.io (https://github.com/peaceiris/actions-gh-pages/issues/324#issuecomment-665441440)
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/docs/javadoc
+        full_commit_message: Deploy Javadocs to GitHub Pages
