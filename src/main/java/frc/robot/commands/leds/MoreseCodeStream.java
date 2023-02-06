@@ -62,21 +62,21 @@ public class MoreseCodeStream extends CommandBase {
                 if (q < finalStrip.size()) {
                     leds.setColor(i, finalStrip.get(q));
                 }
+            } else if (index >= leds.getLength()) {
+                int q = index - (leds.getLength() - 1);
+                System.out.println("Q: " + q);
+                int k = index - i;
+                int w = q + k;
+                System.out.println("K: " + k);
+                System.out.println("W: " + w);
+                if (w >= 0 && w < finalStrip.size()) {
+                    leds.setColor(leds.getLength() - q, finalStrip.get(w));
+                }
             }
-            // else if (index >= leds.getLength()) {
-            // int q = index - (leds.getLength() - 1);
-            // System.out.println("Q: " + q);
-            // int k = i - q;
-            // int w = k - q;
-            // System.out.println("K: " + k);
-            // if (k >= 0 && k < finalStrip.size()) {
-            // leds.setColor(q, finalStrip.get(k - w));
-            // }
-            // }
         }
         leds.setData();
         index++;
-        Timer.delay(.05);
+        Timer.delay(.2);
     }
 
     @Override
