@@ -54,3 +54,58 @@ jobs:
     # Runs a single command using the runners shell
     - name: Compile and run tests on robot code
       run: ./gradlew build
+  javadoc:
+    name: Generate Javadocs
+    # The type of runner that the job will run on
+    runs-on: ubuntu-22.04
+    # This grabs the WPILib docker container
+    container: wpilib/roborio-cross-ubuntu:2023-22.04
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+    # Grant execute permission for gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    # Runs a single command using the runners shell
+    - name: Create Javadocs
+      run: ./gradlew javadoc
+    
+    - name: Extract branch name
+      shell: bash
+      run: echo "::set-output name=BRANCH_NAME::${GITHUB_REF##*/}"
+      id: branch
+    # Deploy javadocs to github.io (https://github.com/peaceiris/actions-gh-pages/issues/324#issuecomment-665441440)
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/docs/javadoc
+        destination_dir: ${{ steps.branch.outputs.BRANCH_NAME }}
+        full_commit_message: Deploy ${{ steps.branch.outputs.BRANCH_NAME }} to GitHub Pages
+  javadoc_index:
+    name: Javadoc Index
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main'
+    needs: javadoc
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: pages
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main
+      - name: remove old frontpage
+        run: find pages -maxdepth 1 -type f -delete
+      - name: pull frontpage
+        run: cp -r main/doc/* pages/
+      - name: commit
+        working-directory: ./pages
+        run: |
+          git config --global user.name "bot"
+          git config --global user.email "bot@frc5572.org"
+          git add . && git commit --allow-empty -m "changed frontpage" && git push origin gh-pages 
+
+

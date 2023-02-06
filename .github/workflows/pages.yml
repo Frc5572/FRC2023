@@ -1,0 +1,15 @@
+name: Branch Deleted
+on: delete
+jobs:
+  delete:
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+      - name: Clean up
+        run: |
+          git config --global user.name "bot"
+          git config --global user.email "bot@frc5572.org"
+          git rm --cached -r "${{ github.event.ref }}" && git commit -m "removed deleted branch ${{ github.event.ref }}" && git push origin gh-pages
