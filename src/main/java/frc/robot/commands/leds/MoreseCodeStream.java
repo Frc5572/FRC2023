@@ -22,7 +22,7 @@ public class MoreseCodeStream extends CommandBase {
      * Command to flash the LED strip between 2 colors
      *
      * @param leds LED Subsystem
-     * @param word The word or sentance to flash in Morse Code
+     * @param word The word or sentence to flash in Morse Code
      * @param color The color to flash
      */
     public MoreseCodeStream(LEDs leds, String word, Color color) {
@@ -36,7 +36,7 @@ public class MoreseCodeStream extends CommandBase {
      * Command to flash the LED strip between 2 colors
      *
      * @param leds LED Subsystem
-     * @param word The word or sentance to flash in Morse Code
+     * @param word The word or sentence to flash in Morse Code
      */
     public MoreseCodeStream(LEDs leds, String word) {
         this(leds, word, Color.kRed);

@@ -132,7 +132,6 @@ public class MorseCode {
      * @param unit The base unit/length of time for the conversion
      * @param primaryColor The color to use when the array value is.
      * @return An array of color objects.
-     * @return
      */
     public static ArrayList<Color> generateDirColorArray(String word, int unit,
         Color primaryColor) {
