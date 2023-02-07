@@ -10,6 +10,12 @@ public class ArmMoving extends CommandBase {
     private Arm arm;
     private double angle;
 
+    /**
+     * Requirements for the command.
+     *
+     * @param arm Arm subsystem.
+     * @param goal Goal at which the arm should move to.
+     */
     public ArmMoving(Arm arm, double goal) {
         this.arm = arm;
         this.angle = goal;
