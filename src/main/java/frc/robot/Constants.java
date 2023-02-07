@@ -190,37 +190,28 @@ public final class Constants {
      * Elevator Motor constants.
      */
     public static final class Elevator {
-        /* Motor ID's. */
-        public static final int elevatorMotorID = 0;
+        public static final int ELEVATOR_MOTOR_ID = 0;
+        public static final int ELEVATOR_ENCODER_ID = 0;
 
-        /* Encoder ticks. */
-        public static final double stowedAway = 0.0;
-        public static final double ground = 0.0;
-        public static final double middleLevel = 0.0;
-        public static final double highLevel = 0.0;
-        public static final double humanPlayerStation = 0.0;
-
-        /* Elevator motor speed. */
-        public static final double elevatorSpeed = 0.0;
-        public static final double elevatorStop = 0.0;
+        public static final double ELEVATOR_STOP = 0.0;
 
         /**
          * Constants for the PID portion of the elevator.
          */
         public static final class PID {
-            public static final double elevatorKP = 0.0;
-            public static final double elevatorKI = 0.0;
-            public static final double elevatorKD = 0.0;
+            public static final double ELEVATOR_KP = 0.0;
+            public static final double ELEVATOR_KI = 0.0;
+            public static final double ELEVATOR_KD = 0.0;
 
-            public static final double elevatorKMaxVelocityRadPerSecond = 0.0;
-            public static final double elevatorKMaxAccelerationRadPerSecSquared = 0.0;
-            public static final double elevatorKSVolts = 0.0;
-            public static final double elevatorKGVolts = 0.0;
-            public static final double elevatorKVVoltsSecondsPerRotation = 0.0;
+            public static final double ELEVATOR_K_MAX_VELOCITY_RAD_PER_SECOND = 0.0;
+            public static final double ELEVATOR_K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED = 0.0;
+            public static final double ELEVATOR_KS_VOLTS = 0.0;
+            public static final double ELEVATOR_KG_VOLTS = 0.0;
+            public static final double ELEVATOR_KV_VOLT_SECONDS_PER_ROTATION = 0.0;
         }
 
         /* Elevator Encoder */
-        public static final double encoderOffSet = 0.0;
+        public static final double ENCODER_OFFSET = 0.0;
     }
 }
 
