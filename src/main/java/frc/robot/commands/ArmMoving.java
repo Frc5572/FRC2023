@@ -13,6 +13,7 @@ public class ArmMoving extends CommandBase {
     public ArmMoving(Arm arm, double goal) {
         this.arm = arm;
         this.angle = goal;
+        addRequirements(arm);
     }
 
     @Override
