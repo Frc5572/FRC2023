@@ -33,9 +33,11 @@ import frc.robot.subsystems.Swerve;
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
+ * 
+ * Uses $$\min_x \quad f(\mathbf{x})$$
  */
 public class RobotContainer {
-    /* Controllers */
+    /* Controllers. */
     private final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_ID);
     private final CommandXboxController operator = new CommandXboxController(Constants.OPERATOR_ID);
 
