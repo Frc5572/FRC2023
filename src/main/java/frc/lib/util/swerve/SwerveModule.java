@@ -46,7 +46,6 @@ public class SwerveModule {
 
         /* Drive Motor Config */
         driveMotor = new TalonFX(constants.driveMotorID, "canivore");
-        // driveMotor = new TalonFX(constants.driveMotorID);
         configDriveMotor();
 
 

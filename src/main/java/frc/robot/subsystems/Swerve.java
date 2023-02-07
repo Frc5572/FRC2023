@@ -91,7 +91,6 @@ public class Swerve extends SubsystemBase {
         setModuleStates(updated);
     }
 
-
     /**
      * Sets motors to 0 or inactive.
      */
