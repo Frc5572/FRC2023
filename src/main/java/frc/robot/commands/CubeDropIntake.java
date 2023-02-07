@@ -13,6 +13,12 @@ public class CubeDropIntake extends CommandBase {
     private DropIntake dIntake;
     private WristIntake wIntake;
 
+    /**
+     * Requirements for the command.
+     *
+     * @param dropIntake Dropdown intake subsystem
+     * @param wristIntake Wrist intake subsystem
+     */
     public CubeDropIntake(DropIntake dropIntake, WristIntake wristIntake) {
         this.dIntake = dropIntake;
         this.wIntake = wristIntake;
