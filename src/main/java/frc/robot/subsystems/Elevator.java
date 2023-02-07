@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/**
+ * Creates the subsystem for the elevator.
+ */
 public class Elevator extends SubsystemBase {
     private final CANSparkMax eMotor =
         new CANSparkMax(Constants.Elevator.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
