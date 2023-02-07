@@ -188,6 +188,9 @@ public class HybridBarrierSDP {
         invert(Q2RO2m1n1H, G); // 41
     }
 
+    /**
+     * TODO
+     */
     public void findInitialFeasibleDualVector() {
 
     }
