@@ -16,6 +16,7 @@ public class CubeDropIntake extends CommandBase {
     public CubeDropIntake(DropIntake dropIntake, WristIntake wristIntake) {
         this.dIntake = dropIntake;
         this.wIntake = wristIntake;
+        addRequirements(dIntake, wIntake);
     }
 
     @Override

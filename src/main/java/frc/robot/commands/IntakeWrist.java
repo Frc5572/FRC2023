@@ -12,6 +12,7 @@ public class IntakeWrist extends CommandBase {
 
     public IntakeWrist(WristIntake wristIntake) {
         this.wIntake = wristIntake;
+        addRequirements(wIntake);
     }
 
     @Override
