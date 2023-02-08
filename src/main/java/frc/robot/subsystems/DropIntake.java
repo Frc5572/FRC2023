@@ -27,9 +27,9 @@ public class DropIntake extends SubsystemBase {
      * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
      */
     public void intakeConeDeploy() {
-        dropMotor.set(Constants.IntakeConstants.DropConstants.DROP_SPEED);
+        dropMotor.set(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
         if (Math.abs(getAngleMeasurement() - coneDeployGoal) < 3) {
-            dropMotor.set(Constants.IntakeConstants.DropConstants.STOP_SPEED);
+            dropMotor.set(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
         }
     }
 
@@ -37,9 +37,9 @@ public class DropIntake extends SubsystemBase {
      * Deploy the dropdown intake to the specified height for a cube. Stops when within threshold.
      */
     public void intakeCubeDeploy() {
-        dropMotor.set(Constants.IntakeConstants.DropConstants.DROP_SPEED);
+        dropMotor.set(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
         if (Math.abs(getAngleMeasurement() - cubeDeployGoal) < 3) {
-            dropMotor.set(Constants.IntakeConstants.DropConstants.STOP_SPEED);
+            dropMotor.set(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
         }
     }
 
@@ -47,9 +47,9 @@ public class DropIntake extends SubsystemBase {
      * Retracts the dropdown intake to the default height. Stops when within threshold.
      */
     public void intakeRetract() {
-        dropMotor.set(Constants.IntakeConstants.DropConstants.RETRACT_SPEED);
+        dropMotor.set(Constants.IntakeConstants.DropConstants.RETRACT_VOLTS);
         if (Math.abs(getAngleMeasurement() - defaultGoal) < 3) {
-            dropMotor.set(Constants.IntakeConstants.DropConstants.STOP_SPEED);
+            dropMotor.set(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
         }
     }
 
@@ -60,7 +60,7 @@ public class DropIntake extends SubsystemBase {
 
     // Stops the intake from running.
     public void stop() {
-        intakeMotor.set(Constants.IntakeConstants.DropConstants.STOP_SPEED);
+        intakeMotor.set(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
     }
 
     /**
