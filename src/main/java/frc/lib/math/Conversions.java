@@ -107,17 +107,14 @@ public class Conversions {
 
         double processedInput = 0.0;
 
-        if (Math.abs(input) >= deadband && Math.abs(input) <= 1.0) {
+        if (Math.abs(input) >= deadband) {
             processedInput =
                 (0.778 * Math.pow(Math.abs(input), 2) + 0.256 * Math.abs(input) - 0.033);
-            if (processedInput > 1.0) {
-                processedInput = 1.0;
-            }
             processedInput = Math.copySign(processedInput, input);
         }
         return MathUtil.clamp(processedInput, -1, 1);
-    }
 
+    }
 
     /**
      * Generate a random number between and upper and lower bound
