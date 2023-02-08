@@ -149,7 +149,7 @@ public final class Constants {
         }
 
         /**
-         * Front Right Module - Module 1. PROBLEM CHILD
+         * Front Right Module - Module 1.
          */
         public static final class Mod1 {
             public static final int DRIVE_MOTOR_ID = 1;
