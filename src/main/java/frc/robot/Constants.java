@@ -157,8 +157,6 @@ public final class Constants {
         public static final double MAX_SPEED = 4; // meters per second
         public static final double MAX_ANGULAR_VELOCITY = 2;
 
-
-
         /* Neutral Modes */
         public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Coast;
         public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
