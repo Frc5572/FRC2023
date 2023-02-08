@@ -4,9 +4,9 @@
 ## **CAN IDs**
 Talon FX 1-8 - Swerve
 
-CAN Spark Max 9 - Left Arm
+CAN Spark Max 9 - Arm Left Side
 
-CAN Spark Max 10 - Right Arm
+CAN Spark Max 10 - Arm Right Side
 
 CAN Spark Max 11 - Elevator
 
