@@ -92,8 +92,12 @@ public class Conversions {
         return goal % 360;
     }
 
-    /*
-     * Apply quadratic curve to swerve inputs
+    /**
+     * Apply a quadratic curve to swerve inputs.
+     *
+     * @param input Controller input
+     * @param deadband Controller deadband
+     * @return New curved input.
      */
     public static double applySwerveCurve(double input, double deadband) {
         // For 0.2 Joystick Deadband:
@@ -101,22 +105,17 @@ public class Conversions {
         // For 0.1 Joystick Deadband:
         // f(x)=0.778*x^2+0.256*x+-0.033
 
-        // boolean negative;
         double processedInput = 0.0;
-        // input *= Constants.Swerve.TELEOP_MAX_SPEED;
 
         if (Math.abs(input) >= deadband && Math.abs(input) <= 1.0) {
             processedInput =
                 (0.778 * Math.pow(Math.abs(input), 2) + 0.256 * Math.abs(input) - 0.033);
-
             if (processedInput > 1.0) {
                 processedInput = 1.0;
             }
             processedInput = Math.copySign(processedInput, input);
         }
         return MathUtil.clamp(processedInput, -1, 1);
-
-
     }
 
 
