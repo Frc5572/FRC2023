@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import org.photonvision.PhotonCamera;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.VecBuilder;
@@ -203,10 +204,15 @@ public class Swerve extends SubsystemBase {
                 pose2dList.add(robotPose);
                 if (robotPose.minus(getPose()).getTranslation()
                     .getNorm() < Constants.CameraConstants.LARGEST_DISTANCE) {
-                    swerveOdometry.addVisionMeasurement(robotPose, imageCaptureTime,
-                        VecBuilder.fill(Constants.SwerveTransformPID.STD_DEV_MOD / target.getArea(),
-                            Constants.SwerveTransformPID.STD_DEV_MOD / target.getArea(),
-                            Constants.SwerveTransformPID.STD_DEV_MOD / target.getArea()));
+                    try {
+                        swerveOdometry.addVisionMeasurement(robotPose, imageCaptureTime,
+                            VecBuilder.fill(
+                                Constants.SwerveTransformPID.STD_DEV_MOD / target.getArea(),
+                                Constants.SwerveTransformPID.STD_DEV_MOD / target.getArea(),
+                                Constants.SwerveTransformPID.STD_DEV_MOD / target.getArea()));
+                    } catch (NoSuchElementException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
