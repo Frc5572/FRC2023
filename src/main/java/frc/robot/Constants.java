@@ -14,20 +14,53 @@ import frc.lib.util.swerve.SwerveModuleConstants;
  */
 
 public final class Constants {
+    // note quadratic curve only applies to deadband of 0.1 and 0.2
     public static final double STICK_DEADBAND = 0.1;
     public static final int DRIVER_ID = 0;
     public static final int OPERATOR_ID = 1;
 
     /**
-     * LED constants
+     * Arm constants.
      */
-    public static final class LEDConstants {
-        public static final int PWMPort = 9;
-        public static final int LEDCount = 36;
+    public static final class ArmConstant {
+        public static final int LEFT_SIDE_CAN_ID = 9;
+        public static final int RIGHT_SIDE_CAN_ID = 10;
     }
 
     /**
-     * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller
+     * Elevator constants.
+     */
+    public static final class ElevatorConstants {
+        public static final int CAN_ID = 11;
+    }
+
+    /**
+     * Wrist constants.
+     */
+    public static final class WristConstants {
+        public static final int CAN_ID = 12;
+        public static final int INTAKE_MOTOR_CAN_ID = 13;
+    }
+
+    /**
+     * Wrist constants.
+     */
+    public static final class DropdownIntake {
+        public static final int DROPDOWN_MOTOR_CAN_ID = 14;
+        public static final int INTAKE_MOTOR_CAN_ID = 15;
+    }
+
+
+    /**
+     * LED constants.
+     */
+    public static final class LEDConstants {
+        public static final int PWM_PORT = 9;
+        public static final int LED_COUNT = 36;
+    }
+
+    /**
+     * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller.
      */
     public static class SwerveTransformPID {
         public static final double PID_XKP = 1.5;
@@ -46,7 +79,7 @@ public final class Constants {
     }
 
     /**
-     * Camera offset constants
+     * Camera offset constants.
      */
     public static class CameraConstants {
 
@@ -61,7 +94,7 @@ public final class Constants {
     }
 
     /**
-     * Swerve ID's
+     * Swerve ID's.
      */
     public static final class Swerve {
         public static final edu.wpi.first.wpilibj.SPI.Port navXID =
@@ -69,10 +102,10 @@ public final class Constants {
         public static final boolean INVERT_GYRO = true; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        // Front-Back distance
-        public static final double TRACK_WIDTH = Units.inchesToMeters(14);
+        // Front-Back distance.
+        public static final double TRACK_WIDTH = Units.inchesToMeters(22);
         // Left-Right Distance
-        public static final double WHEEL_BASE = Units.inchesToMeters(14);
+        public static final double WHEEL_BASE = Units.inchesToMeters(22);
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -149,7 +182,7 @@ public final class Constants {
         }
 
         /**
-         * Front Right Module - Module 1. PROBLEM CHILD
+         * Front Right Module - Module 1.
          */
         public static final class Mod1 {
             public static final int DRIVE_MOTOR_ID = 1;
