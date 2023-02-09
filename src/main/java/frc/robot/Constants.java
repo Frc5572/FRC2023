@@ -87,8 +87,8 @@ public final class Constants {
         public static final double PITCH = 0 * Math.PI / 180;
         public static final double YAW = 0.0;
         public static final Transform3d KCAMERA_TO_ROBOT =
-            new Transform3d(new Translation3d(Units.inchesToMeters(-10), Units.inchesToMeters(0),
-                Units.inchesToMeters(-7.5)), new Rotation3d(ROLL, PITCH, YAW));
+            new Transform3d(new Translation3d(Units.inchesToMeters(9.5), Units.inchesToMeters(0),
+                Units.inchesToMeters(33.75)), new Rotation3d(ROLL, PITCH, YAW)).inverse();
         public static final String CAMERA_NAME = "pv2";
         public static final double LARGEST_DISTANCE = 0.1;
     }
