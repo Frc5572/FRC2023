@@ -28,13 +28,10 @@ public class CubeDropIntake extends CommandBase {
     @Override
     public void initialize() {
         dIntake.intakeCubeDeploy();
-    }
-
-    @Override
-    public void execute() {
         dIntake.intake();
         wIntake.intake();
     }
+
 
     @Override
     public void end(boolean interrupt) {

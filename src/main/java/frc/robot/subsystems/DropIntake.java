@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,11 +18,13 @@ public class DropIntake extends SubsystemBase {
     private final DutyCycleEncoder dropEncoder =
         new DutyCycleEncoder(Constants.IntakeConstants.DropConstants.DROP_ENCODER_ID);
     private final double dropEncoderOffset = 0.000;
-    private final double defaultGoal = 0.000;
-    private final double coneDeployGoal = 0.000;
-    private final double cubeDeployGoal = 0.000;
+    private final double defaultGoal = 0.0893 * 360;
+    private final double coneDeployGoal = 0.000 * 360;
+    private final double cubeDeployGoal = 0.0601 * 360;
 
-    public DropIntake() {}
+    public DropIntake() {
+        dropMotor.setIdleMode(IdleMode.kBrake);
+    }
 
     /**
      * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
@@ -38,9 +41,9 @@ public class DropIntake extends SubsystemBase {
      */
     public void intakeCubeDeploy() {
         dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
-        if (Math.abs(getAngleMeasurement() - cubeDeployGoal) < 3) {
-            dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
-        }
+        // if (Math.abs(getAngleMeasurement() - cubeDeployGoal) < 3) {
+        // dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
+        // }
     }
 
     /**
@@ -51,6 +54,10 @@ public class DropIntake extends SubsystemBase {
         if (Math.abs(getAngleMeasurement() - defaultGoal) < 3) {
             dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
         }
+    }
+
+    public void stopDrop() {
+        dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
     }
 
     // Runs the intake at a specified speed.
@@ -71,6 +78,10 @@ public class DropIntake extends SubsystemBase {
     public double getAngleMeasurement() {
         double dropAngle = (dropEncoder.getAbsolutePosition() - dropEncoderOffset) * 360;
         return dropAngle;
+    }
+
+    public boolean checkIfAligned(double goal) {
+        return Math.abs(getAngleMeasurement() - goal) < 30;
     }
 }
 
