@@ -75,7 +75,7 @@ public class RobotContainer {
         // driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.x().whileTrue(new TestTransform(s_Swerve,
             new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
-        driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
+        // driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
         driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
         driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
         driver.start().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 0));
@@ -105,6 +105,9 @@ public class RobotContainer {
 
         driver.b().whileTrue(new FunctionalCommand(dIntake::intakeCubeDeploy, () -> {
         }, interrupt -> dIntake.stopDrop(), () -> dIntake.checkIfAligned(216.0), dIntake));
+
+        driver.a().whileTrue(new FunctionalCommand(dIntake::intakeRetract, () -> {
+        }, interrupt -> dIntake.stopDrop(), () -> dIntake.checkIfAligned(321.0), dIntake));
     }
 
     /**

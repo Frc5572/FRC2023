@@ -51,9 +51,9 @@ public class DropIntake extends SubsystemBase {
      */
     public void intakeRetract() {
         dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.RETRACT_VOLTS);
-        if (Math.abs(getAngleMeasurement() - defaultGoal) < 3) {
-            dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
-        }
+        // if (Math.abs(getAngleMeasurement() - defaultGoal) < 3) {
+        // dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
+        // }
     }
 
     public void stopDrop() {
@@ -81,7 +81,7 @@ public class DropIntake extends SubsystemBase {
     }
 
     public boolean checkIfAligned(double goal) {
-        return Math.abs(getAngleMeasurement() - goal) < 30;
+        return Math.abs(getAngleMeasurement() - goal) < 5;
     }
 }
 
