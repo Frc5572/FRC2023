@@ -32,7 +32,7 @@ public class WristAlignment extends CommandBase {
     @Override
     public void execute() {
         if (!this.wrist.getAlignment(this.angle)) {
-            this.wrist.setWrist(Constants.WristPID.TargetEncoderDegree);
+            this.wrist.setWrist(Constants.Wrist.PID.TargetEncoderDegree);
         }
     }
 

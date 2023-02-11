@@ -240,11 +240,17 @@ public final class Constants {
     }
 
 
+    /**
+     * Wrist ID's
+     */
     public static final class Wrist {
         public static final int LEFT_WRIST_MOTOR_ID = 0;
         public static final int RIGHT_WRIST_MOTOR_ID = 0;
         public static final int WRIST_ENCODER_ID = 0;
 
+        /**
+         * Wrist PID id constants
+         */
         public static final class PID {
             public static final double kP = 0.0;
             public static final double kI = 0.0;
