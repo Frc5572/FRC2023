@@ -239,7 +239,6 @@ public final class Constants {
     public static final class Pneumatics {
     }
 
-
     /**
      * Wrist ID's
      */
