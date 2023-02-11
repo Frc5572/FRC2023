@@ -12,7 +12,9 @@ CAN Spark Max 11 - Elevator
 
 CAN Spark Max 12 - Wrist
 
-CAN Spark Max 13 - Wrist Intake
+CAN Spark Max 13 - Wrist Left Intake
+
+CAN Spark Max 16 - Wrist Right Intake
 
 CAN Spark Max 14 - Dropdown Intake -- Dropdown Motor
 

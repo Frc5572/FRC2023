@@ -37,7 +37,7 @@ public final class Constants {
     /**
      * Wrist constants.
      */
-    public static final class WristConstants {
+    public static final class Wrist {
         public static final int WRIST_CAN_ID = 12;
         public static final int LEFT_INTAKE_MOTOR_CAN_ID = 13;
         public static final int RIGHT_INTAKE_MOTOR_CAN_ID = 16;
@@ -246,6 +246,9 @@ public final class Constants {
             public static final double RETRACT_VOLTS = -1.5;
             public static final int STOP_VOLTS = 0;
 
+            /**
+             * PID Constants for the Drop Down Intake motors
+             */
             public static final class PID {
                 public static final double KP = 0.0;
                 public static final double KI = 0.0;
@@ -260,7 +263,8 @@ public final class Constants {
          * Constants for the wrist intake.
          */
         public static final class Wrist {
-            public static final int INTAKE_MOTOR_ID = 0;
+            public static final int LEFT_MOTOR_ID = 13;
+            public static final int RIGHT_MOTOR_ID = 16;
             public static final int CONE_SENSOR_ID = 0;
             public static final int CONE_SENSOR_ID2 = 0;
             public static final int CUBE_SENSOR_ID = 0;

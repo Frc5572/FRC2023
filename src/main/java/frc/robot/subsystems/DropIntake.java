@@ -3,9 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,9 +22,9 @@ public class DropIntake extends SubsystemBase {
         new MotorControllerGroup(leftDropMotor, rightDropMotor);
     private final CANSparkMax intakeMotor =
         new CANSparkMax(Constants.Intake.DropDown.INTAKE_MOTOR_ID, MotorType.kBrushless);
-    private final DutyCycleEncoder dropEncoder =
-        new DutyCycleEncoder(Constants.Intake.DropDown.DROP_ENCODER_ID);
-    private final PIDController pid_controller = new PIDController(Constants.Intake.DropDown.PID.KP,
+    private final SparkMaxAbsoluteEncoder dropEncoder =
+        rightDropMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+    private final PIDController pidController = new PIDController(Constants.Intake.DropDown.PID.KP,
         Constants.Intake.DropDown.PID.KI, Constants.Intake.DropDown.PID.KD);
     private final ArmFeedforward feedforward = new ArmFeedforward(Constants.Intake.DropDown.PID.KS,
         Constants.Intake.DropDown.PID.KG, Constants.Intake.DropDown.PID.KV);
@@ -37,35 +37,32 @@ public class DropIntake extends SubsystemBase {
     public DropIntake() {
         leftDropMotor.setIdleMode(IdleMode.kBrake);
         rightDropMotor.setIdleMode(IdleMode.kBrake);
+        leftDropMotor.setInverted(true);
     }
 
     /**
      * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
      */
     public void intakeConeDeploy() {
-        leftDropMotor.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
-        rightDropMotor.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
+        dropdownMotors.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
     }
 
     /**
      * Deploy the dropdown intake to the specified height for a cube. Stops when within threshold.
      */
     public void intakeCubeDeploy() {
-        leftDropMotor.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
-        rightDropMotor.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
+        dropdownMotors.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
     }
 
     /**
      * Retracts the dropdown intake to the default height. Stops when within threshold.
      */
     public void intakeRetract() {
-        leftDropMotor.setVoltage(Constants.Intake.DropDown.RETRACT_VOLTS);
-        rightDropMotor.setVoltage(Constants.Intake.DropDown.RETRACT_VOLTS);
+        dropdownMotors.setVoltage(Constants.Intake.DropDown.RETRACT_VOLTS);
     }
 
     public void stopDrop() {
-        leftDropMotor.setVoltage(Constants.Intake.DropDown.STOP_VOLTS);
-        rightDropMotor.setVoltage(Constants.Intake.DropDown.STOP_VOLTS);
+        dropdownMotors.setVoltage(Constants.Intake.DropDown.STOP_VOLTS);
     }
 
     // Runs the intake at a specified speed.
@@ -75,7 +72,7 @@ public class DropIntake extends SubsystemBase {
 
     // Stops the intake from running.
     public void stop() {
-        intakeMotor.setVoltage(Constants.Intake.DropDown.STOP_VOLTS);
+        intakeMotor.setVoltage(0);
     }
 
     /**
@@ -84,8 +81,7 @@ public class DropIntake extends SubsystemBase {
      * @return Current angle reported by encoder (0 - 360)
      */
     public double getAngleMeasurement() {
-        double dropAngle = (dropEncoder.getAbsolutePosition() - dropEncoderOffset) * 360;
-        return dropAngle;
+        return dropEncoder.getPosition() - dropEncoderOffset;
     }
 
     /**
@@ -94,7 +90,7 @@ public class DropIntake extends SubsystemBase {
      * @param angle Requested angle.
      */
     public void ddToAngle(double angle) {
-        dropdownMotors.set(pid_controller.calculate(getAngleMeasurement(), angle)
+        dropdownMotors.set(pidController.calculate(getAngleMeasurement(), angle)
             + feedforward.calculate((getAngleMeasurement() * (Math.PI / 180.0)), 0.0));
     }
 

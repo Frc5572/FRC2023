@@ -14,13 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.TestTransform;
+import frc.robot.commands.DropIntake.LowerDDIntake;
+import frc.robot.commands.DropIntake.RaiseDDIntake;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.MorseCodeFlash;
 import frc.robot.commands.leds.PoliceLEDs;
@@ -103,11 +104,8 @@ public class RobotContainer {
         driver.y().onTrue(new InstantCommand(
             () -> System.out.println(" .get ABS: " + (dIntake.getAngleMeasurement()))));
 
-        driver.b().whileTrue(new FunctionalCommand(dIntake::intakeCubeDeploy, () -> {
-        }, interrupt -> dIntake.stopDrop(), () -> dIntake.checkIfAligned(216.0), dIntake));
-
-        driver.a().whileTrue(new FunctionalCommand(dIntake::intakeRetract, () -> {
-        }, interrupt -> dIntake.stopDrop(), () -> dIntake.checkIfAligned(321.0), dIntake));
+        driver.b().whileTrue(new LowerDDIntake(dIntake));
+        driver.a().whileTrue(new RaiseDDIntake(dIntake));
     }
 
     /**
