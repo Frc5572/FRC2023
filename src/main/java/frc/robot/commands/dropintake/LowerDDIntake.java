@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DropIntake;
 
 /**
- * Command to raise the Drop Down Intake to the top postion
+ * Command to raise the Drop Down Intake to the top position
  */
 public class LowerDDIntake extends CommandBase {
     private DropIntake intake;
 
     /**
-     * Command to lower the Drop Down Intake to the bottom postion
+     * Command to lower the Drop Down Intake to the bottom position
      *
      * @param intake Drop Down Intake
      */
