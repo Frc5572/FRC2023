@@ -3,7 +3,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -11,53 +14,62 @@ import frc.robot.Constants;
  * Creates the subsystem for the dropdown intake.
  */
 public class DropIntake extends SubsystemBase {
-    private final CANSparkMax dropMotor = new CANSparkMax(
-        Constants.IntakeConstants.DropConstants.DROP_MOTOR_ID, MotorType.kBrushless);
+    private final CANSparkMax leftDropMotor = new CANSparkMax(
+        Constants.IntakeConstants.DropConstants.LEFT_DROP_MOTOR_ID, MotorType.kBrushless);
+    private final CANSparkMax rightDropMotor = new CANSparkMax(
+        Constants.IntakeConstants.DropConstants.RIGHT_DROP_MOTOR_ID, MotorType.kBrushless);
+    private final MotorControllerGroup dropdownMotors =
+        new MotorControllerGroup(leftDropMotor, rightDropMotor);
     private final CANSparkMax intakeMotor = new CANSparkMax(
         Constants.IntakeConstants.DropConstants.INTAKE_MOTOR_ID, MotorType.kBrushless);
     private final DutyCycleEncoder dropEncoder =
         new DutyCycleEncoder(Constants.IntakeConstants.DropConstants.DROP_ENCODER_ID);
+    private final PIDController pid_controller =
+        new PIDController(Constants.IntakeConstants.DropConstants.PID.KP,
+            Constants.IntakeConstants.DropConstants.PID.KI,
+            Constants.IntakeConstants.DropConstants.PID.KD);
+    private final ArmFeedforward feedforward =
+        new ArmFeedforward(Constants.IntakeConstants.DropConstants.PID.KS,
+            Constants.IntakeConstants.DropConstants.PID.KG,
+            Constants.IntakeConstants.DropConstants.PID.KV);
+
     private final double dropEncoderOffset = 0.000;
     private final double defaultGoal = 0.0893 * 360;
     private final double coneDeployGoal = 0.000 * 360;
     private final double cubeDeployGoal = 0.0601 * 360;
 
     public DropIntake() {
-        dropMotor.setIdleMode(IdleMode.kBrake);
+        leftDropMotor.setIdleMode(IdleMode.kBrake);
+        rightDropMotor.setIdleMode(IdleMode.kBrake);
     }
 
     /**
      * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
      */
     public void intakeConeDeploy() {
-        dropMotor.set(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
-        if (Math.abs(getAngleMeasurement() - coneDeployGoal) < 3) {
-            dropMotor.set(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
-        }
+        leftDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
+        rightDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
     }
 
     /**
      * Deploy the dropdown intake to the specified height for a cube. Stops when within threshold.
      */
     public void intakeCubeDeploy() {
-        dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
-        // if (Math.abs(getAngleMeasurement() - cubeDeployGoal) < 3) {
-        // dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
-        // }
+        leftDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
+        rightDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.DROP_VOLTS);
     }
 
     /**
      * Retracts the dropdown intake to the default height. Stops when within threshold.
      */
     public void intakeRetract() {
-        dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.RETRACT_VOLTS);
-        // if (Math.abs(getAngleMeasurement() - defaultGoal) < 3) {
-        // dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
-        // }
+        leftDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.RETRACT_VOLTS);
+        rightDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.RETRACT_VOLTS);
     }
 
     public void stopDrop() {
-        dropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
+        leftDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
+        rightDropMotor.setVoltage(Constants.IntakeConstants.DropConstants.STOP_VOLTS);
     }
 
     // Runs the intake at a specified speed.
@@ -80,6 +92,22 @@ public class DropIntake extends SubsystemBase {
         return dropAngle;
     }
 
+    /**
+     * Set the dropdown motors to go to a certain angle.
+     *
+     * @param angle Requested angle.
+     */
+    public void ddToAngle(double angle) {
+        dropdownMotors.set(pid_controller.calculate(getAngleMeasurement(), angle)
+            + feedforward.calculate((getAngleMeasurement() * (Math.PI / 180.0)), 0.0));
+    }
+
+    /**
+     * Check if aligned with a requested goal.
+     *
+     * @param goal The requesed goal.
+     * @return True if properly aligned, false if not.
+     */
     public boolean checkIfAligned(double goal) {
         return Math.abs(getAngleMeasurement() - goal) < 5;
     }

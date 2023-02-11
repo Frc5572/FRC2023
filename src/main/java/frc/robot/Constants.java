@@ -212,7 +212,8 @@ public final class Constants {
          * Constants for the dropdown intake.
          */
         public static final class DropConstants {
-            public static final int DROP_MOTOR_ID = 14;
+            public static final int LEFT_DROP_MOTOR_ID = 14;
+            public static final int RIGHT_DROP_MOTOR_ID = 0;
             public static final int DROP_ENCODER_ID = 9;
             public static final int INTAKE_MOTOR_ID = 0;
 
@@ -221,6 +222,15 @@ public final class Constants {
             public static final double DROP_VOLTS = 0.5;
             public static final double RETRACT_VOLTS = -1.5;
             public static final int STOP_VOLTS = 0;
+
+            public static final class PID {
+                public static final double KP = 0.0;
+                public static final double KI = 0.0;
+                public static final double KD = 0.0;
+                public static final double KS = 0.0;
+                public static final double KG = 0.0;
+                public static final double KV = 0.0;
+            }
         }
 
         /**
