@@ -16,26 +16,28 @@ import frc.robot.Constants;
  * Creates new Subsystem and methods for the Wrist
  */
 public class Wrist extends SubsystemBase {
-    private final CANSparkMax wristMotor =
-        new CANSparkMax(Constants.Motors.wristMotorID, MotorType.kBrushless);
+    private final CANSparkMax leftWristMotor =
+        new CANSparkMax(Constants.Wrist.LEFT_WRIST_MOTOR_ID, MotorType.kBrushless);
+    private final CANSparkMax rightWristMotor =
+        new CANSparkMax(Constants.Wrist.RIGHT_WRIST_MOTOR_ID, MotorType.kBrushless);
     private final DutyCycleEncoder wristEncoder =
-        new DutyCycleEncoder(Constants.Motors.wristCoderID);
+        new DutyCycleEncoder(Constants.Wrist.WRIST_ENCODER_ID);
 
     private final SimpleMotorFeedforward wristFeed = new SimpleMotorFeedforward(
-        Constants.WristPID.kSVolts, Constants.WristPID.kVVoltSecondsPerRotation);
+        Constants.Wrist.PID.kSVolts, Constants.Wrist.PID.kVVoltSecondsPerRotation);
     private final Solenoid wristSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 0);
     private final ProfiledPIDController pidController = new ProfiledPIDController(
-        Constants.WristPID.kP, Constants.WristPID.kI, Constants.WristPID.kD,
-        new TrapezoidProfile.Constraints(Constants.WristPID.kMaxVelocityRadPerSecond,
-            Constants.WristPID.kMaxAccelerationRadPerSecond),
-        Constants.WristPID.kF);
+        Constants.Wrist.PID.kP, Constants.Wrist.PID.kI, Constants.Wrist.PID.kD,
+        new TrapezoidProfile.Constraints(Constants.Wrist.PID.kMaxVelocityRadPerSecond,
+            Constants.Wrist.PID.kMaxAccelerationRadPerSecond),
+        Constants.Wrist.PID.kF);
     private boolean m_enabled;
 
     /**
      * Creates a new ProfilePIDController
      */
     public Wrist() {
-        wristMotor.setInverted(true);
+        leftWristMotor.setInverted(true);
         pidController.setTolerance(getMeasurement());
     }
 
@@ -52,7 +54,8 @@ public class Wrist extends SubsystemBase {
      * Sets the wrist speed to zero
      */
     public void stopWrist() {
-        wristMotor.set(0);
+        leftWristMotor.set(0);
+        rightWristMotor.set(0);
         disable();
         wristSolenoid.set(true);
     }
@@ -70,7 +73,8 @@ public class Wrist extends SubsystemBase {
      * Uses the output from the ProfiledPIDController
      */
     public void useOutput(double output, State setpoint) {
-        wristMotor.setVoltage(output + wristFeed.calculate(setpoint.velocity));
+        leftWristMotor.setVoltage(output + wristFeed.calculate(setpoint.velocity));
+        rightWristMotor.setVoltage(output + wristFeed.calculate(setpoint.velocity));
     }
 
     /**

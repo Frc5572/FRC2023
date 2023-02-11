@@ -227,10 +227,6 @@ public final class Constants {
      * Motor CAN id's.
      */
     public static final class Motors {
-        public static final int motorID1 = 0;
-        public static final int motorID2 = 0;
-        public static final int wristMotorID = 0;
-        public static final int wristCoderID = 0;
 
 
 
@@ -244,40 +240,24 @@ public final class Constants {
     }
 
 
+    public static final class Wrist {
+        public static final int LEFT_WRIST_MOTOR_ID = 0;
+        public static final int RIGHT_WRIST_MOTOR_ID = 0;
+        public static final int WRIST_ENCODER_ID = 0;
 
-    /**
-     * Arm PID constants
-     */
-    public static final class ArmPID {
-        public static final double kP = 0;
-        public static final double kI = 0;
-        public static final double kD = 0;
-        public static final double kF = 0;
-        public static final double kGVolts = 0;
-        public static final double kSVolts = 0;
-        public static final double kMaxVelocityRadPerSecond = 0;
-        public static final double kMaxAccelerationRadPerSecSquared = 0;
-        public static final double kVVoltSecondPerRad = 0;
-        public static final double kAVoltSecondSquaredPerRad = 0;
-        public static final double kEncoderDistancePerPulse = 0;
+        public static final class PID {
+            public static final double kP = 0.0;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double kMaxVelocityRadPerSecond = 0;
+            public static final double kMaxAccelerationRadPerSecond = 0;
+            public static final double kF = 0.0;
+            public static final double kSVolts = 0.0;
+            public static final double kVVoltSecondsPerRotation = 0.0;
+            public static final double TargetEncoderDegree = 0.0;
+        }
     }
 
-    /**
-     * WristPID id Constants
-     */
-    public static final class WristPID {
-        public static final double kP = 0.0;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
-        public static final double kMaxVelocityRadPerSecond = 0;
-        public static final double kMaxAccelerationRadPerSecond = 0;
-        public static final double kF = 0.0;
-        public static final double kSVolts = 0.0;
-        public static final double kVVoltSecondsPerRotation = 0.0;
-        public static final double TargetEncoderDegree = 0.0;
-
-
-    }
 
 }
 
