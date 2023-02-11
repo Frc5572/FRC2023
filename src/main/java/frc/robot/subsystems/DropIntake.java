@@ -34,6 +34,9 @@ public class DropIntake extends SubsystemBase {
     private final double coneDeployGoal = 0.000 * 360;
     private final double cubeDeployGoal = 0.0601 * 360;
 
+    /**
+     * Drop Down Intake Subsystem
+     */
     public DropIntake() {
         leftDropMotor.setIdleMode(IdleMode.kBrake);
         rightDropMotor.setIdleMode(IdleMode.kBrake);
