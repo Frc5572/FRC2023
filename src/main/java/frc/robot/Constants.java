@@ -213,7 +213,8 @@ public final class Constants {
          */
         public static final class DropConstants {
             public static final int LEFT_DROP_MOTOR_ID = 14;
-            public static final int RIGHT_DROP_MOTOR_ID = 0;
+            public static final int RIGHT_DROP_MOTOR_ID = 15;
+            public static final int DROP_MOTOR_INTAKE_ID = 16;
             public static final int DROP_ENCODER_ID = 9;
             public static final int INTAKE_MOTOR_ID = 0;
 
