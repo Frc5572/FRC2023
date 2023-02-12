@@ -52,6 +52,8 @@ CAN Spark Max 15 - Dropdown Intake -- Intake Motor
 
 15 - Wrist Motor
 
+16 - Dropdown Intake Wheel Motor
+
 ## **Controls:**
 
 ### Driver:
