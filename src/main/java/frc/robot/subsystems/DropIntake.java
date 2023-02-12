@@ -15,19 +15,19 @@ import frc.robot.Constants;
  */
 public class DropIntake extends SubsystemBase {
     private final CANSparkMax leftDropMotor =
-        new CANSparkMax(Constants.Intake.DropDown.LEFT_DROP_MOTOR_ID, MotorType.kBrushless);
+        new CANSparkMax(Constants.DropDownIntake.LEFT_DROP_MOTOR_ID, MotorType.kBrushless);
     private final CANSparkMax rightDropMotor =
-        new CANSparkMax(Constants.Intake.DropDown.RIGHT_DROP_MOTOR_ID, MotorType.kBrushless);
+        new CANSparkMax(Constants.DropDownIntake.RIGHT_DROP_MOTOR_ID, MotorType.kBrushless);
     private final MotorControllerGroup dropdownMotors =
         new MotorControllerGroup(leftDropMotor, rightDropMotor);
     private final CANSparkMax intakeMotor =
-        new CANSparkMax(Constants.Intake.DropDown.INTAKE_MOTOR_ID, MotorType.kBrushless);
+        new CANSparkMax(Constants.DropDownIntake.INTAKE_MOTOR_ID, MotorType.kBrushless);
     private final SparkMaxAbsoluteEncoder dropEncoder =
         rightDropMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
-    private final PIDController pidController = new PIDController(Constants.Intake.DropDown.PID.KP,
-        Constants.Intake.DropDown.PID.KI, Constants.Intake.DropDown.PID.KD);
-    private final ArmFeedforward feedforward = new ArmFeedforward(Constants.Intake.DropDown.PID.KS,
-        Constants.Intake.DropDown.PID.KG, Constants.Intake.DropDown.PID.KV);
+    private final PIDController pidController = new PIDController(Constants.DropDownIntake.PID.KP,
+        Constants.DropDownIntake.PID.KI, Constants.DropDownIntake.PID.KD);
+    private final ArmFeedforward feedforward = new ArmFeedforward(Constants.DropDownIntake.PID.KS,
+        Constants.DropDownIntake.PID.KG, Constants.DropDownIntake.PID.KV);
 
     private final double dropEncoderOffset = 0.000;
     private final double defaultGoal = 0.0893 * 360;
@@ -47,30 +47,30 @@ public class DropIntake extends SubsystemBase {
      * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
      */
     public void intakeConeDeploy() {
-        dropdownMotors.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
+        dropdownMotors.setVoltage(Constants.DropDownIntake.DROP_VOLTS);
     }
 
     /**
      * Deploy the dropdown intake to the specified height for a cube. Stops when within threshold.
      */
     public void intakeCubeDeploy() {
-        dropdownMotors.setVoltage(Constants.Intake.DropDown.DROP_VOLTS);
+        dropdownMotors.setVoltage(Constants.DropDownIntake.DROP_VOLTS);
     }
 
     /**
      * Retracts the dropdown intake to the default height. Stops when within threshold.
      */
     public void intakeRetract() {
-        dropdownMotors.setVoltage(Constants.Intake.DropDown.RETRACT_VOLTS);
+        dropdownMotors.setVoltage(Constants.DropDownIntake.RETRACT_VOLTS);
     }
 
     public void stopDrop() {
-        dropdownMotors.setVoltage(Constants.Intake.DropDown.STOP_VOLTS);
+        dropdownMotors.setVoltage(Constants.DropDownIntake.STOP_VOLTS);
     }
 
     // Runs the intake at a specified speed.
     public void intake() {
-        intakeMotor.set(Constants.Intake.DropDown.INTAKE_SPEED);
+        intakeMotor.set(Constants.DropDownIntake.INTAKE_SPEED);
     }
 
     // Stops the intake from running.
