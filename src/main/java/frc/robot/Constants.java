@@ -14,20 +14,13 @@ import frc.lib.util.swerve.SwerveModuleConstants;
  */
 
 public final class Constants {
+    // note quadratic curve only applies to deadband of 0.1 and 0.2
     public static final double STICK_DEADBAND = 0.1;
     public static final int DRIVER_ID = 0;
     public static final int OPERATOR_ID = 1;
 
     /**
-     * LED constants
-     */
-    public static final class LEDConstants {
-        public static final int PWMPort = 9;
-        public static final int LEDCount = 36;
-    }
-
-    /**
-     * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller
+     * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller.
      */
     public static class SwerveTransformPID {
         public static final double PID_XKP = 1.5;
@@ -46,7 +39,7 @@ public final class Constants {
     }
 
     /**
-     * Camera offset constants
+     * Camera offset constants.
      */
     public static class CameraConstants {
 
@@ -61,7 +54,7 @@ public final class Constants {
     }
 
     /**
-     * Swerve ID's
+     * Swerve ID's.
      */
     public static final class Swerve {
         public static final edu.wpi.first.wpilibj.SPI.Port navXID =
@@ -69,10 +62,10 @@ public final class Constants {
         public static final boolean INVERT_GYRO = true; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        // Front-Back distance
-        public static final double TRACK_WIDTH = Units.inchesToMeters(14);
+        // Front-Back distance.
+        public static final double TRACK_WIDTH = Units.inchesToMeters(22);
         // Left-Right Distance
-        public static final double WHEEL_BASE = Units.inchesToMeters(14);
+        public static final double WHEEL_BASE = Units.inchesToMeters(22);
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -149,7 +142,7 @@ public final class Constants {
         }
 
         /**
-         * Front Right Module - Module 1. PROBLEM CHILD
+         * Front Right Module - Module 1.
          */
         public static final class Mod1 {
             public static final int DRIVE_MOTOR_ID = 1;
@@ -187,67 +180,71 @@ public final class Constants {
     }
 
     /**
-     * Pneumatics CAN id constants.
+     * Arm constants.
      */
-    public static final class Pneumatics {
-    }
-
-
-
-    /**
-     * Autonomous constants for swerve bot.
-     */
-    public static final class VisionConstants {
-        public static final double DEAD_POCKET = 0.05;
-        public static final double LIME_LIGHT_HEIGHT = 0;
-        public static final double TARGET_HEIGHT = 0;
-        public static final double LIME_LIGHT_ANGLE = 0;
+    public static final class ArmConstant {
+        public static final int LEFT_SIDE_CAN_ID = 9;
+        public static final int RIGHT_SIDE_CAN_ID = 10;
     }
 
     /**
-     * Constants for the Intake.
+     * Elevator constants.
      */
-    public static final class IntakeConstants {
+    public static final class ElevatorConstants {
+        public static final int CAN_ID = 11;
+    }
+
+    /**
+     * Constants for the wrist.
+     */
+    public static final class Wrist {
+        public static final int WRIST_CAN_ID = 12;
+        public static final int LEFT_MOTOR_ID = 13;
+        public static final int RIGHT_MOTOR_ID = 16;
+        public static final int CONE_SENSOR_ID = 0;
+        public static final int CONE_SENSOR_ID2 = 0;
+        public static final int CUBE_SENSOR_ID = 0;
+        public static final int CUBE_SENSOR_ID2 = 0;
+
+        public static final double INTAKE_SPEED = 1;
+        public static final int INTAKE_STOP_SPEED = 0;
+        public static final double INTAKE_RELEASE_SPEED = -1;
+        public static final double INTAKE_PANIC_SPEED = -1;
+    }
+
+    /**
+     * Constants for the dropdown intake.
+     */
+    public static final class DropDownIntake {
+        public static final int LEFT_DROP_MOTOR_ID = 14;
+        public static final int RIGHT_DROP_MOTOR_ID = 15;
+        public static final int DROP_ENCODER_ID = 9;
+        public static final int INTAKE_MOTOR_ID = 16;
+
+        public static final double INTAKE_SPEED = 0.3;
+        public static final double SPIT_SPEED = -0.1;
+        public static final double DROP_VOLTS = 0.5;
+        public static final double RETRACT_VOLTS = -1.5;
+        public static final int STOP_VOLTS = 0;
+
         /**
-         * Constants for the dropdown intake.
+         * PID Constants for the Drop Down Intake motors
          */
-        public static final class DropConstants {
-            public static final int LEFT_DROP_MOTOR_ID = 14;
-            public static final int RIGHT_DROP_MOTOR_ID = 15;
-            public static final int DROP_MOTOR_INTAKE_ID = 16;
-            public static final int DROP_ENCODER_ID = 9;
-            public static final int INTAKE_MOTOR_ID = 0;
-
-            public static final double INTAKE_SPEED = 0.3;
-            public static final double SPIT_SPEED = -0.1;
-            public static final double DROP_VOLTS = 0.5;
-            public static final double RETRACT_VOLTS = -1.5;
-            public static final int STOP_VOLTS = 0;
-
-            public static final class PID {
-                public static final double KP = 0.0;
-                public static final double KI = 0.0;
-                public static final double KD = 0.0;
-                public static final double KS = 0.0;
-                public static final double KG = 0.0;
-                public static final double KV = 0.0;
-            }
+        public static final class PID {
+            public static final double KP = 0.0;
+            public static final double KI = 0.0;
+            public static final double KD = 0.0;
+            public static final double KS = 0.0;
+            public static final double KG = 0.0;
+            public static final double KV = 0.0;
         }
+    }
 
-        /**
-         * Constants for the wrist intake.
-         */
-        public static final class WristConstants {
-            public static final int INTAKE_MOTOR_ID = 0;
-            public static final int CONE_SENSOR_ID = 0;
-            public static final int CONE_SENSOR_ID2 = 0;
-            public static final int CUBE_SENSOR_ID = 0;
-            public static final int CUBE_SENSOR_ID2 = 0;
-
-            public static final double INTAKE_SPEED = 1;
-            public static final int INTAKE_STOP_SPEED = 0;
-            public static final double INTAKE_RELEASE_SPEED = -1;
-            public static final double INTAKE_PANIC_SPEED = -1;
-        }
+    /**
+     * LED constants.
+     */
+    public static final class LEDConstants {
+        public static final int PWM_PORT = 9;
+        public static final int LED_COUNT = 36;
     }
 }
