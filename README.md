@@ -14,9 +14,11 @@ CAN Spark Max 12 - Wrist
 
 CAN Spark Max 13 - Wrist Intake
 
-CAN Spark Max 14 - Dropdown Intake -- Dropdown Motor
+CAN Spark Max 14 - Left Dropdown Intake -- Dropdown Motor
 
-CAN Spark Max 15 - Dropdown Intake -- Intake Motor
+CAN Spark Max 15 - Right Dropdown Intake -- Dropdown Motor
+
+CAN Spark Max 16 - Dropdown Intake -- Intkake Motor
 
 ## **PDH Ports**
 
