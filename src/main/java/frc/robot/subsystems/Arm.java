@@ -15,21 +15,21 @@ import frc.robot.Constants;
  */
 public class Arm extends SubsystemBase {
     private final CANSparkMax armMotor =
-        new CANSparkMax(Constants.ArmConstants.ARM_ID, MotorType.kBrushless);
+        new CANSparkMax(Constants.Arm.ARM_ID, MotorType.kBrushless);
     private final CANSparkMax armMotor2 =
-        new CANSparkMax(Constants.ArmConstants.ARM_ID_2, MotorType.kBrushless);
+        new CANSparkMax(Constants.Arm.ARM_ID_2, MotorType.kBrushless);
     private final MotorControllerGroup armMotors = new MotorControllerGroup(armMotor, armMotor2);
-    private final ArmFeedforward m_feedforward = new ArmFeedforward(Constants.ArmPID.K_SVOLTS,
-        Constants.ArmPID.K_GVOLTS, Constants.ArmPID.K_WVOLT_SECOND_PER_RAD,
-        Constants.ArmPID.K_AVOLT_SECOND_SQUARED_PER_RAD);
+    private final ArmFeedforward m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
+        Constants.Arm.PID.K_GVOLTS, Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
+        Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
     private DutyCycleEncoder ourAbsoluteEncoder =
-        new DutyCycleEncoder(Constants.ArmConstants.ENCODER_CHANNEL);
+        new DutyCycleEncoder(Constants.Arm.ENCODER_CHANNEL);
     private final ProfiledPIDController pid_controller =
-        new ProfiledPIDController(Constants.ArmPID.KP, Constants.ArmPID.KI, Constants.ArmPID.KD,
-            new TrapezoidProfile.Constraints(Constants.ArmPID.K_MAX_VELOCITY_RAD_PER_SECOND,
-                Constants.ArmPID.K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED),
-            Constants.ArmPID.KF);
-    private final double encOffset = Constants.ArmConstants.ENCODER_OFFSET;
+        new ProfiledPIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD,
+            new TrapezoidProfile.Constraints(Constants.Arm.PID.K_MAX_VELOCITY_RAD_PER_SECOND,
+                Constants.Arm.PID.K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED),
+            Constants.Arm.PID.KF);
+    private final double encOffset = Constants.Arm.ENCODER_OFFSET;
 
     public Arm() {
         armMotor.setInverted(false);
@@ -59,7 +59,7 @@ public class Arm extends SubsystemBase {
     public void armToAngle(double angle) {
         if (!(Math.abs(getDegreeMeasurement() - angle) < 5)) {
             armMotors.set(pid_controller.calculate(getDegreeMeasurement(), angle)
-                + m_feedforward.calculate(getDegreeMeasurement(), 0));
+                + m_feedforward.calculate(Math.toRadians(getDegreeMeasurement()), 0));
         }
     }
 
