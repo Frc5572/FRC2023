@@ -21,7 +21,7 @@ public class LowerDDIntake extends CommandBase {
 
     @Override
     public void initialize() {
-        intake.intakeRetract();
+        intake.intakeConeDeploy();
     }
 
     @Override

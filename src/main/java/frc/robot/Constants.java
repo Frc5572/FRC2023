@@ -201,10 +201,10 @@ public final class Constants {
         public static final int WRIST_CAN_ID = 12;
         public static final int LEFT_MOTOR_ID = 13;
         public static final int RIGHT_MOTOR_ID = 16;
-        public static final int CONE_SENSOR_ID = 0;
-        public static final int CONE_SENSOR_ID2 = 0;
-        public static final int CUBE_SENSOR_ID = 0;
-        public static final int CUBE_SENSOR_ID2 = 0;
+        public static final int CONE_SENSOR_ID_UPPER = 0;
+        public static final int CONE_SENSOR_ID_LOWER = 1;
+        public static final int CUBE_SENSOR_ID_UPPER = 2;
+        public static final int CUBE_SENSOR_ID_LOWER = 3;
 
         public static final double INTAKE_SPEED = 1;
         public static final int INTAKE_STOP_SPEED = 0;
@@ -218,8 +218,8 @@ public final class Constants {
     public static final class DropDownIntake {
         public static final int LEFT_DROP_MOTOR_ID = 14;
         public static final int RIGHT_DROP_MOTOR_ID = 15;
-        public static final int DROP_ENCODER_ID = 9;
-        public static final int INTAKE_MOTOR_ID = 16;
+        public static final int DROP_ENCODER_ID = 4;
+        public static final int INTAKE_MOTOR_ID = 17;
 
         public static final double INTAKE_SPEED = 0.3;
         public static final double SPIT_SPEED = -0.1;

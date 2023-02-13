@@ -19,13 +19,14 @@ public class WristIntake extends SubsystemBase {
     private final MotorControllerGroup wristIntakeMotors =
         new MotorControllerGroup(leftWristMotor, rightWristMotor);
 
-    private final DigitalInput coneSensor1 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID);
-    private final DigitalInput coneSensor2 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID2);
-    private final DigitalInput cubeSensor1 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID);
-    private final DigitalInput cubeSensor2 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID2);
+    private final DigitalInput coneSensor1 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID_UPPER);
+    private final DigitalInput coneSensor2 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID_LOWER);
+    private final DigitalInput cubeSensor1 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_UPPER);
+    private final DigitalInput cubeSensor2 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_LOWER);
 
     public WristIntake() {
         leftWristMotor.setInverted(true);
+        wristIntakeMotors.setInverted(true);
     }
 
     // Runs wrist intake motor to intake a game piece.

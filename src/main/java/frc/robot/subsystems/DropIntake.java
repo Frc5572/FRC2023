@@ -3,9 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,8 +22,8 @@ public class DropIntake extends SubsystemBase {
         new MotorControllerGroup(leftDropMotor, rightDropMotor);
     private final CANSparkMax intakeMotor =
         new CANSparkMax(Constants.DropDownIntake.INTAKE_MOTOR_ID, MotorType.kBrushless);
-    private final SparkMaxAbsoluteEncoder dropEncoder =
-        rightDropMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+    private final DutyCycleEncoder dropEncoder =
+        new DutyCycleEncoder(Constants.DropDownIntake.DROP_ENCODER_ID);
     private final PIDController pidController = new PIDController(Constants.DropDownIntake.PID.KP,
         Constants.DropDownIntake.PID.KI, Constants.DropDownIntake.PID.KD);
     private final ArmFeedforward feedforward = new ArmFeedforward(Constants.DropDownIntake.PID.KS,
@@ -40,7 +40,7 @@ public class DropIntake extends SubsystemBase {
     public DropIntake() {
         leftDropMotor.setIdleMode(IdleMode.kBrake);
         rightDropMotor.setIdleMode(IdleMode.kBrake);
-        leftDropMotor.setInverted(true);
+        rightDropMotor.setInverted(true);
     }
 
     /**
@@ -84,7 +84,7 @@ public class DropIntake extends SubsystemBase {
      * @return Current angle reported by encoder (0 - 360)
      */
     public double getAngleMeasurement() {
-        return dropEncoder.getPosition() - dropEncoderOffset;
+        return (dropEncoder.getAbsolutePosition() - dropEncoderOffset) * 360;
     }
 
     /**
