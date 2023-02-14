@@ -180,14 +180,6 @@ public final class Constants {
     }
 
     /**
-     * Arm constants.
-     */
-    public static final class ArmConstant {
-        public static final int LEFT_SIDE_CAN_ID = 9;
-        public static final int RIGHT_SIDE_CAN_ID = 10;
-    }
-
-    /**
      * Elevator constants.
      */
     public static final class ElevatorConstants {
@@ -254,7 +246,8 @@ public final class Constants {
     public static final class Arm {
         public static final int ARM_ID = 9;
         public static final int ARM_ID_2 = 10;
-        public static final int ENCODER_CHANNEL = 5;
+        public static final int ENCODER_CHANNEL1 = 5;
+        public static final int ENCODER_CHANNEL2 = 6;
         public static final double ENCODER_OFFSET = 0.0;
         // this angle positions are not definite, just using them for testing
         public static final int HOME_POSITION = 226;

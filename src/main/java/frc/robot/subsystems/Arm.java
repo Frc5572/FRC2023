@@ -22,8 +22,10 @@ public class Arm extends SubsystemBase {
     private final ArmFeedforward m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
         Constants.Arm.PID.K_GVOLTS, Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
         Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
-    private DutyCycleEncoder ourAbsoluteEncoder =
-        new DutyCycleEncoder(Constants.Arm.ENCODER_CHANNEL);
+    private DutyCycleEncoder encoder1 =
+        new DutyCycleEncoder(Constants.Arm.ENCODER_CHANNEL1);
+    private DutyCycleEncoder encoder2 =
+        new DutyCycleEncoder(Constants.Arm.ENCODER_CHANNEL2);
     private final ProfiledPIDController pid_controller =
         new ProfiledPIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD,
             new TrapezoidProfile.Constraints(Constants.Arm.PID.K_MAX_VELOCITY_RAD_PER_SECOND,
@@ -40,7 +42,7 @@ public class Arm extends SubsystemBase {
      * Gets the angle measurement of the arm pivot in degrees.
      */
     public double getDegreeMeasurement() {
-        double armAngle = -(ourAbsoluteEncoder.getAbsolutePosition() - encOffset) * 360;
+        double armAngle = -(encoder1.getAbsolutePosition() - encOffset) * 360;
         return armAngle;
     }
 
