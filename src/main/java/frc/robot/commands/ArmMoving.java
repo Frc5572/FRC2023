@@ -37,6 +37,6 @@ public class ArmMoving extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(arm.getDegreeMeasurement() - angle) < 3;
+        return Math.abs(arm.getAngleMeasurement() - angle) < 3;
     }
 }

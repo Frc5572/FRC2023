@@ -11,12 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.dropintake.LowerDDIntake;
 import frc.robot.commands.dropintake.RaiseDDIntake;
-import frc.robot.commands.leds.PoliceLEDs;
-import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.LEDs;
@@ -75,12 +72,12 @@ public class RobotContainer {
         // driver.x().whileTrue(new TestTransform(s_Swerve,
         // new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
         // driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
-        driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
-        driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
-        driver.start().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 0));
-        driver.povDown().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 1));
-        driver.povRight().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 2));
-        driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
+        // driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
+        // driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
+        // driver.start().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 0));
+        // driver.povDown().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 1));
+        // driver.povRight().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 2));
+        // driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
 
         // /* Operator Buttons */
         // operator.leftTrigger().onTrue(new FlashingLEDColor(leds, Color.kYellow)
