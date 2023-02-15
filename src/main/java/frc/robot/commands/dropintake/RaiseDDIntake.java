@@ -22,6 +22,7 @@ public class RaiseDDIntake extends CommandBase {
     @Override
     public void initialize() {
         intake.intakeRetract();
+        // intake.setGoal(245.0);
     }
 
     @Override

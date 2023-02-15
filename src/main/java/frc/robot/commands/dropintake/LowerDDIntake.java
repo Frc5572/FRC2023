@@ -22,6 +22,7 @@ public class LowerDDIntake extends CommandBase {
     @Override
     public void initialize() {
         intake.intakeConeDeploy();
+        // intake.setGoal(216.0);
     }
 
     @Override

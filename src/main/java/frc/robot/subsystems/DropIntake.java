@@ -33,6 +33,8 @@ public class DropIntake extends SubsystemBase {
     private final double defaultGoal = 0.0893 * 360;
     private final double coneDeployGoal = 0.000 * 360;
     private final double cubeDeployGoal = 0.0601 * 360;
+    private double goalAngle;
+    private boolean enablePID = false;
 
     /**
      * Drop Down Intake Subsystem
@@ -41,6 +43,60 @@ public class DropIntake extends SubsystemBase {
         leftDropMotor.setIdleMode(IdleMode.kBrake);
         rightDropMotor.setIdleMode(IdleMode.kBrake);
         rightDropMotor.setInverted(true);
+    }
+
+    @Override
+    public void periodic() {
+        // if (enablePID) {
+        // ddToAngle(goalAngle);
+        // }
+    }
+
+    /**
+     * Set target angle for Drop Down Intake
+     *
+     * @param goal Target Angel in Degrees
+     */
+    public void setGoal(double goal) {
+        this.goalAngle = goal;
+    }
+
+    /**
+     * Get the target angle for the Drop Down Intake
+     *
+     * @return The target angle in degrees
+     */
+    public double getGoal() {
+        return this.goalAngle;
+    }
+
+    /**
+     * Set the dropdown motors to go to a certain angle.
+     *
+     * @param angle Requested angle.
+     */
+    public void ddToAngle(double angle) {
+        dropdownMotors.set(pidController.calculate(Math.toRadians(getAngleMeasurement()), angle)
+            + feedforward.calculate((Math.toRadians(getAngleMeasurement())), 0.0));
+    }
+
+    /**
+     * Check if aligned with a requested goal.
+     *
+     * @param goal The requesed goal.
+     * @return True if properly aligned, false if not.
+     */
+    public boolean checkIfAligned(double goal) {
+        return Math.abs(getAngleMeasurement() - goal) < 5;
+    }
+
+    /**
+     * Get the current angle that is stated by the encoder.
+     *
+     * @return Current angle in degrees reported by encoder (0 - 360)
+     */
+    public double getAngleMeasurement() {
+        return (dropEncoder.getAbsolutePosition() - dropEncoderOffset) * 360;
     }
 
     /**
@@ -76,35 +132,6 @@ public class DropIntake extends SubsystemBase {
     // Stops the intake from running.
     public void stop() {
         intakeMotor.setVoltage(0);
-    }
-
-    /**
-     * Get the current angle that is stated by the encoder.
-     *
-     * @return Current angle reported by encoder (0 - 360)
-     */
-    public double getAngleMeasurement() {
-        return (dropEncoder.getAbsolutePosition() - dropEncoderOffset) * 360;
-    }
-
-    /**
-     * Set the dropdown motors to go to a certain angle.
-     *
-     * @param angle Requested angle.
-     */
-    public void ddToAngle(double angle) {
-        dropdownMotors.set(pidController.calculate(getAngleMeasurement(), angle)
-            + feedforward.calculate((getAngleMeasurement() * (Math.PI / 180.0)), 0.0));
-    }
-
-    /**
-     * Check if aligned with a requested goal.
-     *
-     * @param goal The requesed goal.
-     * @return True if properly aligned, false if not.
-     */
-    public boolean checkIfAligned(double goal) {
-        return Math.abs(getAngleMeasurement() - goal) < 5;
     }
 }
 
