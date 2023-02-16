@@ -67,6 +67,9 @@ public class WristIntake extends SubsystemBase {
         return cubeSensor1.get() && cubeSensor2.get();
     }
 
+    /**
+     * Actuate solenoids
+     */
     public void toggleSolenoid() {
         this.wristSolenoid.toggle();
     }
