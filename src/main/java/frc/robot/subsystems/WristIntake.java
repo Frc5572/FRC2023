@@ -29,6 +29,11 @@ public class WristIntake extends SubsystemBase {
     private final DigitalInput cubeSensor1 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_UPPER);
     private final DigitalInput cubeSensor2 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_LOWER);
 
+    /**
+     * Create Wrist Intake Subsystem
+     *
+     * @param ph Pnuematic Hub instance
+     */
     public WristIntake(PneumaticHub ph) {
         leftWristMotor.setInverted(true);
         this.wristSolenoid = ph.makeDoubleSolenoid(Constants.Wrist.SOLENOID_FORWARD_CHANNEL,
