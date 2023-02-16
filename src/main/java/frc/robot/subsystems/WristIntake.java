@@ -78,4 +78,18 @@ public class WristIntake extends SubsystemBase {
     public void toggleSolenoid() {
         this.wristSolenoid.toggle();
     }
+
+    /**
+     * Open grabber
+     */
+    public void openGrabber() {
+        this.wristSolenoid.set(Value.kForward);
+    }
+
+    /**
+     * Close grabber
+     */
+    public void closeGrabber() {
+        this.wristSolenoid.set(Value.kReverse);
+    }
 }
