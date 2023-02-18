@@ -226,8 +226,8 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = 0.3;
         public static final double SPIT_SPEED = -0.1;
-        public static final double DROP_VOLTS = 0.5;
-        public static final double RETRACT_VOLTS = -1.5;
+        public static final double DROP_VOLTS = -0.2;
+        public static final double RETRACT_VOLTS = 0.3;
         public static final int STOP_VOLTS = 0;
 
         /**

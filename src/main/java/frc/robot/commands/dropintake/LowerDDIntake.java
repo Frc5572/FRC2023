@@ -31,6 +31,7 @@ public class LowerDDIntake extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return intake.checkIfAligned(216.0);
+        // return intake.checkIfAligned(216.0);
+        return intake.checkIfAligned(intake.position1);
     }
 }

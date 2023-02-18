@@ -29,25 +29,33 @@ public class DropIntake extends SubsystemBase {
     private final ArmFeedforward feedforward = new ArmFeedforward(Constants.DropDownIntake.PID.KS,
         Constants.DropDownIntake.PID.KG, Constants.DropDownIntake.PID.KV);
 
-    private final double dropEncoderOffset = 0.000;
-    private final double defaultGoal = 0.0893 * 360;
-    private final double coneDeployGoal = 0.000 * 360;
-    private final double cubeDeployGoal = 0.0601 * 360;
+    private final double dropEncoderOffset = 216.6783500;
+    public final double position1 = 0;
+    public final double position2 = 60;
+    public final double position3 = 104;
 
     /**
      * Drop Down Intake Subsystem
      */
     public DropIntake() {
+        leftDropMotor.restoreFactoryDefaults();
+        rightDropMotor.restoreFactoryDefaults();
         leftDropMotor.setIdleMode(IdleMode.kBrake);
         rightDropMotor.setIdleMode(IdleMode.kBrake);
+        leftDropMotor.setInverted(false);
         rightDropMotor.setInverted(true);
+        dropEncoder.setZeroOffset(dropEncoderOffset);
+        dropEncoder.setPositionConversionFactor(360);
+        dropEncoder.setVelocityConversionFactor(360);
+        leftDropMotor.burnFlash();
+        rightDropMotor.burnFlash();
     }
 
     /**
      * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
      */
     public void intakeConeDeploy() {
-        dropdownMotors.setVoltage(Constants.DropDownIntake.DROP_VOLTS);
+        dropdownMotors.set(Constants.DropDownIntake.DROP_VOLTS);
     }
 
     /**
@@ -61,7 +69,7 @@ public class DropIntake extends SubsystemBase {
      * Retracts the dropdown intake to the default height. Stops when within threshold.
      */
     public void intakeRetract() {
-        dropdownMotors.setVoltage(Constants.DropDownIntake.RETRACT_VOLTS);
+        dropdownMotors.set(Constants.DropDownIntake.RETRACT_VOLTS);
     }
 
     public void stopDrop() {
@@ -84,7 +92,7 @@ public class DropIntake extends SubsystemBase {
      * @return Current angle reported by encoder (0 - 360)
      */
     public double getAngleMeasurement() {
-        return (dropEncoder.getPosition() - dropEncoderOffset) * 360;
+        return dropEncoder.getPosition();
     }
 
     /**
@@ -100,7 +108,7 @@ public class DropIntake extends SubsystemBase {
     /**
      * Check if aligned with a requested goal.
      *
-     * @param goal The requesed goal.
+     * @param goal The requesed goal in degrees.
      * @return True if properly aligned, false if not.
      */
     public boolean checkIfAligned(double goal) {
