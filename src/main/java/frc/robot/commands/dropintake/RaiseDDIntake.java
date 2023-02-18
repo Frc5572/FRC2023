@@ -22,6 +22,8 @@ public class RaiseDDIntake extends CommandBase {
     @Override
     public void initialize() {
         intake.intakeRetract();
+        // intake.setGoal(intake.position2);
+        // intake.enablePID();
     }
 
     @Override

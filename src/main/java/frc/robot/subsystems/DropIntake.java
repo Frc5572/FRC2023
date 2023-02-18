@@ -33,6 +33,8 @@ public class DropIntake extends SubsystemBase {
     public final double position1 = 0;
     public final double position2 = 60;
     public final double position3 = 104;
+    private double goalAngle = 0;
+    private boolean enablePID = false;
 
     /**
      * Drop Down Intake Subsystem
@@ -49,6 +51,59 @@ public class DropIntake extends SubsystemBase {
         dropEncoder.setVelocityConversionFactor(360);
         leftDropMotor.burnFlash();
         rightDropMotor.burnFlash();
+    }
+
+    @Override
+    public void periodic() {
+        if (enablePID) {
+            ddToAngle(goalAngle);
+        }
+    }
+
+    /**
+     * Set target angle for Drop Down Intake
+     *
+     * @param goal Target Angel in Degrees
+     */
+    public void setGoal(double goal) {
+        this.goalAngle = goal;
+    }
+
+    /**
+     * Get the target angle for the Drop Down Intake
+     *
+     * @return The target angle in degrees
+     */
+    public double getGoal() {
+        return this.goalAngle;
+    }
+
+    /**
+     * Set the dropdown motors to go to a certain angle.
+     *
+     * @param angle Requested angle.
+     */
+    public void ddToAngle(double angle) {
+        dropdownMotors.set(pidController.calculate(Math.toRadians(getAngleMeasurement()), angle)
+            + feedforward.calculate((Math.toRadians(getAngleMeasurement())), 0.0));
+    }
+
+    /**
+     * Enable PID control
+     *
+     * @return The target angle in degrees
+     */
+    public void enablePID() {
+        this.enablePID = true;
+    }
+
+    /**
+     * Disable PID control
+     *
+     * @return The target angle in degrees
+     */
+    public void disablePID() {
+        this.enablePID = false;
     }
 
     /**
@@ -93,16 +148,6 @@ public class DropIntake extends SubsystemBase {
      */
     public double getAngleMeasurement() {
         return dropEncoder.getPosition();
-    }
-
-    /**
-     * Set the dropdown motors to go to a certain angle.
-     *
-     * @param angle Requested angle.
-     */
-    public void ddToAngle(double angle) {
-        dropdownMotors.set(pidController.calculate(getAngleMeasurement(), angle)
-            + feedforward.calculate((getAngleMeasurement() * (Math.PI / 180.0)), 0.0));
     }
 
     /**
