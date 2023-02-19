@@ -93,8 +93,6 @@ public class DropIntake extends SubsystemBase {
 
     /**
      * Enable PID control
-     *
-     * @return The target angle in degrees
      */
     public void enablePID() {
         this.enablePID = true;
@@ -103,7 +101,6 @@ public class DropIntake extends SubsystemBase {
     /**
      * Disable PID control
      *
-     * @return The target angle in degrees
      */
     public void disablePID() {
         this.enablePID = false;
