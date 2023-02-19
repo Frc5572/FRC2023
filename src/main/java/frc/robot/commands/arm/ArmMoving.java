@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
@@ -8,7 +8,7 @@ import frc.robot.subsystems.Arm;
  */
 public class ArmMoving extends CommandBase {
     private Arm arm;
-    private double angle;
+    private double goal;
 
     /**
      * Requirements for the command.
@@ -18,25 +18,18 @@ public class ArmMoving extends CommandBase {
      */
     public ArmMoving(Arm arm, double goal) {
         this.arm = arm;
-        this.angle = goal;
+        this.goal = goal;
         addRequirements(arm);
     }
 
     @Override
-    public void initialize() {}
-
-    @Override
-    public void execute() {
-        arm.armToAngle(angle);
-    }
-
-    @Override
-    public void end(boolean interrupt) {
-        arm.motorsStop();
+    public void initialize() {
+        arm.enablePID();
+        arm.setGoal(goal);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(arm.getAngleMeasurement() - angle) < 3;
+        return arm.checkIfAligned1(goal) && arm.checkIfAligned2(goal);
     }
 }

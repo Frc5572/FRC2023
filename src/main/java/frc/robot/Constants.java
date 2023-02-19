@@ -263,17 +263,16 @@ public final class Constants {
          * Arm PID constants.
          */
         public static final class PID {
-            public static final double KP = -(3.0 / 360.0);
+            public static final double KP = 0.035;
             public static final double KI = 0.0;
-            public static final double KD = 0.01 / 360.0;
+            public static final double KD = 0.0;
             public static final double KF = 0.0;
-            public static final double K_GVOLTS = 0.0;
+            public static final double K_GVOLTS = 0.50;
             public static final double K_SVOLTS = 0.0;
-            public static final double K_MAX_VELOCITY_RAD_PER_SECOND = 0.0;
-            public static final double K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED = 0.0;
+            public static final double K_MAX_VELOCITY_RAD_PER_SECOND = 0.2;
+            public static final double K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED = 0.2;
             public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
             public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
-            public static final double K_ENCODER_DISTANCE_PER_PULSE = 0.0;
         }
     }
 

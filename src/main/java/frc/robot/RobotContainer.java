@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.arm.ArmMoving;
 import frc.robot.commands.dropintake.MoveDDIntake;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
@@ -46,6 +48,7 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final DropIntake dIntake = new DropIntake();
+    private final Arm s_Arm = new Arm();
     private final WristIntake wrist;
     // public DigitalInput testSensor = new DigitalInput(0);
 
@@ -107,7 +110,9 @@ public class RobotContainer {
         driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
         // driver.x().whileTrue(new WristIntakeIn(wrist));
 
-        operator.a().onTrue(new InstantCommand(() -> this.wrist.toggleSolenoid()));
+        operator.a().whileTrue(new ArmMoving(s_Arm, 90));
+        operator.b().whileTrue(new ArmMoving(s_Arm, 3));
+        operator.x().whileTrue(new ArmMoving(s_Arm, 120));
     }
 
     /**
