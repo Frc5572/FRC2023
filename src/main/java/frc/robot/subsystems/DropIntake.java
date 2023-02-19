@@ -7,7 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,20 +18,22 @@ public class DropIntake extends SubsystemBase {
         new CANSparkMax(Constants.DropDownIntake.LEFT_DROP_MOTOR_ID, MotorType.kBrushless);
     private final CANSparkMax rightDropMotor =
         new CANSparkMax(Constants.DropDownIntake.RIGHT_DROP_MOTOR_ID, MotorType.kBrushless);
-    private final MotorControllerGroup dropdownMotors =
-        new MotorControllerGroup(leftDropMotor, rightDropMotor);
     private final CANSparkMax intakeMotor =
         new CANSparkMax(Constants.DropDownIntake.INTAKE_MOTOR_ID, MotorType.kBrushless);
     private final AbsoluteEncoder dropEncoder = leftDropMotor.getAbsoluteEncoder(Type.kDutyCycle);
     private final PIDController pidController = new PIDController(Constants.DropDownIntake.PID.KP,
         Constants.DropDownIntake.PID.KI, Constants.DropDownIntake.PID.KD);
-    private final ArmFeedforward feedforward = new ArmFeedforward(Constants.DropDownIntake.PID.KS,
-        Constants.DropDownIntake.PID.KG, Constants.DropDownIntake.PID.KV);
+    private final ArmFeedforward feedforwardLeft =
+        new ArmFeedforward(Constants.DropDownIntake.PID.KS, Constants.DropDownIntake.PID.KG,
+            Constants.DropDownIntake.PID.KV);
+    private final ArmFeedforward feedforwardRight =
+        new ArmFeedforward(Constants.DropDownIntake.PID.KS, Constants.DropDownIntake.PID.KG * .55,
+            Constants.DropDownIntake.PID.KV);
 
-    private final double dropEncoderOffset = 216.6783500;
-    public final double position1 = 0;
+    private final double dropEncoderOffset = 214.6783500;
+    public final double position1 = 3;
     public final double position2 = 60;
-    public final double position3 = 104;
+    public final double position3 = 100;
     private double goalAngle = 0;
     private boolean enablePID = false;
 
@@ -46,9 +47,9 @@ public class DropIntake extends SubsystemBase {
         rightDropMotor.setIdleMode(IdleMode.kBrake);
         leftDropMotor.setInverted(false);
         rightDropMotor.setInverted(true);
-        dropEncoder.setZeroOffset(dropEncoderOffset);
         dropEncoder.setPositionConversionFactor(360);
         dropEncoder.setVelocityConversionFactor(360);
+        dropEncoder.setZeroOffset(dropEncoderOffset);
         leftDropMotor.burnFlash();
         rightDropMotor.burnFlash();
     }
@@ -84,8 +85,10 @@ public class DropIntake extends SubsystemBase {
      * @param angle Requested angle.
      */
     public void ddToAngle(double angle) {
-        dropdownMotors.set(pidController.calculate(Math.toRadians(getAngleMeasurement()), angle)
-            + feedforward.calculate((Math.toRadians(getAngleMeasurement())), 0.0));
+        leftDropMotor.setVoltage(pidController.calculate(getAngleMeasurement(), angle)
+            + feedforwardLeft.calculate((Math.toRadians(getAngleMeasurement())), 0.0));
+        rightDropMotor.setVoltage(pidController.calculate(getAngleMeasurement(), angle)
+            + feedforwardRight.calculate((Math.toRadians(getAngleMeasurement())), 0.0));
     }
 
     /**
@@ -104,31 +107,6 @@ public class DropIntake extends SubsystemBase {
      */
     public void disablePID() {
         this.enablePID = false;
-    }
-
-    /**
-     * Deploy the dropdown intake to the specified height for a cone. Stops when within threshold.
-     */
-    public void intakeConeDeploy() {
-        dropdownMotors.set(Constants.DropDownIntake.DROP_VOLTS);
-    }
-
-    /**
-     * Deploy the dropdown intake to the specified height for a cube. Stops when within threshold.
-     */
-    public void intakeCubeDeploy() {
-        dropdownMotors.setVoltage(Constants.DropDownIntake.DROP_VOLTS);
-    }
-
-    /**
-     * Retracts the dropdown intake to the default height. Stops when within threshold.
-     */
-    public void intakeRetract() {
-        dropdownMotors.set(Constants.DropDownIntake.RETRACT_VOLTS);
-    }
-
-    public void stopDrop() {
-        dropdownMotors.setVoltage(Constants.DropDownIntake.STOP_VOLTS);
     }
 
     // Runs the intake at a specified speed.
@@ -157,7 +135,7 @@ public class DropIntake extends SubsystemBase {
      * @return True if properly aligned, false if not.
      */
     public boolean checkIfAligned(double goal) {
-        return Math.abs(getAngleMeasurement() - goal) < 5;
+        return Math.abs(getAngleMeasurement() - goal) < 2;
     }
 }
 

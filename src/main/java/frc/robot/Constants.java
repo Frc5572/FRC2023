@@ -234,11 +234,11 @@ public final class Constants {
          * PID Constants for the Drop Down Intake motors
          */
         public static final class PID {
-            public static final double KP = 0.0;
+            public static final double KP = 0.005;
             public static final double KI = 0.0;
             public static final double KD = 0.0;
             public static final double KS = 0.0;
-            public static final double KG = 0.0;
+            public static final double KG = 1.2;
             public static final double KV = 0.0;
         }
     }
