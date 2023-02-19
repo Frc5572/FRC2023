@@ -39,6 +39,9 @@ public class Arm extends SubsystemBase {
     private double goalAngle;
     private boolean enablePID = false;
 
+    /**
+     * Arm Subsystem
+     */
     public Arm() {
         armMotor1.restoreFactoryDefaults();
         armMotor2.restoreFactoryDefaults();
