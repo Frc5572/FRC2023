@@ -6,32 +6,30 @@ import frc.robot.subsystems.DropIntake;
 /**
  * Command to raise the Drop Down Intake to the top position
  */
-public class LowerDDIntake extends CommandBase {
+public class MoveDDIntake extends CommandBase {
     private DropIntake intake;
+    private double angle;
 
     /**
      * Command to lower the Drop Down Intake to the bottom position
      *
      * @param intake Drop Down Intake
      */
-    public LowerDDIntake(DropIntake intake) {
+    public MoveDDIntake(DropIntake intake, double angle) {
         this.intake = intake;
+        this.angle = angle;
         addRequirements(intake);
     }
 
     @Override
     public void initialize() {
-        intake.intakeConeDeploy();
-        // intake.setGoal(216.0);
-    }
-
-    @Override
-    public void end(boolean interrupt) {
-        intake.stopDrop();
+        intake.enablePID();
+        intake.setGoal(angle);
     }
 
     @Override
     public boolean isFinished() {
-        return intake.checkIfAligned(216.0);
+        // return intake.checkIfAligned(216.0);
+        return intake.checkIfAligned(angle);
     }
 }

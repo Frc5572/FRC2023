@@ -202,6 +202,9 @@ public final class Constants {
         public static final int INTAKE_STOP_SPEED = 0;
         public static final double INTAKE_RELEASE_SPEED = -1;
         public static final double INTAKE_PANIC_SPEED = -1;
+
+        public static final int SOLENOID_FORWARD_CHANNEL = 0;
+        public static final int SOLENOID_REVERSE_CHANNEL = 1;
     }
 
     /**
@@ -215,19 +218,19 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = 0.3;
         public static final double SPIT_SPEED = -0.1;
-        public static final double DROP_VOLTS = 0.5;
-        public static final double RETRACT_VOLTS = -1.5;
+        public static final double DROP_VOLTS = -0.2;
+        public static final double RETRACT_VOLTS = 0.3;
         public static final int STOP_VOLTS = 0;
 
         /**
          * PID Constants for the Drop Down Intake motors
          */
         public static final class PID {
-            public static final double KP = 0.0;
+            public static final double KP = 0.005;
             public static final double KI = 0.0;
             public static final double KD = 0.0;
             public static final double KS = 0.0;
-            public static final double KG = 0.0;
+            public static final double KG = 1.2;
             public static final double KV = 0.0;
         }
     }
