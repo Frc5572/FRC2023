@@ -35,7 +35,8 @@ public class WristIntake extends SubsystemBase {
      * @param ph Pnuematic Hub instance
      */
     public WristIntake(PneumaticHub ph) {
-        leftWristMotor.setInverted(true);
+        leftWristMotor.setInverted(false);
+        rightWristMotor.setInverted(true);
         this.wristSolenoid = ph.makeDoubleSolenoid(Constants.Wrist.SOLENOID_FORWARD_CHANNEL,
             Constants.Wrist.SOLENOID_REVERSE_CHANNEL);
         this.wristSolenoid.set(Value.kForward);

@@ -17,6 +17,7 @@ import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.arm.ArmMoving;
 import frc.robot.commands.dropintake.MoveDDIntake;
 import frc.robot.commands.elevator.ElevatorControl;
+import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.Elevator;
@@ -112,7 +113,6 @@ public class RobotContainer {
         driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
         driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
         driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
-        // driver.x().whileTrue(new WristIntakeIn(wrist));
 
         operator.a().whileTrue(new ArmMoving(s_Arm, 90));
         operator.b().whileTrue(new ArmMoving(s_Arm, 3));
@@ -120,6 +120,8 @@ public class RobotContainer {
         operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
         operator.y().whileTrue(new DisabledInstantCommand(
             () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
+        operator.rightTrigger().whileTrue(new WristIntakeIn(wrist));
+        operator.leftTrigger().whileTrue(new InstantCommand(() -> wrist.toggleSolenoid()));
     }
 
     /**

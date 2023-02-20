@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
@@ -26,6 +27,7 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         elevatorMotor.restoreFactoryDefaults();
         elevatorMotor.setInverted(false);
+        elevatorMotor.setIdleMode(IdleMode.kBrake);
         elevatorMotor.burnFlash();
     }
 
