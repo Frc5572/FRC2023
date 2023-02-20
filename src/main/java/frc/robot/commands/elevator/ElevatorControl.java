@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
@@ -8,7 +8,7 @@ import frc.robot.subsystems.Elevator;
  */
 public class ElevatorControl extends CommandBase {
     private Elevator elevator;
-    private double angle;
+    private double goal;
 
     /**
      * Requirements for the command.
@@ -18,7 +18,7 @@ public class ElevatorControl extends CommandBase {
      */
     public ElevatorControl(Elevator elevator, double goal) {
         this.elevator = elevator;
-        this.angle = goal;
+        this.goal = goal;
         addRequirements(elevator);
     }
 
@@ -27,16 +27,12 @@ public class ElevatorControl extends CommandBase {
 
     @Override
     public void execute() {
-        elevator.elevatorToDegree(angle);
-    }
-
-    @Override
-    public void end(boolean interrupt) {
-        elevator.stop();
+        elevator.enablePID();
+        elevator.setGoal(goal);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(elevator.getDegreeMeasurement() - angle) < 3;
+        return elevator.checkIfAligned(goal);
     }
 }
