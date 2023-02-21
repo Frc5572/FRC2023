@@ -198,14 +198,6 @@ public final class Constants {
     }
 
     /**
-     * Arm constants.
-     */
-    public static final class ArmConstant {
-        public static final int LEFT_SIDE_CAN_ID = 9;
-        public static final int RIGHT_SIDE_CAN_ID = 10;
-    }
-
-    /**
      * Elevator constants.
      */
     public static final class ElevatorConstants {
@@ -248,6 +240,9 @@ public final class Constants {
         public static final int INTAKE_STOP_SPEED = 0;
         public static final double INTAKE_RELEASE_SPEED = -1;
         public static final double INTAKE_PANIC_SPEED = -1;
+
+        public static final int SOLENOID_FORWARD_CHANNEL = 0;
+        public static final int SOLENOID_REVERSE_CHANNEL = 1;
     }
 
     /**
@@ -261,19 +256,19 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = 0.3;
         public static final double SPIT_SPEED = -0.1;
-        public static final double DROP_VOLTS = 0.5;
-        public static final double RETRACT_VOLTS = -1.5;
+        public static final double DROP_VOLTS = -0.2;
+        public static final double RETRACT_VOLTS = 0.3;
         public static final int STOP_VOLTS = 0;
 
         /**
          * PID Constants for the Drop Down Intake motors
          */
         public static final class PID {
-            public static final double KP = 0.0;
+            public static final double KP = 0.005;
             public static final double KI = 0.0;
             public static final double KD = 0.0;
             public static final double KS = 0.0;
-            public static final double KG = 0.0;
+            public static final double KG = 1.1;
             public static final double KV = 0.0;
         }
 
@@ -285,6 +280,39 @@ public final class Constants {
     public static final class LEDConstants {
         public static final int PWM_PORT = 9;
         public static final int LED_COUNT = 36;
+    }
+
+    /**
+     * Constants that are necessary for the arm.
+     */
+    public static final class Arm {
+        public static final int ARM_ID = 9;
+        public static final int ARM_ID_2 = 10;
+        public static final int ENCODER_CHANNEL1 = 5;
+        public static final int ENCODER_CHANNEL2 = 6;
+        public static final double ENCODER_OFFSET = 0.0;
+        // this angle positions are not definite, just using them for testing
+        public static final int HOME_POSITION = 226;
+        public static final int SECOND_POSITION = 200;
+        public static final int THIRD_POSITION = 180;
+        public static final int FOURTH_POSITION = 160;
+        public static final int FIFTH_POSITION = 130;
+
+        /**
+         * Arm PID constants.
+         */
+        public static final class PID {
+            public static final double KP = 0.035;
+            public static final double KI = 0.0;
+            public static final double KD = 0.0;
+            public static final double KF = 0.0;
+            public static final double K_GVOLTS = 0.50;
+            public static final double K_SVOLTS = 0.0;
+            public static final double K_MAX_VELOCITY_RAD_PER_SECOND = 0.2;
+            public static final double K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED = 0.2;
+            public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
+            public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
+        }
     }
 
 }
