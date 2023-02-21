@@ -288,7 +288,8 @@ public final class Constants {
             public static final double KI = 0.0;
             public static final double KD = 0.0;
             public static final double KF = 0.0;
-            public static final double K_GVOLTS = 0.50;
+            public static final double K_GVOLTS_MIN = 0.50;
+            public static final double K_GVOLTS_MAX = 0.50;
             public static final double K_SVOLTS = 0.0;
             public static final double K_MAX_VELOCITY_RAD_PER_SECOND = 0.2;
             public static final double K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED = 0.2;
