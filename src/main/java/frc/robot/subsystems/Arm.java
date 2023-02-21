@@ -6,7 +6,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -29,10 +30,12 @@ public class Arm extends SubsystemBase {
     // new ProfiledPIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD,
     // new TrapezoidProfile.Constraints(Constants.Arm.PID.K_MAX_VELOCITY_RAD_PER_SECOND,
     // Constants.Arm.PID.K_MAX_ACCELERATION_RAD_PER_SEC_SQUARED));
-    private final PIDController pid_controller1 =
-        new PIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD);
-    private final PIDController pid_controller2 =
-        new PIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD);
+    private final ProfiledPIDController pid_controller1 =
+        new ProfiledPIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD,
+            new TrapezoidProfile.Constraints(Math.PI / 2, 1));
+    private final ProfiledPIDController pid_controller2 =
+        new ProfiledPIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD,
+            new TrapezoidProfile.Constraints(Math.PI / 2, 1));
 
     private final double encoder1Offset = 324.8828030;
     private final double encoder2Offset = 271.8351674;
@@ -79,8 +82,8 @@ public class Arm extends SubsystemBase {
     public void setGoal(double goal) {
         this.goalAngle = goal;
 
-        pid_controller1.setSetpoint(goal);
-        pid_controller2.setSetpoint(goal);
+        pid_controller1.setGoal(goal);
+        pid_controller2.setGoal(goal);
     }
 
     /**
@@ -98,6 +101,7 @@ public class Arm extends SubsystemBase {
      * @param angle requested angle in degrees
      */
     public void armToAngle(double angle) {
+
         armMotor1.setVoltage(pid_controller1.calculate(getAngleMeasurement1())
             + m_feedforward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
         armMotor2.setVoltage(pid_controller2.calculate(getAngleMeasurement2())

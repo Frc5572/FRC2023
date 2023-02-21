@@ -263,8 +263,8 @@ public final class Constants {
          * Arm PID constants.
          */
         public static final class PID {
-            public static final double KP = 0.035;
-            public static final double KI = 0.0;
+            public static final double KP = 0.04;
+            public static final double KI = 0.002;
             public static final double KD = 0.0;
             public static final double KF = 0.0;
             public static final double K_GVOLTS = 0.50;
