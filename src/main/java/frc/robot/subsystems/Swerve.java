@@ -15,12 +15,15 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.FieldConstants;
 import frc.lib.util.swerve.SwerveModule;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 /**
  * Creates swerve drive and commands for drive.
@@ -33,14 +36,14 @@ public class Swerve extends SubsystemBase {
     private double fieldOffset = gyro.getYaw();
     private final Field2d field = new Field2d();
     private boolean hasInitialized = false;
+    private ComplexWidget fieldWidget = RobotContainer.mainDriverTab.add("Field Pos", field)
+        .withWidget(BuiltInWidgets.kField).withSize(8, 4) // make the widget 2x1
+        .withPosition(0, 0); // place it in the top-left corner
 
     /**
      * Initializes swerve modules.
      */
     public Swerve() {
-        SmartDashboard.putData("Field Pos", field);
-
-
         swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
             new SwerveModule(2, Constants.Swerve.Mod2.constants),
