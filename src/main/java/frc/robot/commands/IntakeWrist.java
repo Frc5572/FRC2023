@@ -16,10 +16,7 @@ public class IntakeWrist extends CommandBase {
     }
 
     @Override
-    public void initialize() {}
-
-    @Override
-    public void execute() {
+    public void initialize() {
         wIntake.intake();
     }
 

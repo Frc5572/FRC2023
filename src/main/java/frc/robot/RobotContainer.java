@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.IntakeWrist;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.arm.ArmMoving;
 import frc.robot.commands.dropintake.MoveDDIntake;
@@ -113,6 +114,8 @@ public class RobotContainer {
         operator.a().whileTrue(new ArmMoving(s_Arm, 90));
         operator.b().whileTrue(new ArmMoving(s_Arm, 3));
         operator.x().whileTrue(new ArmMoving(s_Arm, 120));
+
+        driver.start().whileTrue(new IntakeWrist(wrist));
     }
 
     /**

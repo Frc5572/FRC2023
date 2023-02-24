@@ -24,10 +24,9 @@ public class WristIntake extends SubsystemBase {
     private final DoubleSolenoid wristSolenoid;
 
 
-    private final DigitalInput coneSensor1 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID_UPPER);
-    private final DigitalInput coneSensor2 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID_LOWER);
-    private final DigitalInput cubeSensor1 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_UPPER);
-    private final DigitalInput cubeSensor2 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_LOWER);
+    private final DigitalInput coneSensor1 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID);
+    private final DigitalInput cubeSensor1 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_LEFT);
+    private final DigitalInput cubeSensor2 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_RIGHT);
 
     /**
      * Create Wrist Intake Subsystem
@@ -35,7 +34,8 @@ public class WristIntake extends SubsystemBase {
      * @param ph Pnuematic Hub instance
      */
     public WristIntake(PneumaticHub ph) {
-        leftWristMotor.setInverted(true);
+        leftWristMotor.setInverted(false);
+        rightWristMotor.setInverted(true);
         this.wristSolenoid = ph.makeDoubleSolenoid(Constants.Wrist.SOLENOID_FORWARD_CHANNEL,
             Constants.Wrist.SOLENOID_REVERSE_CHANNEL);
         this.wristSolenoid.set(Value.kForward);
@@ -64,7 +64,7 @@ public class WristIntake extends SubsystemBase {
 
     // Get and return the status of the cone sensors.
     public boolean getConeSensor() {
-        return coneSensor1.get() && coneSensor2.get();
+        return coneSensor1.get();
     }
 
     // Get and return the status of the cube sensors.
