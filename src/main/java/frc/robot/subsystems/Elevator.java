@@ -23,7 +23,9 @@ public class Elevator extends SubsystemBase {
     private double goalPosition;
     private boolean enablePID = false;
 
-
+    /**
+     * Makes elevator subsystem.
+     */
     public Elevator() {
         elevatorMotor.restoreFactoryDefaults();
         elevatorMotor.setInverted(false);

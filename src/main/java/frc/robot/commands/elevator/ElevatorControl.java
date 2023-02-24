@@ -13,7 +13,7 @@ public class ElevatorControl extends CommandBase {
     /**
      * Requirements for the command.
      *
-     * @param elevator Elevator subsystem.
+     * @param arm Arm subsystem.
      * @param goal Goal at which the user is requesting the elevator to go to.
      */
     public ElevatorControl(Arm arm, double goal) {
