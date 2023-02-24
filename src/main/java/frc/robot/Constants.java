@@ -199,7 +199,7 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = .5;
         public static final int INTAKE_STOP_SPEED = 0;
-        public static final double INTAKE_RELEASE_SPEED = -.5;
+        public static final double INTAKE_RELEASE_SPEED = -.3;
         public static final double INTAKE_PANIC_SPEED = -1;
 
         public static final int SOLENOID_FORWARD_CHANNEL = 0;

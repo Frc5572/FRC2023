@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.IntakeWrist;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.arm.ArmMoving;
-import frc.robot.commands.dropintake.MoveDDIntake;
+import frc.robot.commands.leds.RainbowLEDs;
+import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.LEDs;
@@ -62,6 +62,7 @@ public class RobotContainer {
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         // Configure the button bindings
+        leds.setDefaultCommand(new RainbowLEDs(leds));
         configureButtonBindings();
 
     }
@@ -103,19 +104,22 @@ public class RobotContainer {
         // Color.kBlue).withTimeout(3));
         // operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
 
+        operator.b()
+            .whileTrue(new StartEndCommand(() -> wrist.release(), () -> wrist.stop(), wrist));
+
         driver.y().onTrue(new InstantCommand(
             () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
 
-        driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
-        driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
-        driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
-        // driver.x().whileTrue(new WristIntakeIn(wrist));
+        // driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
+        // driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
+        // driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
+        // // driver.x().whileTrue(new WristIntakeIn(wrist));
 
-        operator.a().whileTrue(new ArmMoving(s_Arm, 90));
-        operator.b().whileTrue(new ArmMoving(s_Arm, 3));
-        operator.x().whileTrue(new ArmMoving(s_Arm, 120));
+        // operator.a().whileTrue(new ArmMoving(s_Arm, 90));
+        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
+        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
 
-        driver.start().whileTrue(new IntakeWrist(wrist));
+        operator.start().whileTrue(new WristIntakeIn(wrist));
     }
 
     /**

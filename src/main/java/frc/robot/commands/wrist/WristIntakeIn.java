@@ -31,7 +31,6 @@ public class WristIntakeIn extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // return intake.getConeSensor() || intake.getCubeSensor();
-        return false;
+        return intake.getConeSensor() || intake.getCubeSensor();
     }
 }
