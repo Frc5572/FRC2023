@@ -13,7 +13,7 @@ import frc.lib.math.AngledElevatorFeedForward;
 import frc.robot.Constants;
 
 /**
- * Creates the subsystem for the arm.
+ * Creates the subsystem for the arm. briton waz hear
  */
 public class Arm extends SubsystemBase {
     private final CANSparkMax armMotor1 =
@@ -96,11 +96,20 @@ public class Arm extends SubsystemBase {
     /**
      * Set target angle for Arm
      *
-     * @param goal Target Angel in Degrees
+     * @param goal Target Angle in Degrees
      */
     public void setArmGoal(double goal) {
         armPIDController1.setSetpoint(goal);
         armPIDController2.setSetpoint(goal);
+    }
+
+    /**
+     * Get the current angle that the arm is set to go to.
+     *
+     * @return The setpoint of the arm
+     */
+    public double getArmGoal() {
+        return armPIDController1.getSetpoint();
     }
 
     /**
@@ -178,7 +187,21 @@ public class Arm extends SubsystemBase {
         return checkIfAligned1() && checkIfAligned2();
     }
 
-    // ---------------- ELEVATOR ----------------------------
+    // make a method to check if the set goal is greater than our previous position. if it is, then
+    // do not worry about having to move the elevator back in and carry on. otherwise, check if the
+    // set goal is going to go below 60 degrees (or updated threshold). if it is, move the elevator
+    // back in. (a probable use case the arm going below 60 would be when balancing)
+    public boolean goingBelow60() {
+        if (getAvgAngle() < getArmGoal()) {
+            if (getArmGoal() < 60) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // ---------------- ELEVATOR -------------------
 
     /**
      * Set target position for Elevator
