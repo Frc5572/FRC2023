@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.swerve.SwerveModuleConstants;
 
@@ -274,6 +275,25 @@ public final class Constants {
             public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
             public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
         }
+
+    }
+
+    /**
+     * Autonomous constants for swerve bot.
+     */
+    public static final class AutoConstants {
+        public static final double K_MAX_SPEED_METERS_PER_SECOND = 2;
+        public static final double K_MAX_ACCELERATION_METERS_PER_SECONDS_SQUARED = 1;
+        public static final double K_MAX_ANGULAR_SPEED_RADIAN_PER_SECOND = Math.PI * 16;
+        public static final double K_MAX_ANGULAR_SPEED_RADIANS_PER_SECONDS_SQUARED = Math.PI * 16;
+        public static final double KP_X_CONTROLLER = 1;
+        public static final double KP_Y_CONTROLLER = 1;
+        public static final double KP_THETA_CONTROLLER = 1;
+
+        // Motion profilied robot angle controller
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+            new TrapezoidProfile.Constraints(K_MAX_ANGULAR_SPEED_RADIAN_PER_SECOND,
+                K_MAX_ANGULAR_SPEED_RADIANS_PER_SECONDS_SQUARED);
     }
 
 }
