@@ -136,7 +136,6 @@ public class Arm extends SubsystemBase {
 
     /**
      * Disable PID control
-     *
      */
     public void disablePID() {
         this.enablePID = false;
@@ -161,6 +160,11 @@ public class Arm extends SubsystemBase {
         return encoder2.getPosition();
     }
 
+    /**
+     * Gets the average angle between the two encoder readings.
+     *
+     * @return The average of the two values.
+     */
     public double getAvgAngle() {
         return (getAngleMeasurement1() + getAngleMeasurement2()) / 2;
     }
@@ -183,6 +187,11 @@ public class Arm extends SubsystemBase {
         return armPIDController2.atSetpoint();
     }
 
+    /**
+     * Check if both arm PID controllers are aligned and within tolerance.
+     *
+     * @return True if they are, false if they aren't.
+     */
     public boolean checkArmInPosition() {
         return checkIfAligned1() && checkIfAligned2();
     }
@@ -191,6 +200,12 @@ public class Arm extends SubsystemBase {
     // do not worry about having to move the elevator back in and carry on. otherwise, check if the
     // set goal is going to go below 60 degrees (or updated threshold). if it is, move the elevator
     // back in. (a probable use case the arm going below 60 would be when balancing)
+
+    /**
+     * Check if the set goal is greater than our previous position.
+     *
+     * @return true if we are going less than 60 degrees, false if we aren't
+     */
     public boolean goingBelow60() {
         if (getAvgAngle() < getArmGoal()) {
             if (getArmGoal() < 60) {
@@ -247,6 +262,11 @@ public class Arm extends SubsystemBase {
         return slope * getElevatorPosition() + elevatorMaxEncoder;
     }
 
+    /**
+     * Determine if the elevator is able to move based on the arm encoder reading.
+     *
+     * @return true if it can, false if it can't
+     */
     public boolean canElevatorMove() {
         if (getAvgAngle() > 60) {
             return true;

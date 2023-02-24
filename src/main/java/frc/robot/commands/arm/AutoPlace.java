@@ -11,6 +11,10 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * Create an automated command that will automatically align the arm and elevator to place down a
+ * cube / cone.
+ */
 public class AutoPlace extends SequentialCommandGroup {
 
     Arm arm;
@@ -19,6 +23,14 @@ public class AutoPlace extends SequentialCommandGroup {
     Map<Integer, Double> grid;
     boolean safety;
 
+    /**
+     * Requirements for the command.
+     *
+     * @param arm Arm subsystem
+     * @param dropIntake Dropdown intake subsystem
+     * @param wristIntake Wrist intake subsystem
+     * @param map Grid of coordinates and values of where to align subsystems to.
+     */
     public AutoPlace(Arm arm, DropIntake dropIntake, WristIntake wristIntake,
         Map<Integer, Double> map) {
         this.arm = arm;
@@ -40,10 +52,18 @@ public class AutoPlace extends SequentialCommandGroup {
         addCommands(part, new InstantCommand(() -> endCommand()));
     }
 
+    /**
+     * Check if the elevator is allowed to move based on the given conditions.
+     *
+     * @return true if we are going less than 60 degrees, false if we aren't
+     */
     public boolean elevatorCheck() {
         return arm.goingBelow60();
     }
 
+    /**
+     * Commands to run when we reach the end of this command.
+     */
     public void endCommand() {
         arm.setArmGoal(arm.getAvgAngle());
         arm.setElevatorGoal(arm.getElevatorPosition());
