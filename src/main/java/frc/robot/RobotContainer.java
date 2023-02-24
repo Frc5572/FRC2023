@@ -17,7 +17,6 @@ import frc.robot.commands.MoveArm;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.arm.ArmMoving;
 import frc.robot.commands.dropintake.MoveDDIntake;
-import frc.robot.commands.elevator.ElevatorControl;
 import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
@@ -118,7 +117,7 @@ public class RobotContainer {
         operator.a().whileTrue(new ArmMoving(s_Arm, 90));
         operator.b().whileTrue(new ArmMoving(s_Arm, 3));
         operator.x().whileTrue(new ArmMoving(s_Arm, 120));
-        operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
+        // operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
         operator.y().whileTrue(new DisabledInstantCommand(
             () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
         operator.rightTrigger().whileTrue(new WristIntakeIn(wrist));

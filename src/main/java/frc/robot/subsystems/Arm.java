@@ -152,6 +152,10 @@ public class Arm extends SubsystemBase {
         return encoder2.getPosition();
     }
 
+    public double getAvgAngle() {
+        return (getAngleMeasurement1() + getAngleMeasurement2()) / 2;
+    }
+
     /**
      * Check if aligned with a requested goal.
      *
@@ -218,5 +222,12 @@ public class Arm extends SubsystemBase {
         double slope = (Constants.Arm.PID.K_GVOLTS_MAX - Constants.Arm.PID.K_GVOLTS_MIN)
             / (elevatorMaxEncoder - 0);
         return slope * getElevatorPosition() + elevatorMaxEncoder;
+    }
+
+    public boolean canElevatorMove() {
+        if (getAvgAngle() > 60) {
+            return true;
+        }
+        return false;
     }
 }

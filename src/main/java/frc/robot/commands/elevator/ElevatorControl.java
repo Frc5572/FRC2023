@@ -1,13 +1,13 @@
 package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Arm;
 
 /**
  * Creates the command that allows the elevator to move.
  */
 public class ElevatorControl extends CommandBase {
-    private Elevator elevator;
+    private Arm arm;
     private double goal;
 
     /**
@@ -16,10 +16,10 @@ public class ElevatorControl extends CommandBase {
      * @param elevator Elevator subsystem.
      * @param goal Goal at which the user is requesting the elevator to go to.
      */
-    public ElevatorControl(Elevator elevator, double goal) {
-        this.elevator = elevator;
+    public ElevatorControl(Arm arm, double goal) {
+        this.arm = arm;
         this.goal = goal;
-        addRequirements(elevator);
+        addRequirements(this.arm);
     }
 
     @Override
@@ -27,12 +27,12 @@ public class ElevatorControl extends CommandBase {
 
     @Override
     public void execute() {
-        elevator.enablePID();
-        elevator.setGoal(goal);
+        arm.setElevatorGoal(goal);
+        arm.elevatorToPosition();
     }
 
     @Override
     public boolean isFinished() {
-        return elevator.checkIfAligned(goal);
+        return arm.checkElevatorAligned();
     }
 }
