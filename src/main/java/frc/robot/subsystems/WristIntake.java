@@ -41,19 +41,8 @@ public class WristIntake extends SubsystemBase {
         this.wristSolenoid.set(Value.kForward);
     }
 
-    // Runs wrist intake motor to intake a game piece.
-    public void intake() {
-        wristIntakeMotors.set(Constants.Wrist.INTAKE_SPEED);
-    }
-
-    // Runs wrist intake motor to gently spit out game piece.
-    public void release() {
-        wristIntakeMotors.set(Constants.Wrist.INTAKE_RELEASE_SPEED);
-    }
-
-    // Stops the wrist intake motor from running.
-    public void stop() {
-        wristIntakeMotors.set(Constants.Wrist.INTAKE_STOP_SPEED);
+    public void setMotors(double power) {
+        wristIntakeMotors.set(power);
     }
 
     // Releases GPs in intake (if any).
@@ -72,24 +61,18 @@ public class WristIntake extends SubsystemBase {
         return cubeSensor1.get() && cubeSensor2.get();
     }
 
-    /**
-     * Actuate solenoids
-     */
-    public void toggleSolenoid() {
-        this.wristSolenoid.toggle();
-    }
 
     /**
      * Open grabber
      */
     public void openGrabber() {
-        this.wristSolenoid.set(Value.kForward);
+        this.wristSolenoid.set(Value.kReverse);
     }
 
     /**
      * Close grabber
      */
     public void closeGrabber() {
-        this.wristSolenoid.set(Value.kReverse);
+        this.wristSolenoid.set(Value.kForward);
     }
 }

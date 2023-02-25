@@ -7,7 +7,7 @@ import frc.robot.subsystems.WristIntake;
 /**
  * Command to raise the Drop Down Intake to the top position
  */
-public class WristIntakeIn extends CommandBase {
+public class WristIntakeRelease extends CommandBase {
     private WristIntake intake;
 
     /**
@@ -15,24 +15,19 @@ public class WristIntakeIn extends CommandBase {
      *
      * @param intake Drop Down Intake
      */
-    public WristIntakeIn(WristIntake intake) {
+    public WristIntakeRelease(WristIntake intake) {
         this.intake = intake;
         addRequirements(intake);
     }
 
     @Override
     public void initialize() {
-        intake.closeGrabber();
-        intake.setMotors(Constants.Wrist.INTAKE_SPEED);
+        intake.openGrabber();
+        intake.setMotors(Constants.Wrist.INTAKE_RELEASE_SPEED);
     }
 
     @Override
     public void end(boolean interrupt) {
         intake.setMotors(Constants.Wrist.INTAKE_STOP_SPEED);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return intake.getConeSensor() || intake.getCubeSensor();
     }
 }
