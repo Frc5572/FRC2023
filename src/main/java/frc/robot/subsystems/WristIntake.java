@@ -39,7 +39,7 @@ public class WristIntake extends SubsystemBase {
         rightWristMotor.setInverted(true);
         this.wristSolenoid = ph.makeDoubleSolenoid(Constants.Wrist.SOLENOID_FORWARD_CHANNEL,
             Constants.Wrist.SOLENOID_REVERSE_CHANNEL);
-        this.wristSolenoid.set(Value.kForward);
+        closeGrabber();
     }
 
     // Runs wrist intake motor to intake a game piece.
@@ -84,13 +84,13 @@ public class WristIntake extends SubsystemBase {
      * Open grabber
      */
     public void openGrabber() {
-        this.wristSolenoid.set(Value.kForward);
+        this.wristSolenoid.set(Value.kReverse);
     }
 
     /**
      * Close grabber
      */
     public void closeGrabber() {
-        this.wristSolenoid.set(Value.kReverse);
+        this.wristSolenoid.set(Value.kForward);
     }
 }

@@ -10,12 +10,10 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.arm.ArmMoving;
-import frc.robot.commands.dropintake.MoveDDIntake;
-import frc.robot.commands.elevator.ElevatorControl;
+import frc.robot.commands.arm.DockArm;
+import frc.robot.commands.arm.ScoreArm;
 import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
@@ -111,32 +109,36 @@ public class RobotContainer {
             () -> SmartDashboard.putString(" .get ABS: ", s_dIntake.getAngleMeasurement() + " ")));
 
 
-        driver.b().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position1));
-        driver.a().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position2));
-        driver.x().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position3));
+        // driver.b().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position1));
+        // driver.a().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position2));
+        // driver.x().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position3));
 
-        operator.a().whileTrue(new ArmMoving(s_Arm, 90));
-        operator.b().whileTrue(new ArmMoving(s_Arm, 3));
-        operator.x().whileTrue(new ArmMoving(s_Arm, 120));
-        operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
-        operator.y().whileTrue(new DisabledInstantCommand(
-            () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
+        // operator.a().whileTrue(new ArmMoving(s_Arm, 90));
+        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
+        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
+        // operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
+        // operator.y().whileTrue(new DisabledInstantCommand(
+        // () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
         operator.rightTrigger().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.leftTrigger().whileTrue(new InstantCommand(() -> s_wristIntake.toggleSolenoid()));
 
-        operator.povUp().whileTrue(new MoveArm(s_Arm, 90, 0));
+        operator.povRight().whileTrue(new MoveArm(s_Arm, 90, 0));
+        operator.povDown().whileTrue(new MoveArm(s_Arm, 5, 0));
 
         // driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
         // driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
         // driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
         // // driver.x().whileTrue(new WristIntakeIn(wrist));
 
-        // operator.a().whileTrue(new ArmMoving(s_Arm, 90));
+        // operator.a().whileTrue(new ArmMoving(s_Arm, 85));
         // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
         // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
 
         operator.leftTrigger().whileTrue(new FunctionalCommand(() -> s_wrist.lastAngle = 0,
             () -> s_wrist.test(), inter -> s_wrist.wristMotor.set(0), () -> false, s_wrist));
+        operator.a().whileTrue(new DockArm(s_Arm, s_dIntake, s_wristIntake));
+        operator.b()
+            .whileTrue(new ScoreArm(s_Arm, s_dIntake, s_wristIntake, 90, s_Arm.elevatorMaxEncoder));
     }
 
     /**

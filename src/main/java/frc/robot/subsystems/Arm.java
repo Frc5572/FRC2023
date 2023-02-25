@@ -36,8 +36,10 @@ public class Arm extends SubsystemBase {
     private final PIDController armPIDController2 =
         new PIDController(Constants.Arm.PID.KP, Constants.Arm.PID.KI, Constants.Arm.PID.KD);
 
-    private final double encoder1Offset = 324.8828030;
-    private final double encoder2Offset = 271.8351674;
+    private final double encoder1Offset = 316.1540833;
+    private final double encoder2Offset = 278.6091436;
+
+    private double goalAngle;
     private boolean enablePID = false;
 
     // ELEVATOR
@@ -90,7 +92,7 @@ public class Arm extends SubsystemBase {
         armMotor1.burnFlash();
         armMotor2.burnFlash();
         // ELEVATOR
-        elevatorPIDController.setTolerance(2);
+        elevatorPIDController.setTolerance(.05);
         elevatorMotor.restoreFactoryDefaults();
         elevatorMotor.setInverted(false);
         elevatorMotor.setIdleMode(IdleMode.kBrake);
