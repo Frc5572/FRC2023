@@ -8,11 +8,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.Elevator;
+import frc.robot.Constants.Wrist;
 import frc.robot.commands.ClimbPlatform;
 import frc.robot.commands.DisabledInstantCommand;
+import frc.robot.commands.MoveArm;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.RainbowLEDs;
@@ -21,10 +25,8 @@ import frc.robot.commands.wrist.WristIntakePanic;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
-import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristIntake;
 
 /**
@@ -99,6 +101,8 @@ public class RobotContainer {
             .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(5.0));
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
+        operator.leftTrigger().whileTrue(
+            new StartEndCommand(() -> s_dIntake.intake(), () -> s_dIntake.stop(), s_dIntake));
 
 
         /* Triggers */
@@ -122,8 +126,8 @@ public class RobotContainer {
         // operator.y().whileTrue(new DisabledInstantCommand(
         // () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
 
-        // operator.povRight().whileTrue(new MoveArm(s_Arm, 90, 0));
-        // operator.povDown().whileTrue(new MoveArm(s_Arm, 5, 0));
+        operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
+        operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
         Trigger grabbedGamePiece = new Trigger(
             () -> this.s_wristIntake.getConeSensor() || this.s_wristIntake.getCubeSensor());
         grabbedGamePiece.whileTrue(

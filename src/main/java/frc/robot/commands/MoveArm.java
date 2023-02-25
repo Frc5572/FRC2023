@@ -29,7 +29,7 @@ public class MoveArm extends CommandBase {
     public void initialize() {
         arm.enablePID();
         arm.setArmGoal(armAngle);
-        arm.setElevatorGoal(elevatorPosition);
+        // arm.setElevatorGoal(elevatorPosition);
     }
 
     @Override

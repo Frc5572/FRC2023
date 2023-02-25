@@ -270,7 +270,7 @@ public final class Constants {
         public static final int DROP_ENCODER_ID = 4;
         public static final int INTAKE_MOTOR_ID = 17;
 
-        public static final double INTAKE_SPEED = 0.3;
+        public static final double INTAKE_SPEED = 0.5;
         public static final double SPIT_SPEED = -0.1;
         public static final double DROP_VOLTS = -0.2;
         public static final double RETRACT_VOLTS = 0.3;
@@ -313,6 +313,9 @@ public final class Constants {
         public static final int THIRD_POSITION = 180;
         public static final int FOURTH_POSITION = 160;
         public static final int FIFTH_POSITION = 130;
+
+        public static final double encoder1Offset = 301.3542724; // 9
+        public static final double encoder2Offset = 276.0553980; // 10
 
         /**
          * Arm PID constants.

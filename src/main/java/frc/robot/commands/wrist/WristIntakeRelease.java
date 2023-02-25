@@ -25,7 +25,7 @@ public class WristIntakeRelease extends ParallelCommandGroup {
                 () -> intake.setMotors(Constants.Wrist.INTAKE_STOP_SPEED));
         InstantCommand openGrabber = new InstantCommand(() -> intake.openGrabber());
 
-        addCommands(startMotors, new WaitCommand(.5).andThen(openGrabber));
+        addCommands(new WaitCommand(.5).andThen(openGrabber));
 
     }
 }
