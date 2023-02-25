@@ -209,23 +209,18 @@ public final class Constants {
      */
     public static final class Wrist {
 
-        public static final int LEFT_WRIST_MOTOR_ID = 0;
-        public static final int RIGHT_WRIST_MOTOR_ID = 0;
-        public static final int WRIST_ENCODER_ID = 7;
+        public static final int WRIST_MOTOR_ID = 12;
 
         /**
          * Wrist PID id constants
          */
         public static final class PID {
-            public static final double kP = 0.0;
+            public static final double kP = -0.024;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
-            public static final double kMaxVelocityRadPerSecond = 0;
-            public static final double kMaxAccelerationRadPerSecond = 0;
-            public static final double kF = 0.0;
-            public static final double kSVolts = 0.0;
-            public static final double kVVoltSecondsPerRotation = 0.0;
-            public static final double TargetEncoderDegree = 0.0;
+            public static final double kS = 0.0;
+            public static final double kG = .77;
+            public static final double kV = 0.0;
         }
 
         public static final int WRIST_CAN_ID = 12;
