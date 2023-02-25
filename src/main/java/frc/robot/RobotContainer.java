@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbPlatform;
 import frc.robot.commands.DisabledInstantCommand;
-import frc.robot.commands.MoveArm;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.RainbowLEDs;
@@ -123,8 +122,8 @@ public class RobotContainer {
         // operator.y().whileTrue(new DisabledInstantCommand(
         // () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
 
-        operator.povRight().whileTrue(new MoveArm(s_Arm, 90, 0));
-        operator.povDown().whileTrue(new MoveArm(s_Arm, 5, 0));
+        // operator.povRight().whileTrue(new MoveArm(s_Arm, 90, 0));
+        // operator.povDown().whileTrue(new MoveArm(s_Arm, 5, 0));
         Trigger grabbedGamePiece = new Trigger(
             () -> this.s_wristIntake.getConeSensor() || this.s_wristIntake.getCubeSensor());
         grabbedGamePiece.whileTrue(
