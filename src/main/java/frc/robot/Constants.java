@@ -43,12 +43,13 @@ public final class Constants {
      */
     public static class CameraConstants {
 
-        public static final double ROLL = Math.PI;
-        public static final double PITCH = 0 * Math.PI / 180;
+        public static final double ROLL = -Math.PI / 2;
+        public static final double PITCH = 0.0;
         public static final double YAW = 0.0;
         public static final Transform3d KCAMERA_TO_ROBOT =
-            new Transform3d(new Translation3d(Units.inchesToMeters(-10), Units.inchesToMeters(0),
-                Units.inchesToMeters(-7.5)), new Rotation3d(ROLL, PITCH, YAW));
+            new Transform3d(new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(8),
+                Units.inchesToMeters(22.125)), new Rotation3d(ROLL, PITCH, YAW)).inverse();
+
         public static final String CAMERA_NAME = "pv2";
         public static final double LARGEST_DISTANCE = 0.1;
     }
@@ -177,6 +178,24 @@ public final class Constants {
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
 
+
+
+    }
+
+    /**
+     * Motor CAN id's.
+     */
+    public static final class Motors {
+
+
+
+        // ...
+    }
+
+    /**
+     * Pneumatics CAN id constants.
+     */
+    public static final class Pneumatics {
     }
 
     /**
@@ -190,17 +209,31 @@ public final class Constants {
      * Constants for the wrist.
      */
     public static final class Wrist {
+
+        public static final int WRIST_MOTOR_ID = 12;
+
+        /**
+         * Wrist PID id constants
+         */
+        public static final class PID {
+            public static final double kP = -0.024;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double kS = 0.0;
+            public static final double kG = .77;
+            public static final double kV = 0.0;
+        }
+
         public static final int WRIST_CAN_ID = 12;
         public static final int LEFT_MOTOR_ID = 13;
         public static final int RIGHT_MOTOR_ID = 16;
-        public static final int CONE_SENSOR_ID_UPPER = 0;
-        public static final int CONE_SENSOR_ID_LOWER = 1;
-        public static final int CUBE_SENSOR_ID_UPPER = 2;
-        public static final int CUBE_SENSOR_ID_LOWER = 3;
+        public static final int CONE_SENSOR_ID = 0;
+        public static final int CUBE_SENSOR_ID_LEFT = 1;
+        public static final int CUBE_SENSOR_ID_RIGHT = 2;
 
-        public static final double INTAKE_SPEED = 1;
+        public static final double INTAKE_SPEED = .5;
         public static final int INTAKE_STOP_SPEED = 0;
-        public static final double INTAKE_RELEASE_SPEED = -1;
+        public static final double INTAKE_RELEASE_SPEED = -.2;
         public static final double INTAKE_PANIC_SPEED = -1;
 
         public static final int SOLENOID_FORWARD_CHANNEL = 0;
@@ -233,6 +266,7 @@ public final class Constants {
             public static final double KG = 1.1;
             public static final double KV = 0.0;
         }
+
     }
 
     /**
@@ -240,7 +274,7 @@ public final class Constants {
      */
     public static final class LEDConstants {
         public static final int PWM_PORT = 9;
-        public static final int LED_COUNT = 36;
+        public static final int LED_COUNT = 60;
     }
 
     /**
@@ -277,3 +311,4 @@ public final class Constants {
     }
 
 }
+
