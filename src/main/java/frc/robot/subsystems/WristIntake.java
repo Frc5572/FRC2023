@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -39,6 +40,13 @@ public class WristIntake extends SubsystemBase {
         this.wristSolenoid = ph.makeDoubleSolenoid(Constants.Wrist.SOLENOID_FORWARD_CHANNEL,
             Constants.Wrist.SOLENOID_REVERSE_CHANNEL);
         this.wristSolenoid.set(Value.kForward);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putBoolean("cone", getConeSensor());
+        SmartDashboard.putBoolean("cube1", cubeSensor1.get());
+        SmartDashboard.putBoolean("cube2", cubeSensor2.get());
     }
 
     /**
