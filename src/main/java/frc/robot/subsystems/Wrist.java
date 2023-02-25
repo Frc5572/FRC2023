@@ -46,6 +46,9 @@ public class Wrist extends SubsystemBase {
     @Override
     public void periodic() {}
 
+    /**
+     * Test function
+     */
     public void test() {
         double angle = getAngleMeasurement();
         double pidVol = pidController.calculate(lastAngle);
