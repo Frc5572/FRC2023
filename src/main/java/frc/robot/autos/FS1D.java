@@ -12,7 +12,7 @@ import frc.robot.subsystems.Swerve;
 /**
  * Autonomous that aligns limelight then executes a trajectory.
  */
-public class BasicAuto extends AutoBase {
+public class FS1D extends AutoBase {
     Swerve swerve;
 
     /**
@@ -20,11 +20,11 @@ public class BasicAuto extends AutoBase {
      *
      * @param swerve swerve subsystem
      */
-    public BasicAuto(Swerve swerve) {
+    public FS1D(Swerve swerve) {
         super(swerve);
-        PathPlannerTrajectory basicAuto = PathPlanner.loadPath("Basic Auto", 6, 3);
-        PPSwerveControllerCommand firstCommand = baseSwerveCommand(basicAuto);
-        PathPlannerState initialState = basicAuto.getInitialState();
+        PathPlannerTrajectory FS1D = PathPlanner.loadPath("FS1D", 6, 3);
+        PPSwerveControllerCommand firstCommand = baseSwerveCommand(FS1D);
+        PathPlannerState initialState = FS1D.getInitialState();
         // TurnToAngle firstCommand = new TurnToAngle(swerve, 250, false);
 
         addCommands(new InstantCommand(() -> swerve.resetFieldRelativeOffset()),
