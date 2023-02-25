@@ -76,7 +76,6 @@ public class WristIntake extends SubsystemBase {
         return cubeSensor1.get() && cubeSensor2.get();
     }
 
-
     /**
      * Open grabber
      */

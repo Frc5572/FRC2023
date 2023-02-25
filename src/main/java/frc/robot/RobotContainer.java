@@ -5,14 +5,18 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
+import frc.robot.commands.wrist.WristIntakePanic;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
@@ -76,7 +80,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        // driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
+        driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         // driver.x().whileTrue(new TestTransform(s_Swerve,
         // new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
         // driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
@@ -87,29 +91,33 @@ public class RobotContainer {
         // driver.povRight().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 2));
         // driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
 
-        // /* Operator Buttons */
-        // operator.leftTrigger().onTrue(new FlashingLEDColor(leds, Color.kYellow)
-        // .until(() -> this.testSensor.get()).withTimeout(5.0));
-        // operator.rightTrigger().onTrue(new FlashingLEDColor(leds, Color.kPurple)
-        // .until(() -> this.testSensor.get()).withTimeout(5.0));
+        /* Operator Buttons */
+        operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow)
+            .until(() -> this.wristIntake.getConeSensor()).withTimeout(5.0));
+        operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple)
+            .until(() -> this.wristIntake.getCubeSensor()).withTimeout(5.0));
+        operator.a().whileTrue(new WristIntakeIn(wristIntake));
+        operator.b().whileTrue(new WristIntakeRelease(wristIntake));
+
 
         /* Triggers */
-        // Trigger grabbedGamePiece = new Trigger(() -> this.testSensor.get());
         // new Trigger(() -> this.ledPattern == 1).whileTrue(new RainbowLEDs(leds));
         // new Trigger(() -> this.ledPattern == 2).whileTrue(new PoliceLEDs(leds));
         // new Trigger(() -> this.ledPattern == 3)
         // .whileTrue(new FlashingLEDColor(leds, Color.kGhostWhite, Color.kGreen));
-        // grabbedGamePiece.whileTrue(
-        // new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
-        // grabbedGamePiece.negate().whileTrue(new FlashingLEDColor(leds,
-        // Color.kBlue).withTimeout(3));
+
+        Trigger grabbedGamePiece =
+            new Trigger(() -> this.wristIntake.getConeSensor() || this.wristIntake.getCubeSensor());
+        grabbedGamePiece.whileTrue(
+            new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
+        grabbedGamePiece.onFalse(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
+        Trigger intakePanic =
+            new Trigger(() -> this.wristIntake.getConeSensor() && this.wristIntake.getCubeSensor());
+        intakePanic.whileTrue(new WristIntakePanic(wristIntake));
         // operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
 
-        operator.b().whileTrue(new WristIntakeRelease(wristIntake));
-        operator.start().whileTrue(new WristIntakeIn(wristIntake));
-
-        driver.y().onTrue(new InstantCommand(
-            () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
+        // driver.y().onTrue(new InstantCommand(
+        // () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
 
         // driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
         // driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
@@ -120,8 +128,8 @@ public class RobotContainer {
         // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
         // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
 
-        operator.leftTrigger().whileTrue(new FunctionalCommand(() -> wrist.lastAngle = 0,
-            () -> wrist.test(), inter -> wrist.wristMotor.set(0), () -> false, wrist));
+        // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> wrist.lastAngle = 0,
+        // () -> wrist.test(), inter -> wrist.wristMotor.set(0), () -> false, wrist));
     }
 
     /**
