@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -13,7 +15,11 @@ import frc.robot.subsystems.Swerve;
 public class ClimbPlatform extends CommandBase {
 
     private Swerve swerve;
-    boolean beenTilted = false;
+    private boolean beenTilted = false;
+    private double startTime;
+    private int endCount = 0;
+
+    private PIDController pidController = new PIDController(-.01, 0, 0);
 
     /**
      * Test April tag transform
@@ -26,16 +32,23 @@ public class ClimbPlatform extends CommandBase {
     @Override
     public void initialize() {
         beenTilted = false;
+        startTime = 0;
+        endCount = 0;
+        pidController.reset();
+        pidController.setSetpoint(0);
+        pidController.setTolerance(2.0);
     }
 
     @Override
     public void execute() {
+        // && (Math.abs(swerve.getRoll()) < 10 || )
         double speed = -1.5;
         if (!beenTilted && Math.abs(swerve.getRoll()) > 10) {
             beenTilted = true;
+            startTime = Timer.getFPGATimestamp();
         }
-        if (beenTilted && Math.abs(swerve.getRoll()) < 10) {
-            speed = -.5;
+        if (beenTilted && Timer.getFPGATimestamp() > startTime + 1) {
+            speed = pidController.calculate(swerve.getRoll());
         }
         SmartDashboard.putBoolean("Been Tilted", beenTilted);
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speed, 0, 0);
@@ -53,6 +66,11 @@ public class ClimbPlatform extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return beenTilted && Math.abs(swerve.getRoll()) < 3;
+        if (pidController.atSetpoint()) {
+            endCount++;
+        } else {
+            endCount = 0;
+        }
+        return endCount > 5;
     }
 }
