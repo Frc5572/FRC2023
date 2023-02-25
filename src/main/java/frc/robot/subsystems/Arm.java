@@ -40,7 +40,7 @@ public class Arm extends SubsystemBase {
     private final double encoder2Offset = 271.8351674;
     private boolean enablePID = false;
 
-
+    // ELEVATOR
     private final CANSparkMax elevatorMotor =
         new CANSparkMax(Constants.Elevator.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
     private final RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
@@ -52,15 +52,27 @@ public class Arm extends SubsystemBase {
 
     public final double elevatorMaxEncoder = 2.70; // 2.7142841815948486
 
+    // WRIST
+    public final CANSparkMax wristMotor =
+        new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
+    private final ArmFeedforward wristFeedforward =
+        new ArmFeedforward(Constants.Wrist.PID.kS, Constants.Wrist.PID.kG, Constants.Wrist.PID.kV);
+    private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    private final PIDController wristPIDController =
+        new PIDController(Constants.Wrist.PID.kP, Constants.Wrist.PID.kI, Constants.Wrist.PID.kD);
+    private final double wristEncoderOffset = 61.0937476;
+    public double wristLastAngle = 0;
 
 
     /**
      * Arm Subsystem
      */
     public Arm() {
-        // Arm
+        // ARM
         armPIDController1.setTolerance(2);
         armPIDController2.setTolerance(2);
+        armPIDController1.enableContinuousInput(0, 360);
+        armPIDController1.enableContinuousInput(0, 360);
         armMotor1.restoreFactoryDefaults();
         armMotor2.restoreFactoryDefaults();
         armMotor1.setIdleMode(IdleMode.kBrake);
@@ -77,12 +89,24 @@ public class Arm extends SubsystemBase {
         encoder2.setZeroOffset(encoder2Offset);
         armMotor1.burnFlash();
         armMotor2.burnFlash();
-        // Elevator Stuff
+        // ELEVATOR
         elevatorPIDController.setTolerance(2);
         elevatorMotor.restoreFactoryDefaults();
         elevatorMotor.setInverted(false);
         elevatorMotor.setIdleMode(IdleMode.kBrake);
         elevatorMotor.burnFlash();
+        // WRIST
+        wristMotor.restoreFactoryDefaults();
+        wristMotor.setIdleMode(IdleMode.kBrake);
+        wristMotor.setInverted(false);
+        wristEncoder.setPositionConversionFactor(360);
+        wristEncoder.setVelocityConversionFactor(360);
+        wristEncoder.setInverted(false);
+        wristEncoder.setZeroOffset(wristEncoderOffset);
+        wristMotor.burnFlash();
+        wristPIDController.setTolerance(2);
+        wristPIDController.setSetpoint(90);
+        wristPIDController.enableContinuousInput(0, 360);
     }
 
     @Override
@@ -90,6 +114,7 @@ public class Arm extends SubsystemBase {
         if (enablePID) {
             armToAngle();
             elevatorToPosition();
+            wristToPosition();
         }
     }
 
@@ -218,5 +243,40 @@ public class Arm extends SubsystemBase {
         double slope = (Constants.Arm.PID.K_GVOLTS_MAX - Constants.Arm.PID.K_GVOLTS_MIN)
             / (elevatorMaxEncoder - 0);
         return slope * getElevatorPosition() + elevatorMaxEncoder;
+    }
+
+    // ---------------- WRIST ----------------------------
+
+    /**
+     * Set target position for wrist
+     *
+     * @param goal Set target angle for wrist
+     */
+    public void setWristGoal(double goal) {
+        wristPIDController.setSetpoint(goal);
+    }
+
+    /**
+     * Test function
+     */
+    public void wristToPosition() {
+        setWristGoal((getAngleMeasurement1() + getAngleMeasurement2()) / 2);
+        double angle = getWristAngleMeasurmeant();
+        double pidVol = wristPIDController.calculate(wristLastAngle);
+        double ff = wristFeedforward.calculate(Math.toRadians(wristLastAngle - 90), 0);
+        if (Math.abs(angle - wristLastAngle) < 2 || wristLastAngle == 0) {
+            wristMotor.setVoltage(pidVol + ff);
+        }
+        // SmartDashboard.putNumber("PID Voltage", pidVol);
+        // SmartDashboard.putNumber("FF Voltage", ff);
+        // SmartDashboard.putNumber("Wrist Encoder", getWristAngleMeasurmeant());
+        wristLastAngle = angle;
+    }
+
+    /**
+     * @return the rotation of the Wrist Encoder
+     */
+    public double getWristAngleMeasurmeant() {
+        return wristEncoder.getPosition();
     }
 }

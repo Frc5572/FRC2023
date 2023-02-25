@@ -23,6 +23,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.WristIntake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,14 +48,12 @@ public class RobotContainer {
 
     // Subsystems
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
-    /* Subsystems */
-    private final Wrist wrist = new Wrist();
+    private final Wrist s_wrist = new Wrist();
     private final Swerve s_Swerve = new Swerve();
-    private final DropIntake dIntake = new DropIntake();
+    private final DropIntake s_dIntake = new DropIntake();
     private final Arm s_Arm = new Arm();
     private final Elevator s_Elevator = new Elevator();
-    private final WristIntake wrist = new WristIntake(ph);
-    // public DigitalInput testSensor = new DigitalInput(0);
+    private final WristIntake s_wristIntake = new WristIntake(ph);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -109,12 +108,12 @@ public class RobotContainer {
         // operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
 
         driver.y().onTrue(new InstantCommand(
-            () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
+            () -> SmartDashboard.putString(" .get ABS: ", s_dIntake.getAngleMeasurement() + " ")));
 
 
-        driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
-        driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
-        driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
+        driver.b().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position1));
+        driver.a().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position2));
+        driver.x().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position3));
 
         operator.a().whileTrue(new ArmMoving(s_Arm, 90));
         operator.b().whileTrue(new ArmMoving(s_Arm, 3));
@@ -122,8 +121,8 @@ public class RobotContainer {
         operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
         operator.y().whileTrue(new DisabledInstantCommand(
             () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
-        operator.rightTrigger().whileTrue(new WristIntakeIn(wrist));
-        operator.leftTrigger().whileTrue(new InstantCommand(() -> wrist.toggleSolenoid()));
+        operator.rightTrigger().whileTrue(new WristIntakeIn(s_wristIntake));
+        operator.leftTrigger().whileTrue(new InstantCommand(() -> s_wristIntake.toggleSolenoid()));
 
         operator.povUp().whileTrue(new MoveArm(s_Arm, 90, 0));
 
@@ -136,9 +135,8 @@ public class RobotContainer {
         // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
         // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
 
-        operator.leftTrigger().whileTrue(new FunctionalCommand(() -> wrist.lastAngle = 0,
-            () -> wrist.test(), inter -> wrist.wristMotor.set(0), () -> false, wrist));
-
+        operator.leftTrigger().whileTrue(new FunctionalCommand(() -> s_wrist.lastAngle = 0,
+            () -> s_wrist.test(), inter -> s_wrist.wristMotor.set(0), () -> false, s_wrist));
     }
 
     /**
