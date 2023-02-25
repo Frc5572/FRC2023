@@ -80,4 +80,4 @@ Score 2 Game piece - S2
 
 Docking - D
 
-Ex: *Far side fo ramp, scores 1 game piece, docks* = FS1D
+Ex: *Far side of ramp, scores 1 game piece, docks* = FS1D
