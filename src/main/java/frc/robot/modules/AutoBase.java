@@ -3,7 +3,9 @@ package frc.robot.modules;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
@@ -16,7 +18,11 @@ public class AutoBase extends SequentialCommandGroup {
     public Swerve swerve;
 
     public static final PIDController thetaController =
-        new PIDController(Constants.AutoConstants.KP_THETA_CONTROLLER, 0, 0);
+        new PIDController(Constants.AutoConstants.KP_THETA_CONTROLLER, 0.0, 0.0);
+
+    public static final ProfiledPIDController profiledThetaController =
+        new ProfiledPIDController(Constants.AutoConstants.KP_THETA_CONTROLLER, 0.0, 0.0,
+            new TrapezoidProfile.Constraints(6, 3));
 
     /**
      * Autonomous that aligns limelight then executes a trajectory.
@@ -39,8 +45,8 @@ public class AutoBase extends SequentialCommandGroup {
         SwerveControllerCommand command = new SwerveControllerCommand(trajectory, swerve::getPose,
             Constants.Swerve.SWERVE_KINEMATICS,
             new PIDController(Constants.AutoConstants.KP_X_CONTROLLER, 0, 0),
-            new PIDController(Constants.AutoConstants.KP_Y_CONTROLLER, 0, 0), thetaController,
-            swerve::setModuleStates, swerve);
+            new PIDController(Constants.AutoConstants.KP_Y_CONTROLLER, 0, 0),
+            profiledThetaController, swerve::setModuleStates, swerve);
         return command;
     }
 

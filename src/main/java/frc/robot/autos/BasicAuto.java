@@ -32,6 +32,5 @@ public class BasicAuto extends AutoBase {
                 () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
                     initialState.holonomicRotation))),
             firstCommand);
-
     }
 }
