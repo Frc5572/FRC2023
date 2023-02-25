@@ -168,7 +168,7 @@ public class RobotContainer {
         operator.povLeft().onTrue(new DisabledInstantCommand(
             () -> Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8)));
         // operator.leftTrigger().and(operator.rightTrigger()).onTrue(new TestArm(s_Arm));
-        driver.leftBumper().and(operator.rightBumper()).whileTrue(new MoveToScore(s_Swerve));
+        driver.leftBumper().and(driver.rightBumper()).whileTrue(new MoveToScore(s_Swerve));
 
         // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> wrist.lastAngle = 0,
         // () -> wrist.test(), inter -> wrist.wristMotor.set(0), () -> false, wrist));
