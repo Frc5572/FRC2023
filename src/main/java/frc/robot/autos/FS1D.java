@@ -22,9 +22,9 @@ public class FS1D extends AutoBase {
      */
     public FS1D(Swerve swerve) {
         super(swerve);
-        PathPlannerTrajectory FS1D = PathPlanner.loadPath("FS1D", 6, 3);
-        PPSwerveControllerCommand firstCommand = baseSwerveCommand(FS1D);
-        PathPlannerState initialState = FS1D.getInitialState();
+        PathPlannerTrajectory fs1d = PathPlanner.loadPath("FS1D", 6, 3);
+        PPSwerveControllerCommand firstCommand = baseSwerveCommand(fs1d);
+        PathPlannerState initialState = fs1d.getInitialState();
         // TurnToAngle firstCommand = new TurnToAngle(swerve, 250, false);
 
         addCommands(new InstantCommand(() -> swerve.resetFieldRelativeOffset()),
