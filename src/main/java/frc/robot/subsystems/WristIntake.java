@@ -41,22 +41,37 @@ public class WristIntake extends SubsystemBase {
         this.wristSolenoid.set(Value.kForward);
     }
 
+    /**
+     * Set power of intake motors
+     *
+     * @param power power of motors from -1 to 1
+     */
     public void setMotors(double power) {
         wristIntakeMotors.set(power);
     }
 
-    // Releases GPs in intake (if any).
-    // Primarily used to prevent the accidental holding of multiple GPs penalty.
+    /**
+     * Releases GPs in intake (if any). Primarily used to prevent the accidental holding of multiple
+     * GPs penalty.
+     */
     public void panic() {
-        wristIntakeMotors.set(Constants.Wrist.INTAKE_PANIC_SPEED);
+        setMotors(Constants.Wrist.INTAKE_PANIC_SPEED);
     }
 
-    // Get and return the status of the cone sensors.
+    /**
+     * Get and return the status of the cone sensors.
+     *
+     * @return status of cone touch sensor
+     */
     public boolean getConeSensor() {
         return coneSensor1.get();
     }
 
-    // Get and return the status of the cube sensors.
+    /**
+     * Get and return the status of the cube sensors.
+     *
+     * @return status of cube touch sensors
+     */
     public boolean getCubeSensor() {
         return cubeSensor1.get() && cubeSensor2.get();
     }
