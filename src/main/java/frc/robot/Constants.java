@@ -43,16 +43,16 @@ public final class Constants {
      */
     public static class CameraConstants {
 
-        public static final double ROLL = Math.PI;
-        public static final double PITCH = 0 * Math.PI / 180;
+        public static final double ROLL = -Math.PI / 2;
+        public static final double PITCH = 0.0;
         public static final double YAW = 0.0;
         public static final Transform3d KCAMERA_TO_ROBOT =
-            new Transform3d(new Translation3d(Units.inchesToMeters(-10), Units.inchesToMeters(0),
-                Units.inchesToMeters(-7.5)), new Rotation3d(ROLL, PITCH, YAW));
+            new Transform3d(new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(8),
+                Units.inchesToMeters(22.125)), new Rotation3d(ROLL, PITCH, YAW)).inverse();
+
         public static final String CAMERA_NAME = "pv2";
         public static final double LARGEST_DISTANCE = 0.1;
     }
-
     /**
      * Swerve ID's.
      */
@@ -63,9 +63,9 @@ public final class Constants {
 
         /* Drivetrain Constants */
         // Front-Back distance.
-        public static final double TRACK_WIDTH = Units.inchesToMeters(22);
+        public static final double TRACK_WIDTH = Units.inchesToMeters(29);
         // Left-Right Distance
-        public static final double WHEEL_BASE = Units.inchesToMeters(22);
+        public static final double WHEEL_BASE = Units.inchesToMeters(29);
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
