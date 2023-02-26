@@ -7,13 +7,17 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * Command to dock the arm in the robot
+ */
 public class DockArm extends SequentialCommandGroup {
 
     /**
-     * Requirements for the command.
+     * Command to dock the arm in the robot
      *
      * @param arm Arm subsystem.
-     * @param goal Goal at which the arm should move to.
+     * @param dIntake Drop Down intake subsystem
+     * @param wristIntake Wrist Intake subsystem
      */
     public DockArm(Arm arm, DropIntake dIntake, WristIntake wristIntake) {
         addRequirements(arm, dIntake);

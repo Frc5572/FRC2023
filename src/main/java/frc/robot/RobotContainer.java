@@ -129,7 +129,7 @@ public class RobotContainer {
         operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
 
 
-        /** TRIGGERs */
+        /* TRIGGERs */
         Trigger grabbedGamePiece = new Trigger(
             () -> this.s_wristIntake.getConeSensor() || this.s_wristIntake.getCubeSensor());
         grabbedGamePiece.whileTrue(

@@ -149,7 +149,6 @@ public class Arm extends SubsystemBase {
     /**
      * Moves the arm to specified angle and stops when done.
      *
-     * @param angle requested angle in degrees
      */
     public void armToAngle() {
         m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS, getArmKg(),

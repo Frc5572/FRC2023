@@ -11,6 +11,9 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * Command to move arm into scoring position
+ */
 public class ScoreArm extends SequentialCommandGroup {
 
     Supplier<ArmPosition> getScoreParameters = () -> Scoring.getScoreParameters();
@@ -19,7 +22,8 @@ public class ScoreArm extends SequentialCommandGroup {
      * Requirements for the command.
      *
      * @param arm Arm subsystem.
-     * @param goal Goal at which the arm should move to.
+     * @param dIntake Drop Down intake subsystem
+     * @param wristIntake Wrist Intake subsystem
      */
     public ScoreArm(Arm arm, DropIntake dIntake, WristIntake wristIntake) {
         addRequirements(arm, dIntake);

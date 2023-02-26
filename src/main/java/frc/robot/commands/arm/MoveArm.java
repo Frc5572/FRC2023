@@ -20,7 +20,8 @@ public class MoveArm extends CommandBase {
      * Requirements for the command.
      *
      * @param arm Arm subsystem.
-     * @param goal Goal at which the arm should move to.
+     * @param armAngle Angle at which the arm should move to.
+     * @param elevatorPosition Desired Elevator Position
      */
     public MoveArm(Arm arm, double armAngle, double elevatorPosition) {
         this.arm = arm;
@@ -33,7 +34,7 @@ public class MoveArm extends CommandBase {
      * Requirements for the command.
      *
      * @param arm Arm subsystem.
-     * @param goal Goal at which the arm should move to.
+     * @param positionSupplier Supplier of ArmPosition
      */
     public MoveArm(Arm arm, Supplier<ArmPosition> positionSupplier) {
         this.arm = arm;
