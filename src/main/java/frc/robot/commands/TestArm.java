@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.Map;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.GamePiece;
 import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
@@ -12,7 +13,11 @@ import frc.robot.subsystems.Arm;
 public class TestArm extends CommandBase {
 
     Arm arm;
-    String gamePiece = "";
+    GamePiece gamePiece;
+    double armAngle;
+    double armExtension;
+    Map<Integer, Double> armExtensionValues;
+    Map<Integer, Double> armAngleValues;
 
     public TestArm(Arm arm) {
         this.arm = arm;
@@ -23,17 +28,23 @@ public class TestArm extends CommandBase {
         SmartDashboard.putNumber("Targeted Level", Robot.level);
         SmartDashboard.putNumber("Targeted Column", Robot.column);
         if (Robot.column == 1 || Robot.column == 4 || Robot.column == 7) {
-            gamePiece = "CUBE";
+            gamePiece = GamePiece.CUBE;
         } else {
-            gamePiece = "CONE";
+            gamePiece = GamePiece.CUBE;
         }
-        SmartDashboard.putString("Targeted Game Piece", gamePiece);
-        Map<Integer, Double> armExtension = Map.of(0, 1.0, 1, 1.0, 2, 1.0);
-        Map<Integer, Double> armAngle = Map.of(0, 45.0, 1, 90.0, 2, 100.0);
+        SmartDashboard.putString("Targeted Game Piece", gamePiece.toString());
+
+        if (gamePiece == GamePiece.CUBE) {
+            armExtensionValues = Map.of(0, 0.0, 1, 0.0, 2, 0.0);
+            armAngleValues = Map.of(0, 20.0, 1, 90.0, 2, 90.0);
+        } else if (gamePiece == GamePiece.CONE) {
+            armExtensionValues = Map.of(0, 0.0, 1, 0.0, 2, 0.0);
+            armAngleValues = Map.of(0, 45.0, 1, 100.0, 2, 110.0);
+        }
+
         arm.enablePID();
-        arm.setGoal(armAngle.get(Robot.level));
-        // elevator.enablePID()
-        // elevator.setGoal(armExtension.get(Robot.level));
+        arm.setGoal(armAngleValues.get(Robot.level));
+        // arm.setElevatorGoal(armExtensionValues.get(Robot.level));
     }
 
     @Override

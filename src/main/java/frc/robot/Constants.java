@@ -310,5 +310,9 @@ public final class Constants {
         }
     }
 
+    public static enum GamePiece {
+        CONE, CUBE
+    }
+
 }
 
