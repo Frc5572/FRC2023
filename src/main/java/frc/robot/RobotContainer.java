@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ClimbPlatform;
 import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.MoveToScore;
 import frc.robot.commands.TeleopSwerve;
@@ -142,6 +143,7 @@ public class RobotContainer {
             new Trigger(() -> this.wristIntake.getConeSensor() && this.wristIntake.getCubeSensor());
         intakePanic.whileTrue(new WristIntakePanic(wristIntake));
         // operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
+        driver.rightBumper().and(driver.leftBumper()).whileTrue(new ClimbPlatform(s_Swerve));
 
         // driver.y().onTrue(new InstantCommand(
         // () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
