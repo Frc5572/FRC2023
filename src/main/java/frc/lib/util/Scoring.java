@@ -11,7 +11,7 @@ public class Scoring {
 
 
     /**
-     * Enum represeting game piece
+     * Enum representing game piece
      */
     public static enum GamePiece {
         CONE, CUBE

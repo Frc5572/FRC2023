@@ -33,7 +33,7 @@ public class ArmPosition {
 
     /**
      * Get the Arm Angle
-     * 
+     *
      * @return Arm Angle
      */
     public double getArmAngle() {
@@ -51,7 +51,7 @@ public class ArmPosition {
 
     /**
      * Get Wrist Angle
-     * 
+     *
      * @return Wrist Angle
      */
     public double getWristAngle() {
