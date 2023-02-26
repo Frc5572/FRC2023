@@ -4,18 +4,34 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
+/**
+ * Class containing scoring functions
+ */
 public class Scoring {
 
 
+    /**
+     * Enum represeting game piece
+     */
     public static enum GamePiece {
         CONE, CUBE
     }
 
+    /**
+     * Get the type of game piece based off the desired scoring position
+     *
+     * @return Game Piece
+     */
     public static GamePiece getGamePiece() {
         return (Robot.column == 1 || Robot.column == 4 || Robot.column == 7) ? GamePiece.CUBE
             : GamePiece.CUBE;
     }
 
+    /**
+     * Get the distance from the goals based on which level and game piece
+     *
+     * @return distance in Inches from score barrier
+     */
     public static double getScorePosition() {
         GamePiece gamePiece = getGamePiece();
         Map<Integer, Double> xCoord = Map.of();
@@ -27,6 +43,11 @@ public class Scoring {
         return xCoord.get(Robot.level);
     }
 
+    /**
+     * Get Arm Angle, Elevator Position, Wrist Angle based on which game piece and level to score
+     *
+     * @return ArmPosition object
+     */
     public static ArmPosition getScoreParameters() {
         GamePiece gamePiece = getGamePiece();
         Map<Integer, Double> armExtensionValues = Map.of();

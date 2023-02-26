@@ -293,7 +293,7 @@ public class Arm extends SubsystemBase {
     /**
      * Set target offset from 0 for wrist
      *
-     * @param goal The offset from 0 degrees
+     * @param offset The offset from 0 degrees
      */
     public void setWristOffset(double offset) {
         wristOffset = offset;
