@@ -70,7 +70,7 @@ public class Arm extends SubsystemBase {
         .add("Arm Angle", getAngleMeasurement1()).withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("min", 0, "max", 150)).withPosition(8, 0).withSize(2, 2).getEntry();
     private GenericEntry armExtensionWidget =
-        RobotContainer.mainDriverTab.add("Arm Extenstion", getElevatorPosition())
+        RobotContainer.mainDriverTab.add("Arm Extension", getElevatorPosition())
             .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 2.70))
             .withPosition(10, 0).withSize(2, 2).getEntry();
 
