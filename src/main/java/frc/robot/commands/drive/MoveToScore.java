@@ -9,6 +9,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.lib.util.FieldConstants;
+import frc.lib.util.Scoring;
 import frc.robot.Robot;
 import frc.robot.subsystems.Swerve;
 
@@ -27,10 +28,11 @@ public class MoveToScore extends MoveToPos {
     @Override
     public void initialize() {
         int column = Robot.column;
-        int level = Robot.level;
+        // int level = Robot.level;
         Pose2d basePos = new Pose2d();
         Rotation2d rotation = Rotation2d.fromDegrees(180);
-        double xOffset = Units.inchesToMeters(50);
+        double xOffset = Units.inchesToMeters(Scoring.getScorePosition());
+        // double xOffset = Units.inchesToMeters(50);
         int redInvert = 1;
         if (DriverStation.getAlliance() == Alliance.Blue) {
             basePos = FieldConstants.aprilTags.get(8).toPose2d();

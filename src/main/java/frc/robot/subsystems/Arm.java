@@ -63,7 +63,8 @@ public class Arm extends SubsystemBase {
     private final PIDController wristPIDController =
         new PIDController(Constants.Wrist.PID.kP, Constants.Wrist.PID.kI, Constants.Wrist.PID.kD);
     private final double wristEncoderOffset = 61.0937476;
-    public double wristLastAngle = 0;
+    private double wristLastAngle = 0;
+    private double wristOffset = 0;
 
     private GenericEntry armAngleWidget = RobotContainer.mainDriverTab
         .add("Arm Angle", getAngleMeasurement1()).withWidget(BuiltInWidgets.kDial)
@@ -200,6 +201,15 @@ public class Arm extends SubsystemBase {
     }
 
     /**
+     * Calculate the average angle of arm from both encoders
+     *
+     * @return Average arm angle
+     */
+    public double getAverageArmAngle() {
+        return (getAngleMeasurement1() + getAngleMeasurement2()) / 2;
+    }
+
+    /**
      * Check if aligned with a requested goal.
      *
      * @return True if properly aligned, false if not.
@@ -282,11 +292,20 @@ public class Arm extends SubsystemBase {
     }
 
     /**
+     * Set target offset from 0 for wrist
+     *
+     * @param goal The offset from 0 degrees
+     */
+    public void setWristOffset(double offset) {
+        wristOffset = offset;
+    }
+
+    /**
      * Test function
      */
     public void wristToPosition() {
-        setWristGoal((getAngleMeasurement1() + getAngleMeasurement2()) / 2);
-        double angle = getWristAngleMeasurment() - 10;
+        setWristGoal(getAverageArmAngle() - wristOffset);
+        double angle = getWristAngleMeasurment();
         double wristPID = wristPIDController.calculate(wristLastAngle);
         double ff = wristFeedforward.calculate(Math.toRadians(wristLastAngle - 90), 0);
         if (Math.abs(angle - wristLastAngle) < 2 || wristLastAngle == 0) {

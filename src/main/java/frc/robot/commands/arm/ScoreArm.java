@@ -1,16 +1,19 @@
 package frc.robot.commands.arm;
 
-import edu.wpi.first.math.MathUtil;
+import java.util.function.Supplier;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
-import frc.robot.commands.dropintake.MoveDDIntake;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.lib.util.ArmPosition;
+import frc.lib.util.Scoring;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.WristIntake;
 
 public class ScoreArm extends SequentialCommandGroup {
+
+    Supplier<ArmPosition> getScoreParameters = () -> Scoring.getScoreParameters();
 
     /**
      * Requirements for the command.
@@ -18,20 +21,17 @@ public class ScoreArm extends SequentialCommandGroup {
      * @param arm Arm subsystem.
      * @param goal Goal at which the arm should move to.
      */
-    public ScoreArm(Arm arm, DropIntake dIntake, WristIntake wristIntake, double armAngle,
-        double elevatorPosition) {
-        elevatorPosition = MathUtil.clamp(elevatorPosition, 0, Constants.Elevator.MAX_ENCODER);
+    public ScoreArm(Arm arm, DropIntake dIntake, WristIntake wristIntake) {
         addRequirements(arm, dIntake);
 
-        MoveDDIntake moveDDIntake = new MoveDDIntake(dIntake, dIntake.position1);
         InstantCommand closeGrabber = new InstantCommand(() -> wristIntake.closeGrabber());
-        ParallelRaceGroup moveArm =
-            new MoveArm(arm, armAngle, 0).until(() -> arm.getAngleMeasurement1() > 45);
-        MoveArm moveArm2 = new MoveArm(arm, armAngle, elevatorPosition);
-        MoveDDIntake moveDDIntake2 = new MoveDDIntake(dIntake, dIntake.position3);
+        WaitCommand waitForGrabber = new WaitCommand(.5);
+        MoveElevator moveElevator = new MoveElevator(arm, 0);
+        SequentialCommandGroup part1 = closeGrabber.andThen(waitForGrabber).andThen(moveElevator);
+        MoveArm moveArmFinal = new MoveArm(arm, getScoreParameters);
+        ConditionalCommand condition = new ConditionalCommand(part1.andThen(moveArmFinal),
+            moveArmFinal, () -> arm.getAverageArmAngle() < 20);
 
-        addCommands(moveDDIntake.alongWith(closeGrabber), moveArm,
-            moveArm2.alongWith(moveDDIntake2));
+        addCommands(condition);
     }
-
 }

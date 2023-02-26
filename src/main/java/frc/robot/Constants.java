@@ -331,10 +331,4 @@ public final class Constants {
             public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
         }
     }
-
-    public static enum GamePiece {
-        CONE, CUBE
-    }
-
 }
-
