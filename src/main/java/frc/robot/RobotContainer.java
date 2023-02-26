@@ -8,14 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.Elevator;
-import frc.robot.Constants.Wrist;
+import frc.lib.util.DisabledInstantCommand;
 import frc.robot.commands.ClimbPlatform;
-import frc.robot.commands.DisabledInstantCommand;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
@@ -24,7 +21,6 @@ import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.commands.wrist.WristIntakePanic;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
@@ -52,11 +48,9 @@ public class RobotContainer {
 
     /* Subsystems */
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
-    private final Wrist s_wrist = new Wrist();
     private final Swerve s_Swerve = new Swerve();
-    private final DropIntake s_dIntake = new DropIntake();
+    // private final DropIntake s_dIntake = new DropIntake();
     private final Arm s_Arm = new Arm();
-    private final Elevator s_Elevator = new Elevator();
     private final WristIntake s_wristIntake = new WristIntake(ph);
 
     /**
@@ -101,8 +95,8 @@ public class RobotContainer {
             .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(5.0));
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
-        operator.leftTrigger().whileTrue(
-            new StartEndCommand(() -> s_dIntake.intake(), () -> s_dIntake.stop(), s_dIntake));
+        // operator.leftTrigger().whileTrue(
+        // new StartEndCommand(() -> s_dIntake.intake(), () -> s_dIntake.stop(), s_dIntake));
 
 
         /* Triggers */
