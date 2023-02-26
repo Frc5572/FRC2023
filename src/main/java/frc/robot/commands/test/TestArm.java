@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.test;
 
 import java.util.Map;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,7 +44,7 @@ public class TestArm extends CommandBase {
 
         arm.enablePID();
         arm.setArmGoal(armAngleValues.get(Robot.level));
-        arm.setElevatorGoal(armExtensionValues.get(Robot.level));
+        // arm.setElevatorGoal(armExtensionValues.get(Robot.level));
     }
 
     @Override

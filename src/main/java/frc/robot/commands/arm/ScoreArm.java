@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.MoveArm;
 import frc.robot.commands.dropintake.MoveDDIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;

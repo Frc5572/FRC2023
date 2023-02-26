@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.arm;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;

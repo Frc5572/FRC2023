@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
-import frc.robot.commands.ClimbPlatform;
-import frc.robot.commands.MoveArm;
-import frc.robot.commands.MoveToScore;
-import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.arm.MoveArm;
+import frc.robot.commands.drive.ClimbPlatform;
+import frc.robot.commands.drive.MoveToScore;
+import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
@@ -104,80 +104,17 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
-        // driver.x().whileTrue(new TestTransform(s_Swerve,
-        // new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
-        // driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
-        // driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
-        // driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
-        // driver.start().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 0));
-        // driver.povDown().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 1));
-        // driver.povRight().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 2));
-        // driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
+        driver.leftBumper().and(driver.rightBumper()).whileTrue(new MoveToScore(s_Swerve));
+        driver.rightTrigger().and(driver.leftTrigger()).whileTrue(new ClimbPlatform(s_Swerve));
 
         /* Operator Buttons */
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow)
             .until(() -> this.s_wristIntake.getConeSensor()).withTimeout(5.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple)
             .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(5.0));
+
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
-        // operator.leftTrigger().whileTrue(
-        // new StartEndCommand(() -> s_dIntake.intake(), () -> s_dIntake.stop(), s_dIntake));
-
-
-        /* Triggers */
-        // new Trigger(() -> this.ledPattern == 1).whileTrue(new RainbowLEDs(leds));
-        // new Trigger(() -> this.ledPattern == 2).whileTrue(new PoliceLEDs(leds));
-        // new Trigger(() -> this.ledPattern == 3)
-        // .whileTrue(new FlashingLEDColor(leds, Color.kGhostWhite, Color.kGreen));
-
-        // driver.y().onTrue(new InstantCommand(
-        // () -> SmartDashboard.putString(" .get ABS: ", s_dIntake.getAngleMeasurement() + " ")));
-
-
-        // driver.b().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position1));
-        // driver.a().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position2));
-        // driver.x().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position3));
-
-        // operator.a().whileTrue(new ArmMoving(s_Arm, 90));
-        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
-        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
-        // operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
-        // operator.y().whileTrue(new DisabledInstantCommand(
-        // () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
-
-        operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
-        operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
-
-
-        Trigger grabbedGamePiece = new Trigger(
-            () -> this.s_wristIntake.getConeSensor() || this.s_wristIntake.getCubeSensor());
-        grabbedGamePiece.whileTrue(
-            new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
-        grabbedGamePiece.onFalse(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
-        Trigger intakePanic = new Trigger(
-            () -> this.s_wristIntake.getConeSensor() && this.s_wristIntake.getCubeSensor());
-        intakePanic.whileTrue(new WristIntakePanic(s_wristIntake));
-        // operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
-        driver.rightBumper().and(driver.leftBumper()).whileTrue(new ClimbPlatform(s_Swerve));
-
-        // driver.y().onTrue(new InstantCommand(
-        // () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
-
-        // driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
-        // driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
-        // driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
-        // // driver.x().whileTrue(new WristIntakeIn(wrist));
-
-        // operator.a().whileTrue(new ArmMoving(s_Arm, 85));
-        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
-        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
-
-        // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> s_wrist.lastAngle = 0,
-        // () -> s_wrist.test(), inter -> s_wrist.wristMotor.set(0), () -> false, s_wrist));
-        // operator.a().whileTrue(new DockArm(s_Arm, s_dIntake, s_wristIntake));
-        // operator.b()
-        // .whileTrue(new ScoreArm(s_Arm, s_dIntake, s_wristIntake, 90, s_Arm.elevatorMaxEncoder));
 
         operator.povUp().onTrue(
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
@@ -187,11 +124,66 @@ public class RobotContainer {
             () -> Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8)));
         operator.povLeft().onTrue(new DisabledInstantCommand(
             () -> Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8)));
-        // operator.leftTrigger().and(operator.rightTrigger()).onTrue(new TestArm(s_Arm));
-        driver.leftBumper().and(driver.rightBumper()).whileTrue(new MoveToScore(s_Swerve));
 
+        operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
+        operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
+
+
+        /** TRIGGERs */
+        Trigger grabbedGamePiece = new Trigger(
+            () -> this.s_wristIntake.getConeSensor() || this.s_wristIntake.getCubeSensor());
+        grabbedGamePiece.whileTrue(
+            new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
+        grabbedGamePiece.onFalse(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
+        Trigger intakePanic = new Trigger(
+            () -> this.s_wristIntake.getConeSensor() && this.s_wristIntake.getCubeSensor());
+        intakePanic.whileTrue(new WristIntakePanic(s_wristIntake)
+            .deadlineWith(new FlashingLEDColor(leds, Color.kRed)));
+
+        // driver.y().onTrue(new InstantCommand(
+        // () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
+        // driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
+        // driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
+        // driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
+        // driver.x().whileTrue(new WristIntakeIn(wrist));
+        // operator.a().whileTrue(new ArmMoving(s_Arm, 85));
+        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
+        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
+        // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> s_wrist.lastAngle = 0,
+        // () -> s_wrist.test(), inter -> s_wrist.wristMotor.set(0), () -> false, s_wrist));
+        // operator.a().whileTrue(new DockArm(s_Arm, s_dIntake, s_wristIntake));
+        // operator.b()
+        // .whileTrue(new ScoreArm(s_Arm, s_dIntake, s_wristIntake, 90, s_Arm.elevatorMaxEncoder));
         // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> wrist.lastAngle = 0,
         // () -> wrist.test(), inter -> wrist.wristMotor.set(0), () -> false, wrist));
+        // driver.x().whileTrue(new TestTransform(s_Swerve,
+        // new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
+        // driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
+        // driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
+        // driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
+        // driver.start().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 0));
+        // driver.povDown().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 1));
+        // driver.povRight().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 2));
+        // driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
+        // operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
+        // operator.leftTrigger().whileTrue(
+        // new StartEndCommand(() -> s_dIntake.intake(), () -> s_dIntake.stop(), s_dIntake));
+        /* Triggers */
+        // new Trigger(() -> this.ledPattern == 1).whileTrue(new RainbowLEDs(leds));
+        // new Trigger(() -> this.ledPattern == 2).whileTrue(new PoliceLEDs(leds));
+        // new Trigger(() -> this.ledPattern == 3)
+        // .whileTrue(new FlashingLEDColor(leds, Color.kGhostWhite, Color.kGreen));
+        // driver.y().onTrue(new InstantCommand(
+        // () -> SmartDashboard.putString(" .get ABS: ", s_dIntake.getAngleMeasurement() + " ")));
+        // driver.b().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position1));
+        // driver.a().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position2));
+        // driver.x().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position3));
+        // operator.a().whileTrue(new ArmMoving(s_Arm, 90));
+        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
+        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
+        // operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
+        // operator.y().whileTrue(new DisabledInstantCommand(
+        // () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
     }
 
     /**
