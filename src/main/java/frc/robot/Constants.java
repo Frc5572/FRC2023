@@ -203,9 +203,11 @@ public final class Constants {
      */
     public static final class Elevator {
         public static final int ELEVATOR_MOTOR_ID = 11;
-        public static final int ELEVATOR_ENCODER_ID = 0;
-
         public static final double ELEVATOR_STOP = 0.0;
+
+        /* Elevator Encoder */
+        public static final double ENCODER_OFFSET = 0.0;
+        public static final double MAX_ENCODER = 2.70; // 2.7142841815948486
 
         /**
          * Constants for the PID portion of the elevator.
@@ -221,9 +223,6 @@ public final class Constants {
             public static final double ELEVATOR_KG_VOLTS = 0.0;
             public static final double ELEVATOR_KV_VOLT_SECONDS_PER_ROTATION = 0.0;
         }
-
-        /* Elevator Encoder */
-        public static final double ENCODER_OFFSET = 0.0;
     }
 
     /**
@@ -331,6 +330,10 @@ public final class Constants {
             public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
             public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
         }
+    }
+
+    public static enum GamePiece {
+        CONE, CUBE
     }
 
 }

@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.dropintake.MoveDDIntake;
 import frc.robot.subsystems.Arm;
@@ -20,7 +21,7 @@ public class ScoreArm extends SequentialCommandGroup {
      */
     public ScoreArm(Arm arm, DropIntake dIntake, WristIntake wristIntake, double armAngle,
         double elevatorPosition) {
-        elevatorPosition = MathUtil.clamp(elevatorPosition, 0, arm.elevatorMaxEncoder);
+        elevatorPosition = MathUtil.clamp(elevatorPosition, 0, Constants.Elevator.MAX_ENCODER);
         addRequirements(arm, dIntake);
 
         MoveDDIntake moveDDIntake = new MoveDDIntake(dIntake, dIntake.position1);

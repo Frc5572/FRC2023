@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -21,7 +22,7 @@ public class MoveArm extends CommandBase {
     public MoveArm(Arm arm, double armAngle, double elevatorPosition) {
         this.arm = arm;
         this.armAngle = armAngle;
-        this.elevatorPosition = MathUtil.clamp(elevatorPosition, 0, arm.elevatorMaxEncoder);
+        this.elevatorPosition = MathUtil.clamp(elevatorPosition, 0, Constants.Elevator.MAX_ENCODER);
         addRequirements(arm);
     }
 

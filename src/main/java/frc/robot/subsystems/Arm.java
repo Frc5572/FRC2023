@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -8,10 +9,13 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.AngledElevatorFeedForward;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 /**
  * Creates the subsystem for the arm.
@@ -50,8 +54,6 @@ public class Arm extends SubsystemBase {
         new PIDController(Constants.Elevator.PID.ELEVATOR_KP, Constants.Elevator.PID.ELEVATOR_KI,
             Constants.Elevator.PID.ELEVATOR_KD);
 
-    public final double elevatorMaxEncoder = 2.70; // 2.7142841815948486
-
     // WRIST
     public final CANSparkMax wristMotor =
         new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
@@ -63,6 +65,13 @@ public class Arm extends SubsystemBase {
     private final double wristEncoderOffset = 61.0937476;
     public double wristLastAngle = 0;
 
+    private GenericEntry armAngleWidget = RobotContainer.mainDriverTab
+        .add("Arm Angle", getAngleMeasurement1()).withWidget(BuiltInWidgets.kDial)
+        .withProperties(Map.of("min", 0, "max", 150)).withPosition(8, 0).withSize(2, 2).getEntry();
+    private GenericEntry armExtensionWidget =
+        RobotContainer.mainDriverTab.add("Arm Extenstion", getElevatorPosition())
+            .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 2.70))
+            .withPosition(10, 0).withSize(2, 2).getEntry();
 
     /**
      * Arm Subsystem
@@ -112,6 +121,8 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
+        armAngleWidget.setDouble(getAngleMeasurement1());
+        armExtensionWidget.setDouble(getAngleMeasurement1());
         if (enablePID) {
             armToAngle();
             // elevatorToPosition();

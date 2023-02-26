@@ -1,8 +1,16 @@
 package frc.robot;
 
+import java.util.Map;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -14,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.robot.commands.ClimbPlatform;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.MoveToScore;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.RainbowLEDs;
@@ -32,14 +41,32 @@ import frc.robot.subsystems.WristIntake;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+    /* Shuffleboard */
+    public static ShuffleboardTab mainDriverTab = Shuffleboard.getTab("Main Driver");
+    private ShuffleboardLayout targetGrid =
+        RobotContainer.mainDriverTab.getLayout("Next Position", BuiltInLayouts.kGrid)
+            .withPosition(8, 2).withSize(2, 2).withProperties(
+                Map.of("Number of columns", 2, "Number of rows", 1, "Label position", "TOP"));
+    public GenericEntry levelWidget = targetGrid.add("Level", Robot.level)
+        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", 0, "Max", 2, "Center",
+            0, "Num tick marks", 3, "Show Text", false, "Orientation", "VERTICAL"))
+        .getEntry();
+    public GenericEntry columnWidet = targetGrid.add("Column", Robot.column)
+        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", 0, "Max", 8, "Center",
+            0, "Num tick marks", 5, "Show Text", false, "Orientation", "VERTICAL"))
+        .getEntry();
+
     /* Controllers */
+
+
+    // Initialize AutoChooser Sendable
 
 
     private final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_ID);
     private final CommandXboxController operator = new CommandXboxController(Constants.OPERATOR_ID);
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-    public PneumaticHub ph = new PneumaticHub();
+    private final PneumaticHub ph = new PneumaticHub();
 
     // Field Relative and openLoop Variables
     boolean fieldRelative;
@@ -66,7 +93,6 @@ public class RobotContainer {
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
         configureButtonBindings();
-
     }
 
     /**
@@ -122,6 +148,8 @@ public class RobotContainer {
 
         operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
         operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
+
+
         Trigger grabbedGamePiece = new Trigger(
             () -> this.s_wristIntake.getConeSensor() || this.s_wristIntake.getCubeSensor());
         grabbedGamePiece.whileTrue(
@@ -150,6 +178,18 @@ public class RobotContainer {
         // operator.a().whileTrue(new DockArm(s_Arm, s_dIntake, s_wristIntake));
         // operator.b()
         // .whileTrue(new ScoreArm(s_Arm, s_dIntake, s_wristIntake, 90, s_Arm.elevatorMaxEncoder));
+
+        operator.povUp().onTrue(
+            new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
+        operator.povDown().onTrue(
+            new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level - 1, 0, 2)));
+        operator.povRight().onTrue(new DisabledInstantCommand(
+            () -> Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8)));
+        operator.povLeft().onTrue(new DisabledInstantCommand(
+            () -> Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8)));
+        // operator.leftTrigger().and(operator.rightTrigger()).onTrue(new TestArm(s_Arm));
+        driver.leftBumper().and(driver.rightBumper()).whileTrue(new MoveToScore(s_Swerve));
+
         // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> wrist.lastAngle = 0,
         // () -> wrist.test(), inter -> wrist.wristMotor.set(0), () -> false, wrist));
     }
