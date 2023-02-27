@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
-import frc.robot.autos.P0;
+import frc.robot.autos.LeaveCommunity;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
@@ -104,7 +104,7 @@ public class RobotContainer {
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-        autoChooser.addOption("Test", new P0(s_Swerve));
+        autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve));
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
