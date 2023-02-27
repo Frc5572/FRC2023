@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
+import frc.robot.autos.P0;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
@@ -65,6 +67,10 @@ public class RobotContainer {
             .withProperties(Map.of("Color when true", "yellow", "Color when false", "purple"))
             .withPosition(8, 4).withSize(2, 1).getEntry();
 
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+    public ComplexWidget autoChooserWidget = mainDriverTab.add("Auto Chooser", autoChooser)
+        .withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(2, 4).withSize(2, 1);
+
     /* Controllers */
 
 
@@ -74,7 +80,6 @@ public class RobotContainer {
     private final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_ID);
     private final CommandXboxController operator = new CommandXboxController(Constants.OPERATOR_ID);
 
-    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     private final PneumaticHub ph = new PneumaticHub();
 
     // Field Relative and openLoop Variables
@@ -99,6 +104,8 @@ public class RobotContainer {
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
+        autoChooser.addOption("Test", new P0(s_Swerve));
+        autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve));
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
         configureButtonBindings();

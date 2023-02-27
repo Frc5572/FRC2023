@@ -35,12 +35,9 @@ public class MoveToScore extends MoveToPos {
         // double xOffset = Units.inchesToMeters(50);
         int redInvert = 1;
         if (DriverStation.getAlliance() == Alliance.Blue) {
-            basePos = FieldConstants.aprilTags.get(8).toPose2d();
+            basePos = Robot.aprilTagFieldLayout.getTagPose(8).get().toPose2d();
         } else if (DriverStation.getAlliance() == Alliance.Red) {
-            basePos = FieldConstants.aprilTags.get(3).toPose2d();
-            rotation = Rotation2d.fromDegrees(0);
-            xOffset *= -1;
-            redInvert = -1;
+            basePos = Robot.aprilTagFieldLayout.getTagPose(3).get().toPose2d();
         }
         Map<Integer, Translation2d> columns = Map.of(0,
             new Translation2d(xOffset, FieldConstants.Grids.nodeSeparationY * -1 * redInvert), 1,
@@ -53,5 +50,6 @@ public class MoveToScore extends MoveToPos {
             new Translation2d(xOffset, FieldConstants.Grids.nodeSeparationY * 6 * redInvert), 8,
             new Translation2d(xOffset, FieldConstants.Grids.nodeSeparationY * 7 * redInvert));
         this.pose2d = basePos.plus(new Transform2d(columns.get(column), rotation));
+        swerve.resetOdometry(this.pose2d);
     }
 }
