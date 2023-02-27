@@ -16,7 +16,6 @@ public class DockArm extends SequentialCommandGroup {
      * Command to dock the arm in the robot
      *
      * @param arm Arm subsystem.
-     * @param dIntake Drop Down intake subsystem
      * @param wristIntake Wrist Intake subsystem
      */
     public DockArm(Arm arm, WristIntake wristIntake) {

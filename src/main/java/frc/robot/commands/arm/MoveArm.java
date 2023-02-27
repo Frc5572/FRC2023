@@ -58,7 +58,8 @@ public class MoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return arm.checkArmInPosition(); // && arm.getWristAligned(); // &&
-                                         // arm.checkElevatorAligned();
+        return arm.checkArmInPosition();
+        // && arm.getWristAligned();
+        // arm.checkElevatorAligned();
     }
 }

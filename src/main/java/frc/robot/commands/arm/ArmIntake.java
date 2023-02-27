@@ -15,8 +15,6 @@ public class ArmIntake extends CommandBase {
      * Requirements for the command.
      *
      * @param arm Arm subsystem.
-     * @param armAngle Angle at which the arm should move to.
-     * @param elevatorPosition Desired Elevator Position
      */
     public ArmIntake(Arm arm) {
         this.arm = arm;
