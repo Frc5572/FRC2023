@@ -12,6 +12,7 @@ import frc.robot.subsystems.Arm;
  */
 public class MoveArm extends CommandBase {
     private Arm arm;
+    private Supplier<ArmPosition> armPositionSupplier;
     private double armAngle;
     private double elevatorPosition;
     private double wristAngle;
@@ -38,16 +39,17 @@ public class MoveArm extends CommandBase {
      */
     public MoveArm(Arm arm, Supplier<ArmPosition> positionSupplier) {
         this.arm = arm;
-        ArmPosition position = positionSupplier.get();
-        this.armAngle = position.getArmAngle();
-        this.elevatorPosition =
-            MathUtil.clamp(position.getElevatorPosition(), 0, Constants.Elevator.MAX_ENCODER);
-        this.wristAngle = position.getWristAngle();
+        this.armPositionSupplier = positionSupplier;
         addRequirements(arm);
     }
 
     @Override
     public void initialize() {
+        ArmPosition position = armPositionSupplier.get();
+        this.elevatorPosition =
+            MathUtil.clamp(position.getElevatorPosition(), 0, Constants.Elevator.MAX_ENCODER);
+        this.wristAngle = position.getWristAngle();
+        this.armAngle = position.getArmAngle();
         arm.enablePID();
         arm.setArmGoal(armAngle);
         arm.setWristOffset(wristAngle);
@@ -56,6 +58,7 @@ public class MoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return arm.checkArmInPosition() && arm.checkElevatorAligned();
+        return arm.checkArmInPosition(); // && arm.getWristAligned(); // &&
+                                         // arm.checkElevatorAligned();
     }
 }

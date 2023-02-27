@@ -20,7 +20,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
-import frc.robot.commands.arm.MoveArm;
+import frc.lib.util.Scoring;
+import frc.lib.util.Scoring.GamePiece;
+import frc.robot.commands.arm.ArmIntake;
+import frc.robot.commands.arm.DockArm;
+import frc.robot.commands.arm.ScoreArm;
 import frc.robot.commands.drive.ClimbPlatform;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
@@ -55,6 +59,11 @@ public class RobotContainer {
         .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", 0, "Max", 8, "Center",
             0, "Num tick marks", 5, "Show Text", false, "Orientation", "VERTICAL"))
         .getEntry();
+    public GenericEntry gamePieceWidget =
+        mainDriverTab.add("Game Piece", Scoring.getGamePiece() == GamePiece.CONE)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withProperties(Map.of("Color when true", "yellow", "Color when false", "purple"))
+            .withPosition(8, 4).withSize(2, 1).getEntry();
 
     /* Controllers */
 
@@ -115,6 +124,8 @@ public class RobotContainer {
 
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
+        operator.x().whileTrue(new WristIntakeIn(s_wristIntake).alongWith(new ArmIntake(s_Arm)));
+        operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake));
 
         operator.povUp().onTrue(
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
@@ -124,9 +135,16 @@ public class RobotContainer {
             () -> Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8)));
         operator.povLeft().onTrue(new DisabledInstantCommand(
             () -> Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8)));
+        operator.rightTrigger().and(operator.leftTrigger())
+            .whileTrue(new ScoreArm(s_Arm, s_wristIntake));
 
-        operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
-        operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
+        // operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
+        // operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
+
+        // operator.x().whileTrue(new TestArm(s_Arm));
+        // operator.x()
+        // .whileTrue(new InstantCommand(() -> System.out.println(s_Arm.getElevatorPosition())));
+        // operator.x().whileTrue(new MoveElevator(s_Arm));
 
 
         /* TRIGGERs */

@@ -40,7 +40,7 @@ public class WristIntake extends SubsystemBase {
         .add("Cube Grabbed", getConeSensor()).withWidget(BuiltInWidgets.kBooleanBox)
         .withProperties(Map.of("Color when true", "#A020F0", "Color when false", "#FFFFFF"))
         .withPosition(10, 3).withSize(2, 1).getEntry();
-    private GenericEntry solenoidStatus = RobotContainer.mainDriverTab.add("Solenoid Status", false)
+    private GenericEntry solenoidStatus = RobotContainer.mainDriverTab.add("Grabber Open", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
         .withPosition(0, 4).withSize(2, 1).getEntry();

@@ -3,8 +3,8 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.lib.util.ArmPosition;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.WristIntake;
 
 /**
@@ -19,17 +19,19 @@ public class DockArm extends SequentialCommandGroup {
      * @param dIntake Drop Down intake subsystem
      * @param wristIntake Wrist Intake subsystem
      */
-    public DockArm(Arm arm, DropIntake dIntake, WristIntake wristIntake) {
-        addRequirements(arm, dIntake);
+    public DockArm(Arm arm, WristIntake wristIntake) {
+        addRequirements(arm);
 
         // MoveDDIntake moveDDIntake = new MoveDDIntake(dIntake, dIntake.position1);
         InstantCommand closeGrabber = new InstantCommand(() -> wristIntake.closeGrabber());
-        WaitCommand waitForGrabber = new WaitCommand(.5);
-        MoveElevator moveElevator = new MoveElevator(arm, 0);
-        MoveArm moveArm = new MoveArm(arm, 0, 0);
+        WaitCommand waitCommand = new WaitCommand(.25);
+        WaitCommand waitCommand2 = new WaitCommand(.25);
+        // MoveElevator moveElevator = new MoveElevator(arm, 0);
+        MoveArm moveArm1 = new MoveArm(arm, () -> new ArmPosition(20, 0, -20));
+        MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(-5, 0, -20));
         // MoveDDIntake moveDDIntake2 = new MoveDDIntake(dIntake, dIntake.position3);
 
-        addCommands(closeGrabber, waitForGrabber, moveElevator, moveArm);
+        addCommands(closeGrabber, waitCommand, moveArm1, waitCommand2, moveArm2);
     }
 
 }

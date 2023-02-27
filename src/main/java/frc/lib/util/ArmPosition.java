@@ -21,14 +21,14 @@ public class ArmPosition {
      * Class representing the position of the Arm components
      */
     public ArmPosition(double armAngle, double elevatorPosition) {
-        this(armAngle, elevatorPosition, 0);
+        this(armAngle, elevatorPosition, -10);
     }
 
     /**
      * Class representing the position of the Arm components
      */
     public ArmPosition(double armAngle) {
-        this(armAngle, 0, 0);
+        this(armAngle, 0, -10);
     }
 
     /**

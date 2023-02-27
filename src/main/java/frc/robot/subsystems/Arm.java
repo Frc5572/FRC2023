@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -27,9 +28,7 @@ public class Arm extends SubsystemBase {
         new CANSparkMax(Constants.Arm.ARM_ID_2, MotorType.kBrushless);
     // private final MotorControllerGroup armMotors = new MotorControllerGroup(armMotor1,
     // armMotor2);
-    private ArmFeedforward m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
-        getArmKg(), Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
-        Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
+    private ArmFeedforward m_feedforward;
     private final AbsoluteEncoder encoder1 = armMotor1.getAbsoluteEncoder(Type.kDutyCycle);
     private final AbsoluteEncoder encoder2 = armMotor2.getAbsoluteEncoder(Type.kDutyCycle);
     // private final ProfiledPIDController pid_controller =
@@ -49,7 +48,7 @@ public class Arm extends SubsystemBase {
         new CANSparkMax(Constants.Elevator.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
     private final RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
     private AngledElevatorFeedForward elevatorFeedForward =
-        new AngledElevatorFeedForward(0, getArmKg(), 0);
+        new AngledElevatorFeedForward(0, Constants.Elevator.PID.ELEVATOR_KG_VOLTS, 0);
     private final PIDController elevatorPIDController =
         new PIDController(Constants.Elevator.PID.ELEVATOR_KP, Constants.Elevator.PID.ELEVATOR_KI,
             Constants.Elevator.PID.ELEVATOR_KD);
@@ -57,22 +56,22 @@ public class Arm extends SubsystemBase {
     // WRIST
     public final CANSparkMax wristMotor =
         new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
-    private final ArmFeedforward wristFeedforward =
-        new ArmFeedforward(Constants.Wrist.PID.kS, Constants.Wrist.PID.kG, Constants.Wrist.PID.kV);
+    private final ElevatorFeedforward wristFeedforward = new ElevatorFeedforward(
+        Constants.Wrist.PID.kS, Constants.Wrist.PID.kG, Constants.Wrist.PID.kV);
     private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
     private final PIDController wristPIDController =
         new PIDController(Constants.Wrist.PID.kP, Constants.Wrist.PID.kI, Constants.Wrist.PID.kD);
-    private final double wristEncoderOffset = 61.0937476;
+    private final double wristEncoderOffset = 72.6637727;
     private double wristLastAngle = 0;
     private double wristOffset = 0;
 
     private GenericEntry armAngleWidget = RobotContainer.mainDriverTab
-        .add("Arm Angle", getAngleMeasurement1()).withWidget(BuiltInWidgets.kDial)
+        .add("Arm Angle", getAverageArmAngle()).withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("min", 0, "max", 150)).withPosition(8, 0).withSize(2, 2).getEntry();
-    private GenericEntry armExtensionWidget =
-        RobotContainer.mainDriverTab.add("Arm Extension", getElevatorPosition())
-            .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 2.70))
-            .withPosition(10, 0).withSize(2, 2).getEntry();
+    private GenericEntry armExtensionWidget = RobotContainer.mainDriverTab
+        .add("Arm Extension", getElevatorPosition()).withWidget(BuiltInWidgets.kDial)
+        .withProperties(Map.of("min", 0, "max", Constants.Elevator.MAX_ENCODER)).withPosition(10, 0)
+        .withSize(2, 2).getEntry();
 
     /**
      * Arm Subsystem
@@ -82,7 +81,7 @@ public class Arm extends SubsystemBase {
         armPIDController1.setTolerance(2);
         armPIDController2.setTolerance(2);
         armPIDController1.enableContinuousInput(0, 360);
-        armPIDController1.enableContinuousInput(0, 360);
+        armPIDController2.enableContinuousInput(0, 360);
         armMotor1.restoreFactoryDefaults();
         armMotor2.restoreFactoryDefaults();
         armMotor1.setIdleMode(IdleMode.kBrake);
@@ -97,6 +96,10 @@ public class Arm extends SubsystemBase {
         encoder2.setVelocityConversionFactor(360);
         encoder2.setInverted(false);
         encoder2.setZeroOffset(Constants.Arm.encoder2Offset);
+        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS, getArmKg(),
+            Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
+            Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
+        // setArmGoal()
 
         armMotor1.burnFlash();
         armMotor2.burnFlash();
@@ -115,15 +118,15 @@ public class Arm extends SubsystemBase {
         wristEncoder.setInverted(false);
         wristEncoder.setZeroOffset(wristEncoderOffset);
         wristMotor.burnFlash();
-        wristPIDController.setTolerance(2);
+        wristPIDController.setTolerance(1);
         wristPIDController.setSetpoint(90);
         wristPIDController.enableContinuousInput(0, 360);
     }
 
     @Override
     public void periodic() {
-        armAngleWidget.setDouble(getAngleMeasurement1());
-        armExtensionWidget.setDouble(getAngleMeasurement1());
+        armAngleWidget.setDouble(getAverageArmAngle());
+        armExtensionWidget.setDouble(getElevatorPosition());
         if (enablePID) {
             armToAngle();
             // elevatorToPosition();
@@ -155,11 +158,11 @@ public class Arm extends SubsystemBase {
             Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
         double armPID1 = armPIDController1.calculate(getAngleMeasurement1());
-        double armPID2 = armPIDController2.calculate(getAngleMeasurement2());
+        double armPID2 = armPIDController2.calculate(getAngleMeasurement1());
         armMotor1.setVoltage(
             armPID1 + m_feedforward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
         armMotor2.setVoltage(
-            armPID2 + m_feedforward.calculate(Math.toRadians(getAngleMeasurement2() - 90), 0));
+            armPID2 + m_feedforward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
 
         SmartDashboard.putNumber("Arm Voltage 1", armPID1);
         SmartDashboard.putNumber("Arm Voltage 2", armPID2);
@@ -205,7 +208,7 @@ public class Arm extends SubsystemBase {
      * @return Average arm angle
      */
     public double getAverageArmAngle() {
-        return (getAngleMeasurement1() + getAngleMeasurement2()) / 2;
+        return getAngleMeasurement1();
     }
 
     /**
@@ -247,16 +250,17 @@ public class Arm extends SubsystemBase {
      */
     public void elevatorToPosition() {
         double elevatorPID = elevatorPIDController.calculate(getElevatorPosition());
-        elevatorMotor.setVoltage(elevatorPID
-            + elevatorFeedForward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
-        SmartDashboard.putNumber("Elevator Voltage", elevatorPID);
+        double ff = elevatorFeedForward.calculate(Math.toRadians(getAverageArmAngle() - 90));
+        elevatorMotor.setVoltage(elevatorPID + ff);
+        SmartDashboard.putNumber("Elevator PID Voltage", elevatorPID);
+        SmartDashboard.putNumber("Elevator FF Voltage", ff);
     }
 
     /**
      * Gets the encoder measurement of the elevator in rotation degrees.
      */
     public double getElevatorPosition() {
-        return 0; // elevatorEncoder.getPosition();
+        return elevatorEncoder.getPosition();
     }
 
 
@@ -273,10 +277,10 @@ public class Arm extends SubsystemBase {
      * Calculate Kg based on elevator extension
      */
     public double getArmKg() {
-        // double slope = (Constants.Arm.PID.K_GVOLTS_MAX - Constants.Arm.PID.K_GVOLTS_MIN)
-        // / (elevatorMaxEncoder - 0);
-        // return slope * getElevatorPosition() + elevatorMaxEncoder;
-        return Constants.Arm.PID.K_GVOLTS_MIN;
+        double slope = (Constants.Arm.PID.K_GVOLTS_MAX - Constants.Arm.PID.K_GVOLTS_MIN)
+            / (Constants.Elevator.MAX_ENCODER - 0);
+        return slope * getElevatorPosition() + Constants.Arm.PID.K_GVOLTS_MIN;
+        // return Constants.Arm.PID.K_GVOLTS_MAX;
     }
 
     // ---------------- WRIST ----------------------------
@@ -303,18 +307,20 @@ public class Arm extends SubsystemBase {
      * Test function
      */
     public void wristToPosition() {
-        setWristGoal(getAverageArmAngle() - wristOffset);
-        double angle = getWristAngleMeasurment();
-        double wristPID = wristPIDController.calculate(wristLastAngle);
-        double ff = wristFeedforward.calculate(Math.toRadians(wristLastAngle - 90), 0);
-        if (Math.abs(angle - wristLastAngle) < 2 || wristLastAngle == 0) {
-            wristMotor.setVoltage(wristPID + ff);
-        }
+        setWristGoal(getAverageArmAngle() + wristOffset);
+        // double angle = getWristAngleMeasurment();
+        double wristPID = wristPIDController.calculate(getWristAngleMeasurment());
+        double ff = wristFeedforward.calculate(0, 0);
+        // if (Math.abs(angle - wristLastAngle) < 2 || wristLastAngle == 0) {
+        wristMotor.setVoltage(wristPID + ff);
+        // }
         SmartDashboard.putNumber("Wrist Voltage", wristPID);
         // SmartDashboard.putNumber("PID Voltage", pidVol);
         // SmartDashboard.putNumber("FF Voltage", ff);
-        // SmartDashboard.putNumber("Wrist Encoder", getWristAngleMeasurment());
-        wristLastAngle = angle;
+        SmartDashboard.putNumber("Wrist Encoder", getWristAngleMeasurment());
+        SmartDashboard.putNumber("Wrist Offset", wristOffset);
+        SmartDashboard.putNumber("Wrist Goal", wristPIDController.getSetpoint());
+        // wristLastAngle = angle;
     }
 
     /**
@@ -322,5 +328,9 @@ public class Arm extends SubsystemBase {
      */
     public double getWristAngleMeasurment() {
         return wristEncoder.getPosition();
+    }
+
+    public boolean getWristAligned() {
+        return wristPIDController.atSetpoint();
     }
 }

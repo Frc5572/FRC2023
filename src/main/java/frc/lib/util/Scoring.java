@@ -24,7 +24,7 @@ public class Scoring {
      */
     public static GamePiece getGamePiece() {
         return (Robot.column == 1 || Robot.column == 4 || Robot.column == 7) ? GamePiece.CUBE
-            : GamePiece.CUBE;
+            : GamePiece.CONE;
     }
 
     /**
