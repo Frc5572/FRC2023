@@ -5,9 +5,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.lib.util.FieldConstants;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
@@ -48,7 +52,14 @@ public class MoveToPos extends CommandBase {
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        if (DriverStation.getAlliance() == Alliance.Red) {
+            var translation =
+                new Translation2d(FieldConstants.fieldLength - pose2d.getX(), pose2d.getY());
+            var rotation = pose2d.getRotation().plus(Rotation2d.fromDegrees(180));
+            pose2d = new Pose2d(translation, rotation);
+        }
+    }
 
     @Override
     public void execute() {
