@@ -22,6 +22,7 @@ public class MoveToPos extends CommandBase {
 
     public Swerve swerve;
     public Pose2d pose2d = new Pose2d();
+    public Pose2d finalPose2d = new Pose2d();
 
     HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
         new PIDController(Constants.SwerveTransformPID.PID_XKP,
@@ -53,18 +54,20 @@ public class MoveToPos extends CommandBase {
 
     @Override
     public void initialize() {
+        finalPose2d = null;
+        finalPose2d = pose2d;
         if (DriverStation.getAlliance() == Alliance.Red) {
             var translation =
                 new Translation2d(FieldConstants.fieldLength - pose2d.getX(), pose2d.getY());
             var rotation = pose2d.getRotation().plus(Rotation2d.fromDegrees(180));
-            pose2d = new Pose2d(translation, rotation);
+            finalPose2d = new Pose2d(translation, rotation);
         }
     }
 
     @Override
     public void execute() {
-        ChassisSpeeds ctrlEffort =
-            holonomicDriveController.calculate(swerve.getPose(), pose2d, 0, pose2d.getRotation());
+        ChassisSpeeds ctrlEffort = holonomicDriveController.calculate(swerve.getPose(), finalPose2d,
+            0, finalPose2d.getRotation());
         swerve.setModuleStates(ctrlEffort);
     }
 

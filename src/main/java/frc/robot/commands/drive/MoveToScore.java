@@ -47,6 +47,6 @@ public class MoveToScore extends MoveToPos {
                 new Translation2d(xPosition, FieldConstants.Grids.nodeSeparationY * 5), 7,
                 new Translation2d(xPosition, FieldConstants.Grids.nodeSeparationY * 6), 8,
                 new Translation2d(xPosition, FieldConstants.Grids.nodeSeparationY * 7));
-        this.pose2d = basePos.plus(new Transform2d(columns.get(column), rotation));
+        this.finalPose2d = basePos.plus(new Transform2d(columns.get(column), rotation));
     }
 }
