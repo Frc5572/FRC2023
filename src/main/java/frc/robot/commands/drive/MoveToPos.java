@@ -7,6 +7,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -48,7 +50,11 @@ public class MoveToPos extends CommandBase {
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        if (DriverStation.getAlliance() == Alliance.Red) {
+
+        }
+    }
 
     @Override
     public void execute() {

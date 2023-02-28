@@ -7,11 +7,11 @@ import frc.robot.commands.drive.MoveToPos;
 import frc.robot.subsystems.Swerve;
 
 /**
- * AUto that leaves community area.
+ * Leaves community area.
  */
 public class LeaveCommunity extends MoveToPos {
 
-    private static double distanceFromTape = 230.0;
+    public static double distanceFromTape = 230.0;
 
     /**
      * Runs MoveToPos to leave community area.
