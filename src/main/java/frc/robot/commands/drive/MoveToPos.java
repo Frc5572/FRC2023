@@ -1,5 +1,6 @@
 package frc.robot.commands.drive;
 
+import java.util.function.Supplier;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -16,13 +17,14 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 /**
- * Test April tag transform
+ * Move to Position
  */
 public class MoveToPos extends CommandBase {
 
     public Swerve swerve;
     public Pose2d pose2d = new Pose2d();
     public Pose2d finalPose2d = new Pose2d();
+    public Supplier<Pose2d> pose2dSupplier;
 
     HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
         new PIDController(Constants.SwerveTransformPID.PID_XKP,
@@ -35,7 +37,9 @@ public class MoveToPos extends CommandBase {
                 Constants.SwerveTransformPID.MAX_ANGULAR_ACCELERATION)));
 
     /**
-     * Test April tag transform
+     * Move to Position
+     *
+     * @param swerve Swerve Drive Subsystem
      */
     public MoveToPos(Swerve swerve) {
         super();
@@ -45,15 +49,32 @@ public class MoveToPos extends CommandBase {
     }
 
     /**
-     * Test April tag transform
+     * Move to Position
+     *
+     * @param swerve Swerve Drive Subsystem
+     * @param position Pose2d to move to
      */
     public MoveToPos(Swerve swerve, Pose2d position) {
         this(swerve);
         this.pose2d = position;
     }
 
+    /**
+     * Move to Position
+     *
+     * @param arm Arm subsystem.
+     * @param positionSupplier Supplier of Pose2d
+     */
+    public MoveToPos(Swerve swerve, Supplier<Pose2d> pose2dSupplier) {
+        this(swerve);
+        this.pose2dSupplier = pose2dSupplier;
+    }
+
     @Override
     public void initialize() {
+        if (pose2dSupplier != null) {
+            pose2d = pose2dSupplier.get();
+        }
         finalPose2d = null;
         finalPose2d = pose2d;
         if (DriverStation.getAlliance() == Alliance.Red) {
