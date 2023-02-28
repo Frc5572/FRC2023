@@ -10,13 +10,15 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DropIntake;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * Creates command to move arm to scoring position.
+ */
 public class ScoreArm extends SequentialCommandGroup {
 
     /**
      * Requirements for the command.
      *
      * @param arm Arm subsystem.
-     * @param goal Goal at which the arm should move to.
      */
     public ScoreArm(Arm arm, DropIntake dIntake, WristIntake wristIntake, double armAngle,
         double elevatorPosition) {

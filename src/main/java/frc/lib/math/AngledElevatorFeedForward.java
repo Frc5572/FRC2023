@@ -2,6 +2,9 @@ package frc.lib.math;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 
+/**
+ * Class with methods for creating elevator feedforward.
+ */
 public class AngledElevatorFeedForward extends ElevatorFeedforward {
 
     public AngledElevatorFeedForward(double ks, double kg, double kv) {

@@ -16,7 +16,6 @@ public class MoveArm extends CommandBase {
      * Requirements for the command.
      *
      * @param arm Arm subsystem.
-     * @param goal Goal at which the arm should move to.
      */
     public MoveArm(Arm arm, double armAngle, double elevatorPosition) {
         this.arm = arm;
