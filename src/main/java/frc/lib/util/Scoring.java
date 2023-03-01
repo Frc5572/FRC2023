@@ -106,7 +106,7 @@ public class Scoring {
     public static Pose2d getPreScorePosition() {
         double xPosition = Units.inchesToMeters(50);
         return getScoreAlignment(xPosition);
-    };
+    }
 
     /**
      * Get Arm Angle, Elevator Position, Wrist Angle based on which game piece and level to score
