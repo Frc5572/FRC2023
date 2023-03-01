@@ -27,7 +27,7 @@ import frc.robot.autos.P0;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
-import frc.robot.commands.drive.ClimbPlatform;
+import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
@@ -122,7 +122,8 @@ public class RobotContainer {
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.rightTrigger().and(driver.leftTrigger())
             .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
-        driver.rightBumper().and(driver.leftBumper()).whileTrue(new ClimbPlatform(s_Swerve));
+        driver.rightBumper().and(driver.leftBumper())
+            .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
 
         /* Operator Buttons */
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow)
