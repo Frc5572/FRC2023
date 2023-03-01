@@ -62,7 +62,7 @@ public class WristIntake extends SubsystemBase {
     public void periodic() {
         coneGrabbed.setBoolean(getConeSensor());
         cubeGrabbed.setBoolean(getCubeSensor());
-        solenoidStatus.setBoolean(this.wristSolenoid.get() == Value.kForward);
+        solenoidStatus.setBoolean(this.wristSolenoid.get() == Value.kReverse);
     }
 
     // Runs wrist intake motor to intake a game piece.

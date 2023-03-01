@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.Map;
 import org.photonvision.PhotonCamera;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.VecBuilder;
@@ -13,6 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -39,6 +41,10 @@ public class Swerve extends SubsystemBase {
     private ComplexWidget fieldWidget = RobotContainer.mainDriverTab.add("Field Pos", field)
         .withWidget(BuiltInWidgets.kField).withSize(8, 4) // make the widget 2x1
         .withPosition(0, 0); // place it in the top-left corner
+    private GenericEntry aprilTagTarget = RobotContainer.mainDriverTab.add("April Tag Seen", false)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
+        .withPosition(6, 4).withSize(2, 1).getEntry();
 
     /**
      * Initializes swerve modules.
@@ -226,6 +232,8 @@ public class Swerve extends SubsystemBase {
         }
 
         field.setRobotPose(getPose());
+
+        aprilTagTarget.setBoolean(res.hasTargets());
 
         SmartDashboard.putBoolean("Has Initialized", hasInitialized);
         SmartDashboard.putNumber("Robot X", getPose().getX());
