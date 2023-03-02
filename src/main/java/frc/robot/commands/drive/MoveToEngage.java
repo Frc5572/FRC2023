@@ -2,6 +2,7 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.FieldConstants;
@@ -22,16 +23,10 @@ public class MoveToEngage extends SequentialCommandGroup {
     public MoveToEngage(Swerve swerve, Arm arm, WristIntake wristIntake) {
 
         ParallelRaceGroup dockArm = new DockArm(arm, wristIntake).withTimeout(2);
-        // ConditionalCommand cond = new ConditionalCommand(
-        // new MoveToPos(swerve,
-        // () -> new Pose2d(swerve.getPose().getX(), swerve.getPose().getY(),
-        // new Rotation2d(0)),
-        // true),
-        // new MoveToPos(swerve, () -> new Pose2d(swerve.getPose().getX(), swerve.getPose().getY(),
-        // new Rotation2d(Math.PI)), true),
-        // () -> centerField(swerve));
+        ConditionalCommand cond = new ConditionalCommand(new TurnToAngle(swerve, 0, false),
+            new TurnToAngle(swerve, 180, false), () -> centerField(swerve));
         ClimbPlatform climbPlatform = new ClimbPlatform(swerve);
-        addCommands(dockArm, climbPlatform);
+        addCommands(dockArm, cond, climbPlatform);
     }
 
     private boolean centerField(Swerve swerve) {
