@@ -24,10 +24,11 @@ import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.LeaveCommunity;
+import frc.robot.autos.P0;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
-import frc.robot.commands.drive.ClimbPlatform;
+import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
@@ -105,7 +106,8 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
-        autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve));
+        autoChooser.addOption("Test", new P0(s_Swerve));
+        autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
         configureButtonBindings();
@@ -120,14 +122,16 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
-        driver.leftBumper().and(driver.rightBumper()).whileTrue(new MoveToScore(s_Swerve));
-        driver.rightTrigger().and(driver.leftTrigger()).whileTrue(new ClimbPlatform(s_Swerve));
+        driver.rightTrigger().and(driver.leftTrigger())
+            .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
+        driver.rightBumper().and(driver.leftBumper())
+            .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
 
         /* Operator Buttons */
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow)
-            .until(() -> this.s_wristIntake.getConeSensor()).withTimeout(5.0));
+            .until(() -> this.s_wristIntake.getConeSensor()).withTimeout(15.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple)
-            .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(5.0));
+            .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(15.0));
 
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));

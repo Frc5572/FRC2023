@@ -1,5 +1,6 @@
 package frc.robot.commands.drive;
 
+import java.util.function.Supplier;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -10,16 +11,19 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.lib.util.FieldConstants;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 /**
- * Test April tag transform
+ * Move to Position
  */
 public class MoveToPos extends CommandBase {
 
     public Swerve swerve;
-    public Pose2d pose2d = new Pose2d();
+    public Pose2d pose2d;
+    public Supplier<Pose2d> pose2dSupplier;
+    private boolean flipForRed = true;
 
     HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
         new PIDController(Constants.SwerveTransformPID.PID_XKP,
@@ -32,27 +36,44 @@ public class MoveToPos extends CommandBase {
                 Constants.SwerveTransformPID.MAX_ANGULAR_ACCELERATION)));
 
     /**
-     * Test April tag transform
+     * Move to Position
+     *
+     * @param swerve Swerve Drive Subsystem
+     * @param pose2dSupplier Supplier of Pose2d
+     * @param flipForRed Flip the Pose2d relative to the Red Alliance
      */
-    public MoveToPos(Swerve swerve) {
-        super();
+    public MoveToPos(Swerve swerve, Supplier<Pose2d> pose2dSupplier, boolean flipForRed) {
         this.swerve = swerve;
+        this.pose2dSupplier = pose2dSupplier;
+        this.flipForRed = flipForRed;
         this.addRequirements(swerve);
         holonomicDriveController.setTolerance(new Pose2d(.01, .01, Rotation2d.fromDegrees(1)));
     }
 
     /**
-     * Test April tag transform
+     * Move to Position
+     *
+     * @param swerve Swerve Drive Subsystem
+     * @param pose2dSupplier Supplier of Pose2d
      */
-    public MoveToPos(Swerve swerve, Pose2d position) {
-        this(swerve);
-        this.pose2d = position;
+    public MoveToPos(Swerve swerve, Supplier<Pose2d> pose2dSupplier) {
+        this(swerve, pose2dSupplier, true);
+    }
+
+    /**
+     * Move to Position
+     *
+     * @param swerve Swerve Drive Subsystem
+     */
+    public MoveToPos(Swerve swerve) {
+        this(swerve, () -> new Pose2d());
     }
 
     @Override
     public void initialize() {
-        if (DriverStation.getAlliance() == Alliance.Red) {
-
+        Pose2d pose2d = pose2dSupplier.get();
+        if (flipForRed && DriverStation.getAlliance() == Alliance.Red) {
+            pose2d = FieldConstants.allianceFlip(pose2d);
         }
     }
 
