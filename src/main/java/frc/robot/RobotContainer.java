@@ -78,6 +78,8 @@ public class RobotContainer {
         autoTab.add("Column", columns).withWidget(BuiltInWidgets.kComboBoxChooser)
             .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_H")).withPosition(8, 2)
             .withSize(2, 2);
+    public ComplexWidget cameraFeed = mainDriverTab.add("Camera Feed", Robot.camera)
+        .withWidget(BuiltInWidgets.kCameraStream).withPosition(0, 0).withSize(6, 5);
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     public ComplexWidget autoChooserWidget = autoTab.add("Auto Chooser", autoChooser)
