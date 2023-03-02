@@ -38,8 +38,11 @@ public class Swerve extends SubsystemBase {
     private double fieldOffset = gyro.getYaw();
     private final Field2d field = new Field2d();
     private boolean hasInitialized = false;
-    private ComplexWidget fieldWidget = RobotContainer.mainDriverTab.add("Field Pos", field)
-        .withWidget(BuiltInWidgets.kField).withSize(8, 4) // make the widget 2x1
+    // private ComplexWidget fieldWidget = RobotContainer.mainDriverTab.add("Field Pos", field)
+    // .withWidget(BuiltInWidgets.kField).withSize(8, 4) // make the widget 2x1
+    // .withPosition(0, 0); // place it in the top-left corner
+    private ComplexWidget fieldWidget = RobotContainer.autoTab.add("Field Pos", field)
+        .withWidget(BuiltInWidgets.kField).withSize(8, 6) // make the widget 2x1
         .withPosition(0, 0); // place it in the top-left corner
     private GenericEntry aprilTagTarget = RobotContainer.mainDriverTab.add("April Tag Seen", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
