@@ -182,7 +182,8 @@ public class Arm extends SubsystemBase {
         m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS, getArmKg(),
             Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
-        double armPID1 = 0, armPID2 = 0;
+        double armPID1 = 0;
+        double armPID2 = 0;
         if (!goingDown) {
             if (armPIDController1.getSetpoint() - wrapDegrees(getAngleMeasurement1()) < 10) {
                 armPIDController2.setSetpoint(armPIDController1.getSetpoint() + 10);
