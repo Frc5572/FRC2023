@@ -32,6 +32,7 @@ import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
+import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.commands.wrist.WristIntakePanic;
@@ -183,6 +184,7 @@ public class RobotContainer {
             () -> Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8)));
         operator.rightTrigger().and(operator.leftTrigger())
             .whileTrue(new ScoreArm(s_Arm, s_wristIntake));
+        operator.start().toggleOnTrue(new PoliceLEDs(leds));
 
         // operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
         // operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
