@@ -80,6 +80,8 @@ public class RobotContainer {
         autoTab.add("Column", columns).withWidget(BuiltInWidgets.kComboBoxChooser)
             .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_H")).withPosition(8, 2)
             .withSize(2, 2);
+    public static GenericEntry enableDockWidget = autoTab.add("Enable Dock", true)
+        .withWidget(BuiltInWidgets.kToggleSwitch).withPosition(10, 1).withSize(2, 1).getEntry();
     // public ComplexWidget cameraFeed = mainDriverTab.add("Camera Feed", Robot.camera)
     // .withWidget(BuiltInWidgets.kCameraStream).withPosition(0, 0).withSize(6, 5)
     // .withProperties(Map.of("Show crosshair", false, "Show controls", false));

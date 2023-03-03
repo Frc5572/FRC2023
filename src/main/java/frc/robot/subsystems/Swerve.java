@@ -44,10 +44,10 @@ public class Swerve extends SubsystemBase {
     private ComplexWidget fieldWidget = RobotContainer.autoTab.add("Field Pos", field)
         .withWidget(BuiltInWidgets.kField).withSize(8, 6) // make the widget 2x1
         .withPosition(0, 0); // place it in the top-left corner
-    private GenericEntry aprilTagTarget =
-        RobotContainer.autoTab.add("April Tag Seen", false).withWidget(BuiltInWidgets.kBooleanBox)
-            .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
-            .withPosition(8, 4).withSize(2, 2).getEntry();
+    private GenericEntry aprilTagTarget = RobotContainer.autoTab
+        .add("Currently Seeing April Tag", false).withWidget(BuiltInWidgets.kBooleanBox)
+        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
+        .withPosition(8, 4).withSize(2, 2).getEntry();
 
     /**
      * Initializes swerve modules.
