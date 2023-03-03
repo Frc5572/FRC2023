@@ -12,12 +12,22 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * Score1Dock Auto.
+ */
 public class Score1Dock extends SequentialCommandGroup {
 
     Swerve swerve;
     Pose2d aprilTag8 = FieldConstants.aprilTags.get(8).toPose2d();
     Pose2d aprilTag6 = FieldConstants.aprilTags.get(6).toPose2d();
 
+    /**
+     * Auto constructor
+     * 
+     * @param swerve
+     * @param arm
+     * @param wristIntake
+     */
     public Score1Dock(Swerve swerve, Arm arm, WristIntake wristIntake) {
         this.swerve = swerve;
         // ScoreArm scoreArm = new ScoreArm(arm, wristIntake);
@@ -32,6 +42,11 @@ public class Score1Dock extends SequentialCommandGroup {
         addCommands(moveToScore, wristIntakeRelease, dockArm, crossAndDock);
     }
 
+    /**
+     * Boolean to choose which side to cross community zone
+     * 
+     * @return
+     */
     public Boolean chooseSide() {
         Pose2d pose2d = swerve.getPose();
         double yVal = pose2d.getY();

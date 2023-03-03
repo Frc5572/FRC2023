@@ -16,7 +16,7 @@ public class LeaveCommunity extends MoveToPos {
     public static double distanceFromTape = 240.0;
 
     /**
-     * Runs MoveToPos to leave community area.
+     * Leaves community
      * 
      * @param swerve
      */
