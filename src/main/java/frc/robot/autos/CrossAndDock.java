@@ -20,10 +20,10 @@ public class CrossAndDock extends SequentialCommandGroup {
 
     /**
      * Sequential command group to leave community area, and dock.
-     * 
-     * @param swerve
-     * @param arm
-     * @param wrist
+     *
+     * @param swerve Swerve
+     * @param arm Arm
+     * @param wrist Wrist
      */
     public CrossAndDock(Swerve swerve, Arm arm, WristIntake wrist) {
         LeaveCommunity leaveCommunity = new LeaveCommunity(swerve);

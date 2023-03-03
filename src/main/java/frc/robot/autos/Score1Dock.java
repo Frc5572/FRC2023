@@ -23,10 +23,10 @@ public class Score1Dock extends SequentialCommandGroup {
 
     /**
      * Auto constructor
-     * 
-     * @param swerve
-     * @param arm
-     * @param wristIntake
+     *
+     * @param swerve Swerve
+     * @param arm Arm
+     * @param wristIntake Wrist Intake
      */
     public Score1Dock(Swerve swerve, Arm arm, WristIntake wristIntake) {
         this.swerve = swerve;
@@ -44,8 +44,8 @@ public class Score1Dock extends SequentialCommandGroup {
 
     /**
      * Boolean to choose which side to cross community zone
-     * 
-     * @return
+     *
+     * @return Returns
      */
     public Boolean chooseSide() {
         Pose2d pose2d = swerve.getPose();

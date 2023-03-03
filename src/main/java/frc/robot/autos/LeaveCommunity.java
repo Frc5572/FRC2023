@@ -17,8 +17,8 @@ public class LeaveCommunity extends MoveToPos {
 
     /**
      * Leaves community
-     * 
-     * @param swerve
+     *
+     * @param swerve swerve
      */
     public LeaveCommunity(Swerve swerve) {
         super(swerve,
