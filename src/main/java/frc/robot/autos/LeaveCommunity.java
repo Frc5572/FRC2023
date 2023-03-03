@@ -20,7 +20,7 @@ public class LeaveCommunity extends MoveToPos {
      */
     public LeaveCommunity(Swerve swerve) {
         super(swerve,
-            new Pose2d(
+            () -> new Pose2d(
                 new Translation2d(Units.inchesToMeters(distanceFromTape), swerve.getPose().getY()),
                 swerve.getPose().getRotation()));
     }

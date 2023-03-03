@@ -24,7 +24,6 @@ import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.LeaveCommunity;
-import frc.robot.autos.P0;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
@@ -106,7 +105,6 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
-        autoChooser.addOption("Test", new P0(s_Swerve));
         autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
