@@ -47,7 +47,7 @@ public class MoveToPos extends CommandBase {
         this.pose2dSupplier = pose2dSupplier;
         this.flipForRed = flipForRed;
         this.addRequirements(swerve);
-        holonomicDriveController.setTolerance(new Pose2d(.01, .01, Rotation2d.fromDegrees(1)));
+        holonomicDriveController.setTolerance(new Pose2d(.1, .1, Rotation2d.fromDegrees(1)));
     }
 
     /**
@@ -71,7 +71,7 @@ public class MoveToPos extends CommandBase {
 
     @Override
     public void initialize() {
-        Pose2d pose2d = pose2dSupplier.get();
+        pose2d = pose2dSupplier.get();
         if (flipForRed && DriverStation.getAlliance() == Alliance.Red) {
             pose2d = FieldConstants.allianceFlip(pose2d);
         }

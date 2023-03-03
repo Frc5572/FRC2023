@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.FieldConstants;
+import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
@@ -30,9 +31,9 @@ public class CrossAndDock extends SequentialCommandGroup {
                     FieldConstants.Grids.lowTranslations[4].getY()),
                 new Rotation2d(0)),
             true);
-        // MoveToEngage engage = new MoveToEngage(swerve, arm, wrist);
+        MoveToEngage engage = new MoveToEngage(swerve, arm, wrist);
 
 
-        addCommands(leaveCommunity, centerWithDock);
+        addCommands(leaveCommunity, centerWithDock, engage);
     }
 }

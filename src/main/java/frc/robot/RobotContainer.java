@@ -23,7 +23,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
+import frc.robot.autos.CrossAndDock;
 import frc.robot.autos.LeaveCommunity;
+import frc.robot.autos.Score1Dock;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
@@ -106,6 +108,9 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
+        autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
         configureButtonBindings();
@@ -221,6 +226,8 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret,
         // vision);
-        return autoChooser.getSelected();
+        return new WristIntakeIn(s_wristIntake).withTimeout(.2)
+            .andThen(new DockArm(s_Arm, s_wristIntake).withTimeout(.2))
+            .andThen(autoChooser.getSelected());
     }
 }

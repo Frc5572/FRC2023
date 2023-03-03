@@ -2,12 +2,10 @@ package frc.robot.autos;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.FieldConstants;
 import frc.robot.commands.arm.DockArm;
-import frc.robot.commands.arm.ScoreArm;
-import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
@@ -22,16 +20,16 @@ public class Score1Dock extends SequentialCommandGroup {
 
     public Score1Dock(Swerve swerve, Arm arm, WristIntake wristIntake) {
         this.swerve = swerve;
-        ScoreArm scoreArm = new ScoreArm(arm, wristIntake);
+        // ScoreArm scoreArm = new ScoreArm(arm, wristIntake);
         MoveToScore moveToScore = new MoveToScore(swerve, arm, wristIntake);
-        WristIntakeRelease wristIntakeRelease = new WristIntakeRelease(wristIntake);
-        MoveToPos move6 = new MoveToPos(swerve, () -> get6position(), true);
-        MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
-        ConditionalCommand cond = new ConditionalCommand(move6, move8, () -> chooseSide());
-        DockArm dockArm = new DockArm(arm, wristIntake);
+        ParallelRaceGroup wristIntakeRelease = new WristIntakeRelease(wristIntake).withTimeout(.5);
+        // MoveToPos move6 = new MoveToPos(swerve, () -> get6position(), true);
+        // MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
+        // ConditionalCommand cond = new ConditionalCommand(move6, move8, () -> chooseSide());
+        ParallelRaceGroup dockArm = new DockArm(arm, wristIntake).withTimeout(1);
         CrossAndDock crossAndDock = new CrossAndDock(swerve, arm, wristIntake);
 
-        addCommands(scoreArm, moveToScore, wristIntakeRelease, cond, dockArm, crossAndDock);
+        addCommands(moveToScore, wristIntakeRelease, dockArm, crossAndDock);
     }
 
     public Boolean chooseSide() {
