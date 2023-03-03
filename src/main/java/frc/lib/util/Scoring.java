@@ -52,7 +52,7 @@ public class Scoring {
         GamePiece gamePiece = getGamePiece();
         Map<Integer, Double> xCoord = Map.of();
         if (gamePiece == GamePiece.CUBE) {
-            xCoord = Map.of(0, 32.0, 1, 44.5, 2, 36.0);
+            xCoord = Map.of(0, 32.0, 1, 44.5, 2, 34.0);
         } else if (gamePiece == GamePiece.CONE) {
             xCoord = Map.of(0, 30.0, 1, 31.0, 2, 32.0);
         }

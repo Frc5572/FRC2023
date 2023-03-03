@@ -47,7 +47,7 @@ public class MoveToPos extends CommandBase {
         this.pose2dSupplier = pose2dSupplier;
         this.flipForRed = flipForRed;
         this.addRequirements(swerve);
-        holonomicDriveController.setTolerance(new Pose2d(.1, .1, Rotation2d.fromDegrees(1)));
+        holonomicDriveController.setTolerance(new Pose2d(.05, .05, Rotation2d.fromDegrees(1)));
     }
 
     /**

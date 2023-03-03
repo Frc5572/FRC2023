@@ -2,10 +2,13 @@ package frc.robot.autos;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.lib.util.FieldConstants;
 import frc.robot.commands.arm.DockArm;
+import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
@@ -33,13 +36,14 @@ public class Score1Dock extends SequentialCommandGroup {
         // ScoreArm scoreArm = new ScoreArm(arm, wristIntake);
         MoveToScore moveToScore = new MoveToScore(swerve, arm, wristIntake);
         ParallelRaceGroup wristIntakeRelease = new WristIntakeRelease(wristIntake).withTimeout(.5);
-        // MoveToPos move6 = new MoveToPos(swerve, () -> get6position(), true);
-        // MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
-        // ConditionalCommand cond = new ConditionalCommand(move6, move8, () -> chooseSide());
+        MoveToPos move6 = new MoveToPos(swerve, () -> get6position(), true);
+        MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
+        ConditionalCommand cond = new ConditionalCommand(move6, move8, () -> chooseSide());
         ParallelRaceGroup dockArm = new DockArm(arm, wristIntake).withTimeout(1);
         CrossAndDock crossAndDock = new CrossAndDock(swerve, arm, wristIntake);
 
-        addCommands(moveToScore, wristIntakeRelease, dockArm, crossAndDock);
+        addCommands(moveToScore, wristIntakeRelease,
+            cond.alongWith(new WaitCommand(.5).andThen(dockArm)), crossAndDock);
     }
 
     /**
@@ -73,7 +77,7 @@ public class Score1Dock extends SequentialCommandGroup {
      */
     private Pose2d get6position() {
         double x = aprilTag6.getX() + Units.inchesToMeters(50);
-        double y = aprilTag6.getY() + Units.inchesToMeters(12);
+        double y = aprilTag6.getY() + Units.inchesToMeters(30);
         return new Pose2d(x, y, swerve.getPose().getRotation());
     }
 }
