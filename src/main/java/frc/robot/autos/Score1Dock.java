@@ -45,23 +45,32 @@ public class Score1Dock extends SequentialCommandGroup {
     /**
      * Boolean to choose which side to cross community zone
      *
-     * @return Returns
+     * @return True if closer to feeder station, False if closer to Scoring Table
      */
-    public Boolean chooseSide() {
+    private boolean chooseSide() {
         Pose2d pose2d = swerve.getPose();
-        double yVal = pose2d.getY();
-        if (Math.abs(yVal - aprilTag6.getY()) < Math.abs(yVal - aprilTag8.getY())) {
-            return true;
-        }
-        return false;
+        double midPlatform =
+            Units.inchesToMeters(59.39) + FieldConstants.Community.chargingStationWidth / 2;
+        return pose2d.getY() > midPlatform;
     }
 
+    /**
+     * Create the Pose2d closer to scoring table
+     *
+     * @return Pose2d on scoring table side
+     */
     private Pose2d get8position() {
         double x = aprilTag8.getX() + Units.inchesToMeters(50);
         double y = Units.inchesToMeters(59.39 / 2);
         return new Pose2d(x, y, swerve.getPose().getRotation());
     }
 
+
+    /**
+     * Create the Pose2d closer to feeder station
+     *
+     * @return Pose2d on feeder station side
+     */
     private Pose2d get6position() {
         double x = aprilTag6.getX() + Units.inchesToMeters(50);
         double y = aprilTag6.getY() + Units.inchesToMeters(12);
