@@ -22,7 +22,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
-import frc.robot.autos.P0;
+import frc.robot.autos.CrossAndDock;
+import frc.robot.autos.LeaveCommunity;
+import frc.robot.autos.Score1Dock;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
@@ -118,7 +120,7 @@ public class RobotContainer {
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-        autoChooser.addOption("Test", new P0(s_Swerve));
+        autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
 
         levels.setDefaultOption("0", 0);
@@ -136,6 +138,9 @@ public class RobotContainer {
         columns.addOption("6", 6);
         columns.addOption("7", 7);
         columns.addOption("8", 8);
+        autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
+        autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
         configureButtonBindings();
@@ -164,7 +169,7 @@ public class RobotContainer {
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
         operator.x().whileTrue(new WristIntakeIn(s_wristIntake).alongWith(new ArmIntake(s_Arm)));
-        operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake));
+        operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
@@ -251,6 +256,8 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret,
         // vision);
-        return autoChooser.getSelected();
+        return new WristIntakeIn(s_wristIntake).withTimeout(.2)
+            .andThen(new DockArm(s_Arm, s_wristIntake).withTimeout(.2))
+            .andThen(autoChooser.getSelected());
     }
 }

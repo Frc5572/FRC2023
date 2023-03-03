@@ -311,7 +311,7 @@ public final class Constants {
         public static final int FOURTH_POSITION = 160;
         public static final int FIFTH_POSITION = 130;
 
-        public static final double encoder1Offset = 301.0074091; // 9
+        public static final double encoder1Offset = 319.2774091; // 9
         public static final double encoder2Offset = 253.5564923; // 10
 
         /**
@@ -319,14 +319,15 @@ public final class Constants {
          */
         public static final class PID {
             public static final double KP = 0.08;
-            public static final double KI = 0.0;
+            public static final double KI = 0.01;
             public static final double KD = 0.0;
             public static final double KF = 0.0;
-            public static final double K_GVOLTS_MIN = 0.45;
+            public static final double K_GVOLTS_MIN = 0.40;
             public static final double K_GVOLTS_MAX = 0.80;
             public static final double K_SVOLTS = 0.0;
             public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
             public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
+            public static final double KP2 = 0.06;
         }
     }
 }
