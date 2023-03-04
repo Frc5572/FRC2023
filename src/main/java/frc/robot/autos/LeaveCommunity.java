@@ -12,7 +12,7 @@ import frc.robot.subsystems.Swerve;
  */
 public class LeaveCommunity extends MoveToPos {
 
-    public static double distanceFromTape = 240.0;
+    public static double distanceFromTape = 246.0;
 
     /**
      * Leaves community
