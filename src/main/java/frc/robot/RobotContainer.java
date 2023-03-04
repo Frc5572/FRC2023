@@ -71,15 +71,15 @@ public class RobotContainer {
             .withProperties(Map.of("Color when true", "yellow", "Color when false", "purple"))
             .withPosition(8, 0).withSize(2, 1).getEntry();
 
-    private final SendableChooser<Integer> levels = new SendableChooser<>();
-    private final SendableChooser<Integer> columns = new SendableChooser<>();
+    private final SendableChooser<Integer> levelsChooser = new SendableChooser<>();
+    private final SendableChooser<Integer> columnsChooser = new SendableChooser<>();
 
     public ComplexWidget autoLevelWidget =
-        autoTab.add("Level", levels).withWidget(BuiltInWidgets.kComboBoxChooser)
+        autoTab.add("Level", levelsChooser).withWidget(BuiltInWidgets.kComboBoxChooser)
             .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_V")).withPosition(8, 0)
             .withSize(2, 2);
     public ComplexWidget autoColumnWidet =
-        autoTab.add("Column", columns).withWidget(BuiltInWidgets.kComboBoxChooser)
+        autoTab.add("Column", columnsChooser).withWidget(BuiltInWidgets.kComboBoxChooser)
             .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_H")).withPosition(8, 2)
             .withSize(2, 2);
     public static GenericEntry enableDockWidget = autoTab.add("Enable Dock", true)
@@ -127,21 +127,21 @@ public class RobotContainer {
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
 
-        levels.setDefaultOption("0", 0);
-        levels.addOption("0", 0);
-        levels.addOption("1", 1);
-        levels.addOption("2", 2);
+        levelsChooser.setDefaultOption("0", 0);
+        levelsChooser.addOption("0", 0);
+        levelsChooser.addOption("1", 1);
+        levelsChooser.addOption("2", 2);
 
-        columns.setDefaultOption("0", 0);
-        columns.addOption("0", 0);
-        columns.addOption("1", 1);
-        columns.addOption("2", 2);
-        columns.addOption("3", 3);
-        columns.addOption("4", 4);
-        columns.addOption("5", 5);
-        columns.addOption("6", 6);
-        columns.addOption("7", 7);
-        columns.addOption("8", 8);
+        columnsChooser.setDefaultOption("0", 0);
+        columnsChooser.addOption("0", 0);
+        columnsChooser.addOption("1", 1);
+        columnsChooser.addOption("2", 2);
+        columnsChooser.addOption("3", 3);
+        columnsChooser.addOption("4", 4);
+        columnsChooser.addOption("5", 5);
+        columnsChooser.addOption("6", 6);
+        columnsChooser.addOption("7", 7);
+        columnsChooser.addOption("8", 8);
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
@@ -262,6 +262,8 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret,
         // vision);
+        Robot.level = levelsChooser.getSelected();
+        Robot.column = columnsChooser.getSelected();
         return new WristIntakeIn(s_wristIntake).withTimeout(.2)
             .andThen(new DockArm(s_Arm, s_wristIntake).withTimeout(.2))
             .andThen(autoChooser.getSelected());
