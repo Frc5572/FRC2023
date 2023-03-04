@@ -164,6 +164,8 @@ public class RobotContainer {
             .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
         driver.rightBumper().and(driver.leftBumper())
             .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
+        driver.start()
+            .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
 
         /* Operator Buttons */
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow)
