@@ -24,6 +24,7 @@ import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.CrossAndDock;
 import frc.robot.autos.LeaveCommunity;
+import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
@@ -144,6 +145,7 @@ public class RobotContainer {
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new RainbowLEDs(leds));
         configureButtonBindings();

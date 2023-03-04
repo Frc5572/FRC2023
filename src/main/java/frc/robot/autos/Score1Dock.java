@@ -33,7 +33,6 @@ public class Score1Dock extends SequentialCommandGroup {
      */
     public Score1Dock(Swerve swerve, Arm arm, WristIntake wristIntake) {
         this.swerve = swerve;
-        // ScoreArm scoreArm = new ScoreArm(arm, wristIntake);
         MoveToScore moveToScore = new MoveToScore(swerve, arm, wristIntake);
         ParallelRaceGroup wristIntakeRelease = new WristIntakeRelease(wristIntake).withTimeout(.5);
         MoveToPos move6 = new MoveToPos(swerve, () -> get6position(), true);
