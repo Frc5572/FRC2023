@@ -159,7 +159,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        driver.y().onTrue(new InstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
+        driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.rightTrigger().and(driver.leftTrigger())
             .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
         driver.rightBumper().and(driver.leftBumper())
