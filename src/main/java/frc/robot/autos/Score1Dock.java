@@ -77,7 +77,7 @@ public class Score1Dock extends SequentialCommandGroup {
      */
     private Pose2d get6position() {
         double x = aprilTag6.getX() + Units.inchesToMeters(50);
-        double y = aprilTag6.getY() + Units.inchesToMeters(30);
+        double y = aprilTag6.getY() + Units.inchesToMeters(26);
         return new Pose2d(x, y, Rotation2d.fromDegrees(180));
     }
 }
