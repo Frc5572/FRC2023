@@ -1,6 +1,7 @@
 package frc.robot.autos;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -65,7 +66,7 @@ public class Score1Dock extends SequentialCommandGroup {
     private Pose2d get8position() {
         double x = aprilTag8.getX() + Units.inchesToMeters(50);
         double y = Units.inchesToMeters(59.39 / 2);
-        return new Pose2d(x, y, swerve.getPose().getRotation());
+        return new Pose2d(x, y, Rotation2d.fromDegrees(180));
     }
 
 
@@ -77,6 +78,6 @@ public class Score1Dock extends SequentialCommandGroup {
     private Pose2d get6position() {
         double x = aprilTag6.getX() + Units.inchesToMeters(50);
         double y = aprilTag6.getY() + Units.inchesToMeters(30);
-        return new Pose2d(x, y, swerve.getPose().getRotation());
+        return new Pose2d(x, y, Rotation2d.fromDegrees(180));
     }
 }
