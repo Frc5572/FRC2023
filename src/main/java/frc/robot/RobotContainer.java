@@ -110,7 +110,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
-    private final Swerve s_Swerve = new Swerve();
+    public final Swerve s_Swerve = new Swerve();
     // private final DropIntake s_dIntake = new DropIntake();
     private final Arm s_Arm = new Arm();
     private final WristIntake s_wristIntake = new WristIntake(ph);
