@@ -1,9 +1,9 @@
 package frc.robot.autos;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.lib.util.pathplanner.PPSwerveControllerCommand1;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
@@ -36,10 +36,9 @@ public class TrajectoryBase extends SequentialCommandGroup {
      * @param trajectory a Path Planner Trajectory
      * @return A SwerveControllerCommand for the robot to move
      */
-    public PPSwerveControllerCommand baseSwerveCommand(PathPlannerTrajectory trajectory) {
-        PPSwerveControllerCommand command = new PPSwerveControllerCommand(trajectory,
-            swerve::getPose, Constants.Swerve.SWERVE_KINEMATICS, pidX, pidY, pidTheta,
-            swerve::setModuleStates, swerve);
+    public PPSwerveControllerCommand1 baseSwerveCommand(PathPlannerTrajectory trajectory) {
+        PPSwerveControllerCommand1 command = new PPSwerveControllerCommand1(trajectory,
+            swerve::getPose, pidX, pidY, pidTheta, swerve::setModuleStates, swerve);
         return command;
     }
 }

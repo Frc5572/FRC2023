@@ -19,7 +19,6 @@ import frc.robot.subsystems.WristIntake;
  */
 public class LeaveCommunityAndDock extends TrajectoryBase {
 
-    public static double distanceFromTape = 246.0;
     private double maxVel = 6.0;
     private double maxAccel = 3.0;
 
