@@ -20,8 +20,8 @@ import frc.robot.subsystems.WristIntake;
 public class LeaveCommunityAndDock extends TrajectoryBase {
 
     public static double distanceFromTape = 246.0;
-    private double maxVel = 4.0;
-    private double maxAccel = 2.0;
+    private double maxVel = 6.0;
+    private double maxAccel = 3.0;
 
     /**
      * Leaves community
@@ -37,14 +37,11 @@ public class LeaveCommunityAndDock extends TrajectoryBase {
         PPSwerveControllerCommand leaveCommunityAndCross8 = baseSwerveCommand(trajectory8);
         PPSwerveControllerCommand leaveCommunityAndCross6 = baseSwerveCommand(trajectory6);
 
-        LeaveCommunity leaveCommunity = new LeaveCommunity(swerve);
-
-
         MoveToEngage engage = new MoveToEngage(swerve, arm, wrist);
         ConditionalCommand toDockOrNotToDock8 = new ConditionalCommand(leaveCommunityAndCross8,
-            leaveCommunity, () -> RobotContainer.enableDockWidget.getBoolean(true));
+            new LeaveCommunity(swerve), () -> RobotContainer.enableDockWidget.getBoolean(true));
         ConditionalCommand toDockOrNotToDock6 = new ConditionalCommand(leaveCommunityAndCross6,
-            leaveCommunity, () -> RobotContainer.enableDockWidget.getBoolean(true));
+            new LeaveCommunity(swerve), () -> RobotContainer.enableDockWidget.getBoolean(true));
         ConditionalCommand cond =
             new ConditionalCommand(toDockOrNotToDock6, toDockOrNotToDock8, () -> chooseSide());
         ConditionalCommand cond1 = new ConditionalCommand(engage, new InstantCommand(),
