@@ -1,11 +1,13 @@
 package frc.robot.commands.drive;
 
 import java.util.function.Supplier;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -81,7 +83,7 @@ public class MoveToPos extends CommandBase {
     public void execute() {
         ChassisSpeeds ctrlEffort =
             holonomicDriveController.calculate(swerve.getPose(), pose2d, 0, pose2d.getRotation());
-        swerve.setModuleStates(ctrlEffort);
+        ctrlEffort.swerve.setModuleStates(ctrlEffort);
     }
 
     @Override
@@ -93,4 +95,34 @@ public class MoveToPos extends CommandBase {
     public boolean isFinished() {
         return holonomicDriveController.atReference();
     }
+
+    private PathPlannerState transformForAlliance(PathPlannerState state,
+        DriverStation.Alliance alliance) {
+        if (alliance == DriverStation.Alliance.Red) {
+            // Create a new state so that we don't overwrite the original
+            frc.robot.PathPlannerState transformedState = new PathPlannerState();
+
+            Translation2d transformedTranslation = new Translation2d(state.poseMeters.getX(),
+                Constants.Field.FIELD_WIDTH_METERS - state.poseMeters.getY());
+            Rotation2d transformedHeading = state.poseMeters.getRotation().times(-1);
+            Rotation2d transformedHolonomicRotation = state.holonomicRotation.times(-1);
+
+            transformedState.timeSeconds = state.timeSeconds;
+            transformedState.velocityMetersPerSecond = state.velocityMetersPerSecond;
+            transformedState.accelerationMetersPerSecondSq = state.accelerationMetersPerSecondSq;
+            transformedState.poseMeters = new Pose2d(transformedTranslation, transformedHeading);
+            transformedState.angularVelocityRadPerSec = -state.angularVelocityRadPerSec;
+            transformedState.holonomicRotation = transformedHolonomicRotation;
+            transformedState.holonomicAngularVelocityRadPerSec =
+                -state.holonomicAngularVelocityRadPerSec;
+            transformedState.curveRadius = -state.curveRadius;
+            transformedState.curvatureRadPerMeter = -state.curvatureRadPerMeter;
+            transformedState.deltaPos = state.deltaPos;
+
+            return transformedState;
+        } else {
+            return state;
+        }
+    }
+
 }

@@ -330,4 +330,9 @@ public final class Constants {
             public static final double KP2 = 0.06;
         }
     }
+
+    public static final class Field {
+        public static final double FIELD_WIDTH_METERS = 596.51;
+    }
+
 }
