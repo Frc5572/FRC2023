@@ -25,9 +25,11 @@ package frc.lib.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -251,6 +253,9 @@ public class FieldConstants {
      * Flips a translation to the correct side of the field based on the current alliance color. By
      * default, all translations and poses in {@link FieldConstants} are stored with the origin at
      * the rightmost point on the BLUE ALLIANCE wall.
+     * 
+     * @param translation Initial Translation
+     * @return Translation appropriate for the current alliance
      */
     public static Translation2d allianceFlip(Translation2d translation) {
         if (DriverStation.getAlliance() == Alliance.Red) {
@@ -266,39 +271,73 @@ public class FieldConstants {
      * the rightmost point on the BLUE ALLIANCE wall.
      *
      * @param pose Initial Pose
-     * @return Pose2d flipped to Red Alliance
+     * @return Pose2d appropriate for the current alliance
      */
     public static Pose2d allianceFlip(Pose2d pose) {
+        return new Pose2d(allianceFlip(pose.getTranslation()), allianceFlip(pose.getRotation()));
+    }
+
+    /**
+     * Flips a rotation to the correct side of the field based on the current alliance color. By
+     * default, all translations and poses in {@link FieldConstants} are stored with the origin at
+     * the rightmost point on the BLUE ALLIANCE wall.
+     *
+     * @param rot Initial Rotation
+     * @return Rotation appropriate for the current alliance
+     */
+    public static Rotation2d allianceFlip(Rotation2d rot) {
         if (DriverStation.getAlliance() == Alliance.Red) {
-            return new Pose2d(fieldLength - pose.getX(), pose.getY(),
-                new Rotation2d(-pose.getRotation().getCos(), pose.getRotation().getSin()));
+            return new Rotation2d(-rot.getCos(), rot.getSin());
         } else {
-            return pose;
+            return rot;
         }
     }
 
+    /**
+     * Flips a trajectory to the correct side of the field based on the current alliance color. By
+     * default, all translations and poses in {@link FieldConstants} are stored with the origin at
+     * the rightmost point on the BLUE ALLIANCE wall.
+     * 
+     * @param traj PathPlanner-generated trajectory for the Blue Alliance
+     * @return Trajectory appropriate for the current alliance
+     */
     public static PathPlannerTrajectory allianceFlip(PathPlannerTrajectory traj) {
         var startEvent = traj.getStartStopEvent();
         var endEvent = traj.getEndStopEvent();
         var markers = traj.getMarkers();
         var states = traj.getStates();
+        List<PathPlannerState> transformedStates = new ArrayList<>();
 
-        for (var state : states) {
-            state.poseMeters = allianceFlip(state.poseMeters);
-        }
-
-        for (var marker : markers) {
-            marker.positionMeters = allianceFlip(marker.positionMeters);
-        }
-
-        Constructor<PathPlannerTrajectory> constructor;
         try {
+            var curveRadius = PathPlannerState.class.getField("curveRadius");
+            curveRadius.setAccessible(true);
+
+            for (var state : states) {
+                PathPlannerState sstate = (PathPlannerState) state;
+                sstate.poseMeters = allianceFlip(sstate.poseMeters);
+                sstate.holonomicRotation = allianceFlip(sstate.holonomicRotation);
+                if (DriverStation.getAlliance() == Alliance.Red) {
+                    sstate.angularVelocityRadPerSec = -sstate.accelerationMetersPerSecondSq;
+                    sstate.holonomicAngularVelocityRadPerSec =
+                        -sstate.holonomicAngularVelocityRadPerSec;
+                    sstate.curvatureRadPerMeter = -sstate.curvatureRadPerMeter;
+                    curveRadius.set(sstate, -curveRadius.getDouble(sstate));
+                }
+                transformedStates.add(sstate);
+            }
+
+            for (var marker : markers) {
+                marker.positionMeters = allianceFlip(marker.positionMeters);
+            }
+
+            Constructor<PathPlannerTrajectory> constructor;
             constructor = PathPlannerTrajectory.class.getDeclaredConstructor(List.class, List.class,
                 PathPlannerTrajectory.StopEvent.class, PathPlannerTrajectory.StopEvent.class,
                 boolean.class);
             constructor.setAccessible(true);
 
-            return constructor.newInstance(states, markers, startEvent, endEvent, false);
+            return constructor.newInstance(transformedStates, markers, startEvent, endEvent,
+                traj.fromGUI);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (SecurityException e) {
@@ -310,6 +349,8 @@ public class FieldConstants {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
         return traj;
