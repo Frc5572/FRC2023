@@ -35,7 +35,7 @@ public class Swerve extends SubsystemBase {
     private SwerveDrivePoseEstimator swerveOdometry;
     private PhotonCamera cam = new PhotonCamera(Constants.CameraConstants.CAMERA_NAME);
     private SwerveModule[] swerveMods;
-    private double fieldOffset = gyro.getYaw();
+    private double fieldOffset = getOdometryFieldOffset();
     private final Field2d field = new Field2d();
     private boolean hasInitialized = false;
     // private ComplexWidget fieldWidget = RobotContainer.mainDriverTab.add("Field Pos", field)
@@ -170,6 +170,18 @@ public class Swerve extends SubsystemBase {
      */
     public void resetFieldRelativeOffset() {
         fieldOffset = getYaw().getDegrees();
+    }
+
+    public double getOdometryFieldOffset() {
+        double offset = FieldConstants
+            .allianceFlip(new Rotation2d(
+                gyro.getYaw() - swerveOdometry.getEstimatedPosition().getRotation().getDegrees()))
+            .getDegrees();
+        while (offset > 180)
+            offset -= 180;
+        while (offset < -180)
+            offset += 180;
+        return offset;
     }
 
     public Rotation2d getFieldRelativeHeading() {
