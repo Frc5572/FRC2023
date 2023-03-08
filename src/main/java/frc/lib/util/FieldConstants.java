@@ -253,7 +253,7 @@ public class FieldConstants {
      * Flips a translation to the correct side of the field based on the current alliance color. By
      * default, all translations and poses in {@link FieldConstants} are stored with the origin at
      * the rightmost point on the BLUE ALLIANCE wall.
-     * 
+     *
      * @param translation Initial Translation
      * @return Translation appropriate for the current alliance
      */
@@ -297,7 +297,7 @@ public class FieldConstants {
      * Flips a trajectory to the correct side of the field based on the current alliance color. By
      * default, all translations and poses in {@link FieldConstants} are stored with the origin at
      * the rightmost point on the BLUE ALLIANCE wall.
-     * 
+     *
      * @param traj PathPlanner-generated trajectory for the Blue Alliance
      * @return Trajectory appropriate for the current alliance
      */
