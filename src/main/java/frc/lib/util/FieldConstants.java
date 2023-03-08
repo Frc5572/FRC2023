@@ -23,7 +23,11 @@
 
 package frc.lib.util;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -271,6 +275,44 @@ public class FieldConstants {
         } else {
             return pose;
         }
+    }
+
+    public static PathPlannerTrajectory allianceFlip(PathPlannerTrajectory traj) {
+        var startEvent = traj.getStartStopEvent();
+        var endEvent = traj.getEndStopEvent();
+        var markers = traj.getMarkers();
+        var states = traj.getStates();
+
+        for (var state : states) {
+            state.poseMeters = allianceFlip(state.poseMeters);
+        }
+
+        for (var marker : markers) {
+            marker.positionMeters = allianceFlip(marker.positionMeters);
+        }
+
+        Constructor<PathPlannerTrajectory> constructor;
+        try {
+            constructor = PathPlannerTrajectory.class.getDeclaredConstructor(List.class, List.class,
+                PathPlannerTrajectory.StopEvent.class, PathPlannerTrajectory.StopEvent.class,
+                boolean.class);
+            constructor.setAccessible(true);
+
+            return constructor.newInstance(states, markers, startEvent, endEvent, false);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return traj;
     }
 
     /**
