@@ -40,7 +40,7 @@ public class Score1Dock extends SequentialCommandGroup {
         MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
         ConditionalCommand cond = new ConditionalCommand(move6, move8, () -> chooseSide());
         ParallelRaceGroup dockArm = new DockArm(arm, wristIntake).withTimeout(1);
-        CrossAndDock crossAndDock = new CrossAndDock(swerve, arm, wristIntake);
+        LeaveCommunityAndDock crossAndDock = new LeaveCommunityAndDock(swerve, arm, wristIntake);
 
         addCommands(moveToScore, wristIntakeRelease,
             cond.alongWith(new WaitCommand(.5).andThen(dockArm)), crossAndDock);
