@@ -20,7 +20,6 @@ public class MoveArm extends CommandBase {
      *
      * @param arm Arm subsystem.
      * @param armAngle Angle at which the arm should move to.
-     * @param elevatorPosition Desired Elevator Position
      */
     public MoveArm(Arm arm, double armAngle, boolean armExtended) {
         this.arm = arm;

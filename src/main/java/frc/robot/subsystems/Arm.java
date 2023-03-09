@@ -322,6 +322,11 @@ public class Arm extends SubsystemBase {
         armSolenoid.set(Value.kForward);
     }
 
+    /**
+     * Choses what command to run based off position.
+     *
+     * @param extend
+     */
     public void toExtendOrNotToExtend(boolean extend) {
         if (extend) {
             extendArm();
