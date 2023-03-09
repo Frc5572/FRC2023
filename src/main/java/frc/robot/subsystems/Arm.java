@@ -5,7 +5,6 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -16,7 +15,6 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.math.AngledElevatorFeedForward;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -45,15 +43,6 @@ public class Arm extends SubsystemBase {
     private boolean enablePID = false;
     private final DoubleSolenoid armSolenoid;
 
-    // ELEVATOR
-    private final CANSparkMax elevatorMotor =
-        new CANSparkMax(Constants.Elevator.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
-    private final RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
-    private AngledElevatorFeedForward elevatorFeedForward =
-        new AngledElevatorFeedForward(0, Constants.Elevator.PID.ELEVATOR_KG_VOLTS, 0);
-    private final PIDController elevatorPIDController =
-        new PIDController(Constants.Elevator.PID.ELEVATOR_KP, Constants.Elevator.PID.ELEVATOR_KI,
-            Constants.Elevator.PID.ELEVATOR_KD);
 
     // WRIST
     public final CANSparkMax wristMotor =
@@ -74,10 +63,6 @@ public class Arm extends SubsystemBase {
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
         .withPosition(6, 4).withSize(2, 1).getEntry();
-    // private GenericEntry armExtensionWidget = RobotContainer.mainDriverTab
-    // .add("Arm Extension", getElevatorPosition()).withWidget(BuiltInWidgets.kDial)
-    // .withProperties(Map.of("min", 0, "max", Constants.Elevator.MAX_ENCODER)).withPosition(10, 0)
-    // .withSize(2, 2).getEntry();
 
     private boolean goingDown = false;
 
@@ -104,19 +89,13 @@ public class Arm extends SubsystemBase {
         encoder2.setVelocityConversionFactor(360);
         encoder2.setInverted(false);
         encoder2.setZeroOffset(Constants.Arm.encoder2Offset);
-        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS, getArmKg(),
-            Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
+        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
+            Constants.Arm.PID.K_GVOLTS_MIN, Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
         // setArmGoal()
 
         armMotor1.burnFlash();
         armMotor2.burnFlash();
-        // ELEVATOR
-        elevatorPIDController.setTolerance(.05);
-        elevatorMotor.restoreFactoryDefaults();
-        elevatorMotor.setInverted(false);
-        elevatorMotor.setIdleMode(IdleMode.kBrake);
-        elevatorMotor.burnFlash();
         // WRIST
         wristMotor.restoreFactoryDefaults();
         wristMotor.setIdleMode(IdleMode.kBrake);
@@ -152,16 +131,13 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         armAngleWidget.setDouble(getAverageArmAngle());
-        // armExtensionWidget.setDouble(getElevatorPosition());
         if (enablePID) {
             armToAngle();
-            // elevatorToPosition();
             wristToPosition();
         }
         SmartDashboard.putNumber("Arm Encoder 1", getAngleMeasurement1());
         SmartDashboard.putNumber("Arm Encoder 2", getAngleMeasurement2());
         SmartDashboard.putNumber("Wrist Encoder", getWristAngleMeasurment());
-        SmartDashboard.putNumber("Elevator Position", getElevatorPosition());
         solenoidStatus.setBoolean(this.armSolenoid.get() == Value.kReverse);
 
     }
@@ -193,8 +169,8 @@ public class Arm extends SubsystemBase {
      *
      */
     public void armToAngle() {
-        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS, getArmKg(),
-            Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
+        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
+            Constants.Arm.PID.K_GVOLTS_MIN, Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
         double armPID1 = 0;
         double armPID2 = 0;
@@ -286,56 +262,6 @@ public class Arm extends SubsystemBase {
         return !goingDown ? checkIfAligned1() : checkIfAligned2();
     }
 
-    // ---------------- ELEVATOR ----------------------------
-
-    /**
-     * Set target position for Elevator
-     *
-     * @param goal Set target position for Elevator in rotations of motor
-     */
-    public void setElevatorGoal(double goal) {
-        elevatorPIDController.setSetpoint(goal);
-    }
-
-
-    /**
-     * Sets the elevator to go until a certain degree has been reached.
-     */
-    public void elevatorToPosition() {
-        double elevatorPID = elevatorPIDController.calculate(getElevatorPosition());
-        double ff = elevatorFeedForward.calculate(Math.toRadians(getAverageArmAngle() - 90));
-        elevatorMotor.setVoltage(elevatorPID + ff);
-        SmartDashboard.putNumber("Elevator PID Voltage", elevatorPID);
-        SmartDashboard.putNumber("Elevator FF Voltage", ff);
-    }
-
-    /**
-     * Gets the encoder measurement of the elevator in rotation degrees.
-     */
-    public double getElevatorPosition() {
-        return elevatorEncoder.getPosition();
-    }
-
-
-    /**
-     * Check if aligned with a requested goal.
-     *
-     * @return True if properly aligned, false if not.
-     */
-    public boolean checkElevatorAligned() {
-        return elevatorPIDController.atSetpoint();
-    }
-
-    /**
-     * Calculate Kg based on elevator extension
-     */
-    public double getArmKg() {
-        // double slope = (Constants.Arm.PID.K_GVOLTS_MAX - Constants.Arm.PID.K_GVOLTS_MIN)
-        // / (Constants.Elevator.MAX_ENCODER - 0);
-        // return slope * getElevatorPosition() + Constants.Arm.PID.K_GVOLTS_MIN;
-        return Constants.Arm.PID.K_GVOLTS_MIN;
-    }
-
     // ---------------- WRIST ----------------------------
 
     /**
@@ -386,5 +312,21 @@ public class Arm extends SubsystemBase {
 
     public boolean getWristAligned() {
         return wristPIDController.atSetpoint();
+    }
+
+    public void extendArm() {
+        armSolenoid.set(Value.kForward);
+    }
+
+    public void retractArm() {
+        armSolenoid.set(Value.kForward);
+    }
+
+    public void toExtendOrNotToExtend(boolean extend) {
+        if (extend) {
+            extendArm();
+        } else {
+            retractArm();
+        }
     }
 }

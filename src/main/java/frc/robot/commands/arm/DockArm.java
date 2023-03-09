@@ -24,13 +24,12 @@ public class DockArm extends SequentialCommandGroup {
         this.arm = arm;
         addRequirements(arm);
 
-        InstantCommand closeGrabber = new InstantCommand(() -> wristIntake.closeGrabber());
-        MoveArm moveArm1 = new MoveArm(arm, () -> new ArmPosition(20, 0, -10));
+        MoveArm moveArm1 = new MoveArm(arm, () -> new ArmPosition(20, false, -10));
         ConditionalCommand cond =
             new ConditionalCommand(moveArm1, new InstantCommand(), () -> armInside());
-        MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(-5, 0, -10));
+        MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(-5, false, -10));
 
-        addCommands(closeGrabber, cond, moveArm2);
+        addCommands(cond, moveArm2);
     }
 
     private boolean armInside() {
