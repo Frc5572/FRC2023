@@ -387,4 +387,12 @@ public class FieldConstants {
         return unionSdf(inField, blueGrid, blueRail, blueRamp, redGrid, redRail, redRamp);
     }
 
+    public static Rotation2d allianceFlip(Rotation2d rot) {
+        if (DriverStation.getAlliance() == Alliance.Red) {
+            return new Rotation2d(-rot.getCos(), rot.getSin());
+        } else {
+            return rot;
+        }
+    }
+
 }

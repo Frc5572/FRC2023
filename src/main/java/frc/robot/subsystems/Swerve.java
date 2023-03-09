@@ -172,6 +172,19 @@ public class Swerve extends SubsystemBase {
         fieldOffset = getYaw().getDegrees();
     }
 
+    public double getOdometryFieldOffset() {
+        double offset = FieldConstants
+            .allianceFlip(new Rotation2d(
+                gyro.getYaw() - swerveOdometry.getEstimatedPosition().getRotation().getDegrees()))
+            .getDegrees();
+        while (offset > 180)
+            offset -= 180;
+        while (offset < -180)
+            offset += 180;
+        SmartDashboard.putNumber("Gyro Odometry Offset", offset);
+        return offset;
+    }
+
     public Rotation2d getFieldRelativeHeading() {
         return Rotation2d.fromDegrees(getYaw().getDegrees() - fieldOffset);
     }
@@ -208,6 +221,7 @@ public class Swerve extends SubsystemBase {
                     var robotPose =
                         camPose.transformBy(Constants.CameraConstants.KCAMERA_TO_ROBOT).toPose2d();
                     swerveOdometry.resetPosition(getYaw(), getPositions(), robotPose);
+                    fieldOffset = getOdometryFieldOffset();
                     SmartDashboard.putNumberArray("Initial Position",
                         new double[] {robotPose.getX(), robotPose.getY()});
                     hasInitialized = true;
