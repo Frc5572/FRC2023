@@ -55,6 +55,21 @@ public class MoveToPos extends CommandBase {
      *
      * @param swerve Swerve Drive Subsystem
      * @param pose2dSupplier Supplier of Pose2d
+     * @param flipForRed Flip the Pose2d relative to the Red Alliance
+     * @param poseTolerance The tolerance in meters for the X-Y position
+     */
+    public MoveToPos(Swerve swerve, Supplier<Pose2d> pose2dSupplier, boolean flipForRed,
+        double poseTolerance) {
+        this(swerve, pose2dSupplier, flipForRed);
+        holonomicDriveController
+            .setTolerance(new Pose2d(poseTolerance, poseTolerance, Rotation2d.fromDegrees(1)));
+    }
+
+    /**
+     * Move to Position
+     *
+     * @param swerve Swerve Drive Subsystem
+     * @param pose2dSupplier Supplier of Pose2d
      */
     public MoveToPos(Swerve swerve, Supplier<Pose2d> pose2dSupplier) {
         this(swerve, pose2dSupplier, true);
