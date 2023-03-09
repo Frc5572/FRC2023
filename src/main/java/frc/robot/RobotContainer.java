@@ -112,8 +112,8 @@ public class RobotContainer {
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
     public final Swerve s_Swerve = new Swerve();
     // private final DropIntake s_dIntake = new DropIntake();
-    private final Arm s_Arm = new Arm();
-    private final WristIntake s_wristIntake = new WristIntake(ph);
+    private final Arm s_Arm = new Arm(ph);
+    private final WristIntake s_wristIntake = new WristIntake();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

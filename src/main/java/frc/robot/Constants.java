@@ -253,39 +253,9 @@ public final class Constants {
         public static final int INTAKE_STOP_SPEED = 0;
         public static final double INTAKE_RELEASE_SPEED = -.2;
         public static final double INTAKE_PANIC_SPEED = -1;
-
-        public static final int SOLENOID_FORWARD_CHANNEL = 0;
-        public static final int SOLENOID_REVERSE_CHANNEL = 1;
     }
 
-    /**
-     * Constants for the dropdown intake.
-     */
-    public static final class DropDownIntake {
-        public static final int LEFT_DROP_MOTOR_ID = 14;
-        public static final int RIGHT_DROP_MOTOR_ID = 15;
-        public static final int DROP_ENCODER_ID = 4;
-        public static final int INTAKE_MOTOR_ID = 17;
 
-        public static final double INTAKE_SPEED = 0.5;
-        public static final double SPIT_SPEED = -0.1;
-        public static final double DROP_VOLTS = -0.2;
-        public static final double RETRACT_VOLTS = 0.3;
-        public static final int STOP_VOLTS = 0;
-
-        /**
-         * PID Constants for the Drop Down Intake motors
-         */
-        public static final class PID {
-            public static final double KP = 0.005;
-            public static final double KI = 0.0;
-            public static final double KD = 0.0;
-            public static final double KS = 0.0;
-            public static final double KG = 1.1;
-            public static final double KV = 0.0;
-        }
-
-    }
 
     /**
      * LED constants.
@@ -313,6 +283,9 @@ public final class Constants {
 
         public static final double encoder1Offset = 319.2774091; // 9
         public static final double encoder2Offset = 253.5564923; // 10
+
+        public static final int SOLENOID_FORWARD_CHANNEL = 0;
+        public static final int SOLENOID_REVERSE_CHANNEL = 1;
 
         /**
          * Arm PID constants.

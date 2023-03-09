@@ -22,7 +22,6 @@ public class WristIntakePanic extends CommandBase {
 
     @Override
     public void initialize() {
-        intake.openGrabber();
         intake.setMotors(Constants.Wrist.INTAKE_RELEASE_SPEED);
     }
 

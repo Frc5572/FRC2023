@@ -31,8 +31,7 @@ public class WristIntakeRelease extends ParallelCommandGroup {
                 () -> intake.setMotors(Constants.Wrist.INTAKE_STOP_SPEED));
         ConditionalCommand condition =
             new ConditionalCommand(startMotors, new InstantCommand(), Scoring::gamePieceIsCube);
-        SequentialCommandGroup openGrabber = new SequentialCommandGroup(new WaitCommand(.25),
-            new InstantCommand(() -> intake.openGrabber()));
+        SequentialCommandGroup openGrabber = new SequentialCommandGroup(new WaitCommand(.25));
 
         addCommands(condition, openGrabber);
 

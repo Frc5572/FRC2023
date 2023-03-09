@@ -22,7 +22,6 @@ public class WristIntakeIn extends CommandBase {
 
     @Override
     public void initialize() {
-        intake.closeGrabber();
         intake.setMotors(Constants.Wrist.INTAKE_SPEED);
     }
 

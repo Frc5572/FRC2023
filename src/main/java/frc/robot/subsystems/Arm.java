@@ -10,6 +10,9 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -40,6 +43,7 @@ public class Arm extends SubsystemBase {
         new PIDController(Constants.Arm.PID.KP2, Constants.Arm.PID.KI, Constants.Arm.PID.KD);
 
     private boolean enablePID = false;
+    private final DoubleSolenoid armSolenoid;
 
     // ELEVATOR
     private final CANSparkMax elevatorMotor =
@@ -66,6 +70,10 @@ public class Arm extends SubsystemBase {
     private GenericEntry armAngleWidget = RobotContainer.mainDriverTab
         .add("Arm Angle", getAverageArmAngle()).withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("min", 0, "max", 150)).withPosition(8, 1).withSize(2, 2).getEntry();
+    private GenericEntry solenoidStatus = RobotContainer.mainDriverTab.add("Grabber Open", false)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
+        .withPosition(6, 4).withSize(2, 1).getEntry();
     // private GenericEntry armExtensionWidget = RobotContainer.mainDriverTab
     // .add("Arm Extension", getElevatorPosition()).withWidget(BuiltInWidgets.kDial)
     // .withProperties(Map.of("min", 0, "max", Constants.Elevator.MAX_ENCODER)).withPosition(10, 0)
@@ -76,7 +84,7 @@ public class Arm extends SubsystemBase {
     /**
      * Arm Subsystem
      */
-    public Arm() {
+    public Arm(PneumaticHub ph) {
         // ARM
         armPIDController1.setTolerance(2);
         armPIDController2.setTolerance(2);
@@ -122,6 +130,9 @@ public class Arm extends SubsystemBase {
         wristPIDController.setSetpoint(90);
         wristPIDController.enableContinuousInput(0, 360);
 
+        this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
+            Constants.Arm.SOLENOID_REVERSE_CHANNEL);
+
         SmartDashboard.putNumber("Arm P: ", Constants.Arm.PID.KP);
         SmartDashboard.putNumber("Arm P2: ", Constants.Arm.PID.KP2);
         SmartDashboard.putNumber("Arm I: ", Constants.Arm.PID.KI);
@@ -151,6 +162,7 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm Encoder 2", getAngleMeasurement2());
         SmartDashboard.putNumber("Wrist Encoder", getWristAngleMeasurment());
         SmartDashboard.putNumber("Elevator Position", getElevatorPosition());
+        solenoidStatus.setBoolean(this.armSolenoid.get() == Value.kReverse);
 
     }
 
