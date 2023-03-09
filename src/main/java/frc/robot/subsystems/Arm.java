@@ -325,7 +325,7 @@ public class Arm extends SubsystemBase {
     /**
      * Choses what command to run based off position.
      *
-     * @param extend
+     * @param extend Wheter arm is extended or not
      */
     public void toExtendOrNotToExtend(boolean extend) {
         if (extend) {
