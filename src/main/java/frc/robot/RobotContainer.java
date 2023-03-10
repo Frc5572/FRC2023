@@ -36,7 +36,6 @@ import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
-import frc.robot.commands.wrist.WristIntakePanic;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.LEDs;
@@ -207,8 +206,8 @@ public class RobotContainer {
         grabbedGamePiece.onFalse(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
         Trigger intakePanic = new Trigger(
             () -> this.s_wristIntake.getConeSensor() && this.s_wristIntake.getCubeSensor());
-        intakePanic.whileTrue(new WristIntakePanic(s_wristIntake)
-            .deadlineWith(new FlashingLEDColor(leds, Color.kRed)));
+        // intakePanic.whileTrue(new WristIntakePanic(s_wristIntake)
+        // .deadlineWith(new FlashingLEDColor(leds, Color.kRed)));
 
         // driver.y().onTrue(new InstantCommand(
         // () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));

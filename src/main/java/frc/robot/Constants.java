@@ -234,11 +234,11 @@ public final class Constants {
          * Wrist PID id constants
          */
         public static final class PID {
-            public static final double kP = -0.03;
-            public static final double kI = 0.0;
-            public static final double kD = 0.0;
+            public static double kP = -0.03;
+            public static double kI = 0.0;
+            public static double kD = 0.0;
             public static final double kS = 0.0;
-            public static final double kG = .8;
+            public static double kG = .4;
             public static final double kV = 0.0;
         }
 
@@ -281,8 +281,8 @@ public final class Constants {
         public static final int FOURTH_POSITION = 160;
         public static final int FIFTH_POSITION = 130;
 
-        public static final double encoder1Offset = 319.2774091; // 9
-        public static final double encoder2Offset = 253.5564923; // 10
+        public static final double encoder1Offset = 109.9509358 - 90; // 9
+        // public static final double encoder2Offset = 253.5564923; // 10
 
         public static final int SOLENOID_FORWARD_CHANNEL = 0;
         public static final int SOLENOID_REVERSE_CHANNEL = 1;
@@ -291,12 +291,11 @@ public final class Constants {
          * Arm PID constants.
          */
         public static final class PID {
-            public static final double KP = 0.08;
-            public static final double KI = 0.01;
-            public static final double KD = 0.0;
+            public static double KP = 0.07;
+            public static double KI = 0.02;
+            public static double KD = 0.0;
             public static final double KF = 0.0;
-            public static final double K_GVOLTS_MIN = 0.40;
-            public static final double K_GVOLTS_MAX = 0.80;
+            public static double K_GVOLTS_MIN = 0.40;
             public static final double K_SVOLTS = 0.0;
             public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
             public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;

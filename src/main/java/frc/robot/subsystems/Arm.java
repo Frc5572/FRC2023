@@ -52,7 +52,7 @@ public class Arm extends SubsystemBase {
     private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
     private final PIDController wristPIDController =
         new PIDController(Constants.Wrist.PID.kP, Constants.Wrist.PID.kI, Constants.Wrist.PID.kD);
-    private final double wristEncoderOffset = 72.6637727;
+    private final double wristEncoderOffset = 331.8928313;
     private double wristLastAngle = 0;
     private double wristOffset = 0;
 
@@ -75,6 +75,7 @@ public class Arm extends SubsystemBase {
         armPIDController2.setTolerance(2);
         armPIDController1.enableContinuousInput(0, 360);
         armPIDController2.enableContinuousInput(0, 360);
+        armPIDController1.setIntegratorRange(-.2, 0);
         armMotor1.restoreFactoryDefaults();
         armMotor2.restoreFactoryDefaults();
         armMotor1.setIdleMode(IdleMode.kBrake);
@@ -85,10 +86,6 @@ public class Arm extends SubsystemBase {
         encoder1.setVelocityConversionFactor(360);
         encoder1.setInverted(true);
         encoder1.setZeroOffset(Constants.Arm.encoder1Offset);
-        encoder2.setPositionConversionFactor(360);
-        encoder2.setVelocityConversionFactor(360);
-        encoder2.setInverted(false);
-        encoder2.setZeroOffset(Constants.Arm.encoder2Offset);
         m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
             Constants.Arm.PID.K_GVOLTS_MIN, Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
@@ -112,19 +109,8 @@ public class Arm extends SubsystemBase {
         this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
             Constants.Arm.SOLENOID_REVERSE_CHANNEL);
 
-        SmartDashboard.putNumber("Arm P: ", Constants.Arm.PID.KP);
-        SmartDashboard.putNumber("Arm P2: ", Constants.Arm.PID.KP2);
-        SmartDashboard.putNumber("Arm I: ", Constants.Arm.PID.KI);
-        SmartDashboard.putNumber("Arm D: ", Constants.Arm.PID.KD);
-        SmartDashboard.putNumber("Arm kF: ", Constants.Arm.PID.KF);
-        SmartDashboard.putNumber("Arm Gravity Min: ", Constants.Arm.PID.K_GVOLTS_MIN);
-        SmartDashboard.putNumber("Arm Gravity Max: ", Constants.Arm.PID.K_GVOLTS_MAX);
-        SmartDashboard.putNumber("Arm S: ", Constants.Arm.PID.K_SVOLTS);
-
-        SmartDashboard.putNumber("Wrist P: ", Constants.Wrist.PID.kP);
-        SmartDashboard.putNumber("Wrist I: ", Constants.Wrist.PID.kI);
-        SmartDashboard.putNumber("Wrist D: ", Constants.Wrist.PID.kD);
-
+        SmartDashboard.putData("wrist", wristPIDController);
+        SmartDashboard.putData("arm", armPIDController1);
 
     }
 
@@ -149,11 +135,11 @@ public class Arm extends SubsystemBase {
      */
     public void setArmGoal(double goal) {
         goingDown = wrapDegrees(getAngleMeasurement1()) > goal;
-        goal = !goingDown ? goal - 10 : goal;
+        // goal = !goingDown ? goal - 10 : goal;
         armPIDController1.setSetpoint(goal);
         armPIDController1.reset();
-        armPIDController2.setSetpoint(goal);
-        armPIDController2.reset();
+        // armPIDController2.setSetpoint(goal);
+        // armPIDController2.reset();
         SmartDashboard.putNumber("goal", goal);
     }
 
@@ -174,25 +160,27 @@ public class Arm extends SubsystemBase {
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
         double armPID1 = 0;
         double armPID2 = 0;
-        if (!goingDown) {
-            if (armPIDController1.getSetpoint() - wrapDegrees(getAngleMeasurement1()) < 10) {
-                armPIDController2.setSetpoint(armPIDController1.getSetpoint() + 10);
-                goingDown = true;
-            }
-            armPID1 = armPIDController1.calculate(getAngleMeasurement1());
-            armPID2 = armPIDController1.calculate(getAngleMeasurement1());
-        } else {
-            armPID1 = armPIDController2.calculate(getAngleMeasurement1());
-            armPID2 = armPIDController2.calculate(getAngleMeasurement1());
-        }
+        armPID1 = armPIDController1.calculate(getAngleMeasurement1());
+        armPID2 = armPIDController1.calculate(getAngleMeasurement1());
+        // if (!goingDown) {
+        // if (armPIDController1.getSetpoint() - wrapDegrees(getAngleMeasurement1()) < 10) {
+        // armPIDController2.setSetpoint(armPIDController1.getSetpoint() + 10);
+        // goingDown = true;
+        // }
+        // armPID1 = armPIDController1.calculate(getAngleMeasurement1());
+        // armPID2 = armPIDController1.calculate(getAngleMeasurement1());
+        // } else {
+        // armPID1 = armPIDController2.calculate(getAngleMeasurement1());
+        // armPID2 = armPIDController2.calculate(getAngleMeasurement1());
+        // }
         armMotor1.setVoltage(
             armPID1 + m_feedforward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
         armMotor2.setVoltage(
             armPID2 + m_feedforward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
 
-        if (armPIDController2.atSetpoint()) {
-            armPIDController2.reset();
-        }
+        // if (armPIDController2.atSetpoint()) {
+        // armPIDController2.reset();
+        // }
         SmartDashboard.putNumber("Arm Voltage 1", armPID1);
         SmartDashboard.putNumber("Arm Voltage 2", armPID2);
     }
@@ -259,7 +247,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean checkArmInPosition() {
-        return !goingDown ? checkIfAligned1() : checkIfAligned2();
+        return checkIfAligned1();
     }
 
     // ---------------- WRIST ----------------------------
@@ -272,6 +260,7 @@ public class Arm extends SubsystemBase {
     public void setWristGoal(double goal) {
         wristPIDController.setSetpoint(goal);
         wristPIDController.reset();
+        SmartDashboard.putNumber("Wrist Goal", goal);
     }
 
     /**
@@ -315,7 +304,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void extendArm() {
-        armSolenoid.set(Value.kForward);
+        armSolenoid.set(Value.kReverse);
     }
 
     public void retractArm() {
