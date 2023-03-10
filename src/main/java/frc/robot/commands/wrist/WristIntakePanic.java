@@ -22,12 +22,12 @@ public class WristIntakePanic extends CommandBase {
 
     @Override
     public void initialize() {
-        intake.setMotors(Constants.Wrist.INTAKE_RELEASE_SPEED);
+        intake.setMotor(Constants.Wrist.INTAKE_RELEASE_SPEED);
     }
 
     @Override
     public void end(boolean interrupt) {
-        intake.setMotors(Constants.Wrist.INTAKE_STOP_SPEED);
+        intake.setMotor(Constants.Wrist.INTAKE_STOP_SPEED);
     }
 
     @Override

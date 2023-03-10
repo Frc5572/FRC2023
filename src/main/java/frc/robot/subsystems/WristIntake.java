@@ -1,11 +1,11 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -16,12 +16,7 @@ import frc.robot.RobotContainer;
  */
 public class WristIntake extends SubsystemBase {
 
-    private final CANSparkMax leftWristMotor =
-        new CANSparkMax(Constants.Wrist.LEFT_MOTOR_ID, MotorType.kBrushless);
-    private final CANSparkMax rightWristMotor =
-        new CANSparkMax(Constants.Wrist.RIGHT_MOTOR_ID, MotorType.kBrushless);
-    private final MotorControllerGroup wristIntakeMotors =
-        new MotorControllerGroup(leftWristMotor, rightWristMotor);
+    private final TalonFX wristIntakeMotor = new TalonFX(Constants.Wrist.WRIST_INTAKE_ID);
 
 
     private final DigitalInput coneSensor1 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID);
@@ -42,8 +37,8 @@ public class WristIntake extends SubsystemBase {
      * Create Wrist Intake Subsystem
      */
     public WristIntake() {
-        leftWristMotor.setInverted(false);
-        rightWristMotor.setInverted(true);
+        wristIntakeMotor.setInverted(false);
+        wristIntakeMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
@@ -54,7 +49,12 @@ public class WristIntake extends SubsystemBase {
 
     // Runs wrist intake motor to intake a game piece.
     public void intake() {
-        wristIntakeMotors.set(Constants.Wrist.INTAKE_SPEED);
+        wristIntakeMotor.set(ControlMode.PercentOutput, Constants.Wrist.INTAKE_SPEED);
+    }
+
+    // Runs wrist intake motor to intake a game piece.
+    public void holdPiece() {
+        wristIntakeMotor.set(ControlMode.Current, Constants.Wrist.HOLD_VOLTS);
     }
 
     /**
@@ -62,8 +62,8 @@ public class WristIntake extends SubsystemBase {
      *
      * @param power power of motors from -1 to 1
      */
-    public void setMotors(double power) {
-        wristIntakeMotors.set(power);
+    public void setMotor(double power) {
+        wristIntakeMotor.set(ControlMode.PercentOutput, power);
     }
 
     /**
@@ -71,7 +71,7 @@ public class WristIntake extends SubsystemBase {
      * GPs penalty.
      */
     public void panic() {
-        setMotors(Constants.Wrist.INTAKE_PANIC_SPEED);
+        setMotor(Constants.Wrist.INTAKE_PANIC_SPEED);
     }
 
     /**

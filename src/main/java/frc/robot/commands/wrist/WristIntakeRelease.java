@@ -1,8 +1,6 @@
 package frc.robot.commands.wrist;
 
 import java.util.function.Supplier;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -27,13 +25,13 @@ public class WristIntakeRelease extends ParallelCommandGroup {
         addRequirements(intake);
 
         StartEndCommand startMotors =
-            new StartEndCommand(() -> intake.setMotors(Constants.Wrist.INTAKE_RELEASE_SPEED),
-                () -> intake.setMotors(Constants.Wrist.INTAKE_STOP_SPEED));
-        ConditionalCommand condition =
-            new ConditionalCommand(startMotors, new InstantCommand(), Scoring::gamePieceIsCube);
+            new StartEndCommand(() -> intake.setMotor(Constants.Wrist.INTAKE_RELEASE_SPEED),
+                () -> intake.setMotor(Constants.Wrist.INTAKE_STOP_SPEED));
+        // ConditionalCommand condition =
+        // new ConditionalCommand(startMotors, startMotors, Scoring::gamePieceIsCube);
         SequentialCommandGroup openGrabber = new SequentialCommandGroup(new WaitCommand(.25));
 
-        addCommands(condition, openGrabber);
+        addCommands(startMotors, openGrabber);
 
     }
 }
