@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import java.util.Map;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
  */
 public class WristIntake extends SubsystemBase {
 
-    private final TalonFX wristIntakeMotor = new TalonFX(Constants.Wrist.WRIST_INTAKE_ID);
+    private final WPI_TalonFX wristIntakeMotor = new WPI_TalonFX(Constants.Wrist.WRIST_INTAKE_ID);
 
 
     private final DigitalInput coneSensor1 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID);
@@ -54,7 +54,7 @@ public class WristIntake extends SubsystemBase {
 
     // Runs wrist intake motor to intake a game piece.
     public void holdPiece() {
-        wristIntakeMotor.set(ControlMode.Current, Constants.Wrist.HOLD_VOLTS);
+        wristIntakeMotor.setVoltage(Constants.Wrist.HOLD_VOLTS);
     }
 
     /**
