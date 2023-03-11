@@ -47,7 +47,7 @@ public class MoveArm extends CommandBase {
         this.armAngle = position.getArmAngle();
         arm.enablePID();
         arm.setArmGoal(armAngle);
-        arm.setWristOffset(wristAngle);
+        arm.setWristGoal(wristAngle);
         this.armExtended = position.getArmExtended();
 
         if (!armExtended) {

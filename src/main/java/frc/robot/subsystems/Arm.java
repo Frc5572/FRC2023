@@ -106,6 +106,7 @@ public class Arm extends SubsystemBase {
         wristPIDController.setTolerance(1);
         wristPIDController.setSetpoint(90);
         wristPIDController.enableContinuousInput(0, 360);
+        wristPIDController.setIntegratorRange(-0.2, 0.2);
 
         this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
             Constants.Arm.SOLENOID_REVERSE_CHANNEL);
@@ -281,12 +282,13 @@ public class Arm extends SubsystemBase {
      * Test function
      */
     public void wristToPosition() {
-        setWristGoal(getAverageArmAngle() + wristOffset);
+        // setWristGoal(getAverageArmAngle() + wristOffset);
         // double angle = getWristAngleMeasurment();
         double wristPID = wristPIDController.calculate(getWristAngleMeasurment());
         double ff = wristFeedforward.calculate(0, 0);
         // if (Math.abs(angle - wristLastAngle) < 2 || wristLastAngle == 0) {
-        wristMotor.setVoltage(wristPID + ff);
+        wristMotor.setVoltage(wristPID// + ff
+        );
         // }
         SmartDashboard.putNumber("Wrist Voltage", wristPID);
         // SmartDashboard.putNumber("PID Voltage", pidVol);
