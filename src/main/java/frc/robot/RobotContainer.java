@@ -178,10 +178,8 @@ public class RobotContainer {
                     .andThen(new InstantCommand(() -> s_wristIntake.holdPiece()))));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake)
             .andThen(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())));
-        operator.x()
-            .whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
-                .andThen(new WristIntakeIn(s_wristIntake)
-                    .alongWith(new ArmIntake(s_Arm).andThen(() -> s_wristIntake.holdPiece()))));
+        operator.x().whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
+            .andThen(new ArmIntake(s_Arm).andThen(() -> s_wristIntake.holdPiece())));
         operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(

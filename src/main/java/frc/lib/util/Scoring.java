@@ -127,9 +127,10 @@ public class Scoring {
             armAngleValues = Map.of(0, 20.0, 1, 90.0, 2, 100.0);
             wristAngleValues = Map.of(0, 15.0, 1, 120.0, 2, 100.0);
         } else if (gamePiece == GamePiece.CONE) {
+
             armExtensionValues = Map.of(0, false, 1, false, 2, true);
-            armAngleValues = Map.of(0, 30.0, 1, 100.0, 2, 110.0);
-            wristAngleValues = Map.of(0, 125.0, 1, 112.0, 2, 110.0);
+            armAngleValues = Map.of(0, 30.0, 1, 95.0, 2, 110.0);
+            wristAngleValues = Map.of(0, 125.0, 1, 112.0, 2, 105.0);
         }
         return new ArmPosition(armAngleValues.get(Robot.level), armExtensionValues.get(Robot.level),
             wristAngleValues.get(Robot.level));
