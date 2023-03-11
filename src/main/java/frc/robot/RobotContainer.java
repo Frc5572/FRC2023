@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -122,8 +121,6 @@ public class RobotContainer {
         ph.enableCompressorAnalog(90, 120);
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
-        s_wristIntake
-            .setDefaultCommand(new RunCommand(() -> s_wristIntake.holdPiece(), s_wristIntake));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
@@ -175,9 +172,16 @@ public class RobotContainer {
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple)
             .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(15.0));
 
-        operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
-        operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
-        operator.x().whileTrue(new WristIntakeIn(s_wristIntake).alongWith(new ArmIntake(s_Arm)));
+        operator.a()
+            .whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
+                .andThen(new WristIntakeIn(s_wristIntake)
+                    .andThen(new InstantCommand(() -> s_wristIntake.holdPiece()))));
+        operator.b().whileTrue(new WristIntakeRelease(s_wristIntake)
+            .andThen(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())));
+        operator.x()
+            .whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
+                .andThen(new WristIntakeIn(s_wristIntake)
+                    .alongWith(new ArmIntake(s_Arm).andThen(() -> s_wristIntake.holdPiece()))));
         operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(

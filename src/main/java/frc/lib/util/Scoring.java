@@ -117,6 +117,7 @@ public class Scoring {
         GamePiece gamePiece = getGamePiece();
         Map<Integer, Boolean> armExtensionValues = Map.of();
         Map<Integer, Double> armAngleValues = Map.of();
+        Map<Integer, Double> wristAngleValues = Map.of();
         // SmartDashboard.putNumber("Targeted Level", Robot.level);
         // SmartDashboard.putNumber("Targeted Column", Robot.column);
         SmartDashboard.putString("Targeted Game Piece", gamePiece.toString());
@@ -124,11 +125,13 @@ public class Scoring {
         if (gamePiece == GamePiece.CUBE) {
             armExtensionValues = Map.of(0, false, 1, false, 2, false);
             armAngleValues = Map.of(0, 20.0, 1, 80.0, 2, 90.0);
+            wristAngleValues = Map.of(0, 20.0, 1, 125.0, 2, 130.0);
         } else if (gamePiece == GamePiece.CONE) {
             armExtensionValues = Map.of(0, false, 1, false, 2, true);
             armAngleValues = Map.of(0, 30.0, 1, 90.0, 2, 110.0);
+            wristAngleValues = Map.of(0, 125.0, 1, 125.0, 2, 130.0);
         }
-        return new ArmPosition(armAngleValues.get(Robot.level),
-            armExtensionValues.get(Robot.level));
+        return new ArmPosition(armAngleValues.get(Robot.level), armExtensionValues.get(Robot.level),
+            wristAngleValues.get(Robot.level));
     }
 }

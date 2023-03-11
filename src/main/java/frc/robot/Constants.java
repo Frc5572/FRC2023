@@ -234,9 +234,9 @@ public final class Constants {
          * Wrist PID id constants
          */
         public static final class PID {
-            public static double kP = -0.03;
-            public static double kI = 0.0;
-            public static double kD = 0.0;
+            public static final double kP = -0.03;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
             public static final double kS = 0.0;
             public static double kG = .4;
             public static final double kV = 0.0;
@@ -249,10 +249,13 @@ public final class Constants {
         public static final int CUBE_SENSOR_ID_RIGHT = 2;
 
         public static final double INTAKE_SPEED = .7;
-        public static final double HOLD_VOLTS = 1;
+        public static final double HOLD_VOLTS = 2;
         public static final int INTAKE_STOP_SPEED = 0;
         public static final double INTAKE_RELEASE_SPEED = -.2;
         public static final double INTAKE_PANIC_SPEED = -1;
+        public static final double STALL_CURRENT = 170;
+        public static final double VOLTAGE_SPIKE_TIME = .8;
+
     }
 
 

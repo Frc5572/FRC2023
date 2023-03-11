@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.math.ArmFeedForwardTunable;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -47,8 +48,8 @@ public class Arm extends SubsystemBase {
     // WRIST
     public final CANSparkMax wristMotor =
         new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
-    private final ArmFeedforward wristFeedforward =
-        new ArmFeedforward(Constants.Wrist.PID.kS, Constants.Wrist.PID.kG, Constants.Wrist.PID.kV);
+    private final ArmFeedForwardTunable wristFeedforward = new ArmFeedForwardTunable(
+        Constants.Wrist.PID.kS, Constants.Wrist.PID.kG, Constants.Wrist.PID.kV);
     private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
     private final PIDController wristPIDController =
         new PIDController(Constants.Wrist.PID.kP, Constants.Wrist.PID.kI, Constants.Wrist.PID.kD);
@@ -112,6 +113,8 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putData("wrist", wristPIDController);
         SmartDashboard.putData("arm", armPIDController1);
 
+        SmartDashboard.putNumber("Wrist kG", Constants.Wrist.PID.kG);
+
     }
 
     @Override
@@ -125,7 +128,9 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm Encoder 2", getAngleMeasurement2());
         SmartDashboard.putNumber("Wrist Encoder", getWristAngleMeasurment());
         solenoidStatus.setBoolean(this.armSolenoid.get() == Value.kReverse);
+        Constants.Wrist.PID.kG = SmartDashboard.getNumber("Wrist kG", Constants.Wrist.PID.kG);
 
+        wristFeedforward.kg = Constants.Wrist.PID.kG;
     }
 
     /**
