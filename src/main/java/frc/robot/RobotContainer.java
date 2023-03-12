@@ -36,7 +36,6 @@ import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
-import frc.robot.commands.wrist.WristIntakePanic;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.LEDs;
@@ -112,8 +111,8 @@ public class RobotContainer {
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
     public final Swerve s_Swerve = new Swerve();
     // private final DropIntake s_dIntake = new DropIntake();
-    private final Arm s_Arm = new Arm();
-    private final WristIntake s_wristIntake = new WristIntake(ph);
+    private final Arm s_Arm = new Arm(ph);
+    private final WristIntake s_wristIntake = new WristIntake();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -173,9 +172,14 @@ public class RobotContainer {
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple)
             .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(15.0));
 
-        operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
-        operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
-        operator.x().whileTrue(new WristIntakeIn(s_wristIntake).alongWith(new ArmIntake(s_Arm)));
+        operator.a()
+            .whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
+                .andThen(new WristIntakeIn(s_wristIntake)
+                    .andThen(new InstantCommand(() -> s_wristIntake.holdPiece()))));
+        operator.b().whileTrue(new WristIntakeRelease(s_wristIntake)
+            .andThen(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())));
+        operator.x().whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
+            .andThen(new ArmIntake(s_Arm).andThen(() -> s_wristIntake.holdPiece())));
         operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
@@ -207,8 +211,8 @@ public class RobotContainer {
         grabbedGamePiece.onFalse(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
         Trigger intakePanic = new Trigger(
             () -> this.s_wristIntake.getConeSensor() && this.s_wristIntake.getCubeSensor());
-        intakePanic.whileTrue(new WristIntakePanic(s_wristIntake)
-            .deadlineWith(new FlashingLEDColor(leds, Color.kRed)));
+        // intakePanic.whileTrue(new WristIntakePanic(s_wristIntake)
+        // .deadlineWith(new FlashingLEDColor(leds, Color.kRed)));
 
         // driver.y().onTrue(new InstantCommand(
         // () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));

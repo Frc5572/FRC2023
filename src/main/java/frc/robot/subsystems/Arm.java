@@ -5,15 +5,17 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.math.AngledElevatorFeedForward;
+import frc.lib.math.ArmFeedForwardTunable;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -40,48 +42,41 @@ public class Arm extends SubsystemBase {
         new PIDController(Constants.Arm.PID.KP2, Constants.Arm.PID.KI, Constants.Arm.PID.KD);
 
     private boolean enablePID = false;
+    private final DoubleSolenoid armSolenoid;
 
-    // ELEVATOR
-    private final CANSparkMax elevatorMotor =
-        new CANSparkMax(Constants.Elevator.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
-    private final RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
-    private AngledElevatorFeedForward elevatorFeedForward =
-        new AngledElevatorFeedForward(0, Constants.Elevator.PID.ELEVATOR_KG_VOLTS, 0);
-    private final PIDController elevatorPIDController =
-        new PIDController(Constants.Elevator.PID.ELEVATOR_KP, Constants.Elevator.PID.ELEVATOR_KI,
-            Constants.Elevator.PID.ELEVATOR_KD);
 
     // WRIST
     public final CANSparkMax wristMotor =
         new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
-    private final ArmFeedforward wristFeedforward =
-        new ArmFeedforward(Constants.Wrist.PID.kS, Constants.Wrist.PID.kG, Constants.Wrist.PID.kV);
+    private final ArmFeedForwardTunable wristFeedforward = new ArmFeedForwardTunable(
+        Constants.Wrist.PID.kS, Constants.Wrist.PID.kG, Constants.Wrist.PID.kV);
     private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
     private final PIDController wristPIDController =
         new PIDController(Constants.Wrist.PID.kP, Constants.Wrist.PID.kI, Constants.Wrist.PID.kD);
-    private final double wristEncoderOffset = 72.6637727;
+    private final double wristEncoderOffset = 331.8928313;
     private double wristLastAngle = 0;
     private double wristOffset = 0;
 
     private GenericEntry armAngleWidget = RobotContainer.mainDriverTab
         .add("Arm Angle", getAverageArmAngle()).withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("min", 0, "max", 150)).withPosition(8, 1).withSize(2, 2).getEntry();
-    // private GenericEntry armExtensionWidget = RobotContainer.mainDriverTab
-    // .add("Arm Extension", getElevatorPosition()).withWidget(BuiltInWidgets.kDial)
-    // .withProperties(Map.of("min", 0, "max", Constants.Elevator.MAX_ENCODER)).withPosition(10, 0)
-    // .withSize(2, 2).getEntry();
+    private GenericEntry solenoidStatus = RobotContainer.mainDriverTab.add("Grabber Open", false)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
+        .withPosition(6, 4).withSize(2, 1).getEntry();
 
     private boolean goingDown = false;
 
     /**
      * Arm Subsystem
      */
-    public Arm() {
+    public Arm(PneumaticHub ph) {
         // ARM
         armPIDController1.setTolerance(2);
         armPIDController2.setTolerance(2);
         armPIDController1.enableContinuousInput(0, 360);
         armPIDController2.enableContinuousInput(0, 360);
+        armPIDController1.setIntegratorRange(-.2, 0);
         armMotor1.restoreFactoryDefaults();
         armMotor2.restoreFactoryDefaults();
         armMotor1.setIdleMode(IdleMode.kBrake);
@@ -92,23 +87,13 @@ public class Arm extends SubsystemBase {
         encoder1.setVelocityConversionFactor(360);
         encoder1.setInverted(true);
         encoder1.setZeroOffset(Constants.Arm.encoder1Offset);
-        encoder2.setPositionConversionFactor(360);
-        encoder2.setVelocityConversionFactor(360);
-        encoder2.setInverted(false);
-        encoder2.setZeroOffset(Constants.Arm.encoder2Offset);
-        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS, getArmKg(),
-            Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
+        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
+            Constants.Arm.PID.K_GVOLTS_MIN, Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
         // setArmGoal()
 
         armMotor1.burnFlash();
         armMotor2.burnFlash();
-        // ELEVATOR
-        elevatorPIDController.setTolerance(.05);
-        elevatorMotor.restoreFactoryDefaults();
-        elevatorMotor.setInverted(false);
-        elevatorMotor.setIdleMode(IdleMode.kBrake);
-        elevatorMotor.burnFlash();
         // WRIST
         wristMotor.restoreFactoryDefaults();
         wristMotor.setIdleMode(IdleMode.kBrake);
@@ -121,37 +106,32 @@ public class Arm extends SubsystemBase {
         wristPIDController.setTolerance(1);
         wristPIDController.setSetpoint(90);
         wristPIDController.enableContinuousInput(0, 360);
+        wristPIDController.setIntegratorRange(-0.2, 0.2);
 
-        SmartDashboard.putNumber("Arm P: ", Constants.Arm.PID.KP);
-        SmartDashboard.putNumber("Arm P2: ", Constants.Arm.PID.KP2);
-        SmartDashboard.putNumber("Arm I: ", Constants.Arm.PID.KI);
-        SmartDashboard.putNumber("Arm D: ", Constants.Arm.PID.KD);
-        SmartDashboard.putNumber("Arm kF: ", Constants.Arm.PID.KF);
-        SmartDashboard.putNumber("Arm Gravity Min: ", Constants.Arm.PID.K_GVOLTS_MIN);
-        SmartDashboard.putNumber("Arm Gravity Max: ", Constants.Arm.PID.K_GVOLTS_MAX);
-        SmartDashboard.putNumber("Arm S: ", Constants.Arm.PID.K_SVOLTS);
+        this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
+            Constants.Arm.SOLENOID_REVERSE_CHANNEL);
 
-        SmartDashboard.putNumber("Wrist P: ", Constants.Wrist.PID.kP);
-        SmartDashboard.putNumber("Wrist I: ", Constants.Wrist.PID.kI);
-        SmartDashboard.putNumber("Wrist D: ", Constants.Wrist.PID.kD);
+        SmartDashboard.putData("wrist", wristPIDController);
+        SmartDashboard.putData("arm", armPIDController1);
 
+        SmartDashboard.putNumber("Wrist kG", Constants.Wrist.PID.kG);
 
     }
 
     @Override
     public void periodic() {
         armAngleWidget.setDouble(getAverageArmAngle());
-        // armExtensionWidget.setDouble(getElevatorPosition());
         if (enablePID) {
             armToAngle();
-            // elevatorToPosition();
             wristToPosition();
         }
         SmartDashboard.putNumber("Arm Encoder 1", getAngleMeasurement1());
         SmartDashboard.putNumber("Arm Encoder 2", getAngleMeasurement2());
         SmartDashboard.putNumber("Wrist Encoder", getWristAngleMeasurment());
-        SmartDashboard.putNumber("Elevator Position", getElevatorPosition());
+        solenoidStatus.setBoolean(this.armSolenoid.get() == Value.kReverse);
+        Constants.Wrist.PID.kG = SmartDashboard.getNumber("Wrist kG", Constants.Wrist.PID.kG);
 
+        wristFeedforward.kg = Constants.Wrist.PID.kG;
     }
 
     /**
@@ -161,11 +141,11 @@ public class Arm extends SubsystemBase {
      */
     public void setArmGoal(double goal) {
         goingDown = wrapDegrees(getAngleMeasurement1()) > goal;
-        goal = !goingDown ? goal - 10 : goal;
+        // goal = !goingDown ? goal - 10 : goal;
         armPIDController1.setSetpoint(goal);
         armPIDController1.reset();
-        armPIDController2.setSetpoint(goal);
-        armPIDController2.reset();
+        // armPIDController2.setSetpoint(goal);
+        // armPIDController2.reset();
         SmartDashboard.putNumber("goal", goal);
     }
 
@@ -181,30 +161,32 @@ public class Arm extends SubsystemBase {
      *
      */
     public void armToAngle() {
-        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS, getArmKg(),
-            Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
+        m_feedforward = new ArmFeedforward(Constants.Arm.PID.K_SVOLTS,
+            Constants.Arm.PID.K_GVOLTS_MIN, Constants.Arm.PID.K_WVOLT_SECOND_PER_RAD,
             Constants.Arm.PID.K_AVOLT_SECOND_SQUARED_PER_RAD);
         double armPID1 = 0;
         double armPID2 = 0;
-        if (!goingDown) {
-            if (armPIDController1.getSetpoint() - wrapDegrees(getAngleMeasurement1()) < 10) {
-                armPIDController2.setSetpoint(armPIDController1.getSetpoint() + 10);
-                goingDown = true;
-            }
-            armPID1 = armPIDController1.calculate(getAngleMeasurement1());
-            armPID2 = armPIDController1.calculate(getAngleMeasurement1());
-        } else {
-            armPID1 = armPIDController2.calculate(getAngleMeasurement1());
-            armPID2 = armPIDController2.calculate(getAngleMeasurement1());
-        }
+        armPID1 = armPIDController1.calculate(getAngleMeasurement1());
+        armPID2 = armPIDController1.calculate(getAngleMeasurement1());
+        // if (!goingDown) {
+        // if (armPIDController1.getSetpoint() - wrapDegrees(getAngleMeasurement1()) < 10) {
+        // armPIDController2.setSetpoint(armPIDController1.getSetpoint() + 10);
+        // goingDown = true;
+        // }
+        // armPID1 = armPIDController1.calculate(getAngleMeasurement1());
+        // armPID2 = armPIDController1.calculate(getAngleMeasurement1());
+        // } else {
+        // armPID1 = armPIDController2.calculate(getAngleMeasurement1());
+        // armPID2 = armPIDController2.calculate(getAngleMeasurement1());
+        // }
         armMotor1.setVoltage(
             armPID1 + m_feedforward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
         armMotor2.setVoltage(
             armPID2 + m_feedforward.calculate(Math.toRadians(getAngleMeasurement1() - 90), 0));
 
-        if (armPIDController2.atSetpoint()) {
-            armPIDController2.reset();
-        }
+        // if (armPIDController2.atSetpoint()) {
+        // armPIDController2.reset();
+        // }
         SmartDashboard.putNumber("Arm Voltage 1", armPID1);
         SmartDashboard.putNumber("Arm Voltage 2", armPID2);
     }
@@ -271,57 +253,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean checkArmInPosition() {
-        return !goingDown ? checkIfAligned1() : checkIfAligned2();
-    }
-
-    // ---------------- ELEVATOR ----------------------------
-
-    /**
-     * Set target position for Elevator
-     *
-     * @param goal Set target position for Elevator in rotations of motor
-     */
-    public void setElevatorGoal(double goal) {
-        elevatorPIDController.setSetpoint(goal);
-    }
-
-
-    /**
-     * Sets the elevator to go until a certain degree has been reached.
-     */
-    public void elevatorToPosition() {
-        double elevatorPID = elevatorPIDController.calculate(getElevatorPosition());
-        double ff = elevatorFeedForward.calculate(Math.toRadians(getAverageArmAngle() - 90));
-        elevatorMotor.setVoltage(elevatorPID + ff);
-        SmartDashboard.putNumber("Elevator PID Voltage", elevatorPID);
-        SmartDashboard.putNumber("Elevator FF Voltage", ff);
-    }
-
-    /**
-     * Gets the encoder measurement of the elevator in rotation degrees.
-     */
-    public double getElevatorPosition() {
-        return elevatorEncoder.getPosition();
-    }
-
-
-    /**
-     * Check if aligned with a requested goal.
-     *
-     * @return True if properly aligned, false if not.
-     */
-    public boolean checkElevatorAligned() {
-        return elevatorPIDController.atSetpoint();
-    }
-
-    /**
-     * Calculate Kg based on elevator extension
-     */
-    public double getArmKg() {
-        // double slope = (Constants.Arm.PID.K_GVOLTS_MAX - Constants.Arm.PID.K_GVOLTS_MIN)
-        // / (Constants.Elevator.MAX_ENCODER - 0);
-        // return slope * getElevatorPosition() + Constants.Arm.PID.K_GVOLTS_MIN;
-        return Constants.Arm.PID.K_GVOLTS_MIN;
+        return checkIfAligned1();
     }
 
     // ---------------- WRIST ----------------------------
@@ -334,6 +266,7 @@ public class Arm extends SubsystemBase {
     public void setWristGoal(double goal) {
         wristPIDController.setSetpoint(goal);
         wristPIDController.reset();
+        SmartDashboard.putNumber("Wrist Goal", goal);
     }
 
     /**
@@ -349,12 +282,13 @@ public class Arm extends SubsystemBase {
      * Test function
      */
     public void wristToPosition() {
-        setWristGoal(getAverageArmAngle() + wristOffset);
+        // setWristGoal(getAverageArmAngle() + wristOffset);
         // double angle = getWristAngleMeasurment();
         double wristPID = wristPIDController.calculate(getWristAngleMeasurment());
         double ff = wristFeedforward.calculate(0, 0);
         // if (Math.abs(angle - wristLastAngle) < 2 || wristLastAngle == 0) {
-        wristMotor.setVoltage(wristPID + ff);
+        wristMotor.setVoltage(wristPID// + ff
+        );
         // }
         SmartDashboard.putNumber("Wrist Voltage", wristPID);
         // SmartDashboard.putNumber("PID Voltage", pidVol);
@@ -374,5 +308,26 @@ public class Arm extends SubsystemBase {
 
     public boolean getWristAligned() {
         return wristPIDController.atSetpoint();
+    }
+
+    public void extendArm() {
+        armSolenoid.set(Value.kReverse);
+    }
+
+    public void retractArm() {
+        armSolenoid.set(Value.kForward);
+    }
+
+    /**
+     * Choses what command to run based off position.
+     *
+     * @param extend Wheter arm is extended or not
+     */
+    public void toExtendOrNotToExtend(boolean extend) {
+        if (extend) {
+            extendArm();
+        } else {
+            retractArm();
+        }
     }
 }

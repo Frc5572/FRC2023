@@ -1,15 +1,14 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticHub;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -19,18 +18,13 @@ import frc.robot.RobotContainer;
  */
 public class WristIntake extends SubsystemBase {
 
-    private final CANSparkMax leftWristMotor =
-        new CANSparkMax(Constants.Wrist.LEFT_MOTOR_ID, MotorType.kBrushless);
-    private final CANSparkMax rightWristMotor =
-        new CANSparkMax(Constants.Wrist.RIGHT_MOTOR_ID, MotorType.kBrushless);
-    private final MotorControllerGroup wristIntakeMotors =
-        new MotorControllerGroup(leftWristMotor, rightWristMotor);
-    private final DoubleSolenoid wristSolenoid;
+    private final WPI_TalonFX wristIntakeMotor = new WPI_TalonFX(Constants.Wrist.WRIST_INTAKE_ID);
 
 
     private final DigitalInput coneSensor1 = new DigitalInput(Constants.Wrist.CONE_SENSOR_ID);
     private final DigitalInput cubeSensor1 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_LEFT);
     private final DigitalInput cubeSensor2 = new DigitalInput(Constants.Wrist.CUBE_SENSOR_ID_RIGHT);
+    private boolean shouldHold = false;
 
     private GenericEntry coneGrabbed = RobotContainer.mainDriverTab
         .add("Cone Grabbed", getConeSensor()).withWidget(BuiltInWidgets.kBooleanBox)
@@ -40,34 +34,44 @@ public class WristIntake extends SubsystemBase {
         .add("Cube Grabbed", getConeSensor()).withWidget(BuiltInWidgets.kBooleanBox)
         .withProperties(Map.of("Color when true", "#A020F0", "Color when false", "#FFFFFF"))
         .withPosition(6, 2).withSize(2, 1).getEntry();
-    private GenericEntry solenoidStatus = RobotContainer.mainDriverTab.add("Grabber Open", false)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
-        .withPosition(6, 4).withSize(2, 1).getEntry();
+
 
     /**
      * Create Wrist Intake Subsystem
-     *
-     * @param ph Pnuematic Hub instance
      */
-    public WristIntake(PneumaticHub ph) {
-        leftWristMotor.setInverted(false);
-        rightWristMotor.setInverted(true);
-        this.wristSolenoid = ph.makeDoubleSolenoid(Constants.Wrist.SOLENOID_FORWARD_CHANNEL,
-            Constants.Wrist.SOLENOID_REVERSE_CHANNEL);
-        closeGrabber();
+    public WristIntake() {
+        wristIntakeMotor.setInverted(false);
+        wristIntakeMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
     public void periodic() {
         coneGrabbed.setBoolean(getConeSensor());
         cubeGrabbed.setBoolean(getCubeSensor());
-        solenoidStatus.setBoolean(this.wristSolenoid.get() == Value.kReverse);
+        if (shouldHold) {
+            double t = Timer.getFPGATimestamp() % 0.06;
+            if (t < 0.03) {
+                wristIntakeMotor.setVoltage(Constants.Wrist.HOLD_VOLTS);
+            } else {
+                wristIntakeMotor.setVoltage(0.0);
+            }
+        }
+        SmartDashboard.putNumber("Wrist Intake Current", wristIntakeMotor.getStatorCurrent());
     }
 
     // Runs wrist intake motor to intake a game piece.
     public void intake() {
-        wristIntakeMotors.set(Constants.Wrist.INTAKE_SPEED);
+        shouldHold = false;
+        wristIntakeMotor.set(ControlMode.PercentOutput, Constants.Wrist.INTAKE_SPEED);
+    }
+
+    // Runs wrist intake motor to intake a game piece.
+    public void holdPiece() {
+        shouldHold = true;
+    }
+
+    public void stopHoldingPiece() {
+        shouldHold = false;
     }
 
     /**
@@ -75,8 +79,9 @@ public class WristIntake extends SubsystemBase {
      *
      * @param power power of motors from -1 to 1
      */
-    public void setMotors(double power) {
-        wristIntakeMotors.set(power);
+    public void setMotor(double power) {
+        shouldHold = false;
+        wristIntakeMotor.set(ControlMode.PercentOutput, power);
     }
 
     /**
@@ -84,7 +89,8 @@ public class WristIntake extends SubsystemBase {
      * GPs penalty.
      */
     public void panic() {
-        setMotors(Constants.Wrist.INTAKE_PANIC_SPEED);
+        shouldHold = false;
+        setMotor(Constants.Wrist.INTAKE_PANIC_SPEED);
     }
 
     /**
@@ -105,17 +111,9 @@ public class WristIntake extends SubsystemBase {
         return cubeSensor1.get() && cubeSensor2.get();
     }
 
-    /**
-     * Open grabber
-     */
-    public void openGrabber() {
-        this.wristSolenoid.set(Value.kReverse);
-    }
-
-    /**
-     * Close grabber
-     */
-    public void closeGrabber() {
-        this.wristSolenoid.set(Value.kForward);
+    public boolean getVoltageSpike(boolean passedTime) {
+        if (!passedTime)
+            return false;
+        return wristIntakeMotor.getStatorCurrent() > Constants.Wrist.STALL_CURRENT;
     }
 }
