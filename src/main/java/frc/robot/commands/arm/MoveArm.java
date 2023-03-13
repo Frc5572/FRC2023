@@ -45,7 +45,6 @@ public class MoveArm extends CommandBase {
         ArmPosition position = armPositionSupplier.get();
         this.wristAngle = position.getWristAngle();
         this.armAngle = position.getArmAngle();
-        arm.enablePID();
         arm.setArmGoal(armAngle);
         arm.setWristGoal(wristAngle);
         this.armExtended = position.getArmExtended();
@@ -64,6 +63,6 @@ public class MoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return arm.checkArmInPosition();
+        return false; // arm.checkArmInPosition();
     }
 }
