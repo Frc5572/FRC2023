@@ -230,6 +230,12 @@ public final class Constants {
 
         public static final int WRIST_MOTOR_ID = 12;
 
+        public static final double GEARING = 1.0;
+        public static final double WEIGHT = 1.0;
+        public static final double LENGTH = 1.0;
+        public static final double COM = 1.0;
+        public static final double INERTIA = 1.0;
+
         /**
          * Wrist PID id constants
          */
@@ -310,6 +316,16 @@ public final class Constants {
         public static final int THIRD_POSITION = 180;
         public static final int FOURTH_POSITION = 160;
         public static final int FIFTH_POSITION = 130;
+
+        public static final double STALL_TORQUE = 3.28; // N.m
+        public static final double STALL_CURRENT = 181; // A
+        public static final double FREE_SPEED = 5820; // RPM
+        public static final double GEARING = 1.0;
+
+        public static final double WEIGHT = 1.0;
+        public static final double LENGTH = 1.0;
+        public static final double COM = 1.0;
+        public static final double INERTIA = 1.0;
 
         public static final double encoder1Offset = 319.2774091; // 9
         public static final double encoder2Offset = 253.5564923; // 10
