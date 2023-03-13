@@ -232,7 +232,7 @@ public final class Constants {
     public static final class Wrist {
 
         public static final DoubleJointedArmFeedforward.JointConfig config =
-            new JointConfig(1.0, Units.inchesToMeters(38.3), 1.0, Units.inchesToMeters(6.5),
+            new JointConfig(1.0, Units.inchesToMeters(38.3), 666.121, Units.inchesToMeters(6.5),
                 DCMotor.getNEO(1).withReduction(10.0));
 
         public static final int WRIST_MOTOR_ID = 12;
@@ -281,7 +281,7 @@ public final class Constants {
     public static final class Arm {
 
         public static final DoubleJointedArmFeedforward.JointConfig config =
-            new JointConfig(Units.lbsToKilograms(15.77), Units.inchesToMeters(38.3), 1.0,
+            new JointConfig(Units.lbsToKilograms(15.77), Units.inchesToMeters(38.3), 666.121,
                 Units.inchesToMeters(9.0), DCMotor.getNEO(2).withReduction(174.5));
 
         public static final int ARM_ID = 9;
