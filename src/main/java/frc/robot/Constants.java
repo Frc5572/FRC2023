@@ -6,7 +6,10 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import frc.lib.math.DoubleJointedArmFeedforward;
+import frc.lib.math.DoubleJointedArmFeedforward.JointConfig;
 import frc.lib.util.swerve.SwerveModuleConstants;
 
 /**
@@ -228,7 +231,12 @@ public final class Constants {
      */
     public static final class Wrist {
 
+        public static final DoubleJointedArmFeedforward.JointConfig config =
+            new JointConfig(1.0, Units.inchesToMeters(38.3), 1.0, Units.inchesToMeters(6.5),
+                DCMotor.getNEO(1).withReduction(10.0));
+
         public static final int WRIST_MOTOR_ID = 12;
+        public static final double encoderOffset = 31.596;
 
         /**
          * Wrist PID id constants
@@ -237,9 +245,8 @@ public final class Constants {
             public static final double kP = -0.03;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
-            public static final double kS = 0.0;
-            public static double kG = .4;
-            public static final double kV = 0.0;
+            public static double MAX_VELOCITY = 1.0;
+            public static double MAX_ACCELERATION = 1.0;
         }
 
         public static final int WRIST_CAN_ID = 12;
@@ -272,11 +279,15 @@ public final class Constants {
      * Constants that are necessary for the arm.
      */
     public static final class Arm {
+
+        public static final DoubleJointedArmFeedforward.JointConfig config =
+            new JointConfig(Units.lbsToKilograms(15.77), Units.inchesToMeters(38.3), 1.0,
+                Units.inchesToMeters(9.0), DCMotor.getNEO(2).withReduction(174.5));
+
         public static final int ARM_ID = 9;
         public static final int ARM_ID_2 = 10;
         public static final int ENCODER_CHANNEL1 = 5;
         public static final int ENCODER_CHANNEL2 = 6;
-        public static final double ENCODER_OFFSET = 0.0;
         // this angle positions are not definite, just using them for testing
         public static final int HOME_POSITION = 226;
         public static final int SECOND_POSITION = 200;
@@ -284,7 +295,7 @@ public final class Constants {
         public static final int FOURTH_POSITION = 160;
         public static final int FIFTH_POSITION = 130;
 
-        public static final double encoder1Offset = 109.9509358 - 90; // 9
+        public static final double encoder1Offset = 112.399; // 9
         // public static final double encoder2Offset = 253.5564923; // 10
 
         public static final int SOLENOID_FORWARD_CHANNEL = 0;
@@ -294,15 +305,11 @@ public final class Constants {
          * Arm PID constants.
          */
         public static final class PID {
-            public static double KP = 0.07;
-            public static double KI = 0.02;
-            public static double KD = 0.0;
-            public static final double KF = 0.0;
-            public static double K_GVOLTS_MIN = 0.40;
-            public static final double K_SVOLTS = 0.0;
-            public static final double K_WVOLT_SECOND_PER_RAD = 0.0;
-            public static final double K_AVOLT_SECOND_SQUARED_PER_RAD = 0.0;
-            public static final double KP2 = 0.06;
+            public static double kP = 0.07;
+            public static double kI = 0.02;
+            public static double kD = 0.0;
+            public static double MAX_VELOCITY = 1.0;
+            public static double MAX_ACCELERATION = 1.0;
         }
     }
 }
