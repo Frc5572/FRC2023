@@ -46,13 +46,10 @@ public class Arm extends SubsystemBase {
         Constants.Wrist.PID.kI, Constants.Wrist.PID.kD, new TrapezoidProfile.Constraints(
             Constants.Wrist.PID.MAX_VELOCITY, Constants.Wrist.PID.MAX_ACCELERATION));
 
-    private GenericEntry armAngleWidget = RobotContainer.mainDriverTab
-        .add("Arm Angle", armEncoder.getPosition()).withWidget(BuiltInWidgets.kDial)
-        .withProperties(Map.of("min", 0, "max", 150)).withPosition(8, 1).withSize(2, 2).getEntry();
-    private GenericEntry solenoidStatus = RobotContainer.mainDriverTab.add("Grabber Open", false)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
-        .withPosition(6, 4).withSize(2, 1).getEntry();
+    private GenericEntry armAngleWidget =
+        RobotContainer.mainDriverTab.add("Arm Angle", armEncoder.getPosition())
+            .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", -120, "max", 50))
+            .withPosition(8, 1).withSize(2, 2).getEntry();
 
     private DoubleJointedArmFeedforward feedforward =
         new DoubleJointedArmFeedforward(Constants.Arm.config, Constants.Wrist.config);
@@ -68,8 +65,8 @@ public class Arm extends SubsystemBase {
         armMotor2.restoreFactoryDefaults();
         armMotor1.setIdleMode(IdleMode.kBrake);
         armMotor2.setIdleMode(IdleMode.kBrake);
-        armMotor1.setInverted(true);
-        armMotor2.setInverted(false);
+        armMotor1.setInverted(false);
+        armMotor2.setInverted(true);
         armEncoder.setPositionConversionFactor(360);
         armEncoder.setVelocityConversionFactor(360);
         armEncoder.setInverted(true);
@@ -102,7 +99,6 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         armAngleWidget.setDouble(armEncoder.getPosition());
-        solenoidStatus.setBoolean(this.armSolenoid.get() == Value.kReverse);
 
         SmartDashboard.putNumber("arm", getArmAngleRad());
         SmartDashboard.putNumber("wrist", getWristAngleRad());
@@ -121,24 +117,16 @@ public class Arm extends SubsystemBase {
 
             SmartDashboard.putNumber("armFF", voltages.get(0, 0));
             SmartDashboard.putNumber("wristFF", voltages.get(0, 0));
-            /*
-             * if (Math.abs(getArmAngleRad() - armPIDController.getGoal().position) < 0.02) { double
-             * armState2 = armPidController2.calculate(getArmAngleRad());
-             * armMotor1.setVoltage(-armState2 - voltages.get(0, 0));
-             * armMotor2.setVoltage(-armState2 - voltages.get(0, 0));
-             * SmartDashboard.putNumber("PID In Use", 2); } else
-             */ {
-                armMotor1.setVoltage(-voltages.get(0, 0) - armState);
-                armMotor2.setVoltage(-voltages.get(0, 0) - armState);
-                SmartDashboard.putNumber("PID In Use", 1);
-            }
+
+            armMotor1.setVoltage(voltages.get(0, 0) + armState);
+            armMotor2.setVoltage(voltages.get(0, 0) + armState);
             wristMotor.setVoltage(voltages.get(1, 0) + wristState);
         }
     }
 
     public double getArmAngle() {
         double angle = armEncoder.getPosition();
-        if (angle > 260) {
+        if (angle > Constants.Arm.PID.TURNOVER_THRESHOLD) {
             angle -= 360;
         }
         return angle;
@@ -149,7 +137,11 @@ public class Arm extends SubsystemBase {
     }
 
     public double getWristAngle() {
-        return wristEncoder.getPosition();
+        double angle = wristEncoder.getPosition();
+        if (angle > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
+            angle -= 360;
+        }
+        return angle;
     }
 
     public double getWristAngleRad() {

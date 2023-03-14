@@ -247,6 +247,7 @@ public final class Constants {
             public static final double kD = 0.0;
             public static double MAX_VELOCITY = 1.0;
             public static double MAX_ACCELERATION = 1.0;
+            public static double TURNOVER_THRESHOLD = 360.0;
         }
 
         public static final int WRIST_CAN_ID = 12;
@@ -312,6 +313,7 @@ public final class Constants {
             public static double kD = 0.0;
             public static double MAX_VELOCITY = 20.0;
             public static double MAX_ACCELERATION = 20.0;
+            public static double TURNOVER_THRESHOLD = 260.0;
         }
     }
 }
