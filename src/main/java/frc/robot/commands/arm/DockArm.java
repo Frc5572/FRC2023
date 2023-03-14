@@ -25,7 +25,7 @@ public class DockArm extends SequentialCommandGroup {
         // MoveArm moveArm1 = new MoveArm(arm, () -> new ArmPosition(20, false, -10));
         // ConditionalCommand cond =
         // new ConditionalCommand(moveArm1, new InstantCommand(), () -> armInside());
-        MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(9, false, -35));
+        MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(-80, false, 60));
 
         addCommands(moveArm2);
     }

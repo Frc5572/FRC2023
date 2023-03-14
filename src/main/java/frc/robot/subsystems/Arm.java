@@ -7,17 +7,17 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.DoubleJointedArmFeedforward;
-import frc.lib.math.ProfiledPIDControllerPosVel;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -32,9 +32,9 @@ public class Arm extends SubsystemBase {
     private final AbsoluteEncoder armEncoder = armMotor1.getAbsoluteEncoder(Type.kDutyCycle);
     private final DoubleSolenoid armSolenoid;
 
-    ProfiledPIDControllerPosVel armPIDController =
-        new ProfiledPIDControllerPosVel(Constants.Arm.PID.kP, Constants.Arm.PID.kI,
-            Constants.Arm.PID.kD, new TrapezoidProfile.Constraints(Constants.Arm.PID.MAX_VELOCITY,
+    ProfiledPIDController armPIDController =
+        new ProfiledPIDController(Constants.Arm.PID.kP, Constants.Arm.PID.kI, Constants.Arm.PID.kD,
+            new TrapezoidProfile.Constraints(Constants.Arm.PID.MAX_VELOCITY,
                 Constants.Arm.PID.MAX_ACCELERATION));
 
     // WRIST
@@ -42,10 +42,9 @@ public class Arm extends SubsystemBase {
         new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
     private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
-    ProfiledPIDControllerPosVel wristPIDController =
-        new ProfiledPIDControllerPosVel(Constants.Wrist.PID.kP, Constants.Wrist.PID.kI,
-            Constants.Wrist.PID.kD, new TrapezoidProfile.Constraints(
-                Constants.Wrist.PID.MAX_VELOCITY, Constants.Wrist.PID.MAX_ACCELERATION));
+    ProfiledPIDController wristPIDController = new ProfiledPIDController(Constants.Wrist.PID.kP,
+        Constants.Wrist.PID.kI, Constants.Wrist.PID.kD, new TrapezoidProfile.Constraints(
+            Constants.Wrist.PID.MAX_VELOCITY, Constants.Wrist.PID.MAX_ACCELERATION));
 
     private GenericEntry armAngleWidget = RobotContainer.mainDriverTab
         .add("Arm Angle", armEncoder.getPosition()).withWidget(BuiltInWidgets.kDial)
@@ -69,8 +68,8 @@ public class Arm extends SubsystemBase {
         armMotor2.restoreFactoryDefaults();
         armMotor1.setIdleMode(IdleMode.kBrake);
         armMotor2.setIdleMode(IdleMode.kBrake);
-        armMotor1.setInverted(false);
-        armMotor2.setInverted(true);
+        armMotor1.setInverted(true);
+        armMotor2.setInverted(false);
         armEncoder.setPositionConversionFactor(360);
         armEncoder.setVelocityConversionFactor(360);
         armEncoder.setInverted(true);
@@ -81,15 +80,20 @@ public class Arm extends SubsystemBase {
         // WRIST
         wristMotor.restoreFactoryDefaults();
         wristMotor.setIdleMode(IdleMode.kBrake);
-        wristMotor.setInverted(false);
+        wristMotor.setInverted(true);
         wristEncoder.setPositionConversionFactor(360);
         wristEncoder.setVelocityConversionFactor(360);
-        wristEncoder.setInverted(false);
+        wristEncoder.setInverted(true);
         wristEncoder.setZeroOffset(Constants.Wrist.encoderOffset);
         wristMotor.burnFlash();
 
         this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
             Constants.Arm.SOLENOID_REVERSE_CHANNEL);
+
+
+        // armPIDController.enableContinuousInput(0, 2 * Math.PI);
+        // armPidController2.enableContinuousInput(0, 2 * Math.PI);
+        // wristPIDController.enableContinuousInput(0, 2 * Math.PI);
 
         enablePID = false;
 
@@ -100,25 +104,48 @@ public class Arm extends SubsystemBase {
         armAngleWidget.setDouble(armEncoder.getPosition());
         solenoidStatus.setBoolean(this.armSolenoid.get() == Value.kReverse);
 
+        SmartDashboard.putNumber("arm", getArmAngleRad());
+        SmartDashboard.putNumber("wrist", getWristAngleRad());
+        SmartDashboard.putNumber("goal.arm", armPIDController.getGoal().position);
+        SmartDashboard.putNumber("goal.wrist", wristPIDController.getGoal().position);
+
         if (enablePID) {
-            State armState = armPIDController.calculate(getArmAngleRad());
-            State wristState = wristPIDController.calculate(getWristAngleRad());
+            double armState = armPIDController.calculate(getArmAngleRad());
+            double wristState = wristPIDController.calculate(getWristAngleRad());
+
+            SmartDashboard.putNumber("set.armPos", armState);
+            SmartDashboard.putNumber("set.wristPos", wristState);
 
             var voltages =
-                feedforward.calculate(VecBuilder.fill(armState.position, wristState.position),
-                    VecBuilder.fill(armState.velocity, wristState.velocity), VecBuilder.fill(0, 0));
-            armMotor1.setVoltage(voltages.get(0, 0));
-            armMotor2.setVoltage(voltages.get(0, 0));
-            wristMotor.setVoltage(voltages.get(1, 0));
+                feedforward.calculate(VecBuilder.fill(getArmAngleRad(), getWristAngleRad()));
+
+            SmartDashboard.putNumber("armFF", voltages.get(0, 0));
+            SmartDashboard.putNumber("wristFF", voltages.get(0, 0));
+            /*
+             * if (Math.abs(getArmAngleRad() - armPIDController.getGoal().position) < 0.02) { double
+             * armState2 = armPidController2.calculate(getArmAngleRad());
+             * armMotor1.setVoltage(-armState2 - voltages.get(0, 0));
+             * armMotor2.setVoltage(-armState2 - voltages.get(0, 0));
+             * SmartDashboard.putNumber("PID In Use", 2); } else
+             */ {
+                armMotor1.setVoltage(-voltages.get(0, 0) - armState);
+                armMotor2.setVoltage(-voltages.get(0, 0) - armState);
+                SmartDashboard.putNumber("PID In Use", 1);
+            }
+            wristMotor.setVoltage(voltages.get(1, 0) + wristState);
         }
     }
 
     public double getArmAngle() {
-        return armEncoder.getPosition();
+        double angle = armEncoder.getPosition();
+        if (angle > 260) {
+            angle -= 360;
+        }
+        return angle;
     }
 
     public double getArmAngleRad() {
-        return Rotation2d.fromDegrees(getArmAngle()).getRadians();
+        return getArmAngle() * Math.PI / 180.0;
     }
 
     public double getWristAngle() {
@@ -126,10 +153,11 @@ public class Arm extends SubsystemBase {
     }
 
     public double getWristAngleRad() {
-        return Rotation2d.fromDegrees(getWristAngle()).getRadians();
+        return getWristAngle() * Math.PI / 180.0;
     }
 
     public void setArmGoal(double goal) {
+        enablePID = true;
         armPIDController.setGoal(Rotation2d.fromDegrees(goal).getRadians());
     }
 
