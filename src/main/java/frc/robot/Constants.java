@@ -232,8 +232,8 @@ public final class Constants {
     public static final class Wrist {
 
         public static final DoubleJointedArmFeedforward.JointConfig config =
-            new JointConfig(1.0, Units.inchesToMeters(38.3), 666.121, Units.inchesToMeters(6.5),
-                DCMotor.getNEO(1).withReduction(10.0));
+            new JointConfig(1.0, Units.inchesToMeters(38.3), 666.121 + 15,
+                Units.inchesToMeters(6.5), DCMotor.getNEO(1).withReduction(10.0));
 
         public static final int WRIST_MOTOR_ID = 12;
         public static final double encoderOffset = 31.596;
@@ -242,12 +242,15 @@ public final class Constants {
          * Wrist PID id constants
          */
         public static final class PID {
-            public static final double kP = 0.1;
-            public static final double kI = 0.0;
-            public static final double kD = 0.0;
-            public static double MAX_VELOCITY = 1.0;
-            public static double MAX_ACCELERATION = 1.0;
-            public static double TURNOVER_THRESHOLD = 360.0;
+            public static double kP = 0.7;
+            public static double kI = 4.7;
+            public static double kD = 0.0;
+            public static double MAX_VELOCITY = 3.0;
+            public static double MAX_ACCELERATION = 4.0;
+            // public static double TURNOVER_THRESHOLD = 12.8;
+            public static double TURNOVER_THRESHOLD = 110;
+            public static double COMPENSATION_OFFSET = 25;
+
         }
 
         public static final int WRIST_CAN_ID = 12;
@@ -313,7 +316,7 @@ public final class Constants {
             public static double kD = 0.0;
             public static double MAX_VELOCITY = 20.0;
             public static double MAX_ACCELERATION = 20.0;
-            public static double TURNOVER_THRESHOLD = 260.0;
+            public static double TURNOVER_THRESHOLD = 270.0;
         }
     }
 }

@@ -9,6 +9,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 /**
@@ -124,13 +125,17 @@ public class Scoring {
 
         if (gamePiece == GamePiece.CUBE) {
             armExtensionValues = Map.of(0, false, 1, false, 2, false);
-            armAngleValues = Map.of(0, 0.0, 1, 0.0, 2, 0.0);
-            wristAngleValues = Map.of(0, 0.0, 1, 0.0, 2, 0.0);
+            armAngleValues = Map.of(0, -50.0, 1, 0.0, 2, 0.0);
+            wristAngleValues = Map.of(0, 274.0 - Constants.Wrist.PID.COMPENSATION_OFFSET, 1,
+                83.0 - Constants.Wrist.PID.COMPENSATION_OFFSET, 2,
+                10.0 - Constants.Wrist.PID.COMPENSATION_OFFSET);
         } else if (gamePiece == GamePiece.CONE) {
 
             armExtensionValues = Map.of(0, false, 1, false, 2, true);
-            armAngleValues = Map.of(0, 0.0, 1, 0.0, 2, 0.0);
-            wristAngleValues = Map.of(0, 0.0, 1, 0.0, 2, 0.0);
+            armAngleValues = Map.of(0, -50.0, 1, 0.0, 2, 13.0);
+            wristAngleValues = Map.of(0, 274.0 - Constants.Wrist.PID.COMPENSATION_OFFSET, 1,
+                54.0 - Constants.Wrist.PID.COMPENSATION_OFFSET, 2,
+                69.0 - Constants.Wrist.PID.COMPENSATION_OFFSET);
         }
         return new ArmPosition(armAngleValues.get(Robot.level), armExtensionValues.get(Robot.level),
             wristAngleValues.get(Robot.level));

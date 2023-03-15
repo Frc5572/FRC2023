@@ -2,6 +2,7 @@ package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.ArmPosition;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.WristIntake;
 
@@ -25,7 +26,8 @@ public class DockArm extends SequentialCommandGroup {
         // MoveArm moveArm1 = new MoveArm(arm, () -> new ArmPosition(20, false, -10));
         // ConditionalCommand cond =
         // new ConditionalCommand(moveArm1, new InstantCommand(), () -> armInside());
-        MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(-80, false, 60));
+        MoveArm moveArm2 = new MoveArm(arm,
+            () -> new ArmPosition(-85, false, -60 - Constants.Wrist.PID.COMPENSATION_OFFSET));
 
         addCommands(moveArm2);
     }

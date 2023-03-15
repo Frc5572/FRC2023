@@ -80,12 +80,13 @@ public class Arm extends SubsystemBase {
         wristMotor.setInverted(true);
         wristEncoder.setPositionConversionFactor(360);
         wristEncoder.setVelocityConversionFactor(360);
-        wristEncoder.setInverted(true);
+        wristEncoder.setInverted(false);
         wristEncoder.setZeroOffset(Constants.Wrist.encoderOffset);
         wristMotor.burnFlash();
 
         this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
             Constants.Arm.SOLENOID_REVERSE_CHANNEL);
+
 
 
         // armPIDController.enableContinuousInput(0, 2 * Math.PI);
@@ -100,8 +101,8 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         armAngleWidget.setDouble(armEncoder.getPosition());
 
-        SmartDashboard.putNumber("arm", getArmAngleRad());
-        SmartDashboard.putNumber("wrist", getWristAngleRad());
+        SmartDashboard.putNumber("arm", getArmAngle());
+        SmartDashboard.putNumber("wrist", getWristAngle());
         SmartDashboard.putNumber("goal.arm", armPIDController.getGoal().position);
         SmartDashboard.putNumber("goal.wrist", wristPIDController.getGoal().position);
 
@@ -122,6 +123,7 @@ public class Arm extends SubsystemBase {
             armMotor2.setVoltage(voltages.get(0, 0) + armState);
             wristMotor.setVoltage(voltages.get(1, 0) + wristState);
         }
+
     }
 
     public double getArmAngle() {
