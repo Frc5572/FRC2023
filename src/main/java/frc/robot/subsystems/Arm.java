@@ -159,6 +159,14 @@ public class Arm extends SubsystemBase {
         wristPIDController.setGoal(Rotation2d.fromDegrees(goal).getRadians());
     }
 
+    public boolean armInPosition() {
+        return armPIDController.atGoal();
+    }
+
+    public boolean wristInPosition() {
+        return wristPIDController.atGoal();
+    }
+
     public void extendArm() {
         armSolenoid.set(Value.kReverse);
     }

@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
@@ -167,19 +166,12 @@ public class RobotContainer {
             .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
 
         /* Operator Buttons */
-        operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow)
-            .until(() -> this.s_wristIntake.getConeSensor()).withTimeout(15.0));
-        operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple)
-            .until(() -> this.s_wristIntake.getCubeSensor()).withTimeout(15.0));
+        operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(3.0));
+        operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(3.0));
 
-        operator.a()
-            .whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
-                .andThen(new WristIntakeIn(s_wristIntake)
-                    .andThen(new InstantCommand(() -> s_wristIntake.holdPiece()))));
-        operator.b().whileTrue(new WristIntakeRelease(s_wristIntake)
-            .andThen(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())));
-        operator.x().whileTrue(new InstantCommand(() -> s_wristIntake.stopHoldingPiece())
-            .andThen(new ArmIntake(s_Arm).andThen(() -> s_wristIntake.holdPiece())));
+        operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
+        operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
+        operator.x().whileTrue(new ArmIntake(s_Arm));
         operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
@@ -204,13 +196,7 @@ public class RobotContainer {
 
 
         /* TRIGGERs */
-        Trigger grabbedGamePiece = new Trigger(
-            () -> this.s_wristIntake.getConeSensor() || this.s_wristIntake.getCubeSensor());
-        grabbedGamePiece.whileTrue(
-            new DisabledInstantCommand(() -> leds.setColor(Color.kGreen), leds).repeatedly());
-        grabbedGamePiece.onFalse(new FlashingLEDColor(leds, Color.kBlue).withTimeout(3));
-        Trigger intakePanic = new Trigger(
-            () -> this.s_wristIntake.getConeSensor() && this.s_wristIntake.getCubeSensor());
+
         // intakePanic.whileTrue(new WristIntakePanic(s_wristIntake)
         // .deadlineWith(new FlashingLEDColor(leds, Color.kRed)));
 
