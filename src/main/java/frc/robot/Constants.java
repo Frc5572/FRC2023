@@ -232,8 +232,8 @@ public final class Constants {
     public static final class Wrist {
 
         public static final DoubleJointedArmFeedforward.JointConfig config =
-            new JointConfig(1.0, Units.inchesToMeters(38.3), 666.121 + 15,
-                Units.inchesToMeters(6.5), DCMotor.getNEO(1).withReduction(10.0));
+            new JointConfig(Units.lbsToKilograms(6.885), Units.inchesToMeters(38.3), 133.4,
+                Units.inchesToMeters(10.7292), DCMotor.getNEO(1).withReduction(10.0));
 
         public static final int WRIST_MOTOR_ID = 12;
         public static final double encoderOffset = 31.596;
