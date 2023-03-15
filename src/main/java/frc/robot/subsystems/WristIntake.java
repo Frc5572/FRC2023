@@ -72,9 +72,10 @@ public class WristIntake extends SubsystemBase {
         setMotor(Constants.Wrist.INTAKE_PANIC_SPEED);
     }
 
+    /*
+     * Get if motor is stalling by checking if the stator current exceeds a constant
+     */
     public boolean getVoltageSpike(boolean passedTime) {
-        if (!passedTime)
-            return false;
         return wristIntakeMotor.getStatorCurrent() > Constants.Wrist.STALL_CURRENT;
     }
 }

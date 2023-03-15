@@ -8,7 +8,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -126,6 +125,9 @@ public class Arm extends SubsystemBase {
 
     }
 
+    /**
+     * Get angle of arm in degrees with a crossover outside of the configuration space
+     */
     public double getArmAngle() {
         double angle = armEncoder.getPosition();
         if (angle > Constants.Arm.PID.TURNOVER_THRESHOLD) {
@@ -134,10 +136,16 @@ public class Arm extends SubsystemBase {
         return angle;
     }
 
+    /**
+     * Get angle of arm in radians with a crossover outside of the configuration space
+     */
     public double getArmAngleRad() {
         return getArmAngle() * Math.PI / 180.0;
     }
 
+    /**
+     * Get angle of wrist in degrees with a crossover outside of the configuration space
+     */
     public double getWristAngle() {
         double angle = wristEncoder.getPosition();
         if (angle > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
@@ -146,31 +154,58 @@ public class Arm extends SubsystemBase {
         return angle;
     }
 
+    /**
+     * Get angle of wrist in radians with a crossover outside of the configuration space
+     */
     public double getWristAngleRad() {
         return getWristAngle() * Math.PI / 180.0;
     }
 
+    /**
+     * Set setpoint for arm angle in degrees
+     */
     public void setArmGoal(double goal) {
         enablePID = true;
-        armPIDController.setGoal(Rotation2d.fromDegrees(goal).getRadians());
+        if (goal > Constants.Arm.PID.TURNOVER_THRESHOLD) {
+            goal -= 360;
+        }
+        armPIDController.setGoal(goal * Math.PI / 180.0);
     }
 
+    /**
+     * Set setpoint for wrist angle in degrees
+     */
     public void setWristGoal(double goal) {
-        wristPIDController.setGoal(Rotation2d.fromDegrees(goal).getRadians());
+        if (goal > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
+            goal -= 360;
+        }
+        wristPIDController.setGoal(goal * Math.PI / 180.0);
     }
 
+    /**
+     * Get if arm angle is close to the setpoint
+     */
     public boolean armInPosition() {
         return armPIDController.atGoal();
     }
 
+    /**
+     * Get if wrist angle is close to the setpoint
+     */
     public boolean wristInPosition() {
         return wristPIDController.atGoal();
     }
 
+    /**
+     * Set arm to extended position
+     */
     public void extendArm() {
         armSolenoid.set(Value.kReverse);
     }
 
+    /**
+     * Set arm to retracted position
+     */
     public void retractArm() {
         armSolenoid.set(Value.kForward);
     }
