@@ -176,8 +176,14 @@ public class RobotContainer {
 
         operator.povUp().onTrue(
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
-        operator.povDown().onTrue(
-            new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level - 1, 0, 2)));
+        operator.povDown().onTrue(new DisabledInstantCommand(() -> {
+            if (Robot.level <= 0) {
+                Robot.column = 0;
+                Robot.level = -1;
+            } else {
+                Robot.level = MathUtil.clamp(Robot.level - 1, 0, 2);
+            }
+        }));
         operator.povRight().onTrue(new DisabledInstantCommand(
             () -> Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8)));
         operator.povLeft().onTrue(new DisabledInstantCommand(
