@@ -123,7 +123,7 @@ public class Scoring {
         SmartDashboard.putString("Targeted Game Piece", gamePiece.toString());
 
         if (Robot.level == -1) {
-            return new ArmPosition(-70.0, false, 60.0);
+            return new ArmPosition(-33, false, 46);
         }
 
         if (gamePiece == GamePiece.CUBE) {
