@@ -75,8 +75,8 @@ public class Arm extends SubsystemBase {
         armMotor2.burnFlash();
         // WRIST
         wristMotor.restoreFactoryDefaults();
-        wristMotor.setIdleMode(IdleMode.kBrake);
-        wristMotor.setInverted(true);
+        wristMotor.setIdleMode(IdleMode.kCoast);
+        wristMotor.setInverted(false);
         wristEncoder.setPositionConversionFactor(360);
         wristEncoder.setVelocityConversionFactor(360);
         wristEncoder.setInverted(false);
@@ -86,7 +86,8 @@ public class Arm extends SubsystemBase {
         this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
             Constants.Arm.SOLENOID_REVERSE_CHANNEL);
 
-
+        this.wristPIDController.setIntegratorRange(Constants.Wrist.PID.MIN_INTEGRAL,
+            Constants.Wrist.PID.MAX_INTEGRAL);
 
         // armPIDController.enableContinuousInput(0, 2 * Math.PI);
         // armPidController2.enableContinuousInput(0, 2 * Math.PI);
@@ -102,8 +103,9 @@ public class Arm extends SubsystemBase {
 
         SmartDashboard.putNumber("arm", getArmAngle());
         SmartDashboard.putNumber("wrist", getWristAngle());
-        SmartDashboard.putNumber("goal.arm", armPIDController.getGoal().position);
-        SmartDashboard.putNumber("goal.wrist", wristPIDController.getGoal().position);
+        SmartDashboard.putNumber("goal.arm", armPIDController.getGoal().position * 180 / Math.PI);
+        SmartDashboard.putNumber("goal.wrist",
+            wristPIDController.getGoal().position * 180 / Math.PI);
 
         if (enablePID) {
             double armState = armPIDController.calculate(getArmAngleRad());
@@ -116,7 +118,10 @@ public class Arm extends SubsystemBase {
                 feedforward.calculate(VecBuilder.fill(getArmAngleRad(), getWristAngleRad()));
 
             SmartDashboard.putNumber("armFF", voltages.get(0, 0));
-            SmartDashboard.putNumber("wristFF", voltages.get(0, 0));
+            SmartDashboard.putNumber("wristFF", voltages.get(1, 0));
+
+            SmartDashboard.putNumber("armPID", armState);
+            SmartDashboard.putNumber("wristPID", wristState);
 
             armMotor1.setVoltage(voltages.get(0, 0) + armState);
             armMotor2.setVoltage(voltages.get(0, 0) + armState);
@@ -147,7 +152,7 @@ public class Arm extends SubsystemBase {
      * Get angle of wrist in degrees with a crossover outside of the configuration space
      */
     public double getWristAngle() {
-        double angle = wristEncoder.getPosition();
+        double angle = 360 - wristEncoder.getPosition();
         if (angle > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
             angle -= 360;
         }
@@ -176,9 +181,9 @@ public class Arm extends SubsystemBase {
      * Set setpoint for wrist angle in degrees
      */
     public void setWristGoal(double goal) {
-        if (goal > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
-            goal -= 360;
-        }
+        /*
+         * if (goal > Constants.Wrist.PID.TURNOVER_THRESHOLD) { goal -= 360; }
+         */
         wristPIDController.setGoal(goal * Math.PI / 180.0);
     }
 

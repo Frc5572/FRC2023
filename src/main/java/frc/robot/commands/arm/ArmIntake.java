@@ -8,8 +8,8 @@ import frc.robot.subsystems.Arm;
  * This command will move the arm to a requested angle.
  */
 public class ArmIntake extends SequentialCommandGroup {
-    private double armAngle = 30;
-    private double wristAngle = 30;
+    private double armAngle = -65.0;
+    private double wristAngle = 5.0;
 
     /**
      * Requirements for the command.
