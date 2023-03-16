@@ -160,7 +160,7 @@ public class RobotContainer {
         driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.rightTrigger().and(driver.leftTrigger())
             .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
-        driver.rightBumper().and(driver.leftBumper())
+        driver.rightBumper().and(driver.leftBumper()).and(operator.start())
             .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
         driver.start()
             .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
@@ -184,7 +184,7 @@ public class RobotContainer {
             () -> Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8)));
         operator.rightTrigger().and(operator.leftTrigger())
             .whileTrue(new ScoreArm(s_Arm, s_wristIntake));
-        operator.start().toggleOnTrue(new PoliceLEDs(leds));
+        operator.back().toggleOnTrue(new PoliceLEDs(leds));
 
         // operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
         // operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
