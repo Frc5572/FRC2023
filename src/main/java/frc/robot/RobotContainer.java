@@ -32,8 +32,8 @@ import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
+import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
-import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
@@ -146,7 +146,8 @@ public class RobotContainer {
         autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
-        leds.setDefaultCommand(new RainbowLEDs(leds));
+        leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
+        // leds.setDefaultCommand(new Twinkle(leds, 60, new Color[] {Color.kRed}));
         configureButtonBindings();
     }
 
