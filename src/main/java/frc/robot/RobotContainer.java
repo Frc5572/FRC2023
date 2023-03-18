@@ -67,7 +67,7 @@ public class RobotContainer {
         mainDriverTab.add("Game Piece", Scoring.getGamePiece() == GamePiece.CONE)
             .withWidget(BuiltInWidgets.kBooleanBox)
             .withProperties(Map.of("Color when true", "yellow", "Color when false", "purple"))
-            .withPosition(8, 0).withSize(2, 1).getEntry();
+            .withPosition(6, 4).withSize(2, 1).getEntry();
 
     private final SendableChooser<Integer> levelsChooser = new SendableChooser<>();
     private final SendableChooser<Integer> columnsChooser = new SendableChooser<>();
@@ -165,6 +165,8 @@ public class RobotContainer {
         driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.rightTrigger().and(driver.leftTrigger()).and(operator.start())
             .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
+        driver.rightTrigger().and(driver.leftTrigger())
+            .onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
         driver.rightBumper().and(driver.leftBumper())
             .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
         driver.start()
@@ -267,8 +269,6 @@ public class RobotContainer {
         // vision);
         Robot.level = levelsChooser.getSelected();
         Robot.column = columnsChooser.getSelected();
-        return new WristIntakeIn(s_wristIntake).withTimeout(.2)
-            .andThen(new DockArm(s_Arm, s_wristIntake).withTimeout(.2))
-            .andThen(autoChooser.getSelected());
+        return new DockArm(s_Arm, s_wristIntake).withTimeout(.2).andThen(autoChooser.getSelected());
     }
 }

@@ -48,6 +48,8 @@ public class Swerve extends SubsystemBase {
         .add("Currently Seeing April Tag", false).withWidget(BuiltInWidgets.kBooleanBox)
         .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
         .withPosition(8, 4).withSize(2, 2).getEntry();
+    private ComplexWidget field2 = RobotContainer.mainDriverTab.add("Field Pos", field)
+        .withPosition(8, 0).withWidget(BuiltInWidgets.kField).withSize(5, 4);
 
     /**
      * Initializes swerve modules.
