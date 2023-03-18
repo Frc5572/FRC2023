@@ -20,16 +20,23 @@ public class MiddleScoreEngage extends SequentialCommandGroup {
     Swerve swerve;
     Pose2d aprilTag7 = FieldConstants.aprilTags.get(7).toPose2d();
 
+    /**
+     * Auto constructor
+     * 
+     * @param swerve Swerve
+     * @param arm Arm
+     * @param wristIntake Wrist Intake
+     */
     public MiddleScoreEngage(Swerve swerve, Arm arm, WristIntake wristIntake) {
         this.swerve = swerve;
         MoveToScore moveToScore = new MoveToScore(swerve, arm, wristIntake);
         ParallelRaceGroup wristIntakeRelease = new WristIntakeRelease(wristIntake).withTimeout(.5);
-        MoveToPos move7 = new MoveToPos(swerve, () -> get7Position(), false);
+        MoveToPos move7 = new MoveToPos(swerve, () -> get7Position(), true);
         ParallelRaceGroup dockArm = new DockArm(arm, wristIntake).withTimeout(1);
         ClimbPlatformAuto climbPlatform = new ClimbPlatformAuto(swerve);
 
-        addCommands(moveToScore, wristIntakeRelease.alongWith(new WaitCommand(.5).andThen(dockArm)),
-            climbPlatform);
+        addCommands(moveToScore, wristIntakeRelease,
+            move7.alongWith(new WaitCommand(.5).andThen(dockArm)), climbPlatform);
     }
 
     private Pose2d get7Position() {
