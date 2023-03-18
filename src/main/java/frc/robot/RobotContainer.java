@@ -23,6 +23,7 @@ import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.CrossAndDock;
 import frc.robot.autos.LeaveCommunity;
+import frc.robot.autos.MiddleScoreEngage;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
 import frc.robot.commands.arm.ArmIntake;
@@ -119,7 +120,7 @@ public class RobotContainer {
     public RobotContainer() {
         ph.enableCompressorAnalog(90, 120);
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
-            Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
+            Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
@@ -145,6 +146,8 @@ public class RobotContainer {
         autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("MIDDLE Score 1 Dock",
+            new MiddleScoreEngage(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         // leds.setDefaultCommand(new Twinkle(leds, 60, new Color[] {Color.kRed}));
