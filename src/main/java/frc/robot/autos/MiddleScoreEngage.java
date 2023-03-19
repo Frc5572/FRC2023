@@ -15,6 +15,9 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * Score one game piece then engage from community side.
+ */
 public class MiddleScoreEngage extends SequentialCommandGroup {
 
     Swerve swerve;
@@ -22,7 +25,7 @@ public class MiddleScoreEngage extends SequentialCommandGroup {
 
     /**
      * Auto constructor
-     * 
+     *
      * @param swerve Swerve
      * @param arm Arm
      * @param wristIntake Wrist Intake
