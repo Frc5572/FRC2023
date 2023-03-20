@@ -54,7 +54,7 @@ public class RobotContainer {
     public static ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
     private ShuffleboardLayout targetGrid =
         RobotContainer.mainDriverTab.getLayout("Next Position", BuiltInLayouts.kGrid)
-            .withPosition(6, 0).withSize(2, 2).withProperties(
+            .withPosition(6, 0).withSize(2, 4).withProperties(
                 Map.of("Number of columns", 2, "Number of rows", 1, "Label position", "TOP"));
     public GenericEntry levelWidget = targetGrid.add("Level", Robot.level)
         .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("Min", -1, "Max", 2, "Center",
@@ -75,11 +75,11 @@ public class RobotContainer {
 
     public ComplexWidget autoLevelWidget =
         autoTab.add("Level", levelsChooser).withWidget(BuiltInWidgets.kComboBoxChooser)
-            .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_V")).withPosition(8, 0)
+            .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_V")).withPosition(8, 2)
             .withSize(2, 2);
     public ComplexWidget autoColumnWidet =
         autoTab.add("Column", columnsChooser).withWidget(BuiltInWidgets.kComboBoxChooser)
-            .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_H")).withPosition(8, 2)
+            .withProperties(Map.of("Show Glyph", true, "Glyph", "ARROWS_H")).withPosition(8, 0)
             .withSize(2, 2);
     public static GenericEntry enableDockWidget = autoTab.add("Enable Dock", true)
         .withWidget(BuiltInWidgets.kToggleSwitch).withPosition(10, 1).withSize(2, 1).getEntry();
@@ -161,6 +161,9 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
+
+        driver.start().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
+
         driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.rightTrigger().and(driver.leftTrigger()).and(operator.start())
             .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
@@ -182,7 +185,7 @@ public class RobotContainer {
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
         operator.povDown().onTrue(new DisabledInstantCommand(() -> {
             if (Robot.level <= 0) {
-                Robot.column = 0;
+                // Robot.column = 0;
                 Robot.level = -1;
             } else {
                 Robot.level = MathUtil.clamp(Robot.level - 1, 0, 2);
