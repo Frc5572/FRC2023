@@ -146,8 +146,6 @@ public class RobotContainer {
         autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("MIDDLE Score 1 Dock",
-            new MiddleScoreEngage(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         // leds.setDefaultCommand(new Twinkle(leds, 60, new Color[] {Color.kRed}));
