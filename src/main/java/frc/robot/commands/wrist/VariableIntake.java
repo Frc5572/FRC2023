@@ -17,7 +17,7 @@ public class VariableIntake extends CommandBase {
 
     @Override
     public void execute() {
-        intake.setMotor(controller.getLeftY());
+        intake.setMotor(-(controller.getLeftY() / 2));
     }
 
     @Override
