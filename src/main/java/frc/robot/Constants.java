@@ -140,7 +140,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 6;
             public static final int ANGLE_MOTOR_ID = 8;
             public static final int CAN_CODER_ID = 4;
-            public static final double ANGLE_OFFSET = 213.486;
+            public static final double ANGLE_OFFSET = 139.219;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
@@ -152,7 +152,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 1;
             public static final int ANGLE_MOTOR_ID = 4;
             public static final int CAN_CODER_ID = 1;
-            public static final double ANGLE_OFFSET = 280.107;
+            public static final double ANGLE_OFFSET = 279.796;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
@@ -164,7 +164,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 3;
             public static final int ANGLE_MOTOR_ID = 2;
             public static final int CAN_CODER_ID = 2;
-            public static final double ANGLE_OFFSET = 121.904;
+            public static final double ANGLE_OFFSET = 122.168;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
@@ -176,7 +176,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 7;
             public static final int ANGLE_MOTOR_ID = 5;
             public static final int CAN_CODER_ID = 3;
-            public static final double ANGLE_OFFSET = 247.939;
+            public static final double ANGLE_OFFSET = 248.115;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
