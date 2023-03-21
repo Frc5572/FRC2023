@@ -9,7 +9,7 @@ import frc.robot.subsystems.Arm;
  */
 public class ArmIntake extends SequentialCommandGroup {
     private double armAngle = -60.0;
-    private double wristAngle = 3.0;
+    private double wristAngle = 13.0;
 
     /**
      * Requirements for the command.
