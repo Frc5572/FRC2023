@@ -22,8 +22,8 @@ import frc.robot.subsystems.WristIntake;
 
 public class SecondGamePiece extends TrajectoryBase {
 
-    private double maxVel = 0;
-    private double maxAccel = 0;
+    private double maxVel = 6;
+    private double maxAccel = 3;
     Pose2d aprilTag8 = FieldConstants.aprilTags.get(8).toPose2d();
     Pose2d aprilTag6 = FieldConstants.aprilTags.get(6).toPose2d();
 

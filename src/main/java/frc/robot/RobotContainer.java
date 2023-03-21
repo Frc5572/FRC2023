@@ -25,6 +25,7 @@ import frc.robot.autos.CrossAndDock;
 import frc.robot.autos.LeaveCommunity;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
+import frc.robot.autos.SecondGamePiece;
 import frc.robot.autos.TestTrajectory;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
@@ -148,6 +149,8 @@ public class RobotContainer {
         autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Test Trajectory",
             new TestTrajectory(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Second Game Piece",
+            new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         // leds.setDefaultCommand(new Twinkle(leds, 60, new Color[] {Color.kRed}));
