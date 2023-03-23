@@ -36,8 +36,8 @@ public class MovingColorLEDs extends CommandBase {
 
     @Override
     public void execute() {
-        Color theColor = inverted ? Color.kWhite : color;
-        Color secondColor = inverted ? color : Color.kWhite;
+        Color theColor = inverted ? Color.kBlack : color;
+        Color secondColor = inverted ? color : Color.kBlack;
         if (movingColorDelay == 0) {
             for (var i = 0; i < ledLength; i++) {
                 if (Math.abs(i - movingLED) < count) {
