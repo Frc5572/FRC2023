@@ -2,9 +2,9 @@ package frc.robot.autos;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.lib.util.FieldConstants;
+import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.wrist.WristIntakeRelease;
@@ -22,10 +22,11 @@ public class SecondGamePieceScore extends TrajectoryBase {
         MoveToScore movetoScore = new MoveToScore(swerve, arm, wristIntake);
         ParallelRaceGroup wristIntakeRelease = new WristIntakeRelease(wristIntake).withTimeout(.5);
         SecondGamePiece secondGamePiece = new SecondGamePiece(swerve, arm, wristIntake);
-        MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
+        MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true, 0.05, 3.0);
 
 
-        addCommands(movetoScore, wristIntakeRelease, move8, secondGamePiece);
+        addCommands(movetoScore, wristIntakeRelease, move8.alongWith(new DockArm(arm, wristIntake)),
+            secondGamePiece);
 
     }
 
@@ -35,8 +36,8 @@ public class SecondGamePieceScore extends TrajectoryBase {
      * @return Pose2d on scoring table side
      */
     private Pose2d get8position() {
-        double x = aprilTag8.getX() + Units.inchesToMeters(50);
-        double y = Units.inchesToMeters(59.39 / 2);
+        double x = 2.29743;
+        double y = 0.754253;
         return new Pose2d(x, y, Rotation2d.fromDegrees(90));
     }
 
