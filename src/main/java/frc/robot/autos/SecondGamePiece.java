@@ -11,7 +11,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.lib.util.ArmPosition;
 import frc.lib.util.FieldConstants;
+import frc.robot.commands.arm.ArmIntake;
+import frc.robot.commands.arm.DockArm;
+import frc.robot.commands.arm.MoveArm;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.subsystems.Arm;
@@ -22,6 +26,8 @@ public class SecondGamePiece extends TrajectoryBase {
 
     private double maxVel = 6;
     private double maxAccel = 3;
+    private double armAngle = -60.0;
+    private double wristAngle = 3.0;
     Pose2d aprilTag8 = FieldConstants.aprilTags.get(8).toPose2d();
     Pose2d aprilTag6 = FieldConstants.aprilTags.get(6).toPose2d();
 
@@ -30,6 +36,7 @@ public class SecondGamePiece extends TrajectoryBase {
         PathPlannerTrajectory trajectory6 =
             PathPlanner.loadPath("SecondGamePiece6", maxVel, maxAccel);
         PathPlannerTrajectory trajectory8 =
+
             PathPlanner.loadPath("SecondGamePiece8", maxVel, maxAccel);
         PathPlannerState initialState = trajectory8.getInitialState();
 
@@ -39,8 +46,12 @@ public class SecondGamePiece extends TrajectoryBase {
         PPSwerveControllerCommand secondGamePiece6 = baseSwerveCommand(trajectory6);
         PPSwerveControllerCommand secondGamePiece8 = baseSwerveCommand(trajectory8);
 
+        MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(armAngle, false, wristAngle));
+
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("Intake On", new WristIntakeIn(intake));
+        eventMap.put("Intake On", new ArmIntake(arm).alongWith(new WristIntakeIn(intake)));
+        eventMap.put("Go Home",
+            new DockArm(arm, intake).withTimeout(0.1).andThen(new ArmIntake(arm)));
         FollowPathWithEvents secondGamePiece6Events =
             new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
         FollowPathWithEvents secondGamePiece8Events =
@@ -57,7 +68,7 @@ public class SecondGamePiece extends TrajectoryBase {
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(
             new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation))),
-            move8, secondGamePiece8Events);
+            secondGamePiece8Events);
 
     }
 
