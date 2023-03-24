@@ -13,11 +13,11 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
 
 
-public class SecondGamePieceScore extends TrajectoryBase {
+public class DoubleScore extends TrajectoryBase {
 
     Pose2d aprilTag8 = FieldConstants.aprilTags.get(8).toPose2d();
 
-    public SecondGamePieceScore(Swerve swerve, Arm arm, WristIntake wristIntake) {
+    public DoubleScore(Swerve swerve, Arm arm, WristIntake wristIntake) {
         super(swerve);
         MoveToScore movetoScore = new MoveToScore(swerve, arm, wristIntake);
         ParallelRaceGroup wristIntakeRelease = new WristIntakeRelease(wristIntake).withTimeout(.5);

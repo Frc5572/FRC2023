@@ -47,7 +47,7 @@ public class SecondGamePiece extends TrajectoryBase {
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("Intake On", new ArmIntake(arm).alongWith(new WristIntakeIn(intake)));
         eventMap.put("Go Home",
-            new DockArm(arm, intake).withTimeout(0.1).andThen(new ArmIntake(arm)));
+            new DockArm(arm, intake).withTimeout(0.6).andThen(new ArmIntake(arm)));
         FollowPathWithEvents secondGamePiece6Events =
             new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
         FollowPathWithEvents secondGamePiece8Events =
