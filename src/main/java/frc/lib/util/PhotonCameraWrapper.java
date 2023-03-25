@@ -12,10 +12,19 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 
+/**
+ * PhotonCamera-based Pose Estimator.
+ */
 public class PhotonCameraWrapper {
     private PhotonCamera photonCamera;
     private PhotonPoseEstimator photonPoseEstimator;
 
+    /**
+     * PhotonCamera-based Pose Estimator.
+     * 
+     * @param cameraName camera name (not to be confused with mDNS name).
+     * @param robotToCam transform from robot body coordinates to camera coordinates.
+     */
     public PhotonCameraWrapper(String cameraName, Transform3d robotToCam) {
         // Change the name of your camera here to whatever it is in the PhotonVision UI.
         photonCamera = new PhotonCamera(cameraName);
@@ -68,7 +77,8 @@ public class PhotonCameraWrapper {
     }
 
     /**
-     * @param estimatedRobotPose The current best guess at robot pose
+     * @param prevEstimatedRobotPose The current best guess at robot pose
+     *
      * @return an EstimatedRobotPose with an estimated pose, the timestamp, and targets used to
      *         create the estimate
      */
