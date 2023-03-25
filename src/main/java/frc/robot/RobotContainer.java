@@ -23,6 +23,7 @@ import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.CrossAndDock;
 import frc.robot.autos.LeaveCommunity;
+import frc.robot.autos.MiddleScoreEngage;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
 import frc.robot.commands.arm.ArmIntake;
@@ -32,8 +33,8 @@ import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
+import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
-import frc.robot.commands.leds.RainbowLEDs;
 import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
@@ -67,7 +68,7 @@ public class RobotContainer {
         mainDriverTab.add("Game Piece", Scoring.getGamePiece() == GamePiece.CONE)
             .withWidget(BuiltInWidgets.kBooleanBox)
             .withProperties(Map.of("Color when true", "yellow", "Color when false", "purple"))
-            .withPosition(8, 0).withSize(2, 1).getEntry();
+            .withPosition(6, 4).withSize(2, 1).getEntry();
 
     private final SendableChooser<Integer> levelsChooser = new SendableChooser<>();
     private final SendableChooser<Integer> columnsChooser = new SendableChooser<>();
@@ -119,11 +120,13 @@ public class RobotContainer {
     public RobotContainer() {
         ph.enableCompressorAnalog(90, 120);
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
-            Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
+            Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
-        autoChooser.addOption("Move To Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Move to Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Middle Score and Engage",
+            new MiddleScoreEngage(s_Swerve, s_Arm, s_wristIntake));
 
         levelsChooser.setDefaultOption("0", 0);
         levelsChooser.addOption("-1", -1);
@@ -146,7 +149,8 @@ public class RobotContainer {
         autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
-        leds.setDefaultCommand(new RainbowLEDs(leds));
+        leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
+        // leds.setDefaultCommand(new Twinkle(leds, 60, new Color[] {Color.kRed}));
         configureButtonBindings();
     }
 
@@ -164,14 +168,16 @@ public class RobotContainer {
         driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
         driver.rightTrigger().and(driver.leftTrigger()).and(operator.start())
             .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
+        driver.rightTrigger().and(driver.leftTrigger())
+            .onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
         driver.rightBumper().and(driver.leftBumper())
             .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
         driver.start()
             .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
 
         /* Operator Buttons */
-        operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(3.0));
-        operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(3.0));
+        operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(15.0));
+        operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(15.0));
 
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
@@ -266,8 +272,6 @@ public class RobotContainer {
         // vision);
         Robot.level = levelsChooser.getSelected();
         Robot.column = columnsChooser.getSelected();
-        return new WristIntakeIn(s_wristIntake).withTimeout(.2)
-            .andThen(new DockArm(s_Arm, s_wristIntake).withTimeout(.2))
-            .andThen(autoChooser.getSelected());
+        return new DockArm(s_Arm, s_wristIntake).withTimeout(.2).andThen(autoChooser.getSelected());
     }
 }
