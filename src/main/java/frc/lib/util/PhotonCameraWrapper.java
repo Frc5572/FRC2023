@@ -21,7 +21,7 @@ public class PhotonCameraWrapper {
 
     /**
      * PhotonCamera-based Pose Estimator.
-     * 
+     *
      * @param cameraName camera name (not to be confused with mDNS name).
      * @param robotToCam transform from robot body coordinates to camera coordinates.
      */
@@ -56,7 +56,7 @@ public class PhotonCameraWrapper {
 
     /**
      * Get estimated pose without a prior.
-     * 
+     *
      * @return an estimated Pose2d based solely on apriltags
      */
     public Optional<Pose2d> getInitialPose() {
