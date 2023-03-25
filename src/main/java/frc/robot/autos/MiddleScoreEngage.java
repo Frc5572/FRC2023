@@ -3,10 +3,13 @@ package frc.robot.autos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.lib.util.FieldConstants;
+import frc.robot.RobotContainer;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.drive.MoveToScore;
@@ -37,9 +40,11 @@ public class MiddleScoreEngage extends SequentialCommandGroup {
         MoveToPos move7 = new MoveToPos(swerve, () -> get7Position(), true);
         ParallelRaceGroup dockArm = new DockArm(arm, wristIntake).withTimeout(1);
         ClimbPlatformAuto climbPlatform = new ClimbPlatformAuto(swerve);
+        ConditionalCommand toDockOrNotToDock = new ConditionalCommand(move7.andThen(climbPlatform),
+            new InstantCommand(), () -> RobotContainer.enableDockWidget.getBoolean(true));
 
         addCommands(moveToScore, wristIntakeRelease,
-            move7.alongWith(new WaitCommand(.5).andThen(dockArm)), climbPlatform);
+            move7.alongWith(new WaitCommand(.5).andThen(dockArm)), toDockOrNotToDock);
     }
 
     private Pose2d get7Position() {
