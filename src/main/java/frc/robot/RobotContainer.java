@@ -22,12 +22,14 @@ import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.CrossAndDock;
+import frc.robot.autos.DoubleScore;
 import frc.robot.autos.LeaveCommunity;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
 import frc.robot.autos.SecondGamePiece;
 import frc.robot.autos.SecondGamePieceScore;
 import frc.robot.autos.TestTrajectory;
+import frc.robot.autos.TripleScore;
 import frc.robot.commands.arm.ArmIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
@@ -154,6 +156,8 @@ public class RobotContainer {
             new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("SecondGamePieceScore",
             new SecondGamePieceScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Double Score", new DoubleScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Triple Score", new TripleScore(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         // leds.setDefaultCommand(new Twinkle(leds, 60, new Color[] {Color.kRed}));

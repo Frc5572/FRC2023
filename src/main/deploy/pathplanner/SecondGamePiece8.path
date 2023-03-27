@@ -7,8 +7,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.895092344564953,
-        "y": 0.754253
+        "x": 3.4318734351754423,
+        "y": 0.7443666315904063
       },
       "holonomicAngle": 90.0,
       "isReversal": false,
@@ -24,16 +24,16 @@
     },
     {
       "anchorPoint": {
-        "x": 4.570404930283545,
-        "y": 0.7344848023029388
+        "x": 5.264160528321057,
+        "y": 0.9
       },
       "prevControl": {
-        "x": 3.754261192732912,
-        "y": 0.7254165385523765
+        "x": 4.448016790770423,
+        "y": 0.8909317362494378
       },
       "nextControl": {
-        "x": 5.314011949813896,
-        "y": 0.7427471025199424
+        "x": 6.007767547851407,
+        "y": 0.9082623002170036
       },
       "holonomicAngle": 90.0,
       "isReversal": false,
@@ -56,58 +56,8 @@
         "x": 7.09604083869822,
         "y": 1.1987754501824797
       },
-      "nextControl": {
-        "x": 7.09604083869822,
-        "y": 1.1987754501824797
-      },
-      "holonomicAngle": 10.740500986442367,
-      "isReversal": true,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 5.894009216589862,
-        "y": 2.1758409231104174
-      },
-      "prevControl": {
-        "x": 6.051471388657063,
-        "y": 1.1165499473856093
-      },
-      "nextControl": {
-        "x": 5.736547044522661,
-        "y": 3.235131898835226
-      },
-      "holonomicAngle": 0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 4.118981095105047,
-        "y": 2.891578068870424
-      },
-      "prevControl": {
-        "x": 4.577052868391451,
-        "y": 2.8772633259552234
-      },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 10.740500986442367,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -131,12 +81,6 @@
       "position": 1.1,
       "names": [
         "Intake On"
-      ]
-    },
-    {
-      "position": 2.3727272727272726,
-      "names": [
-        "Go Home"
       ]
     }
   ]
