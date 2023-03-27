@@ -178,7 +178,7 @@ public class RobotContainer {
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(15.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(15.0));
 
-        driver.a().whileTrue(new WristIntakeIn(s_wristIntake));
+        operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
         operator.x().whileTrue(new ArmIntake(s_Arm));
         operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
