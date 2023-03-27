@@ -25,7 +25,7 @@ import frc.robot.autos.CrossAndDock;
 import frc.robot.autos.LeaveCommunity;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
-import frc.robot.commands.arm.ArmIntake;
+import frc.robot.commands.arm.ConeIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
 import frc.robot.commands.drive.MoveToEngage;
@@ -178,7 +178,7 @@ public class RobotContainer {
 
         operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
         operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
-        operator.x().whileTrue(new ArmIntake(s_Arm));
+        operator.x().whileTrue(new ConeIntake(s_Arm));
         operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
