@@ -14,8 +14,8 @@ public class VariableIntake extends CommandBase {
     /**
      * Variable intake constructor.
      *
-     * @param intake
-     * @param controller
+     * @param intake intake
+     * @param controller controller
      */
     public VariableIntake(WristIntake intake, CommandXboxController controller) {
         this.intake = intake;
