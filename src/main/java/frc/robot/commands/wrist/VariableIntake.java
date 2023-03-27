@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.WristIntake;
 
 /**
- * Varaible controlled intake speed.
+ * Variable controlled intake speed.
  */
 public class VariableIntake extends CommandBase {
     private WristIntake intake;
