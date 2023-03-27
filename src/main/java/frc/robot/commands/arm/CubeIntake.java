@@ -8,8 +8,8 @@ import frc.robot.subsystems.Arm;
  * This command will move the arm to a requested angle.
  */
 public class CubeIntake extends SequentialCommandGroup {
-    private double armAngle = -66.0;
-    private double wristAngle = 35.0;
+    public static final double armAngle = -48.0;
+    public static final double wristAngle = -69.0;
 
     /**
      * Requirements for the command.
@@ -18,7 +18,9 @@ public class CubeIntake extends SequentialCommandGroup {
      */
     public CubeIntake(Arm arm) {
         addRequirements(arm);
+        MoveArm moveArm =
+            new MoveArm(arm, () -> new ArmPosition(armAngle, false, DockArm.wristAngle));
         MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(armAngle, false, wristAngle));
-        addCommands(moveArm2);
+        addCommands(moveArm.withTimeout(0.4), moveArm2);
     }
 }

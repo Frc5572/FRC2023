@@ -1,5 +1,7 @@
 package frc.robot.commands.arm;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.ArmPosition;
 import frc.robot.subsystems.Arm;
@@ -19,6 +21,10 @@ public class ConeIntake extends SequentialCommandGroup {
     public ConeIntake(Arm arm) {
         addRequirements(arm);
         MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(armAngle, false, wristAngle));
-        addCommands(moveArm2);
+        MoveArm moveArm =
+            new MoveArm(arm, () -> new ArmPosition(CubeIntake.armAngle, false, DockArm.wristAngle));
+        addCommands(
+            new ConditionalCommand(moveArm, new InstantCommand(), () -> arm.getWristAngle() < 0),
+            moveArm2);
     }
 }
