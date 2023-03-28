@@ -24,7 +24,7 @@ public class LeaveCommunity extends MoveToPos {
         super(swerve,
             () -> new Pose2d(
                 new Translation2d(Units.inchesToMeters(distanceFromTape), swerve.getPose().getY()),
-                Rotation2d.fromDegrees(0)),
+                Rotation2d.fromDegrees(0.0)),
             true);
     }
 
