@@ -10,7 +10,7 @@ import frc.robot.subsystems.Arm;
  * This command will move the arm to a requested angle.
  */
 public class ConeIntake extends SequentialCommandGroup {
-    private double armAngle = -66.0;
+    private double armAngle = -74.0;
     private double wristAngle = 35.0;
 
     /**
