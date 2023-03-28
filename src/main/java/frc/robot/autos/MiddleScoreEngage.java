@@ -40,7 +40,7 @@ public class MiddleScoreEngage extends SequentialCommandGroup {
         MoveToPos move7 = new MoveToPos(swerve, () -> get7Position(), true);
         ParallelRaceGroup dockArm = new DockArm(arm, wristIntake).withTimeout(1);
         ClimbPlatformAuto climbPlatform = new ClimbPlatformAuto(swerve);
-        ConditionalCommand toDockOrNotToDock = new ConditionalCommand(move7.andThen(climbPlatform),
+        ConditionalCommand toDockOrNotToDock = new ConditionalCommand(climbPlatform,
             new InstantCommand(), () -> RobotContainer.enableDockWidget.getBoolean(true));
 
         addCommands(moveToScore, wristIntakeRelease,
