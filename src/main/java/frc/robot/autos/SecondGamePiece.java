@@ -11,7 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.FieldConstants;
-import frc.robot.commands.arm.ArmIntake;
+import frc.robot.commands.arm.CubeIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.wrist.WristIntakeRelease;
@@ -46,9 +46,8 @@ public class SecondGamePiece extends TrajectoryBase {
         PPSwerveControllerCommand secondGamePiece8 = baseSwerveCommand(trajectory8);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("Intake On", new ArmIntake(arm).alongWith(new WristIntakeRelease(intake)));
-        eventMap.put("Go Home",
-            new DockArm(arm, intake).withTimeout(0.6).andThen(new ArmIntake(arm)));
+        eventMap.put("Intake On", new CubeIntake(arm).alongWith(new WristIntakeRelease(intake)));
+        eventMap.put("Go Home", new DockArm(arm, intake));
         // FollowPathWithEvents secondGamePiece6Events =
         // new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
         FollowPathWithEvents secondGamePiece8Events =

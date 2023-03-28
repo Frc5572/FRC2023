@@ -32,7 +32,7 @@ public final class Constants {
         public static final double PID_YKP = 2;
         public static final double PID_YKI = 0.0;
         public static final double PID_YKD = 0.0;
-        public static final double PID_TKP = 9.0;
+        public static final double PID_TKP = 6.0;
         public static final double PID_TKI = 0.0;
         public static final double PID_TKD = 0.0;
 

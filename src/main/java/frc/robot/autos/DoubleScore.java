@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.FieldConstants;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
-import frc.robot.commands.wrist.WristIntakeRelease;
+import frc.robot.commands.wrist.WristIntakeIn;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
@@ -32,15 +32,14 @@ public class DoubleScore extends TrajectoryBase {
         PPSwerveControllerCommand DoubleScore8 = baseSwerveCommand(trajectory8);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("Release Intake", new ScoreArm(arm, intake) // .alongWith(new
-                                                                 // WristIntakeRelease(intake))
-            .andThen(new DockArm(arm, intake).withTimeout(0.6)));
+        eventMap.put("Release Intake",
+            new ScoreArm(arm, intake).andThen(new WristIntakeIn(intake).withTimeout(0.2))
+                .andThen(new DockArm(arm, intake).withTimeout(0.6)));
         eventMap.put("Go Home", new DockArm(arm, intake));
         FollowPathWithEvents DoubleScore8Events =
             new FollowPathWithEvents(DoubleScore8, trajectory8.getMarkers(), eventMap);
 
-        addCommands(new WristIntakeRelease(intake).withTimeout(0.5), secGamePieSco,
-            DoubleScore8Events);
+        addCommands(new WristIntakeIn(intake).withTimeout(0.5), secGamePieSco, DoubleScore8Events);
 
     }
 
