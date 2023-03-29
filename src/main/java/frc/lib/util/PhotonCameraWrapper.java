@@ -11,6 +11,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * PhotonCamera-based Pose Estimator.
@@ -37,7 +38,7 @@ public class PhotonCameraWrapper {
             // Create pose estimator
             photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP,
                 photonCamera, robotToCam);
-            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT);
         } catch (IOException e) {
             // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we
             // don't know
@@ -61,6 +62,7 @@ public class PhotonCameraWrapper {
      */
     public Optional<Pose2d> getInitialPose() {
         var res = photonCamera.getLatestResult();
+        SmartDashboard.putNumber("lastTimePhton", res.getTimestampSeconds());
         if (res.hasTargets()) {
             var target = res.getBestTarget();
             var camToTargetTrans = target.getBestCameraToTarget();
