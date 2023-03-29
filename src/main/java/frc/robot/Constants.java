@@ -242,8 +242,8 @@ public final class Constants {
          * Wrist PID id constants
          */
         public static final class PID {
-            public static double kP = 1.8;
-            public static double kI = 0.0;
+            public static double kP = 2.4;
+            public static double kI = 1.0;
             public static double kD = 0.0;
             public static double MAX_VELOCITY = 12.0;
             public static double MAX_ACCELERATION = 7.0;
@@ -312,8 +312,8 @@ public final class Constants {
          * Arm PID constants.
          */
         public static final class PID {
-            public static double kP = 5.0;
-            public static double kI = 0.0;
+            public static double kP = 5.5;
+            public static double kI = 2.5;
             public static double kD = 0.0;
             public static double MAX_VELOCITY = 20.0;
             public static double MAX_ACCELERATION = 20.0;
