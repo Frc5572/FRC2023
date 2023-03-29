@@ -33,7 +33,7 @@ public class DoubleScore extends TrajectoryBase {
 
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("Release Intake",
-            new ScoreArm(arm, intake).andThen(new WristIntakeIn(intake).withTimeout(0.2))
+            new ScoreArm(arm, intake).andThen(new WristIntakeIn(intake).withTimeout(0.6))
                 .andThen(new DockArm(arm, intake).withTimeout(0.6)));
         eventMap.put("Go Home", new DockArm(arm, intake));
         FollowPathWithEvents DoubleScore8Events =

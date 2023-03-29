@@ -34,8 +34,9 @@ public class TripleScore extends TrajectoryBase {
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("Intake On", new CubeIntake(arm).alongWith(new WristIntakeRelease(intake)));
         eventMap.put("Go Home", new DockArm(arm, intake).withTimeout(0.6));
-        eventMap.put("Release Intake", new ScoreArm(arm, intake).andThen(new WristIntakeIn(intake))
-            .andThen(new DockArm(arm, intake).withTimeout(0.6)));
+        eventMap.put("Release Intake",
+            new ScoreArm(arm, intake).andThen(new WristIntakeIn(intake).withTimeout(0.6))
+                .andThen(new DockArm(arm, intake).withTimeout(0.6)));
         FollowPathWithEvents TripleScore8Events =
             new FollowPathWithEvents(TripleScore8, trajectory8.getMarkers(), eventMap);
 
