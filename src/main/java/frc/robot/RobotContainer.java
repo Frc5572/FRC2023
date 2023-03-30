@@ -26,7 +26,8 @@ import frc.robot.autos.LeaveCommunity;
 import frc.robot.autos.MiddleScoreEngage;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
-import frc.robot.commands.arm.ArmIntake;
+import frc.robot.commands.arm.ConeIntake;
+import frc.robot.commands.arm.CubeIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
 import frc.robot.commands.drive.MoveToEngage;
@@ -35,8 +36,7 @@ import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
-import frc.robot.commands.wrist.WristIntakeIn;
-import frc.robot.commands.wrist.WristIntakeRelease;
+import frc.robot.commands.wrist.VariableIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
@@ -121,6 +121,7 @@ public class RobotContainer {
         ph.enableCompressorAnalog(90, 120);
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
+        s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
@@ -179,10 +180,12 @@ public class RobotContainer {
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(15.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(15.0));
 
-        operator.a().whileTrue(new WristIntakeIn(s_wristIntake));
-        operator.b().whileTrue(new WristIntakeRelease(s_wristIntake));
-        operator.x().whileTrue(new ArmIntake(s_Arm));
-        operator.y().whileTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
+        operator.a().onTrue(new ConeIntake(s_Arm)
+            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
+        operator.b().onTrue(new CubeIntake(s_Arm)
+            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
+        operator.x().onTrue(new ConeIntake(s_Arm));
+        operator.y().onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
@@ -194,10 +197,14 @@ public class RobotContainer {
                 Robot.level = MathUtil.clamp(Robot.level - 1, 0, 2);
             }
         }));
-        operator.povRight().onTrue(new DisabledInstantCommand(
-            () -> Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8)));
-        operator.povLeft().onTrue(new DisabledInstantCommand(
-            () -> Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8)));
+        operator.povRight().onTrue(new DisabledInstantCommand(() -> {
+            Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8);
+            s_wristIntake.setInvert(Scoring.getGamePiece() == Scoring.GamePiece.CONE);
+        }));
+        operator.povLeft().onTrue(new DisabledInstantCommand(() -> {
+            Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8);
+            s_wristIntake.setInvert(Scoring.getGamePiece() == Scoring.GamePiece.CONE);
+        }));
         operator.rightTrigger().and(operator.leftTrigger())
             .whileTrue(new ScoreArm(s_Arm, s_wristIntake));
         operator.back().toggleOnTrue(new PoliceLEDs(leds));
