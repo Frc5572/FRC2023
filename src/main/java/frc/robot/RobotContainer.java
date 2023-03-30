@@ -124,7 +124,6 @@ public class RobotContainer {
         s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-        autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Move to Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Middle Score and Engage",
             new MiddleScoreEngage(s_Swerve, s_Arm, s_wristIntake));
