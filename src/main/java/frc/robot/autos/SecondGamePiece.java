@@ -37,7 +37,8 @@ public class SecondGamePiece extends TrajectoryBase {
             PathPlanner.loadPath("SecondGamePiece8", maxVel, maxAccel);
         PathPlannerState initialState = trajectory8.getInitialState();
         MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true, 0.07, 3.0);
-
+        MoveToPos cubPos = new MoveToPos(swerve, () -> getCubePosition(), true, 0.07, 3.0);
+        MoveToPos midPos = new MoveToPos(swerve, () -> getMidPosition(), true, 0.07, 3.0);
 
         // MoveToPos move6 = new MoveToPos(swerve, () -> get6position(), true);
         // MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
@@ -46,7 +47,7 @@ public class SecondGamePiece extends TrajectoryBase {
         PPSwerveControllerCommand secondGamePiece8 = baseSwerveCommand(trajectory8);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("Intake On", new CubeIntake(arm).alongWith(new WristIntakeRelease(intake)));
+        eventMap.put("Intake On", new WristIntakeRelease(intake).withTimeout(2.0));
         eventMap.put("Go Home", new DockArm(arm, intake));
         // FollowPathWithEvents secondGamePiece6Events =
         // new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
@@ -62,7 +63,9 @@ public class SecondGamePiece extends TrajectoryBase {
         // ConditionalCommand cond2 = new ConditionalCommand(engage, new InstantCommand(),
         // () -> RobotContainer.enableDockWidget.getBoolean(true));
 
-        addCommands(move8, secondGamePiece8Events);
+        addCommands(move8.alongWith(new CubeIntake(arm).withTimeout(0.9)),
+            cubPos.alongWith(new WristIntakeRelease(intake).withTimeout(4.0)),
+            midPos.alongWith(new DockArm(arm, intake)), move8);
 
     }
 
@@ -86,7 +89,7 @@ public class SecondGamePiece extends TrajectoryBase {
     private Pose2d get8position() {
         double x = aprilTag8.getX() + Units.inchesToMeters(50);
         double y = Units.inchesToMeters(59.39 / 2);
-        return new Pose2d(x, y, Rotation2d.fromDegrees(90));
+        return new Pose2d(x, y, Rotation2d.fromDegrees(180));
     }
 
 
@@ -100,5 +103,18 @@ public class SecondGamePiece extends TrajectoryBase {
         double y = aprilTag6.getY() + Units.inchesToMeters(26);
         return new Pose2d(x, y, Rotation2d.fromDegrees(90));
     }
+
+    private Pose2d getCubePosition() {
+        double x = Units.inchesToMeters(100);
+        double y = Units.inchesToMeters(59.39 / 2);
+        return new Pose2d(x, y, Rotation2d.fromDegrees(0));
+    }
+
+    private Pose2d getMidPosition() {
+        double x = Units.inchesToMeters(75);
+        double y = Units.inchesToMeters(59.39 / 2);
+        return new Pose2d(x, y, Rotation2d.fromDegrees(180));
+    }
+
 }
 
