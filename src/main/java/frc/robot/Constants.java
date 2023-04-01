@@ -313,7 +313,7 @@ public final class Constants {
          */
         public static final class PID {
             public static double kP = 5.5;
-            public static double kI = 2.5;
+            public static double kI = 0.4;
             public static double kD = 0.0;
             public static double MAX_VELOCITY = 20.0;
             public static double MAX_ACCELERATION = 20.0;

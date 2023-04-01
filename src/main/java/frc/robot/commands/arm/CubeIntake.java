@@ -1,5 +1,7 @@
 package frc.robot.commands.arm;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.ArmPosition;
 import frc.robot.subsystems.Arm;
@@ -21,6 +23,7 @@ public class CubeIntake extends SequentialCommandGroup {
         MoveArm moveArm =
             new MoveArm(arm, () -> new ArmPosition(armAngle, false, DockArm.wristAngle));
         MoveArm moveArm2 = new MoveArm(arm, () -> new ArmPosition(armAngle, false, wristAngle));
-        addCommands(moveArm.withTimeout(0.4), moveArm2);
+        addCommands(new ConditionalCommand(moveArm.withTimeout(1.0), new InstantCommand(),
+            () -> arm.getArmAngle() < CubeIntake.armAngle - 5), moveArm2);
     }
 }
