@@ -22,7 +22,6 @@ import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.CrossAndDock;
-import frc.robot.autos.LeaveCommunity;
 import frc.robot.autos.MiddleScoreEngage;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
@@ -145,7 +144,6 @@ public class RobotContainer {
         columnsChooser.addOption("6", 6);
         columnsChooser.addOption("7", 7);
         columnsChooser.addOption("8", 8);
-        autoChooser.addOption("Leave Community", new LeaveCommunity(s_Swerve));
         autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
