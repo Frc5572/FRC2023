@@ -21,9 +21,15 @@ public class TurnToAngle extends CommandBase {
     private Swerve swerve;
     private boolean isRelative;
     private double goal;
-    private HolonomicDriveController holonomicDriveController;
+    private HolonomicDriveController holonomicDriveController =
+        new HolonomicDriveController(new PIDController(0, 0, 0), new PIDController(0, 0, 0),
+            new ProfiledPIDController(Constants.SwerveTransformPID.PID_TKP / 2,
+                Constants.SwerveTransformPID.PID_TKI, Constants.SwerveTransformPID.PID_TKD,
+                new TrapezoidProfile.Constraints(Constants.SwerveTransformPID.MAX_ANGULAR_VELOCITY,
+                    Constants.SwerveTransformPID.MAX_ANGULAR_ACCELERATION)));
     private Pose2d startPos = new Pose2d();
     private Pose2d targetPose2d = new Pose2d();
+    private int finishCounter = 0;
 
     /**
      * Turns robot to specified angle. Uses absolute rotation on field.
@@ -33,20 +39,11 @@ public class TurnToAngle extends CommandBase {
      * @param isRelative Whether the angle is relative to the current angle: true = relative, false
      *        = absolute
      */
-
     public TurnToAngle(Swerve swerve, double angle, boolean isRelative) {
         addRequirements(swerve);
         this.swerve = swerve;
         this.goal = angle;
         this.isRelative = isRelative;
-
-        HolonomicDriveController holonomicDriveController =
-            new HolonomicDriveController(new PIDController(0, 0, 0), new PIDController(0, 0, 0),
-                new ProfiledPIDController(Constants.SwerveTransformPID.PID_TKP,
-                    Constants.SwerveTransformPID.PID_TKI, Constants.SwerveTransformPID.PID_TKD,
-                    new TrapezoidProfile.Constraints(
-                        Constants.SwerveTransformPID.MAX_ANGULAR_VELOCITY,
-                        Constants.SwerveTransformPID.MAX_ANGULAR_ACCELERATION)));
         holonomicDriveController.setTolerance(new Pose2d(1, 1, Rotation2d.fromDegrees(1)));
 
     }
@@ -81,7 +78,11 @@ public class TurnToAngle extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return holonomicDriveController.atReference();
-
+        if (holonomicDriveController.atReference()) {
+            finishCounter++;
+        } else {
+            finishCounter = 0;
+        }
+        return finishCounter > 2;
     }
 }

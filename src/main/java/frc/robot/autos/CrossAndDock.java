@@ -7,6 +7,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.lib.util.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.arm.DockArm;
@@ -41,9 +42,9 @@ public class CrossAndDock extends SequentialCommandGroup {
             true);
         MoveToEngage engage = new MoveToEngage(swerve, arm, wrist);
         TurnToAngle turnAround = new TurnToAngle(swerve, 0, false);
-        ConditionalCommand toDockOrNotToDock =
-            new ConditionalCommand(centerWithDock.andThen(engage), turnAround,
-                () -> RobotContainer.enableDockWidget.getBoolean(true));
+        ConditionalCommand toDockOrNotToDock = new ConditionalCommand(
+            centerWithDock.andThen(engage), new WaitCommand(1).andThen(turnAround),
+            () -> RobotContainer.enableDockWidget.getBoolean(true));
 
 
         addCommands(leaveCommunity.alongWith(dockArm), toDockOrNotToDock);
