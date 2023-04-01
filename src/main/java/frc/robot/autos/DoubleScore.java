@@ -33,6 +33,7 @@ public class DoubleScore extends TrajectoryBase {
         SecondGamePiece secGamePieSco = new SecondGamePiece(swerve, arm, intake);
         PathPlannerTrajectory trajectory8 = PathPlanner.loadPath("DoubleScore8", maxVel, maxAccel);
         PPSwerveControllerCommand DoubleScore8 = baseSwerveCommand(trajectory8);
+        MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true, 0.07, 3.0);
         MoveToPos cubePose = new MoveToPos(swerve, () -> getCubePose(), true, 0.07, 3.0);
         MoveToPos midPose = new MoveToPos(swerve, () -> getMidPose(), true, 0.07, 3.0);
 
@@ -42,10 +43,16 @@ public class DoubleScore extends TrajectoryBase {
         FollowPathWithEvents DoubleScore8Events =
             new FollowPathWithEvents(DoubleScore8, trajectory8.getMarkers(), eventMap);
 
-        addCommands(new WristIntakeIn(intake).withTimeout(0.5), secGamePieSco, midPose,
-            cubePose.alongWith(new WristIntakeRelease(intake).withTimeout(2)),
+        addCommands(move8, new WristIntakeIn(intake).withTimeout(0.5), midPose,
+            cubePose.alongWith(new WristIntakeRelease(intake).withTimeout(2)), midPose, move8,
             new WristIntakeIn(intake).withTimeout(2.0));
 
+    }
+
+    private Pose2d get8position() {
+        double x = aprilTag8.getX() + Units.inchesToMeters(50);
+        double y = Units.inchesToMeters(59.39 / 2);
+        return new Pose2d(x, y, Rotation2d.fromDegrees(180));
     }
 
     private Pose2d getCubePose() {
