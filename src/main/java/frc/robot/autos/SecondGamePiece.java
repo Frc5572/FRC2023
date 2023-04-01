@@ -53,15 +53,11 @@ public class SecondGamePiece extends TrajectoryBase {
         // new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
         FollowPathWithEvents secondGamePiece8Events =
             new FollowPathWithEvents(secondGamePiece8, trajectory8.getMarkers(), eventMap);
-        // MoveToEngage engage = new MoveToEngage(swerve, arm, intake);
 
         // ConditionalCommand cond = new ConditionalCommand(move6, move8, () -> chooseSide());
 
         // ConditionalCommand cond1 = new ConditionalCommand(secondGamePiece6Events,
         // secondGamePiece8Events, () -> chooseSide());
-
-        // ConditionalCommand cond2 = new ConditionalCommand(engage, new InstantCommand(),
-        // () -> RobotContainer.enableDockWidget.getBoolean(true));
 
         addCommands(move8.alongWith(new CubeIntake(arm).withTimeout(0.9)),
             cubPos.alongWith(new WristIntakeRelease(intake).withTimeout(4.0)),

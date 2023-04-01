@@ -49,7 +49,7 @@ public class TripleScore extends TrajectoryBase {
 
         addCommands(doubleScore, midPose, highPose.alongWith(new CubeIntake(arm)),
             cubePose.alongWith(new WristIntakeRelease(intake).withTimeout(3.0)), highPose, midPose,
-            cubePose, move8, new WristIntakeIn(intake).withTimeout(2.0));
+            cubePose, move8, new ScoreArm(arm, intake), new WristIntakeIn(intake).withTimeout(2.0));
 
     }
 
