@@ -180,10 +180,10 @@ public class RobotContainer {
 
         operator.a().onTrue(new ConeIntake(s_Arm)
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
-        operator.b().onTrue(new CubeIntake(s_Arm)
+        operator.x().onTrue(new CubeIntake(s_Arm)
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
-        operator.x().onTrue(new ConeUpIntake(s_Arm)
-            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
+        operator.b().onTrue(new ConeUpIntake(s_Arm)
+            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
         operator.y().onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
