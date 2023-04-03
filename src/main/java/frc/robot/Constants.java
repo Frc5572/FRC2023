@@ -37,7 +37,7 @@ public final class Constants {
         public static final double PID_TKD = 0.0;
 
         public static final double MAX_ANGULAR_VELOCITY = 9.0;
-        public static final double MAX_ANGULAR_ACCELERATION = 9;
+        public static final double MAX_ANGULAR_ACCELERATION = 9 * 5;
         public static final double STD_DEV_MOD = 2.0;
     }
 

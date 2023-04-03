@@ -21,7 +21,7 @@ import frc.robot.subsystems.WristIntake;
 
 public class SecondGamePiece extends TrajectoryBase {
 
-    private double maxVel = 6;
+    private double maxVel = 4;
     private double maxAccel = 3;
     // private double armAngle = -60.0;
     // private double wristAngle = 3.0;
@@ -37,8 +37,6 @@ public class SecondGamePiece extends TrajectoryBase {
             PathPlanner.loadPath("SecondGamePiece8", maxVel, maxAccel);
         PathPlannerState initialState = trajectory8.getInitialState();
         MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true, 0.07, 3.0);
-        MoveToPos cubPos = new MoveToPos(swerve, () -> getCubePosition(), true, 0.07, 3.0);
-        MoveToPos midPos = new MoveToPos(swerve, () -> getMidPosition(), true, 0.07, 3.0);
 
         // MoveToPos move6 = new MoveToPos(swerve, () -> get6position(), true);
         // MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true);
@@ -59,9 +57,7 @@ public class SecondGamePiece extends TrajectoryBase {
         // ConditionalCommand cond1 = new ConditionalCommand(secondGamePiece6Events,
         // secondGamePiece8Events, () -> chooseSide());
 
-        addCommands(move8.alongWith(new CubeIntake(arm).withTimeout(0.9)),
-            cubPos.alongWith(new WristIntakeRelease(intake).withTimeout(4.0)),
-            midPos.alongWith(new DockArm(arm, intake)), move8);
+        addCommands(move8.alongWith(new CubeIntake(arm).withTimeout(0.9)), secondGamePiece8Events);
 
     }
 
@@ -100,17 +96,6 @@ public class SecondGamePiece extends TrajectoryBase {
         return new Pose2d(x, y, Rotation2d.fromDegrees(90));
     }
 
-    private Pose2d getCubePosition() {
-        double x = Units.inchesToMeters(100);
-        double y = Units.inchesToMeters(59.39 / 2);
-        return new Pose2d(x, y, Rotation2d.fromDegrees(0));
-    }
-
-    private Pose2d getMidPosition() {
-        double x = Units.inchesToMeters(75);
-        double y = Units.inchesToMeters(59.39 / 2);
-        return new Pose2d(x, y, Rotation2d.fromDegrees(180));
-    }
 
 }
 

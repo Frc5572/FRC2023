@@ -29,7 +29,6 @@ import frc.robot.autos.Score1Dock;
 import frc.robot.autos.SecondGamePiece;
 import frc.robot.autos.SecondGamePieceScore;
 import frc.robot.autos.TestTrajectory;
-import frc.robot.autos.TripleScore;
 import frc.robot.commands.arm.ConeIntake;
 import frc.robot.commands.arm.CubeIntake;
 import frc.robot.commands.arm.DockArm;
@@ -158,7 +157,7 @@ public class RobotContainer {
         autoChooser.addOption("SecondGamePieceScore",
             new SecondGamePieceScore(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Double Score", new DoubleScore(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Triple Score", new TripleScore(s_Swerve, s_Arm, s_wristIntake));
+        // autoChooser.addOption("Triple Score", new TripleScore(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         // leds.setDefaultCommand(new Twinkle(leds, 60, new Color[] {Color.kRed}));
