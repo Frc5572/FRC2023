@@ -182,7 +182,8 @@ public class RobotContainer {
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
         operator.b().onTrue(new CubeIntake(s_Arm)
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
-        operator.x().onTrue(new ConeUpIntake(s_Arm));
+        operator.x().onTrue(new ConeUpIntake(s_Arm)
+            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
         operator.y().onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
