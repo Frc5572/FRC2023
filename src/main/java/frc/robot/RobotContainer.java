@@ -26,6 +26,7 @@ import frc.robot.autos.LeaveCommunity;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
 import frc.robot.commands.arm.ConeIntake;
+import frc.robot.commands.arm.ConeUpIntake;
 import frc.robot.commands.arm.CubeIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
@@ -36,7 +37,6 @@ import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.wrist.VariableIntake;
-import frc.robot.commands.wrist.WristIntakeRelease;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
@@ -182,7 +182,7 @@ public class RobotContainer {
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
         operator.b().onTrue(new CubeIntake(s_Arm)
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
-        operator.x().whileTrue(new WristIntakeRelease(s_wristIntake));
+        operator.x().onTrue(new ConeUpIntake(s_Arm));
         operator.y().onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
