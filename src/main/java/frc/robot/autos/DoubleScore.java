@@ -40,6 +40,8 @@ public class DoubleScore extends TrajectoryBase {
     public DoubleScore(Swerve swerve, Arm arm, WristIntake intake) {
         this(swerve, arm, intake, true);
     }
+
+    
     /**
      * Score a second game piece
      */

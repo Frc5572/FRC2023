@@ -45,7 +45,11 @@ public class PathPlannerTrajectory1 extends PathPlannerTrajectory {
             return state;
         }
     }
+    
 
+    /** 
+     * Flip path to break PP's convention
+     */
     public static PathPlannerTrajectory transformTrajectoryForAlliance(
         PathPlannerTrajectory trajectory, DriverStation.Alliance alliance) {
         if (alliance == DriverStation.Alliance.Red) {

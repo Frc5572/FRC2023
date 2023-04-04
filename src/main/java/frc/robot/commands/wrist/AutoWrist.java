@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.WristIntake;
 
+/**
+ * Consistent wrist operation for Autonomous.
+ */
 public class AutoWrist extends CommandBase {
 
     private WristIntake intake;
