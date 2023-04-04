@@ -21,7 +21,7 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
 
 public class TripleScore extends TrajectoryBase {
-    private double maxVel = 6;
+    private double maxVel = 4;
     private double maxAccel = 3;
     // private double armAngle = -60.0;
     // private double wristAngle = 3.0;
