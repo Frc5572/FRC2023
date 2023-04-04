@@ -7,8 +7,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.lib.util.FieldConstants;
 
+/**
+ * Custom stuff for pathplanner
+ */
 public class PathPlannerTrajectory1 extends PathPlannerTrajectory {
 
+    /** 
+     * Flip path to break PP's convention
+     */
     public static PathPlannerState transformStateForAlliance(PathPlannerState state,
         DriverStation.Alliance alliance) {
         if (alliance == DriverStation.Alliance.Red) {

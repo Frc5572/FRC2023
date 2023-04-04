@@ -14,7 +14,9 @@ import frc.robot.commands.wrist.AutoWrist;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
-
+/**
+ * Acquire a second game piece
+ */
 public class SecondGamePiece extends TrajectoryBase {
 
     private double maxVel = 4;
@@ -24,6 +26,9 @@ public class SecondGamePiece extends TrajectoryBase {
     Pose2d aprilTag8 = FieldConstants.aprilTags.get(8).toPose2d();
     Pose2d aprilTag6 = FieldConstants.aprilTags.get(6).toPose2d();
 
+    /**
+     * Acquire a second game piece
+     */
     public SecondGamePiece(Swerve swerve, Arm arm, WristIntake intake) {
         super(swerve);
         PathPlannerTrajectory trajectory8 =

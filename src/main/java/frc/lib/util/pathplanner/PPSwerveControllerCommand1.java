@@ -10,6 +10,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
+/**
+ * Command which properly transforms our path in our convention.
+ */
 public class PPSwerveControllerCommand1 extends PPSwerveControllerCommand {
     private PathPlannerTrajectory trajectory;
 
@@ -29,9 +32,6 @@ public class PPSwerveControllerCommand1 extends PPSwerveControllerCommand {
      * @param yController The Trajectory Tracker PID controller for the robot's y position.
      * @param rotationController The Trajectory Tracker PID controller for angle for the robot.
      * @param outputChassisSpeeds The field relative chassis speeds output consumer.
-     * @param useAllianceColor Should the path states be automatically transformed based on alliance
-     *        color? In order for this to work properly, you MUST create your path on the blue side
-     *        of the field.
      * @param requirements The subsystems to require.
      */
     public PPSwerveControllerCommand1(PathPlannerTrajectory trajectory,

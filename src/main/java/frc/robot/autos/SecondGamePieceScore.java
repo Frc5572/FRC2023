@@ -12,11 +12,16 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
 
-
+/**
+ * Acquire a second game piece after scoring
+ */
 public class SecondGamePieceScore extends TrajectoryBase {
 
     Pose2d aprilTag8 = FieldConstants.aprilTags.get(8).toPose2d();
 
+    /**
+     * Acquire a second game piece after scoring
+     */
     public SecondGamePieceScore(Swerve swerve, Arm arm, WristIntake wristIntake) {
         super(swerve);
         MoveToScore movetoScore = new MoveToScore(swerve, arm, wristIntake);

@@ -22,7 +22,9 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
 
-
+/**
+ * Score a second game piece
+ */
 public class DoubleScore extends TrajectoryBase {
 
     private double maxVel = 6;
@@ -32,21 +34,26 @@ public class DoubleScore extends TrajectoryBase {
     Pose2d aprilTag7 = FieldConstants.aprilTags.get(7).toPose2d();
 
 
+    /**
+     * Score a second game piece
+     */
     public DoubleScore(Swerve swerve, Arm arm, WristIntake intake) {
         this(swerve, arm, intake, true);
     }
-
+    /**
+     * Score a second game piece
+     */
     public DoubleScore(Swerve swerve, Arm arm, WristIntake intake, boolean isMainCommand) {
         super(swerve);
 
         PathPlannerTrajectory trajectory8 = PathPlanner.loadPath("DoubleScore8", maxVel, maxAccel);
-        PPSwerveControllerCommand DoubleScore8 = baseSwerveCommand(trajectory8);
+        PPSwerveControllerCommand doubleScore8 = baseSwerveCommand(trajectory8);
 
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake).withTimeout(1.2));
         // eventMap.put("Go Home", new DockArm(arm, intake));
-        FollowPathWithEvents DoubleScore8Events =
-            new FollowPathWithEvents(DoubleScore8, trajectory8.getMarkers(), eventMap);
+        FollowPathWithEvents doubleScore8Events =
+            new FollowPathWithEvents(doubleScore8, trajectory8.getMarkers(), eventMap);
 
         MoveToPos move7 = new MoveToPos(swerve, () -> get7Position(), true);
         ParallelRaceGroup dockArm = new DockArm(arm, intake).withTimeout(1);
@@ -56,7 +63,7 @@ public class DoubleScore extends TrajectoryBase {
             new InstantCommand(),
             () -> isMainCommand && RobotContainer.enableDockWidget.getBoolean(true));
 
-        addCommands(new SecondGamePiece(swerve, arm, intake), DoubleScore8Events,
+        addCommands(new SecondGamePiece(swerve, arm, intake), doubleScore8Events,
             toDockOrNotToDock);
 
     }
