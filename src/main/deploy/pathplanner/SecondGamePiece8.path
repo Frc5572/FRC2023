@@ -53,14 +53,14 @@
         "y": 0.7729961174208069
       },
       "prevControl": {
-        "x": 4.41959069632425,
+        "x": 4.419454398745147,
+        "y": 0.7827753637428734
+      },
+      "nextControl": {
+        "x": 5.407307957473058,
         "y": 0.758681374505606
       },
-      "nextControl": {
-        "x": 5.563582602506674,
-        "y": 0.7995382282978375
-      },
-      "holonomicAngle": 90.0,
+      "holonomicAngle": 80.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -74,18 +74,18 @@
     },
     {
       "anchorPoint": {
-        "x": 6.165989331978665,
-        "y": 0.9161435465728075
+        "x": 6.137359846148264,
+        "y": 0.830255089081607
       },
       "prevControl": {
-        "x": 6.029619468254236,
-        "y": 0.8621013231917048
+        "x": 5.786688886077654,
+        "y": 0.8167677444635069
       },
       "nextControl": {
-        "x": 6.302359195703094,
-        "y": 0.9701857699539101
+        "x": 6.509543161943467,
+        "y": 0.8445698319968067
       },
-      "holonomicAngle": 0.0,
+      "holonomicAngle": 10.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -99,15 +99,15 @@
     },
     {
       "anchorPoint": {
-        "x": 7.082132878551472,
-        "y": 0.9161435465728075
+        "x": 7.08,
+        "y": 0.92
       },
       "prevControl": {
-        "x": 7.06741135286782,
-        "y": 0.8838511060480766
+        "x": 6.523857904858667,
+        "y": 0.830255089081607
       },
       "nextControl": null,
-      "holonomicAngle": 0.0,
+      "holonomicAngle": 5.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -120,15 +120,18 @@
       }
     }
   ],
+  "maxVelocity": 4.0,
+  "maxAcceleration": 3.0,
+  "isReversed": null,
   "markers": [
     {
       "position": 0.0,
       "names": [
-        "event"
+        "start"
       ]
     },
     {
-      "position": 0.3999999999999998,
+      "position": 2.536363636363635,
       "names": [
         "Intake On"
       ]
