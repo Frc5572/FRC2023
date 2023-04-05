@@ -7,6 +7,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.lib.util.FieldConstants;
 import frc.robot.commands.arm.CubeIntake;
 import frc.robot.commands.arm.DockArm;
@@ -42,8 +43,9 @@ public class SecondGamePiece extends TrajectoryBase {
         PPSwerveControllerCommand secondGamePiece8 = baseSwerveCommand(trajectory8);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("start", new CubeIntake(arm).withTimeout(0.9));
-        eventMap.put("Intake On", AutoWrist.cubeIntake(intake).withTimeout(2.0));
+        eventMap.put("start", new CubeIntake(arm).withTimeout(2.0));
+        eventMap.put("Intake On", AutoWrist.cubeIntake(intake, 1)
+            .alongWith(new InstantCommand(() -> System.out.println("Intake on"))).withTimeout(4.0));
         eventMap.put("Go Home", new DockArm(arm, intake));
         // FollowPathWithEvents secondGamePiece6Events =
         // new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);

@@ -91,6 +91,15 @@ public class Arm extends SubsystemBase {
 
     }
 
+    /**
+     * 
+     */
+    public void adjust(double amount) {
+        var goal = armPIDController.getGoal();
+        goal.position += amount;
+        armPIDController.setGoal(goal);
+    }
+
     @Override
     public void periodic() {
 

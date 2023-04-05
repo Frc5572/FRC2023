@@ -29,6 +29,7 @@ import frc.robot.autos.Score1Dock;
 import frc.robot.autos.SecondGamePiece;
 import frc.robot.autos.SecondGamePieceScore;
 import frc.robot.autos.TestTrajectory;
+import frc.robot.autos.TripleScore;
 import frc.robot.commands.arm.ConeIntake;
 import frc.robot.commands.arm.ConeUpIntake;
 import frc.robot.commands.arm.CubeIntake;
@@ -131,6 +132,7 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
         s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
+        // s_Arm.setDefaultCommand(new VariableArm(s_Arm, operator));
         // autoChooser.addOption(resnickAuto, new ResnickAuto(s_Swerve));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Move to Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
@@ -166,7 +168,7 @@ public class RobotContainer {
         autoChooser.addOption("SecondGamePieceScore",
             new SecondGamePieceScore(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Double Score", new DoubleScore(s_Swerve, s_Arm, s_wristIntake));
-        // autoChooser.addOption("Triple Score", new TripleScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Triple Score", new TripleScore(s_Swerve, s_Arm, s_wristIntake));
         // Configure the button bindings
         configureButtonBindings();
     }

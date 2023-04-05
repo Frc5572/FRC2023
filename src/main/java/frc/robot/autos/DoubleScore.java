@@ -52,7 +52,7 @@ public class DoubleScore extends TrajectoryBase {
         PPSwerveControllerCommand doubleScore8 = baseSwerveCommand(trajectory8);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake).withTimeout(1.2));
+        eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake, 0.6).withTimeout(1.2));
         // eventMap.put("Go Home", new DockArm(arm, intake));
         FollowPathWithEvents doubleScore8Events =
             new FollowPathWithEvents(doubleScore8, trajectory8.getMarkers(), eventMap);
@@ -66,7 +66,7 @@ public class DoubleScore extends TrajectoryBase {
             () -> isMainCommand && RobotContainer.enableDockWidget.getBoolean(true));
 
         if (isMainCommand) {
-            addCommands(AutoWrist.cubeOuttake(intake));
+            addCommands(AutoWrist.cubeOuttake(intake).withTimeout(0.3));
         }
 
         addCommands(new SecondGamePiece(swerve, arm, intake), doubleScore8Events,

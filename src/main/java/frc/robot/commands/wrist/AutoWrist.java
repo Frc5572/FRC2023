@@ -12,7 +12,7 @@ public class AutoWrist extends CommandBase {
     private WristIntake intake;
     private double speed;
 
-    
+
     private AutoWrist(WristIntake intake, double speed) {
         this.intake = intake;
         this.speed = speed;
