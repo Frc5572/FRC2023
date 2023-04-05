@@ -62,7 +62,7 @@
       },
       "holonomicAngle": 90.0,
       "isReversal": false,
-      "velOverride": 0.9,
+      "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -74,16 +74,16 @@
     },
     {
       "anchorPoint": {
-        "x": 7.067818135636271,
-        "y": 2.1328966943648173
+        "x": 6.89604122065387,
+        "y": 1.961119779382416
       },
       "prevControl": {
-        "x": 6.797300655040058,
-        "y": 1.6962141974611518
+        "x": 6.625523740057656,
+        "y": 1.5244372824787504
       },
       "nextControl": {
-        "x": 6.797300655040058,
-        "y": 1.6962141974611518
+        "x": 6.625523740057656,
+        "y": 1.5244372824787504
       },
       "holonomicAngle": 40.236358309273875,
       "isReversal": true,
@@ -100,19 +100,19 @@
     {
       "anchorPoint": {
         "x": 4.4482201821546505,
-        "y": 0.6584781740992056
+        "y": 0.6871076599296062
       },
       "prevControl": {
         "x": 5.350048985812259,
-        "y": 0.7300518886752064
+        "y": 0.758681374505607
       },
       "nextControl": {
         "x": 3.653431399277597,
-        "y": 0.5953996992676933
+        "y": 0.6240291850980939
       },
       "holonomicAngle": 90.0,
       "isReversal": false,
-      "velOverride": 0.7,
+      "velOverride": 0.9,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -181,13 +181,13 @@
       ]
     },
     {
-      "position": 2.6545454545454534,
+      "position": 3.2181818181818205,
       "names": [
         "Go Home"
       ]
     },
     {
-      "position": 3.818181818181816,
+      "position": 5.9454545454545356,
       "names": [
         "Release Intake"
       ]

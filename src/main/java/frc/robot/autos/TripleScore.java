@@ -40,7 +40,7 @@ public class TripleScore extends TrajectoryBase {
         FollowPathWithEvents tripleScore8Events =
             new FollowPathWithEvents(tripleScore8, trajectory8.getMarkers(), eventMap);
 
-        addCommands(doubleScore, tripleScore8Events);
+        addCommands(AutoWrist.cubeOuttake(intake), doubleScore, tripleScore8Events);
 
     }
 

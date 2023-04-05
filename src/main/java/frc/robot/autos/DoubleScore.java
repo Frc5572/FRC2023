@@ -41,7 +41,7 @@ public class DoubleScore extends TrajectoryBase {
         this(swerve, arm, intake, true);
     }
 
-    
+
     /**
      * Score a second game piece
      */
@@ -64,6 +64,10 @@ public class DoubleScore extends TrajectoryBase {
             move7.alongWith(new WaitCommand(.5).andThen(dockArm)).andThen(climbPlatform),
             new InstantCommand(),
             () -> isMainCommand && RobotContainer.enableDockWidget.getBoolean(true));
+
+        if (isMainCommand) {
+            addCommands(AutoWrist.cubeOuttake(intake));
+        }
 
         addCommands(new SecondGamePiece(swerve, arm, intake), doubleScore8Events,
             toDockOrNotToDock);
