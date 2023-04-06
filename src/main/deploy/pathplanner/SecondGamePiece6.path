@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.29743,
-        "y": 4.78
+        "x": 2.086287601146631,
+        "y": 4.8
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3208696487978555,
-        "y": 4.712938798895515
+        "x": 2.816900636629265,
+        "y": 4.8
       },
-      "holonomicAngle": 270.0,
+      "holonomicAngle": -90.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,20 +24,20 @@
     },
     {
       "anchorPoint": {
-        "x": 4.47684966798505,
-        "y": 4.723865162016039
+        "x": 4.207674380261041,
+        "y": 4.815203490056104
       },
       "prevControl": {
-        "x": 3.317265650763002,
-        "y": 4.776046442791031
+        "x": 3.319485307589611,
+        "y": 4.8555757206320775
       },
       "nextControl": {
-        "x": 5.397950895818677,
-        "y": 4.682415606763525
+        "x": 4.806179787798173,
+        "y": 4.787998698804416
       },
-      "holonomicAngle": 270.0,
+      "holonomicAngle": -90.0,
       "isReversal": false,
-      "velOverride": null,
+      "velOverride": 0.7,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -49,40 +49,15 @@
     },
     {
       "anchorPoint": {
-        "x": 6.695634819841068,
-        "y": 4.451885046627237
+        "x": 7.136723571692759,
+        "y": 4.588496896292039
       },
       "prevControl": {
-        "x": 6.583649972109913,
-        "y": 4.48921332920429
-      },
-      "nextControl": {
-        "x": 6.781523277332269,
-        "y": 4.423255560796836
-      },
-      "holonomicAngle": 20.772254682045915,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 5.607714358285859,
-        "y": 2.891578068870424
-      },
-      "prevControl": {
-        "x": 5.965582931165863,
-        "y": 3.63594470046083
+        "x": 6.670695658980919,
+        "y": 4.588496896292039
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -97,7 +72,7 @@
   ],
   "markers": [
     {
-      "position": 1.4454545454545467,
+      "position": 1.2727272727272723,
       "names": [
         "Intake On"
       ]
