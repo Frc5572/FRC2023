@@ -40,11 +40,10 @@ public class TripleScore extends TrajectoryBase {
         eventMap.put("Home", new DockArm(arm, intake).withTimeout(0.6));
         FollowPathWithEvents tripleScore8Events =
             new FollowPathWithEvents(tripleScore8, trajectory8.getMarkers(), eventMap);
-        AutoWrist whipIt = AutoWrist.cubeOuttake(intake, 1);
+        // AutoWrist whipIt = AutoWrist.cubeOuttake(intake, 1);
 
-        addCommands(AutoWrist.cubeOuttake(intake).withTimeout(0.3), doubleScore, tripleScore8Events,
-            whipIt.withTimeout(1));
-
+        addCommands(AutoWrist.cubeOuttake(intake).withTimeout(0.3), doubleScore,
+            tripleScore8Events);
     }
 
 }
