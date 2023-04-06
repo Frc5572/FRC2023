@@ -16,6 +16,7 @@ public class VariableArm extends CommandBase {
 
     @Override
     public void execute() {
-        arm.adjust(-(0.02 * 2.0 * controller.getRightY()));
+        double controllerValue = controller.getRightY();
+        arm.adjust(-(0.02 * 0.5 * controllerValue));
     }
 }

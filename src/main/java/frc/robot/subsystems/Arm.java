@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -97,6 +98,7 @@ public class Arm extends SubsystemBase {
     public void adjust(double amount) {
         var goal = armPIDController.getGoal();
         goal.position += amount;
+        goal.position = MathUtil.clamp(goal.position, Math.toRadians(-45), Math.toRadians(30));
         armPIDController.setGoal(goal);
     }
 
