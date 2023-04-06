@@ -53,7 +53,7 @@ public class TeleopSwerve extends CommandBase {
         double angle_speed = Constants.Swerve.MAX_ANGULAR_VELOCITY;
         double speed = Constants.Swerve.MAX_SPEED;
         if (arm.getArmAngle() > -20) {
-            angle_speed /= 2;
+            angle_speed /= 3;
             speed *= 0.60;
         }
 
