@@ -29,6 +29,7 @@ import frc.robot.autos.MiddleScoreEngage;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
 import frc.robot.autos.TripleScore;
+import frc.robot.autos.TripleScore6;
 import frc.robot.commands.arm.ConeIntake;
 import frc.robot.commands.arm.ConeUpIntake;
 import frc.robot.commands.arm.CubeIntake;
@@ -150,9 +151,12 @@ public class RobotContainer {
         // new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         // autoChooser.addOption("SecondGamePieceScore",
         // new SecondGamePieceScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Double Score - 8 (Bump) ;)",
+            new DoubleScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Triple Score - 8 (Bump) ;)",
+            new TripleScore(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Double Score - 6", new DoubleScore6(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Double Score - 8", new DoubleScore(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Triple Score - 8", new TripleScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Triple Score - 6", new TripleScore6(s_Swerve, s_Arm, s_wristIntake));
 
         levelsChooser.setDefaultOption("0", 0);
         for (int i = 0; i < 3; i++) {

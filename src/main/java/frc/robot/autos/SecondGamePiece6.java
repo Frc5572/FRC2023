@@ -1,6 +1,7 @@
 package frc.robot.autos;
 
 import java.util.HashMap;
+import java.util.List;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
@@ -35,8 +36,9 @@ public class SecondGamePiece6 extends TrajectoryBase {
      */
     public SecondGamePiece6(Swerve swerve, Arm arm, WristIntake intake) {
         super(swerve);
-        PathPlannerTrajectory trajectory6 =
-            PathPlanner.loadPath("SecondGamePiece6", maxVel, maxAccel);
+        List<PathPlannerTrajectory> trajectory6Group =
+            PathPlanner.loadPathGroup("TripleScore6", maxVel, maxAccel);
+        PathPlannerTrajectory trajectory6 = trajectory6Group.get(0);
         PPSwerveControllerCommand secondGamePiece6 = baseSwerveCommand(trajectory6);
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("start",
@@ -48,7 +50,7 @@ public class SecondGamePiece6 extends TrajectoryBase {
                     () -> new ArmPosition(CubeIntake.armAngle, false, CubeIntake.wristAngle)))
                 .withTimeout(4.0));
         eventMap.put("Go Home", new DockArm(arm, intake));
-        eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake, 0.4).withTimeout(1.2));
+        eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake, 0.3).withTimeout(1.2));
         FollowPathWithEvents secondGamePiece6Events =
             new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
         addCommands(secondGamePiece6Events);
