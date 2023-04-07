@@ -24,6 +24,7 @@ import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.CrossAndDock;
 import frc.robot.autos.DoubleScore;
+import frc.robot.autos.DoubleScore6;
 import frc.robot.autos.MiddleScoreEngage;
 import frc.robot.autos.Score1;
 import frc.robot.autos.Score1Dock;
@@ -76,6 +77,7 @@ public class RobotContainer {
 
     private final SendableChooser<Integer> levelsChooser = new SendableChooser<>();
     private final SendableChooser<Integer> columnsChooser = new SendableChooser<>();
+    public static final SendableChooser<Integer> autoWaitChooser = new SendableChooser<>();
 
     public ComplexWidget autoLevelWidget =
         autoTab.add("Level", levelsChooser).withWidget(BuiltInWidgets.kComboBoxChooser)
@@ -90,6 +92,10 @@ public class RobotContainer {
     public ComplexWidget cameraFeed = mainDriverTab.add("Camera Feed", Robot.camera)
         .withWidget(BuiltInWidgets.kCameraStream).withPosition(0, 0).withSize(6, 5).withProperties(
             Map.of("Show crosshair", false, "Show controls", false, "Rotation", "QUARTER_CCW"));
+    public ComplexWidget autoWaitWidget =
+        autoTab.add("Wait After Score", autoWaitChooser).withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withProperties(Map.of("Show Glyph", true, "Glyph", "CLOCK_ALT")).withPosition(10, 2)
+            .withSize(2, 1);
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     public ComplexWidget autoChooserWidget = autoTab.add("Auto Chooser", autoChooser)
@@ -144,25 +150,24 @@ public class RobotContainer {
         // new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         // autoChooser.addOption("SecondGamePieceScore",
         // new SecondGamePieceScore(s_Swerve, s_Arm, s_wristIntake));
+        autoChooser.addOption("Double Score - 6", new DoubleScore6(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Double Score - 8", new DoubleScore(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Triple Score - 8", new TripleScore(s_Swerve, s_Arm, s_wristIntake));
 
         levelsChooser.setDefaultOption("0", 0);
-        levelsChooser.addOption("-1", -1);
-        levelsChooser.addOption("0", 0);
-        levelsChooser.addOption("1", 1);
-        levelsChooser.addOption("2", 2);
+        for (int i = 0; i < 3; i++) {
+            levelsChooser.addOption(String.valueOf(i), i);
+        }
 
         columnsChooser.setDefaultOption("0", 0);
-        columnsChooser.addOption("0", 0);
-        columnsChooser.addOption("1", 1);
-        columnsChooser.addOption("2", 2);
-        columnsChooser.addOption("3", 3);
-        columnsChooser.addOption("4", 4);
-        columnsChooser.addOption("5", 5);
-        columnsChooser.addOption("6", 6);
-        columnsChooser.addOption("7", 7);
-        columnsChooser.addOption("8", 8);
+        for (int i = 0; i < 9; i++) {
+            columnsChooser.addOption(String.valueOf(i), i);
+        }
+
+        autoWaitChooser.setDefaultOption("0", 0);
+        for (int i = 0; i < 11; i++) {
+            autoWaitChooser.addOption(String.valueOf(i), i);
+        }
         // Configure the button bindings
         configureButtonBindings();
     }

@@ -37,11 +37,7 @@ public class SecondGamePiece6 extends TrajectoryBase {
         super(swerve);
         PathPlannerTrajectory trajectory6 =
             PathPlanner.loadPath("SecondGamePiece6", maxVel, maxAccel);
-        // MoveToPos move8 = new MoveToPos(swerve, () -> get8position(), true, 0.07, 3.0);
-
-        // PPSwerveControllerCommand secondGamePiece6 = baseSwerveCommand(trajectory6);
         PPSwerveControllerCommand secondGamePiece6 = baseSwerveCommand(trajectory6);
-
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("start",
             new MoveArm(arm, () -> new ArmPosition(CubeIntake.armAngle, false, DockArm.wristAngle))
@@ -52,16 +48,9 @@ public class SecondGamePiece6 extends TrajectoryBase {
                     () -> new ArmPosition(CubeIntake.armAngle, false, CubeIntake.wristAngle)))
                 .withTimeout(4.0));
         eventMap.put("Go Home", new DockArm(arm, intake));
-        // FollowPathWithEvents secondGamePiece6Events =
-        // new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
+        eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake, 0.4).withTimeout(1.2));
         FollowPathWithEvents secondGamePiece6Events =
             new FollowPathWithEvents(secondGamePiece6, trajectory6.getMarkers(), eventMap);
-
-        // ConditionalCommand cond = new ConditionalCommand(move6, move8, () -> chooseSide());
-
-        // ConditionalCommand cond1 = new ConditionalCommand(secondGamePiece6Events,
-        // secondGamePiece8Events, () -> chooseSide());
-
         addCommands(secondGamePiece6Events);
 
     }

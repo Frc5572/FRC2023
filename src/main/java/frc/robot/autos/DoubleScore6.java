@@ -1,14 +1,8 @@
 package frc.robot.autos;
 
-import java.util.HashMap;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -48,14 +42,15 @@ public class DoubleScore6 extends TrajectoryBase {
     public DoubleScore6(Swerve swerve, Arm arm, WristIntake intake, boolean isMainCommand) {
         super(swerve);
 
-        PathPlannerTrajectory trajectory6 = PathPlanner.loadPath("DoubleScore6", maxVel, maxAccel);
-        PPSwerveControllerCommand doubleScore8 = baseSwerveCommand(trajectory6);
+        // PathPlannerTrajectory trajectory6 = PathPlanner.loadPath("DoubleScore6", maxVel,
+        // maxAccel);
+        // PPSwerveControllerCommand doubleScore8 = baseSwerveCommand(trajectory6);
 
-        HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake, 0.4).withTimeout(1.2));
-        // eventMap.put("Go Home", new DockArm(arm, intake));
-        FollowPathWithEvents doubleScore8Events =
-            new FollowPathWithEvents(doubleScore8, trajectory6.getMarkers(), eventMap);
+        // HashMap<String, Command> eventMap = new HashMap<>();
+        // eventMap.put("Release Intake", AutoWrist.cubeOuttake(intake, 0.4).withTimeout(1.2));
+        // // eventMap.put("Go Home", new DockArm(arm, intake));
+        // FollowPathWithEvents doubleScore6Events =
+        // new FollowPathWithEvents(doubleScore8, trajectory6.getMarkers(), eventMap);
 
         MoveToPos move7 = new MoveToPos(swerve, () -> get7Position(), true);
         ParallelRaceGroup dockArm = new DockArm(arm, intake).withTimeout(1);
@@ -69,8 +64,7 @@ public class DoubleScore6 extends TrajectoryBase {
             addCommands(AutoWrist.cubeOuttake(intake).withTimeout(0.3));
         }
 
-        addCommands(new SecondGamePiece6(swerve, arm, intake), doubleScore8Events,
-            toDockOrNotToDock);
+        addCommands(new SecondGamePiece6(swerve, arm, intake), toDockOrNotToDock);
 
     }
 
