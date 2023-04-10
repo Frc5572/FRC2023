@@ -4,6 +4,9 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * Creates a new WaitCommand. This command will do nothing, and end after the specified duration.
+ */
 public class DynamicWaitCommand extends CommandBase {
     protected Timer m_timer = new Timer();
     private double m_duration = 0;
