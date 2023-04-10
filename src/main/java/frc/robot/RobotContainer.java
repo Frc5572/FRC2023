@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.Map;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
@@ -195,7 +196,8 @@ public class RobotContainer {
             .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
         driver.start()
             .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
-
+        driver.back().and(driver.start()).and(() -> DriverStation.isDisabled())
+            .whileTrue(new FlashingLEDColor(leds, Color.kGreen));
         /* Operator Buttons */
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(15.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(15.0));
@@ -231,6 +233,8 @@ public class RobotContainer {
         operator.back().toggleOnTrue(new PoliceLEDs(leds));
         new Trigger(() -> Math.abs(operator.getRightY()) > 0.2)
             .whileTrue(new VariableArm(s_Arm, operator));
+        operator.back().and(operator.start()).and(() -> DriverStation.isDisabled())
+            .whileTrue(new FlashingLEDColor(leds, Color.kOrange));
 
         // operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
         // operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
