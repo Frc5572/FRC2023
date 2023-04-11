@@ -2,7 +2,9 @@
   "HALProvider": {
     "Addressable LEDs": {
       "0": {
-        "columns": 8
+        "columns": 1,
+        "order": 1,
+        "start": 1
       },
       "window": {
         "visible": true
@@ -22,6 +24,8 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Main Driver/Auto Chooser": "String Chooser",
+      "/Shuffleboard/Main Driver/Field Pos": "Field2d",
       "/SmartDashboard/Choose Auto: ": "String Chooser",
       "/SmartDashboard/Field Pos": "Field2d"
     }

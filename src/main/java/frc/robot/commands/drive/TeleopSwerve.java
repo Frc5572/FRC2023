@@ -1,10 +1,12 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.lib.math.Conversions;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -16,6 +18,7 @@ public class TeleopSwerve extends CommandBase {
     private boolean openLoop;
     private Swerve swerveDrive;
     private CommandXboxController controller;
+    private Arm arm;
 
     /**
      * Creates an command for driving the swerve drive during tele-op
@@ -25,12 +28,13 @@ public class TeleopSwerve extends CommandBase {
      * @param openLoop Open or closed loop system
      */
     public TeleopSwerve(Swerve swerveDrive, CommandXboxController controller, boolean fieldRelative,
-        boolean openLoop) {
+        boolean openLoop, Arm arm) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
         this.controller = controller;
+        this.arm = arm;
     }
 
     @Override
@@ -40,13 +44,22 @@ public class TeleopSwerve extends CommandBase {
         double raxis = -controller.getRightX();
 
         /* Deadbands */
-        yaxis = MathUtil.applyDeadband(yaxis, Constants.STICK_DEADBAND);
-        xaxis = MathUtil.applyDeadband(xaxis, Constants.STICK_DEADBAND);
+        // yaxis = MathUtil.applyDeadband(yaxis, Constants.STICK_DEADBAND);
+        yaxis = Conversions.applySwerveCurve(yaxis, Constants.STICK_DEADBAND);
+        // xaxis = MathUtil.applyDeadband(xaxis, Constants.STICK_DEADBAND);
+        xaxis = Conversions.applySwerveCurve(xaxis, Constants.STICK_DEADBAND);
         raxis = MathUtil.applyDeadband(raxis, Constants.STICK_DEADBAND);
 
-        Translation2d translation =
-            new Translation2d(yaxis, xaxis).times(Constants.Swerve.MAX_SPEED);
-        double rotation = raxis * Constants.Swerve.MAX_ANGULAR_VELOCITY;
-        swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
+        double angle_speed = Constants.Swerve.MAX_ANGULAR_VELOCITY;
+        double speed = Constants.Swerve.MAX_SPEED;
+        if (arm.getArmAngle() > -70) {
+            angle_speed /= 3;
+            speed *= 0.80;
+        }
+
+        Translation2d translation = new Translation2d(yaxis, xaxis).times(speed);
+        double rotation = raxis * angle_speed;
+        swerveDrive.driveWithTwist(translation, rotation, fieldRelative, openLoop);
+
     }
 }

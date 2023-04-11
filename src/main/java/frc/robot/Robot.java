@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.lib.util.Scoring;
+import frc.lib.util.Scoring.GamePiece;
 import frc.lib.util.ctre.CTREConfigs;
 
 /**
@@ -21,6 +25,10 @@ public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
     private RobotContainer m_robotContainer;
+
+    public static int level = 0;
+    public static int column = 0;
+    public static UsbCamera camera = CameraServer.startAutomaticCapture("Magazine Camera", 0);
 
     // private Ultrasonic ultrasonic = new Ultrasonic();
     /**
@@ -50,6 +58,9 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        m_robotContainer.levelWidget.setDouble(level);
+        m_robotContainer.columnWidget.setDouble(column);
+        m_robotContainer.gamePieceWidget.setBoolean(Scoring.getGamePiece() == GamePiece.CONE);
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -85,13 +96,12 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        m_robotContainer.s_Swerve.resetFieldRelativeOffset();
     }
 
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {
-        // vision.update();
-    }
+    public void teleopPeriodic() {}
 
     @Override
     public void testInit() {

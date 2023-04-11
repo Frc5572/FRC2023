@@ -694,6 +694,34 @@
               "Visuals/Robot Icon Size": 50.0,
               "Visuals/Show Outside Circles": false
             }
+          },
+          "13,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Gyro roll",
+              "_title": "Gyro roll",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Been Tilted",
+              "_title": "Been Tilted",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -1158,8 +1186,8 @@
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           },
           "7,1": {
@@ -1179,8 +1207,8 @@
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           },
           "0,0": {
@@ -1289,6 +1317,19 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Robot Rotation",
               "_title": "SmartDashboard/Robot Rotation",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Gyro roll",
+              "_title": "SmartDashboard/Gyro roll",
               "_glyph": 148,
               "_showGlyph": false
             }

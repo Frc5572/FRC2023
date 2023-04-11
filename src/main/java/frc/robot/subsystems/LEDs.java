@@ -127,4 +127,8 @@ public class LEDs extends SubsystemBase {
         }
         setData();
     }
+
+    public Color getColor(int index) {
+        return controLedBuffer.getLED(index);
+    }
 }

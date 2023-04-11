@@ -6,7 +6,10 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import frc.lib.math.DoubleJointedArmFeedforward;
+import frc.lib.math.DoubleJointedArmFeedforward.JointConfig;
 import frc.lib.util.swerve.SwerveModuleConstants;
 
 /**
@@ -14,65 +17,59 @@ import frc.lib.util.swerve.SwerveModuleConstants;
  */
 
 public final class Constants {
+    // note quadratic curve only applies to deadband of 0.1 and 0.2
     public static final double STICK_DEADBAND = 0.1;
     public static final int DRIVER_ID = 0;
     public static final int OPERATOR_ID = 1;
 
     /**
-     * LED constants
-     */
-    public static final class LEDConstants {
-        public static final int PWMPort = 9;
-        public static final int LEDCount = 36;
-    }
-
-    /**
-     * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller
+     * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller.
      */
     public static class SwerveTransformPID {
-        public static final double PID_XKP = 1.5;
+        public static final double PID_XKP = 2;
         public static final double PID_XKI = 0.0;
         public static final double PID_XKD = 0.0;
-        public static final double PID_YKP = 1.5;
+        public static final double PID_YKP = 2;
         public static final double PID_YKI = 0.0;
         public static final double PID_YKD = 0.0;
         public static final double PID_TKP = 3.0;
         public static final double PID_TKI = 0.0;
         public static final double PID_TKD = 0.0;
 
-        public static final double MAX_ANGULAR_VELOCITY = 3.0;
-        public static final double MAX_ANGULAR_ACCELERATION = 3.0;
+        public static final double MAX_ANGULAR_VELOCITY = 9.0;
+        public static final double MAX_ANGULAR_ACCELERATION = 9 * 5;
         public static final double STD_DEV_MOD = 2.0;
     }
 
     /**
-     * Camera offset constants
+     * Camera offset constants.
      */
     public static class CameraConstants {
 
-        public static final double ROLL = Math.PI;
-        public static final double PITCH = 0 * Math.PI / 180;
+        public static final double ROLL = -Math.PI / 2;
+        public static final double PITCH = 0.0;
         public static final double YAW = 0.0;
         public static final Transform3d KCAMERA_TO_ROBOT =
-            new Transform3d(new Translation3d(Units.inchesToMeters(-10), Units.inchesToMeters(0),
-                Units.inchesToMeters(-7.5)), new Rotation3d(ROLL, PITCH, YAW));
+            new Transform3d(new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(8),
+                Units.inchesToMeters(22.125)), new Rotation3d(ROLL, PITCH, YAW)).inverse();
+
         public static final String CAMERA_NAME = "pv2";
         public static final double LARGEST_DISTANCE = 0.1;
     }
 
     /**
-     * Swerve ID's
+     * Swerve ID's.
      */
     public static final class Swerve {
         public static final edu.wpi.first.wpilibj.SPI.Port navXID =
             edu.wpi.first.wpilibj.SPI.Port.kMXP;
-        public static final boolean INVERT_GYRO = false; // Always ensure Gyro is CCW+ CW-
+        public static final boolean INVERT_GYRO = true; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        // Front-Back distance
-        public static final double TRACK_WIDTH = Units.inchesToMeters(14);
+        // Front-Back distance.
+        public static final double TRACK_WIDTH = Units.inchesToMeters(22);
         // Left-Right Distance
-        public static final double WHEEL_BASE = Units.inchesToMeters(14);
+        public static final double WHEEL_BASE = Units.inchesToMeters(22);
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -122,7 +119,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         public static final double MAX_SPEED = 4; // meters per second
-        public static final double MAX_ANGULAR_VELOCITY = 2;
+        public static final double MAX_ANGULAR_VELOCITY = 4.0;
 
         /* Neutral Modes */
         public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Coast;
@@ -140,22 +137,22 @@ public final class Constants {
          * Front Left Module - Module 0.
          */
         public static final class Mod0 {
-            public static final int DRIVE_MOTOR_ID = 50;
+            public static final int DRIVE_MOTOR_ID = 6;
             public static final int ANGLE_MOTOR_ID = 8;
-            public static final int CAN_CODER_ID = 3;
+            public static final int CAN_CODER_ID = 4;
             public static final double ANGLE_OFFSET = 138.604;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
 
         /**
-         * Front Right Module - Module 1. PROBLEM CHILD
+         * Front Right Module - Module 1.
          */
         public static final class Mod1 {
-            public static final int DRIVE_MOTOR_ID = 51;
-            public static final int ANGLE_MOTOR_ID = 52;
-            public static final int CAN_CODER_ID = 2;
-            public static final double ANGLE_OFFSET = 66.445;
+            public static final int DRIVE_MOTOR_ID = 1;
+            public static final int ANGLE_MOTOR_ID = 4;
+            public static final int CAN_CODER_ID = 1;
+            public static final double ANGLE_OFFSET = 280.107;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
@@ -164,10 +161,10 @@ public final class Constants {
          * Back Left Module - Module 2.
          */
         public static final class Mod2 {
-            public static final int DRIVE_MOTOR_ID = 4;
+            public static final int DRIVE_MOTOR_ID = 3;
             public static final int ANGLE_MOTOR_ID = 2;
-            public static final int CAN_CODER_ID = 1;
-            public static final double ANGLE_OFFSET = 259.805;
+            public static final int CAN_CODER_ID = 2;
+            public static final double ANGLE_OFFSET = 121.553;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
@@ -176,25 +173,151 @@ public final class Constants {
          * Back Right Module - Module 3.
          */
         public static final class Mod3 {
-            public static final int DRIVE_MOTOR_ID = 3;
-            public static final int ANGLE_MOTOR_ID = 53;
-            public static final int CAN_CODER_ID = 4;
-            public static final double ANGLE_OFFSET = 31.992;
+            public static final int DRIVE_MOTOR_ID = 7;
+            public static final int ANGLE_MOTOR_ID = 5;
+            public static final int CAN_CODER_ID = 3;
+            public static final double ANGLE_OFFSET = 248.027;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
+
+
+
+    }
+
+    /**
+     * Motor CAN id's.
+     */
+    public static final class Motors {
+
+
+
+        // ...
+    }
+
+    /**
+     * Pneumatics CAN id constants.
+     */
+    public static final class Pneumatics {
+    }
+
+    /**
+     * Elevator Motor constants.
+     */
+    public static final class Elevator {
+        public static final int ELEVATOR_MOTOR_ID = 11;
+        public static final double ELEVATOR_STOP = 0.0;
+
+        /* Elevator Encoder */
+        public static final double ENCODER_OFFSET = 0.0;
+        public static final double MAX_ENCODER = 2.30; // 2.3333325386047363
+
+        /**
+         * Constants for the PID portion of the elevator.
+         */
+        public static final class PID {
+            public static final double ELEVATOR_KP = 0;
+            public static final double ELEVATOR_KI = 0.0;
+            public static final double ELEVATOR_KD = 0.0;
+
+            public static final double ELEVATOR_KS_VOLTS = 0.0;
+            public static final double ELEVATOR_KG_VOLTS = 5.0;
+            public static final double ELEVATOR_KV_VOLT_SECONDS_PER_ROTATION = 0.0;
+        }
+    }
+
+    /**
+     * Constants for the wrist.
+     */
+    public static final class Wrist {
+
+        public static final DoubleJointedArmFeedforward.JointConfig config =
+            new JointConfig(Units.lbsToKilograms(1.4), Units.inchesToMeters(38.3), 133.4,
+                Units.inchesToMeters(9), DCMotor.getNEO(1).withReduction(10));
+
+        public static final int WRIST_MOTOR_ID = 12;
+        public static final double encoderOffset = 9.802;
+
+        /**
+         * Wrist PID id constants
+         */
+        public static final class PID {
+            public static double kP = 2.4;
+            public static double kI = 0.0;
+            public static double kD = 0.0;
+            public static double MAX_VELOCITY = 18.0;
+            public static double MAX_ACCELERATION = 16.0;
+            // public static double TURNOVER_THRESHOLD = 12.8;
+            public static double TURNOVER_THRESHOLD = 100;
+            public static double MAX_INTEGRAL = 0.4;
+            public static double MIN_INTEGRAL = -0.4;
+
+        }
+
+        public static final int WRIST_CAN_ID = 12;
+        public static final int WRIST_INTAKE_ID = 9;
+        public static final int CONE_SENSOR_ID = 0;
+        public static final int CUBE_SENSOR_ID_LEFT = 1;
+        public static final int CUBE_SENSOR_ID_RIGHT = 2;
+
+        public static final double INTAKE_SPEED = 0.3;
+        public static final double HOLD_VOLTS = 2;
+        public static final int INTAKE_STOP_SPEED = 0;
+        public static final double INTAKE_RELEASE_SPEED = 0.3;
+        public static final double INTAKE_PANIC_SPEED = -1;
+        public static final double STALL_CURRENT = 170;
+        public static final double VOLTAGE_SPIKE_TIME = .8;
 
     }
 
 
 
     /**
-     * Autonomous constants for swerve bot.
+     * LED constants.
      */
-    public static final class VisionConstants {
-        public static final double DEAD_POCKET = 0.05;
-        public static final double LIME_LIGHT_HEIGHT = 0;
-        public static final double TARGET_HEIGHT = 0;
-        public static final double LIME_LIGHT_ANGLE = 0;
+    public static final class LEDConstants {
+        public static final int PWM_PORT = 9;
+        public static final int LED_COUNT = 60;
+    }
+
+    /**
+     * Constants that are necessary for the arm.
+     */
+    public static final class Arm {
+
+        public static final DoubleJointedArmFeedforward.JointConfig config =
+            new JointConfig(Units.lbsToKilograms(15.77), Units.inchesToMeters(38.3),
+                666.121 + Units.lbsToKilograms(15.77) * Units.inchesToMeters(9.0)
+                    * Units.inchesToMeters(9.0),
+                Units.inchesToMeters(9.0), DCMotor.getNEO(2).withReduction(174.5));
+
+        public static final int ARM_ID = 9;
+        public static final int ARM_ID_2 = 10;
+        public static final int ENCODER_CHANNEL1 = 5;
+        public static final int ENCODER_CHANNEL2 = 6;
+        // this angle positions are not definite, just using them for testing
+        public static final int HOME_POSITION = 226;
+        public static final int SECOND_POSITION = 200;
+        public static final int THIRD_POSITION = 180;
+        public static final int FOURTH_POSITION = 160;
+        public static final int FIFTH_POSITION = 130;
+
+        public static final double encoder1Offset = 112.399; // 9
+        // public static final double encoder2Offset = 253.5564923; // 10
+
+        public static final int SOLENOID_FORWARD_CHANNEL = 0;
+        public static final int SOLENOID_REVERSE_CHANNEL = 1;
+
+        /**
+         * Arm PID constants.
+         */
+        public static final class PID {
+            public static double kP = 5.5;
+            public static double kI = 0.4;
+            public static double kD = 0.0;
+            public static double MAX_VELOCITY = 20.0;
+            public static double MAX_ACCELERATION = 20.0;
+            public static double TURNOVER_THRESHOLD = 270.0;
+        }
     }
 }
