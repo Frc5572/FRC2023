@@ -104,9 +104,10 @@ public class BouncingBalls extends CommandBase {
                     impactVelocity[i] = impactVelocityStart;
                 }
             }
-            position[i] = (int) Math.round(height[i] * (leds.getLength() - 1) / startHeight);
+            position[i] = (int) Math.round(height[i] * (leds.getLength() - 1) / startHeight)
+                + leds.getStart();
         }
-        for (int i = 0; i < leds.getLength(); i++) {
+        for (int i = leds.getStart(); i < leds.getEnd(); i++) {
             leds.setColor(Color.kBlack);
         }
         for (int i = 0; i < ballCount; i++) {

@@ -41,6 +41,7 @@ import frc.robot.commands.arm.VariableArm;
 import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
+import frc.robot.commands.leds.BouncingBalls;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
@@ -114,7 +115,7 @@ public class RobotContainer {
     private final CommandXboxController operator = new CommandXboxController(Constants.OPERATOR_ID);
 
     private final PneumaticHub ph = new PneumaticHub();
-    private AddressableLEDBuffer controLedBuffer = new AddressableLEDBuffer(84);
+    private AddressableLEDBuffer controLedBuffer = new AddressableLEDBuffer(126);
     private AddressableLED addressableLED = new AddressableLED(9);
 
     // Field Relative and openLoop Variables
@@ -123,8 +124,9 @@ public class RobotContainer {
     int ledPattern = 0;
 
     // Subsystems
-    private LEDs leds = new LEDs(addressableLED, controLedBuffer, 84);
-    // private LEDs leds1 = new LEDs(addressableLED, controLedBuffer, 42, 42);
+    private LEDs leds = new LEDs(addressableLED, controLedBuffer, 42);
+    private LEDs leds1 = new LEDs(addressableLED, controLedBuffer, 42, 42);
+    private LEDs leds2 = new LEDs(addressableLED, controLedBuffer, 42, 84);
     /* Subsystems */
     // private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT,
     // Constants.LEDConstants.PWM_PORT);
@@ -151,6 +153,9 @@ public class RobotContainer {
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
         s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
+        leds1.setDefaultCommand(
+            new BouncingBalls(leds1, 2, new Color[] {Color.kBlue, Color.kGreen}));
+        leds2.setDefaultCommand(new FlashingLEDColor(leds2, Color.kYellow));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         autoChooser.addOption("Move to Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
         autoChooser.addOption("Middle Score and Engage",

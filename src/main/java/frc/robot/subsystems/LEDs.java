@@ -100,7 +100,7 @@ public class LEDs extends SubsystemBase {
      * @param b - [0 - 255]
      */
     public void setRGB(int r, int g, int b) {
-        for (var i = 0; i < getLength(); i++) {
+        for (var i = 0; i < getEnd(); i++) {
             setRGB(i, r, g, b);
         }
         setData();
@@ -122,7 +122,7 @@ public class LEDs extends SubsystemBase {
      * @param color color set for the LEDs
      */
     public void setColor(Color color) {
-        for (var i = 0; i < getLength(); i++) {
+        for (var i = getStart(); i < getEnd(); i++) {
             setColor(i, color);
         }
         setData();

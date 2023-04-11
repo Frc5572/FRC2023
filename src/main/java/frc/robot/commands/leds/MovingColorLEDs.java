@@ -30,6 +30,7 @@ public class MovingColorLEDs extends CommandBase {
         this.color = color;
         this.count = count + 2;
         this.inverted = inverted;
+        this.movingLED = leds.getStart();
         ledLength = leds.getEnd();
         addRequirements(leds);
     }
@@ -51,13 +52,14 @@ public class MovingColorLEDs extends CommandBase {
             } else {
                 movingLED--;
             }
-            if (movingLED >= ledLength - 1 || movingLED <= 0) {
+            if (movingLED >= ledLength - 1 || movingLED <= leds.getStart()) {
                 movingDirection = !movingDirection;
             }
             leds.setData();
         }
         movingColorDelay += 1;
         movingColorDelay %= 1;
+        // System.out.println(leds.getStart() + " -- " + leds.getEnd() + " -- " + movingLED);
     }
 
     @Override
