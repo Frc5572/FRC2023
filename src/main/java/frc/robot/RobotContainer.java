@@ -174,7 +174,8 @@ public class RobotContainer {
             autoWaitChooser.addOption(String.valueOf(i), i);
         }
         // Configure the button bindings
-        configureButtonBindings();
+        configureDriverButtonBindings();
+        configureOperatorButtonBindings();
     }
 
     /**
@@ -183,8 +184,7 @@ public class RobotContainer {
      * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {
-        /* Driver Buttons */
+    private void configureDriverButtonBindings() {
         driver.start().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
 
         driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
@@ -198,7 +198,15 @@ public class RobotContainer {
             .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
         driver.back().and(driver.start()).and(() -> DriverStation.isDisabled())
             .whileTrue(new FlashingLEDColor(leds, Color.kGreen));
-        /* Operator Buttons */
+    }
+
+    /**
+     * Use this method to define your button->command mappings. Buttons can be created by
+     * instantiating a {@link GenericHID} or one of its subclasses
+     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
+     * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureOperatorButtonBindings() {
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(15.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(15.0));
 
@@ -235,65 +243,6 @@ public class RobotContainer {
             .whileTrue(new VariableArm(s_Arm, operator));
         operator.back().and(operator.start()).and(() -> DriverStation.isDisabled())
             .whileTrue(new FlashingLEDColor(leds, Color.kOrange));
-
-        // operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
-        // operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
-
-        // operator.x().whileTrue(new TestArm(s_Arm));
-        // operator.x()
-        // .whileTrue(new InstantCommand(() -> System.out.println(s_Arm.getElevatorPosition())));
-        // operator.x().whileTrue(new MoveElevator(s_Arm));
-
-
-        /* TRIGGERs */
-
-        // intakePanic.whileTrue(new WristIntakePanic(s_wristIntake)
-        // .deadlineWith(new FlashingLEDColor(leds, Color.kRed)));
-
-        // driver.y().onTrue(new InstantCommand(
-        // () -> SmartDashboard.putString(" .get ABS: ", dIntake.getAngleMeasurement() + " ")));
-        // driver.b().whileTrue(new MoveDDIntake(dIntake, dIntake.position1));
-        // driver.a().whileTrue(new MoveDDIntake(dIntake, dIntake.position2));
-        // driver.x().whileTrue(new MoveDDIntake(dIntake, dIntake.position3));
-        // driver.x().whileTrue(new WristIntakeIn(wrist));
-        // operator.a().whileTrue(new ArmMoving(s_Arm, 85));
-        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
-        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
-        // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> s_wrist.lastAngle = 0,
-        // () -> s_wrist.test(), inter -> s_wrist.wristMotor.set(0), () -> false, s_wrist));
-        // operator.a().whileTrue(new DockArm(s_Arm, s_dIntake, s_wristIntake));
-        // operator.b()
-        // .whileTrue(new ScoreArm(s_Arm, s_dIntake, s_wristIntake, 90, s_Arm.elevatorMaxEncoder));
-        // operator.leftTrigger().whileTrue(new FunctionalCommand(() -> wrist.lastAngle = 0,
-        // () -> wrist.test(), inter -> wrist.wristMotor.set(0), () -> false, wrist));
-        // driver.x().whileTrue(new TestTransform(s_Swerve,
-        // new Transform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(180)), 6));
-        // driver.a().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
-        // driver.rightTrigger().whileTrue(new RainbowLEDs(leds));
-        // driver.leftTrigger().whileTrue(new PoliceLEDs(leds));
-        // driver.start().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 0));
-        // driver.povDown().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 1));
-        // driver.povRight().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 2));
-        // driver.povLeft().onTrue(new DisabledInstantCommand(() -> this.ledPattern = 3));
-        // operator.povDown().whileTrue(new MorseCodeFlash(leds, "ROSBOTS"));
-        // operator.leftTrigger().whileTrue(
-        // new StartEndCommand(() -> s_dIntake.intake(), () -> s_dIntake.stop(), s_dIntake));
-        /* Triggers */
-        // new Trigger(() -> this.ledPattern == 1).whileTrue(new RainbowLEDs(leds));
-        // new Trigger(() -> this.ledPattern == 2).whileTrue(new PoliceLEDs(leds));
-        // new Trigger(() -> this.ledPattern == 3)
-        // .whileTrue(new FlashingLEDColor(leds, Color.kGhostWhite, Color.kGreen));
-        // driver.y().onTrue(new InstantCommand(
-        // () -> SmartDashboard.putString(" .get ABS: ", s_dIntake.getAngleMeasurement() + " ")));
-        // driver.b().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position1));
-        // driver.a().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position2));
-        // driver.x().whileTrue(new MoveDDIntake(s_dIntake, s_dIntake.position3));
-        // operator.a().whileTrue(new ArmMoving(s_Arm, 90));
-        // operator.b().whileTrue(new ArmMoving(s_Arm, 3));
-        // operator.x().whileTrue(new ArmMoving(s_Arm, 120));
-        // operator.y().whileTrue(new ElevatorControl(s_Elevator, 2.70));
-        // operator.y().whileTrue(new DisabledInstantCommand(
-        // () -> System.out.println("ENCODER: " + s_Elevator.getDegreeMeasurement())));
     }
 
     /**
