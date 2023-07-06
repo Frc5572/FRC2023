@@ -10,6 +10,13 @@
         "visible": true
       }
     },
+    "Other Devices": {
+      "navX-Sensor[0]": {
+        "header": {
+          "open": true
+        }
+      }
+    },
     "PWM Outputs": {
       "window": {
         "visible": true
@@ -19,10 +26,22 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Auto/Auto Chooser": "String Chooser",
+      "/Shuffleboard/Auto/Column": "String Chooser",
+      "/Shuffleboard/Auto/Field Pos": "Field2d",
+      "/Shuffleboard/Auto/Level": "String Chooser",
+      "/Shuffleboard/Auto/Wait After Score": "String Chooser",
       "/Shuffleboard/Main Driver/Auto Chooser": "String Chooser",
       "/Shuffleboard/Main Driver/Field Pos": "Field2d",
       "/SmartDashboard/Choose Auto: ": "String Chooser",
       "/SmartDashboard/Field Pos": "Field2d"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
     }
   }
 }
