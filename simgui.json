@@ -35,12 +35,12 @@
       "/Shuffleboard/Main Driver/Field Pos": "Field2d",
       "/SmartDashboard/Choose Auto: ": "String Chooser",
       "/SmartDashboard/Field Pos": "Field2d"
-    }
-  },
-  "NetworkTables": {
-    "transitory": {
-      "SmartDashboard": {
-        "open": true
+    },
+    "windows": {
+      "/Shuffleboard/Auto/Column": {
+        "window": {
+          "visible": true
+        }
       }
     }
   }

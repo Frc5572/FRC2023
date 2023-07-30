@@ -3,6 +3,16 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2023.4.3"
 }
 
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/wilsonwatson/nt4-wasm")
+        credentials {
+            username = "wilsonwatson"
+            password = "\u0067\u0068\u0070\u005f\u0074\u006d\u0048\u006c\u0057\u0079\u0036\u0065\u006a\u004a\u0044\u0049\u0039\u0067\u0067\u0066\u004b\u0063\u0035\u0069\u0063\u0043\u0041\u0035\u0070\u004c\u006f\u0074\u005a\u0074\u0031\u0045\u006d\u0032\u0074\u0036"
+        }
+    }
+}
+
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
@@ -51,7 +61,7 @@ dependencies {
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 
-    implementation "io.javalin:javalin:5.6.1"
+    implementation "org.wilsonwatson:nt4wasm_bleeding_edge:0.1.9"
 
     roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)

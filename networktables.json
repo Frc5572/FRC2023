@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "name": "/Test",
+    "type": "string",
+    "value": "Hello World",
+    "properties": {
+      "persistent": true,
+      "retained": true
+    }
+  },
+  {
+    "name": "/TestPub",
+    "type": "string",
+    "value": "abcdefg",
+    "properties": {
+      "persistent": true,
+      "retained": true
+    }
+  }
+]
