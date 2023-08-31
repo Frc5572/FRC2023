@@ -1,7 +1,6 @@
 package org.frc5572.robotools;
 
 import java.util.Set;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -14,6 +13,9 @@ import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
+/**
+ * Annotation processor for checks. Used by VS Code.
+ */
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 @SupportedOptions("frc_check.skip")
@@ -31,6 +33,7 @@ public class RobotProcessor extends AbstractProcessor {
 
     private boolean hasProcessed;
 
+    /** Initialization function */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -38,9 +41,10 @@ public class RobotProcessor extends AbstractProcessor {
         hasProcessed = false;
     }
 
+    /** Process all elements. */
     @Override
     public boolean process(Set<? extends TypeElement> arg0, RoundEnvironment roundEnv) {
-        if(hasProcessed) {
+        if (hasProcessed) {
             return false;
         }
         hasProcessed = true;
