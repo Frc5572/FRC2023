@@ -31,10 +31,10 @@ public class RobotPlugin implements Plugin {
         SourcePositions positions = trees.getSourcePositions();
         task.addTaskListener(new TaskListener() {
             @Override
-            public void finished(TaskEvent e) {
-                if (e.getKind() == TaskEvent.Kind.ANALYZE) {
+            public void finished(TaskEvent event) {
+                if (event.getKind() == TaskEvent.Kind.ANALYZE) {
                     CompilationData data = new CompilationData(types, trees, positions,
-                        e.getCompilationUnit(), e.getTypeElement(), null);
+                        event.getCompilationUnit(), event.getTypeElement(), null);
                     Checks.process(data);
                 }
             }

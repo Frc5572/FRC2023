@@ -56,9 +56,9 @@ public class IOCheck implements Check {
                 return;
             }
         }
-        for (String clazz : ioClasses) {
-            if (data.extendsClass(elem, clazz)) {
-                String[] parts = clazz.split("\\.");
+        for (String class_ : ioClasses) {
+            if (data.extendsClass(elem, class_)) {
+                String[] parts = class_.split("\\.");
                 data.warn(warnPos, path + " is a " + parts[parts.length - 1]
                     + " which performs IO. It should be in an IO class!");
                 return;
@@ -68,14 +68,14 @@ public class IOCheck implements Check {
             if (item instanceof VariableElement) {
                 VariableElement variable = (VariableElement) item;
                 String path2 = new String(path);
-                TypeMirror tm = variable.asType();
-                while (tm instanceof ArrayType) {
-                    tm = ((ArrayType) tm).getComponentType();
+                TypeMirror typeMirror = variable.asType();
+                while (typeMirror instanceof ArrayType) {
+                    typeMirror = ((ArrayType) typeMirror).getComponentType();
                     path2 += "[*]";
                 }
-                Element e = data.types.asElement(tm);
-                if (e instanceof TypeElement) {
-                    TypeElement type = (TypeElement) e;
+                Element element = data.types.asElement(typeMirror);
+                if (element instanceof TypeElement) {
+                    TypeElement type = (TypeElement) element;
                     checkType(data, warnPos, path2 + "." + variable.getSimpleName().toString(),
                         type, skip);
                 }
@@ -91,14 +91,14 @@ public class IOCheck implements Check {
                 if (item instanceof VariableElement) {
                     VariableElement variable = (VariableElement) item;
                     String path = variable.getSimpleName().toString();
-                    TypeMirror tm = variable.asType();
-                    while (tm instanceof ArrayType) {
-                        tm = ((ArrayType) tm).getComponentType();
+                    TypeMirror typeMirror = variable.asType();
+                    while (typeMirror instanceof ArrayType) {
+                        typeMirror = ((ArrayType) typeMirror).getComponentType();
                         path += "[*]";
                     }
-                    Element e = data.types.asElement(tm);
-                    if (e instanceof TypeElement) {
-                        TypeElement type = (TypeElement) e;
+                    Element element = data.types.asElement(typeMirror);
+                    if (element instanceof TypeElement) {
+                        TypeElement type = (TypeElement) element;
                         Set<String> skip = new HashSet<>();
                         checkType(data, item, path, type, skip);
                     }

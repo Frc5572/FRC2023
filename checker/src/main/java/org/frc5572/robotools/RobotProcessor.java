@@ -48,18 +48,18 @@ public class RobotProcessor extends AbstractProcessor {
             return false;
         }
         hasProcessed = true;
-        for (ModuleElement m : processingEnv.getElementUtils().getAllModuleElements()) {
-            if (!m.isUnnamed()) {
+        for (ModuleElement mod : processingEnv.getElementUtils().getAllModuleElements()) {
+            if (!mod.isUnnamed()) {
                 continue;
             }
-            for (Element e : m.getEnclosedElements()) {
-                if (e instanceof PackageElement) {
-                    PackageElement pe = (PackageElement) e;
-                    if (pe.getQualifiedName().toString().startsWith("frc.")) {
-                        for (Element e2 : pe.getEnclosedElements()) {
-                            if (e2 instanceof TypeElement) {
-                                TypeElement te = (TypeElement) e2;
-                                processTypeElement(te);
+            for (Element element : mod.getEnclosedElements()) {
+                if (element instanceof PackageElement) {
+                    PackageElement packageElement = (PackageElement) element;
+                    if (packageElement.getQualifiedName().toString().startsWith("frc.")) {
+                        for (Element element2 : packageElement.getEnclosedElements()) {
+                            if (element2 instanceof TypeElement) {
+                                TypeElement typeElement = (TypeElement) element2;
+                                processTypeElement(typeElement);
                             }
                         }
                     }
