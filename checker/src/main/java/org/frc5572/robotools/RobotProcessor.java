@@ -21,14 +21,14 @@ import javax.lang.model.element.TypeElement;
 @SupportedOptions("frc_check.skip")
 public class RobotProcessor extends AbstractProcessor {
 
-    private void processTypeElement(TypeElement typeElement) {
+    private boolean processTypeElement(TypeElement typeElement) {
         for (Element e3 : typeElement.getEnclosedElements()) {
             if (e3 instanceof TypeElement) {
                 processTypeElement((TypeElement) e3);
             }
         }
         CompilationData data = new CompilationData(processingEnv, typeElement);
-        Checks.process(data);
+        return Checks.process(data);
     }
 
     private boolean hasProcessed;
@@ -37,7 +37,6 @@ public class RobotProcessor extends AbstractProcessor {
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        System.out.println(processingEnv.getOptions().get("frc_check.skip"));
         hasProcessed = false;
     }
 
@@ -48,6 +47,7 @@ public class RobotProcessor extends AbstractProcessor {
             return false;
         }
         hasProcessed = true;
+        boolean fatal = false;
         for (ModuleElement mod : processingEnv.getElementUtils().getAllModuleElements()) {
             if (!mod.isUnnamed()) {
                 continue;
@@ -59,12 +59,15 @@ public class RobotProcessor extends AbstractProcessor {
                         for (Element element2 : packageElement.getEnclosedElements()) {
                             if (element2 instanceof TypeElement) {
                                 TypeElement typeElement = (TypeElement) element2;
-                                processTypeElement(typeElement);
+                                fatal = fatal || processTypeElement(typeElement);
                             }
                         }
                     }
                 }
             }
+        }
+        if (fatal) {
+            throw new RuntimeException("Checks failed!");
         }
         return true;
     }

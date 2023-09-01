@@ -9,10 +9,12 @@ public class Checks {
     private static final Check[] CHECKS = new Check[] {new IOCheck()};
 
     /** Run through all checks */
-    public static void process(CompilationData data) {
+    public static boolean process(CompilationData data) {
+        boolean fatal = false;
         for (Check c : CHECKS) {
-            c.check(data);
+            fatal = fatal || c.check(data);
         }
+        return fatal;
     }
 
 }
