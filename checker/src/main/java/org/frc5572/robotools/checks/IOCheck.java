@@ -89,7 +89,6 @@ public class IOCheck implements Check {
                                 if (entry.getValue()
                                     .accept(new SimpleAnnotationValueVisitor9<Boolean, Void>() {
 
-
                                         @Override
                                         public Boolean visitArray(
                                             List<? extends AnnotationValue> vals, Void p) {
@@ -110,7 +109,7 @@ public class IOCheck implements Check {
                                         }
                                     }, null)) {
                                     continue outer;
-                                } ;
+                                }
                             }
                         }
                     }
@@ -122,7 +121,7 @@ public class IOCheck implements Check {
                     post2 += "[*]";
                 }
                 Element element = data.types.asElement(typeMirror);
-                Element newElements[] = new Element[warnPos.length + 1];
+                Element[] newElements = new Element[warnPos.length + 1];
                 for (int i = 0; i < warnPos.length; i++) {
                     newElements[i] = warnPos[i];
                 }
