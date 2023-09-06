@@ -4,9 +4,9 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LoggedRobot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.Scoring;
@@ -19,7 +19,7 @@ import frc.lib.util.ctre.CTREConfigs;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
     public static CTREConfigs ctreConfigs;
 
     private Command m_autonomousCommand;
