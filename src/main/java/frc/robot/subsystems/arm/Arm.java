@@ -1,17 +1,10 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.arm;
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.DoubleJointedArmFeedforward;
@@ -21,22 +14,11 @@ import frc.robot.Constants;
  * Creates the subsystem for the arm.
  */
 public class Arm extends SubsystemBase {
-    private final CANSparkMax armMotor1 =
-        new CANSparkMax(Constants.Arm.ARM_ID, MotorType.kBrushless);
-    private final CANSparkMax armMotor2 =
-        new CANSparkMax(Constants.Arm.ARM_ID_2, MotorType.kBrushless);
-    private final AbsoluteEncoder armEncoder = armMotor1.getAbsoluteEncoder(Type.kDutyCycle);
-    private final DoubleSolenoid armSolenoid;
 
     ProfiledPIDController armPIDController =
         new ProfiledPIDController(Constants.Arm.PID.kP, Constants.Arm.PID.kI, Constants.Arm.PID.kD,
             new TrapezoidProfile.Constraints(Constants.Arm.PID.MAX_VELOCITY,
                 Constants.Arm.PID.MAX_ACCELERATION));
-
-    // WRIST
-    public final CANSparkMax wristMotor =
-        new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
-    private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
     ProfiledPIDController wristPIDController = new ProfiledPIDController(Constants.Wrist.PID.kP,
         Constants.Wrist.PID.kI, Constants.Wrist.PID.kD, new TrapezoidProfile.Constraints(
@@ -48,36 +30,13 @@ public class Arm extends SubsystemBase {
     private boolean enablePID = false;
     private boolean reset0 = true;
 
+    private ArmIO io;
+
     /**
      * Arm Subsystem
      */
-    public Arm(PneumaticHub ph) {
-        // ARM
-        armMotor1.restoreFactoryDefaults();
-        armMotor2.restoreFactoryDefaults();
-        armMotor1.setIdleMode(IdleMode.kBrake);
-        armMotor2.setIdleMode(IdleMode.kBrake);
-        armMotor1.setInverted(false);
-        armMotor2.setInverted(true);
-        armEncoder.setPositionConversionFactor(360);
-        armEncoder.setVelocityConversionFactor(360);
-        armEncoder.setInverted(true);
-        armEncoder.setZeroOffset(Constants.Arm.encoder1Offset);
-
-        armMotor1.burnFlash();
-        armMotor2.burnFlash();
-        // WRIST
-        wristMotor.restoreFactoryDefaults();
-        wristMotor.setIdleMode(IdleMode.kCoast);
-        wristMotor.setInverted(false);
-        wristEncoder.setPositionConversionFactor(360);
-        wristEncoder.setVelocityConversionFactor(360);
-        wristEncoder.setInverted(false);
-        wristEncoder.setZeroOffset(Constants.Wrist.encoderOffset);
-        wristMotor.burnFlash();
-
-        this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
-            Constants.Arm.SOLENOID_REVERSE_CHANNEL);
+    public Arm(ArmIO armIO) {
+        io = armIO;
 
         this.wristPIDController.setIntegratorRange(Constants.Wrist.PID.MIN_INTEGRAL,
             Constants.Wrist.PID.MAX_INTEGRAL);
@@ -93,7 +52,7 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * 
+     *
      */
     public void adjust(double amount) {
         var goal = armPIDController.getGoal();
@@ -132,9 +91,8 @@ public class Arm extends SubsystemBase {
             SmartDashboard.putNumber("armPID", armState);
             SmartDashboard.putNumber("wristPID", wristState);
 
-            armMotor1.setVoltage(voltages.get(0, 0) + armState);
-            armMotor2.setVoltage(voltages.get(0, 0) + armState);
-            wristMotor.setVoltage(voltages.get(1, 0) + wristState);
+            io.setArmVoltage(voltages.get(0, 0) + armState);
+            io.setWristVoltage(voltages.get(1, 0) + wristState);
         }
 
     }
@@ -143,11 +101,7 @@ public class Arm extends SubsystemBase {
      * Get angle of arm in degrees with a crossover outside of the configuration space
      */
     public double getArmAngle() {
-        double angle = armEncoder.getPosition();
-        if (angle > Constants.Arm.PID.TURNOVER_THRESHOLD) {
-            angle -= 360;
-        }
-        return angle;
+        return io.getArmRotationDeg();
     }
 
     /**
@@ -161,7 +115,7 @@ public class Arm extends SubsystemBase {
      * Get angle of wrist in degrees with a crossover outside of the configuration space
      */
     public double getWristAngle() {
-        double angle = 360 - wristEncoder.getPosition();
+        double angle = 360 - io.getWristPosition();
         if (angle > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
             angle -= 360;
         }
@@ -214,13 +168,13 @@ public class Arm extends SubsystemBase {
      * Set arm to extended position
      */
     public void extendArm() {
-        armSolenoid.set(Value.kReverse);
+        io.setArmSolenoid(Value.kReverse);
     }
 
     /**
      * Set arm to retracted position
      */
     public void retractArm() {
-        armSolenoid.set(Value.kForward);
+        io.setArmSolenoid(Value.kForward);
     }
 }

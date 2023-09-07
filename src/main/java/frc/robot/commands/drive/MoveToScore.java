@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.Scoring;
 import frc.robot.commands.arm.ScoreArm;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
+import frc.robot.subsystems.arm.Arm;
 
 
 /**

@@ -8,9 +8,9 @@ import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.wrist.WristIntakeRelease;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
+import frc.robot.subsystems.arm.Arm;
 
 /**
  * Score1Dock Auto.

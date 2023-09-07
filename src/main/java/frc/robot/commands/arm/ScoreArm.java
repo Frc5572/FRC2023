@@ -2,8 +2,8 @@ package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.Scoring;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.WristIntake;
+import frc.robot.subsystems.arm.Arm;
 
 /**
  * Command to move arm into scoring position
