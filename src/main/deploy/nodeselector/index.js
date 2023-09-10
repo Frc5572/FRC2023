@@ -7,8 +7,7 @@
 
 import { NT4_Client } from "./NT4.js";
 
-const nodeRobotToDashboardTopic = "/nodeselector/node_robot_to_dashboard";
-const nodeDashboardToRobotTopic = "/nodeselector/node_dashboard_to_robot";
+const nodeTopic = "/nodeselector/node_target";
 const coneTippedRobotToDashboardTopic = "/nodeselector/cone_tipped_robot_to_dashboard";
 const coneTippedDashboardToRobotTopic = "/nodeselector/cone_tipped_dashboard_to_robot";
 const matchTimeTopic = "/nodeselector/match_time";
@@ -36,7 +35,8 @@ function displayActive(index) {
 function sendTarget(row, column) {
   // alert(row + '  ' + column);
   if ([row, column] !== active) {
-    client.addSample(nodeDashboardToRobotTopic, [row, column]);
+    displayActive([row, column]);
+    client.addSample(nodeTopic, [row, column]);
   }
 }
 
@@ -86,7 +86,7 @@ let client = new NT4_Client(
   },
   (topic, timestamp, value) => {
     // New data
-    if (topic.name === nodeRobotToDashboardTopic) {
+    if (topic.name === nodeTopic) {
       document.body.style.backgroundColor = "white";
       displayActive(value);
     } else if (topic.name === coneTippedRobotToDashboardTopic) {
@@ -117,7 +117,7 @@ window.addEventListener("load", () => {
   // Start NT connection
   client.subscribe(
     [
-      nodeRobotToDashboardTopic,
+      nodeTopic,
       coneTippedRobotToDashboardTopic,
       matchTimeTopic,
       isAutoTopic,
@@ -126,7 +126,7 @@ window.addEventListener("load", () => {
     false,
     0.02
   );
-  client.publishTopic(nodeDashboardToRobotTopic, "int[]");
+  client.publishTopic(nodeTopic, "int[]");
   client.publishTopic(coneTippedDashboardToRobotTopic, "boolean");
   client.connect();
 

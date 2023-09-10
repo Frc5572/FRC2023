@@ -9,8 +9,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.BooleanSubscriber;
-import edu.wpi.first.networktables.IntegerArrayPublisher;
-import edu.wpi.first.networktables.IntegerArraySubscriber;
+import edu.wpi.first.networktables.IntegerArrayEntry;
 import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -42,10 +41,8 @@ public class Robot extends TimedRobot {
     public static int column = 0;
     public static UsbCamera camera = CameraServer.startAutomaticCapture("Magazine Camera", 0);
     public NetworkTable table = NetworkTableInstance.getDefault().getTable("nodeselector");
-    public IntegerArrayPublisher nodePublisher =
-        table.getIntegerArrayTopic("node_robot_to_dashboard").publish();
-    public IntegerArraySubscriber nodeSubscriber =
-        table.getIntegerArrayTopic("node_dashboard_to_robot").subscribe(new long[] {0, 0});
+    public IntegerArrayEntry nodePublisher =
+        table.getIntegerArrayTopic("node_target").getEntry(new long[] {0, 0});
     public BooleanPublisher coneTippedPublisher =
         table.getBooleanTopic("cone_tipped_robot_to_dashboard").publish();
     public BooleanSubscriber coneTippedSubscriber =
@@ -92,8 +89,8 @@ public class Robot extends TimedRobot {
         m_robotContainer.gamePieceWidget.setBoolean(Scoring.getGamePiece() == GamePiece.CONE);
         timePublisher.set((long) Math.ceil(Math.max(0.0, DriverStation.getMatchTime())));
         isAutoPublisher.set(DriverStation.isAutonomous());
-        level = (int) nodeSubscriber.get()[0];
-        column = (int) nodeSubscriber.get()[1];
+        level = (int) nodePublisher.get()[0];
+        column = (int) nodePublisher.get()[1];
         nodePublisher.set(new long[] {level, column});
     }
 
