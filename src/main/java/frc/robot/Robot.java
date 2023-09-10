@@ -4,14 +4,26 @@
 
 package frc.robot;
 
+import java.nio.file.Paths;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.BooleanSubscriber;
+import edu.wpi.first.networktables.IntegerArrayPublisher;
+import edu.wpi.first.networktables.IntegerArraySubscriber;
+import edu.wpi.first.networktables.IntegerPublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.lib.util.ctre.CTREConfigs;
+import io.javalin.Javalin;
+import io.javalin.http.staticfiles.Location;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -29,6 +41,17 @@ public class Robot extends TimedRobot {
     public static int level = 0;
     public static int column = 0;
     public static UsbCamera camera = CameraServer.startAutomaticCapture("Magazine Camera", 0);
+    public NetworkTable table = NetworkTableInstance.getDefault().getTable("nodeselector");
+    public IntegerArrayPublisher nodePublisher =
+        table.getIntegerArrayTopic("node_robot_to_dashboard").publish();
+    public IntegerArraySubscriber nodeSubscriber =
+        table.getIntegerArrayTopic("node_dashboard_to_robot").subscribe(new long[] {0, 0});
+    public BooleanPublisher coneTippedPublisher =
+        table.getBooleanTopic("cone_tipped_robot_to_dashboard").publish();
+    public BooleanSubscriber coneTippedSubscriber =
+        table.getBooleanTopic("cone_tipped_dashboard_to_robot").subscribe(false);
+    public IntegerPublisher timePublisher = table.getIntegerTopic("match_time").publish();
+    public BooleanPublisher isAutoPublisher = table.getBooleanTopic("is_auto").publish();
 
     // private Ultrasonic ultrasonic = new Ultrasonic();
     /**
@@ -41,6 +64,12 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer. This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
+        var app = Javalin.create(config -> {
+            config.staticFiles.add(Paths
+                .get(Filesystem.getDeployDirectory().getAbsolutePath().toString(), "nodeselector")
+                .toString(), Location.EXTERNAL);
+        });
+        app.start(5800);
     }
 
     /**
@@ -58,9 +87,14 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        m_robotContainer.levelWidget.setDouble(level);
-        m_robotContainer.columnWidget.setDouble(column);
+        // m_robotContainer.levelWidget.setDouble(level);
+        // m_robotContainer.columnWidget.setDouble(column);
         m_robotContainer.gamePieceWidget.setBoolean(Scoring.getGamePiece() == GamePiece.CONE);
+        timePublisher.set((long) Math.ceil(Math.max(0.0, DriverStation.getMatchTime())));
+        isAutoPublisher.set(DriverStation.isAutonomous());
+        level = (int) nodeSubscriber.get()[0];
+        column = (int) nodeSubscriber.get()[1];
+        nodePublisher.set(new long[] {level, column});
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

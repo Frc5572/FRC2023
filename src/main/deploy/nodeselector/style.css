@@ -1,0 +1,113 @@
+body {
+    background-color: red;
+    overscroll-behavior: none;
+    overflow: hidden;
+    font-family: sans-serif;
+    user-select: none;
+}
+
+table {
+    position: absolute;
+    left: 0%;
+    width: 100%;
+    top: 0%;
+    height: 80%;
+    border-spacing: 10px;
+    table-layout: fixed;
+}
+
+td {
+    text-align: center;
+    font-size: 5vw;
+}
+
+td.hybrid {
+    background-color: #777777;
+}
+
+td.cone {
+    background-color: #ffd91e;
+}
+
+td.cube {
+    background-color: #aa00ff;
+}
+
+td.hybrid-center {
+    background-color: #353535;
+    color: white;
+}
+
+td.cone-center {
+    background-color: #968011;
+    color: white;
+}
+
+td.cube-center {
+    background-color: #5a0088;
+    color: white;
+}
+
+td.active {
+    background-color: #00ff08;
+    color: black;
+}
+
+#time {
+    position: absolute;
+    left: 0%;
+    width: 50%;
+    bottom: 0%;
+    height: 20%;
+    font-size: 18vh;
+    text-align: center;
+}
+
+#time.auto {
+    background-color: lightblue;
+    color: black;
+}
+
+#time.teleop-1 {
+    background-color: black;
+    color: white;
+}
+
+#time.teleop-2 {
+    background-color: orange;
+    color: black;
+}
+
+#time.teleop-3 {
+    background-color: red;
+    color: black;
+}
+
+div.cone-orientation {
+    position: absolute;
+    left: 50%;
+    width: 50%;
+    bottom: 0%;
+    height: 20%;
+    background-color: #ffd91e;
+}
+
+div.cone-orientation.tipped {
+    background-color: #ff4000;
+}
+
+div.cone-orientation svg {
+    position: absolute;
+    top: 50%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s ease;
+}
+
+div.cone-orientation svg {
+    left: 50%;
+}
+
+div.cone-orientation.tipped svg {
+    transform: translate(-50%, -50%) rotate(90deg);
+}

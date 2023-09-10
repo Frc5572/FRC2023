@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--
+      Copyright (c) 2023 FRC 6328
+      http://github.com/Mechanical-Advantage
+
+      Use of this source code is governed by an MIT-style
+      license that can be found in the LICENSE file at
+      the root directory of this project.
+    -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="stylesheet" href="style.css">
+  <script src="jquery-3.7.1.min.js"></script>
+  <script src="index.js" type="module"></script>
+  <title>Node Selector &mdash; Banana Split</title>
+</head>
+
+<body>
+  <table>
+    <tbody>
+      <tr id="row-high">
+        <td class="node cone high">H1</td>
+        <td class="node cube high">H2</td>
+        <td class="node cone high">H3</td>
+        <td class="node cone-center high">H4</td>
+        <td class="node cube-center high">H5</td>
+        <td class="node cone-center high">H6</td>
+        <td class="node cone high">H7</td>
+        <td class="node cube high">H8</td>
+        <td class="node cone high">H9</td>
+      </tr>
+      <tr id="row-med">
+        <td class="node cone med">M1</td>
+        <td class="node cube med">M2</td>
+        <td class="node cone med">M3</td>
+        <td class="node cone-center med">M4</td>
+        <td class="node cube-center med">M5</td>
+        <td class="node cone-center med">M6</td>
+        <td class="node cone med">M7</td>
+        <td class="node cube med">M8</td>
+        <td class="node cone med">M9</td>
+      </tr>
+      <tr id="row-low">
+        <td class="node hybrid low">L1</td>
+        <td class="node hybrid low">L2</td>
+        <td class="node hybrid low">L3</td>
+        <td class="node hybrid-center low">L4</td>
+        <td class="node hybrid-center low">L5</td>
+        <td class="node hybrid-center low">L6</td>
+        <td class="node hybrid low">L7</td>
+        <td class="node hybrid low">L8</td>
+        <td class="node hybrid low">L9</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="time" class="time teleop-1">0:00</div>
+
+  <div class="cone-orientation">
+    <svg viewbox="0 0 16 16">
+      <path
+        d="M7.03 1.88c.252-1.01 1.688-1.01 1.94 0l2.905 11.62H14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1h2.125L7.03 1.88z" />
+    </svg>
+  </div>
+</body>
+
+</html>
