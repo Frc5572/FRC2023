@@ -69,6 +69,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     implementation "io.javalin:javalin:5.3.2"
+
+    annotationProcessor project(":checker")
 }
 
 test {
@@ -97,6 +99,11 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+    // only run in GH actions
+    if (System.getenv("GITHUB_ACTOR") != null && !System.getenv("GITHUB_ACTOR").equals("")) {
+        options.compilerArgs << "-Xplugin:rchk"
+        outputs.upToDateWhen { false } // Force recompile, even if source file hasn't changed
+    }
 }
 
 javadoc {
