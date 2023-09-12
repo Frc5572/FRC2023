@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import frc.robot.Constants;
 
-public class ArmIOSparkMax implements ArmIO {
+public class ArmIOSparkMax extends ArmIO {
 
     private final CANSparkMax armMotor1 =
         new CANSparkMax(Constants.Arm.ARM_ID, MotorType.kBrushless);
@@ -53,29 +53,26 @@ public class ArmIOSparkMax implements ArmIO {
     }
 
     @Override
-    public void setArmVoltage(double value) {
+    public void setArmVoltage(ArmInputs inputs, double value) {
+        super.setArmVoltage(inputs, value);
         armMotor1.setVoltage(value);
         armMotor2.setVoltage(value);
     }
 
     @Override
-    public void setWristVoltage(double value) {
+    public void setWristVoltage(ArmInputs inputs, double value) {
+        super.setWristVoltage(inputs, value);
         wristMotor.setVoltage(value);
     }
 
     @Override
     public void updateInputs(ArmInputs inputs) {
         inputs.armAngleRad = armEncoder.getPosition();
-        inputs.armVelocityRotPerSecond = armEncoder.getVelocity();
     }
 
     @Override
-    public double getWristPosition() {
-        return wristEncoder.getPosition();
-    }
-
-    @Override
-    public void setArmSolenoid(Value value) {
-        armSolenoid.set(value);
+    public void setArmSolenoid(ArmInputs inputs, boolean value) {
+        super.setArmSolenoid(inputs, value);
+        armSolenoid.set(value ? Value.kForward : Value.kReverse);
     }
 }

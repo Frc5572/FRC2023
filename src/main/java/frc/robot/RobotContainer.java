@@ -45,10 +45,10 @@ import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.wrist.VariableIntake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.WristIntake;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIO;
 import frc.robot.subsystems.arm.ArmIOSparkMax;
+import frc.robot.subsystems.wristIntake.WristIntake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

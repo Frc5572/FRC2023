@@ -19,8 +19,8 @@ import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.wrist.AutoWrist;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.WristIntake;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.wristIntake.WristIntake;
 
 /**
  * Score a second game piece

@@ -3,8 +3,8 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.ArmPosition;
-import frc.robot.subsystems.WristIntake;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.wristIntake.WristIntake;
 
 /**
  * Command to dock the arm in the robot

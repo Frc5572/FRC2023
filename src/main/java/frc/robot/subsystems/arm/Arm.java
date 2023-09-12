@@ -1,10 +1,10 @@
 package frc.robot.subsystems.arm;
 
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.DoubleJointedArmFeedforward;
@@ -31,12 +31,14 @@ public class Arm extends SubsystemBase {
     private boolean reset0 = true;
 
     private ArmIO io;
+    private ArmInputsAutoLogged armInputs = new ArmInputsAutoLogged();
 
     /**
      * Arm Subsystem
      */
     public Arm(ArmIO armIO) {
         io = armIO;
+
 
         this.wristPIDController.setIntegratorRange(Constants.Wrist.PID.MIN_INTEGRAL,
             Constants.Wrist.PID.MAX_INTEGRAL);
@@ -63,6 +65,9 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
+
+        io.updateInputs(armInputs);
+        Logger.getInstance().processInputs("Arm", armInputs);
 
         SmartDashboard.putNumber("arm", getArmAngle());
         SmartDashboard.putNumber("wrist", getWristAngle());
@@ -91,31 +96,34 @@ public class Arm extends SubsystemBase {
             SmartDashboard.putNumber("armPID", armState);
             SmartDashboard.putNumber("wristPID", wristState);
 
-            io.setArmVoltage(voltages.get(0, 0) + armState);
-            io.setWristVoltage(voltages.get(1, 0) + wristState);
-        }
+            io.setArmVoltage(armInputs, voltages.get(0, 0) + armState);
+            io.setWristVoltage(armInputs, voltages.get(1, 0) + wristState);
 
+
+        }
     }
+
+
 
     /**
      * Get angle of arm in degrees with a crossover outside of the configuration space
      */
     public double getArmAngle() {
-        return io.getArmRotationDeg();
+        return Math.toDegrees(armInputs.armAngleRad);
     }
 
     /**
      * Get angle of arm in radians with a crossover outside of the configuration space
      */
     public double getArmAngleRad() {
-        return getArmAngle() * Math.PI / 180.0;
+        return armInputs.armAngleRad;
     }
 
     /**
      * Get angle of wrist in degrees with a crossover outside of the configuration space
      */
     public double getWristAngle() {
-        double angle = 360 - io.getWristPosition();
+        double angle = 360 - Math.toDegrees(armInputs.wristAngleRad);
         if (angle > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
             angle -= 360;
         }
@@ -168,13 +176,13 @@ public class Arm extends SubsystemBase {
      * Set arm to extended position
      */
     public void extendArm() {
-        io.setArmSolenoid(Value.kReverse);
+        io.setArmSolenoid(armInputs, false);
     }
 
     /**
      * Set arm to retracted position
      */
     public void retractArm() {
-        io.setArmSolenoid(Value.kForward);
+        io.setArmSolenoid(armInputs, true);
     }
 }

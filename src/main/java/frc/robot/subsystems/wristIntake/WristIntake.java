@@ -1,8 +1,5 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.wristIntake;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -12,26 +9,27 @@ import frc.robot.Constants;
  */
 public class WristIntake extends SubsystemBase {
 
-    private final WPI_TalonFX wristIntakeMotor = new WPI_TalonFX(Constants.Wrist.WRIST_INTAKE_ID);
-
     private boolean invertForCone = true;
+    private WristIntakeIOFalcon500 io;
+
+    private WristIntakeInputsAutoLogged wristIntakeAutoLogged = new WristIntakeInputsAutoLogged();
+
 
     /**
      * Create Wrist Intake Subsystem
      */
     public WristIntake() {
-        wristIntakeMotor.setInverted(false);
-        wristIntakeMotor.setNeutralMode(NeutralMode.Brake);
+        io = new WristIntakeIOFalcon500();
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Wrist Intake Current", wristIntakeMotor.getStatorCurrent());
+        SmartDashboard.putNumber("Wrist Intake Current", io.getOutputCurrentAmps());
     }
 
     // Runs wrist intake motor to intake a game piece.
     public void intake() {
-        wristIntakeMotor.set(ControlMode.PercentOutput, Constants.Wrist.INTAKE_SPEED);
+        io.setMotorPercentage(Constants.Wrist.INTAKE_SPEED);
     }
 
     /**
@@ -40,7 +38,7 @@ public class WristIntake extends SubsystemBase {
      * @param power power of motors from -1 to 1
      */
     public void setMotor(double power) {
-        wristIntakeMotor.set(ControlMode.PercentOutput, (invertForCone ? -1 : 1) * power);
+        io.setMotorPercentage((invertForCone ? -1 : 1) * power);
     }
 
     /**
@@ -49,7 +47,7 @@ public class WristIntake extends SubsystemBase {
      * @param power power of motors from -1 to 1
      */
     public void setMotorRaw(double power) {
-        wristIntakeMotor.set(ControlMode.PercentOutput, power);
+        io.setMotorPercentage(power);
     }
 
     /**
@@ -64,7 +62,7 @@ public class WristIntake extends SubsystemBase {
      * Get if motor is stalling by checking if the stator current exceeds a constant
      */
     public boolean getVoltageSpike(boolean passedTime) {
-        return wristIntakeMotor.getStatorCurrent() > Constants.Wrist.STALL_CURRENT;
+        return io.getOutputCurrentAmps() > Constants.Wrist.STALL_CURRENT;
     }
 
     public void setInvert(boolean invert) {
