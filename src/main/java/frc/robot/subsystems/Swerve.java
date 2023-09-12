@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
+import org.littletonrobotics.junction.LoggedRobot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -83,7 +83,7 @@ public class Swerve extends SubsystemBase {
     public void driveWithTwist(Translation2d translation, double rotation, boolean fieldRelative,
         boolean isOpenLoop) {
 
-        double dt = TimedRobot.kDefaultPeriod;
+        double dt = LoggedRobot.defaultPeriodSecs;
 
         ChassisSpeeds chassisSpeeds = fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(),

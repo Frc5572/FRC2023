@@ -132,6 +132,8 @@ public final class Constants {
         /* Angle Encoder Invert */
         public static final boolean CAN_CODER_INVERT = false;
 
+        public static final int NUM_MODULES = 4;
+
         /* Module Specific Constants */
         /**
          * Front Left Module - Module 0.
@@ -181,7 +183,8 @@ public final class Constants {
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
 
-
+        public static final SwerveModuleConstants[] MODULES = new SwerveModuleConstants[] {
+            Mod0.constants, Mod1.constants, Mod2.constants, Mod3.constants,};
 
     }
 
