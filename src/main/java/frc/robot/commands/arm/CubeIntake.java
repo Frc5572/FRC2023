@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.ArmPosition;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.arm.Arm;
 
 /**
  * This command will move the arm to a requested angle.

@@ -14,9 +14,9 @@ import frc.robot.commands.arm.CubeIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.MoveArm;
 import frc.robot.commands.wrist.AutoWrist;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
+import frc.robot.subsystems.arm.Arm;
 
 
 /**
