@@ -8,8 +8,8 @@
 import { NT4_Client } from "./NT4.js";
 
 const nodeTopic = "/nodeselector/node_target";
-const coneTippedRobotToDashboardTopic = "/nodeselector/cone_tipped_robot_to_dashboard";
-const coneTippedDashboardToRobotTopic = "/nodeselector/cone_tipped_dashboard_to_robot";
+const nodeStatusTopic = "/nodeselector/node_status";
+const coneTippeddTopic = "/nodeselector/cone_tipped";
 const matchTimeTopic = "/nodeselector/match_time";
 const isAutoTopic = "/nodeselector/is_auto";
 
@@ -17,6 +17,7 @@ let active = null;
 let tipped = false;
 let matchTime = 0;
 let isAuto = false;
+let nodeStatus = Array(27).fill(false);
 
 function rowIdFromId(row_num) {
   let a = ["#row-low", "#row-med", "#row-high"];
@@ -30,11 +31,13 @@ function displayActive(index) {
     let row = rowIdFromId(index[0]);
     $(row).find("td").eq(index[1]).addClass("active");
   }
+  console.log(active);
 }
 
 function sendTarget(row, column) {
   // alert(row + '  ' + column);
   if ([row, column] !== active) {
+    // if (row !== active[0] && column !== active[1]) {
     displayActive([row, column]);
     client.addSample(nodeTopic, [row, column]);
   }
@@ -42,8 +45,12 @@ function sendTarget(row, column) {
 
 function displayTipped(newTipped) {
   // if (newTipped != tipped) {
-  // tipped = newTipped;
-  $(".cone-orientation").toggleClass("tipped");
+  tipped = newTipped;
+  if (tipped) {
+    $(".cone-orientation").addClass("tipped");
+  } else {
+    $(".cone-orientation").removeClass("tipped");
+  }
   // }
 }
 
@@ -72,7 +79,7 @@ function displayTime(time, isAuto) {
 function toggleTipped() {
   tipped = !tipped;
   displayTipped(tipped);
-  // client.addSample(coneTippedDashboardToRobotTopic, tipped);
+  client.addSample(coneTippeddTopic, tipped);
 }
 
 let client = new NT4_Client(
@@ -89,7 +96,22 @@ let client = new NT4_Client(
     if (topic.name === nodeTopic) {
       document.body.style.backgroundColor = "white";
       displayActive(value);
-    } else if (topic.name === coneTippedRobotToDashboardTopic) {
+    } else if (topic.name == nodeStatusTopic) {
+      nodeStatus = value;
+      console.log(value);
+      for (let i = 0; i < value.length; i++) {
+        let row = Math.floor(i / 9);
+        let col = i - (row * 9);
+        let rowId = rowIdFromId(row);
+        let colId = $(rowId).find("td").eq(col);
+        if (value[i]) {
+          colId.addClass("confirmed");
+        } else {
+          colId.removeClass("confirmed");
+        }
+      }
+    } else if (topic.name === coneTippeddTopic) {
+      console.log(value);
       displayTipped(value);
     } else if (topic.name === matchTimeTopic) {
       matchTime = value;
@@ -118,7 +140,8 @@ window.addEventListener("load", () => {
   client.subscribe(
     [
       nodeTopic,
-      coneTippedRobotToDashboardTopic,
+      nodeStatusTopic,
+      coneTippeddTopic,
       matchTimeTopic,
       isAutoTopic,
     ],
@@ -127,7 +150,8 @@ window.addEventListener("load", () => {
     0.02
   );
   client.publishTopic(nodeTopic, "int[]");
-  client.publishTopic(coneTippedDashboardToRobotTopic, "boolean");
+  client.publishTopic(nodeStatusTopic, "boolean[]");
+  client.publishTopic(coneTippeddTopic, "boolean");
   client.connect();
 
   // Add node click listeners
@@ -140,7 +164,22 @@ window.addEventListener("load", () => {
   $(".node.high").click(function () {
     sendTarget(2, $(this).index());
   });
+  $("#confirm-node").click(function () {
+    let row = active[0];
+    let column = active[1];
+    let rowId = rowIdFromId(row);
+    let colId = $(rowId).find("td").eq(column);
+    let index = row * 9 + column;
+    nodeStatus[index] = !nodeStatus[index];
+    if (nodeStatus[index]) {
+      colId.addClass("confirmed");
+    } else {
+      colId.removeClass("confirmed");
+    }
+    client.addSample(nodeStatusTopic, nodeStatus);
+    console.log(nodeStatus);
 
+  });
 
   // each((cell, index) => {
   //   cell.addEventListener("click", () => {

@@ -53,10 +53,21 @@ td.active {
     color: black;
 }
 
+td.confirmed {
+    background-color: blue;
+    color: black;
+}
+
+td.confirmed.active {
+    /* background-color: red; */
+    background: linear-gradient(45deg, #00ff08 50%, blue 50% 50%);
+    color: black;
+}
+
 #time {
     position: absolute;
     left: 0%;
-    width: 50%;
+    width: 33%;
     bottom: 0%;
     height: 20%;
     font-size: 18vh;
@@ -85,8 +96,8 @@ td.active {
 
 div.cone-orientation {
     position: absolute;
-    left: 50%;
-    width: 50%;
+    left: 66%;
+    width: 33%;
     bottom: 0%;
     height: 20%;
     background-color: #ffd91e;
@@ -110,4 +121,22 @@ div.cone-orientation svg {
 
 div.cone-orientation.tipped svg {
     transform: translate(-50%, -50%) rotate(90deg);
+}
+
+div#confirm-node {
+    position: absolute;
+    left: 33%;
+    width: 33%;
+    bottom: 0%;
+    height: 20%;
+    /* vertical-align: 50%; */
+    text-align: center;
+    line-height: 15;
+    background-color: purple;
+}
+
+div#confirm-node>div {
+    line-height: 1.5;
+    display: inline-block;
+    font-size: xxx-large;
 }

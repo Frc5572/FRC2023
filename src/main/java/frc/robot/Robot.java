@@ -5,10 +5,12 @@
 package frc.robot;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.BooleanArrayEntry;
+import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.BooleanPublisher;
-import edu.wpi.first.networktables.BooleanSubscriber;
 import edu.wpi.first.networktables.IntegerArrayEntry;
 import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTable;
@@ -39,14 +41,16 @@ public class Robot extends TimedRobot {
 
     public static int level = 0;
     public static int column = 0;
+    public boolean[] node_status = new boolean[27];
+    public boolean cone_tipped = false;
+
     public static UsbCamera camera = CameraServer.startAutomaticCapture("Magazine Camera", 0);
     public NetworkTable table = NetworkTableInstance.getDefault().getTable("nodeselector");
     public IntegerArrayEntry nodePublisher =
         table.getIntegerArrayTopic("node_target").getEntry(new long[] {0, 0});
-    public BooleanPublisher coneTippedPublisher =
-        table.getBooleanTopic("cone_tipped_robot_to_dashboard").publish();
-    public BooleanSubscriber coneTippedSubscriber =
-        table.getBooleanTopic("cone_tipped_dashboard_to_robot").subscribe(false);
+    public BooleanArrayEntry nodeStatusPublisher =
+        table.getBooleanArrayTopic("node_status").getEntry(node_status);
+    public BooleanEntry coneTippedPublisher = table.getBooleanTopic("cone_tipped").getEntry(false);
     public IntegerPublisher timePublisher = table.getIntegerTopic("match_time").publish();
     public BooleanPublisher isAutoPublisher = table.getBooleanTopic("is_auto").publish();
 
@@ -57,6 +61,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        Arrays.fill(node_status, false);
         ctreConfigs = new CTREConfigs();
         // Instantiate our RobotContainer. This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
@@ -92,6 +97,10 @@ public class Robot extends TimedRobot {
         level = (int) nodePublisher.get()[0];
         column = (int) nodePublisher.get()[1];
         nodePublisher.set(new long[] {level, column});
+        node_status = nodeStatusPublisher.get();
+        nodeStatusPublisher.set(node_status);
+        cone_tipped = coneTippedPublisher.get(false);
+        coneTippedPublisher.set(cone_tipped);
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
