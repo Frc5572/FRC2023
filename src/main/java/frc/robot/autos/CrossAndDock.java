@@ -14,9 +14,9 @@ import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.drive.TurnToAngle;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
+import frc.robot.subsystems.arm.Arm;
 
 /**
  * Leaves community, and docks.

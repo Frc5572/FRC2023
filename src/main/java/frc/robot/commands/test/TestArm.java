@@ -6,7 +6,7 @@ import frc.lib.util.ArmPosition;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.Robot;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.arm.Arm;
 
 /**
  * Test April tag transform
