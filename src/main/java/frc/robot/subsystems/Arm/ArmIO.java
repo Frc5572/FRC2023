@@ -1,22 +1,34 @@
-package frc.robot.subsystems.Arm;
+package frc.robot.subsystems.arm;
 
-public interface ArmIO {
+import org.littletonrobotics.junction.AutoLog;
 
+public class ArmIO {
+    
+    @AutoLog
     public static class ArmInputs {
-        double encoder;
-        double voltage;
-        boolean isExtended;
+        public double armAngleRad;        
+        public double armVoltage;
+        public double wristVoltage;
+        public boolean isExtended;
     }
 
-    public static void setExtension() {
-
+    public void updateInputs(ArmInputs inputs, double value) {
+        inputs.armAngleRad = value;
     }
 
-    public static void setVoltage() {
-
+    
+    public  void setArmVoltage(ArmInputs inputs, double value) {
+        inputs.armVoltage = value;
     }
 
-    public static double getAngle(){
-        return 
+    
+    public void setWristVoltage(ArmInputs inputs, double value){
+        inputs.wristVoltage = value;
     }
+
+    
+    public void setArmSolenoid(ArmInputs inputs, boolean value){
+        inputs.isExtended = value;
+    }
+  
 }

@@ -1,17 +1,10 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.arm;
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.DoubleJointedArmFeedforward;
@@ -21,22 +14,11 @@ import frc.robot.Constants;
  * Creates the subsystem for the arm.
  */
 public class Arm extends SubsystemBase {
-    private final CANSparkMax armMotor1 =
-        new CANSparkMax(Constants.Arm.ARM_ID, MotorType.kBrushless);
-    private final CANSparkMax armMotor2 =
-        new CANSparkMax(Constants.Arm.ARM_ID_2, MotorType.kBrushless);
-    private final AbsoluteEncoder armEncoder = armMotor1.getAbsoluteEncoder(Type.kDutyCycle);
-    private final DoubleSolenoid armSolenoid;
-
     ProfiledPIDController armPIDController =
         new ProfiledPIDController(Constants.Arm.PID.kP, Constants.Arm.PID.kI, Constants.Arm.PID.kD,
             new TrapezoidProfile.Constraints(Constants.Arm.PID.MAX_VELOCITY,
                 Constants.Arm.PID.MAX_ACCELERATION));
 
-    // WRIST
-    public final CANSparkMax wristMotor =
-        new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
-    private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
     ProfiledPIDController wristPIDController = new ProfiledPIDController(Constants.Wrist.PID.kP,
         Constants.Wrist.PID.kI, Constants.Wrist.PID.kD, new TrapezoidProfile.Constraints(
@@ -48,53 +30,25 @@ public class Arm extends SubsystemBase {
     private boolean enablePID = false;
     private boolean reset0 = true;
 
-    /**
-     * Arm Subsystem
-     */
-    public Arm(PneumaticHub ph) {
-        // ARM
-        armMotor1.restoreFactoryDefaults();
-        armMotor2.restoreFactoryDefaults();
-        armMotor1.setIdleMode(IdleMode.kBrake);
-        armMotor2.setIdleMode(IdleMode.kBrake);
-        armMotor1.setInverted(false);
-        armMotor2.setInverted(true);
-        armEncoder.setPositionConversionFactor(360);
-        armEncoder.setVelocityConversionFactor(360);
-        armEncoder.setInverted(true);
-        armEncoder.setZeroOffset(Constants.Arm.encoder1Offset);
+    private ArmIO armIO;
+    private ArmInputsAutoLogged armInputs = new ArmInputsAutoLogged();
 
-        armMotor1.burnFlash();
-        armMotor2.burnFlash();
-        // WRIST
-        wristMotor.restoreFactoryDefaults();
-        wristMotor.setIdleMode(IdleMode.kCoast);
-        wristMotor.setInverted(false);
-        wristEncoder.setPositionConversionFactor(360);
-        wristEncoder.setVelocityConversionFactor(360);
-        wristEncoder.setInverted(false);
-        wristEncoder.setZeroOffset(Constants.Wrist.encoderOffset);
-        wristMotor.burnFlash();
+    public Arm(ArmIO io) {
+        armIO = io;
 
-        this.armSolenoid = ph.makeDoubleSolenoid(Constants.Arm.SOLENOID_FORWARD_CHANNEL,
-            Constants.Arm.SOLENOID_REVERSE_CHANNEL);
 
         this.wristPIDController.setIntegratorRange(Constants.Wrist.PID.MIN_INTEGRAL,
             Constants.Wrist.PID.MAX_INTEGRAL);
         wristPIDController.setTolerance(Math.toRadians(2));
         armPIDController.setTolerance(Math.toRadians(2));
 
-        // armPIDController.enableContinuousInput(0, 2 * Math.PI);
-        // armPidController2.enableContinuousInput(0, 2 * Math.PI);
-        // wristPIDController.enableContinuousInput(0, 2 * Math.PI);
+
 
         enablePID = false;
 
     }
 
-    /**
-     * 
-     */
+
     public void adjust(double amount) {
         var goal = armPIDController.getGoal();
         goal.position += amount;
@@ -104,6 +58,9 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
+
+        armIO.updateInputs(armInputs);
+        Logger.getInstance().processInputs("Arm", armInputs);
 
         SmartDashboard.putNumber("arm", getArmAngle());
         SmartDashboard.putNumber("wrist", getWristAngle());
@@ -132,52 +89,39 @@ public class Arm extends SubsystemBase {
             SmartDashboard.putNumber("armPID", armState);
             SmartDashboard.putNumber("wristPID", wristState);
 
-            armMotor1.setVoltage(voltages.get(0, 0) + armState);
-            armMotor2.setVoltage(voltages.get(0, 0) + armState);
-            wristMotor.setVoltage(voltages.get(1, 0) + wristState);
-        }
+            armIO.setArmVoltage(armInputs, voltages.get(0, 0) + armState);
+            armIO.setWristVoltage(armInputs, voltages.get(1, 0) + wristState);
 
+
+        }
     }
 
-    /**
-     * Get angle of arm in degrees with a crossover outside of the configuration space
-     */
+
+
     public double getArmAngle() {
-        double angle = armEncoder.getPosition();
-        if (angle > Constants.Arm.PID.TURNOVER_THRESHOLD) {
-            angle -= 360;
-        }
-        return angle;
+        return Math.toDegrees(armInputs.armAngleRad);
     }
 
-    /**
-     * Get angle of arm in radians with a crossover outside of the configuration space
-     */
+
     public double getArmAngleRad() {
-        return getArmAngle() * Math.PI / 180.0;
+        return armInputs.armAngleRad;
     }
 
-    /**
-     * Get angle of wrist in degrees with a crossover outside of the configuration space
-     */
+
     public double getWristAngle() {
-        double angle = 360 - wristEncoder.getPosition();
+        double angle = 360 - Math.toDegrees(armInputs.wristAngleRad);
         if (angle > Constants.Wrist.PID.TURNOVER_THRESHOLD) {
             angle -= 360;
         }
         return angle;
     }
 
-    /**
-     * Get angle of wrist in radians with a crossover outside of the configuration space
-     */
+
     public double getWristAngleRad() {
         return getWristAngle() * Math.PI / 180.0;
     }
 
-    /**
-     * Set setpoint for arm angle in degrees
-     */
+
     public void setArmGoal(double goal) {
         enablePID = true;
         if (goal > Constants.Arm.PID.TURNOVER_THRESHOLD) {
@@ -186,41 +130,27 @@ public class Arm extends SubsystemBase {
         armPIDController.setGoal(goal * Math.PI / 180.0);
     }
 
-    /**
-     * Set setpoint for wrist angle in degrees
-     */
     public void setWristGoal(double goal) {
-        /*
-         * if (goal > Constants.Wrist.PID.TURNOVER_THRESHOLD) { goal -= 360; }
-         */
         wristPIDController.setGoal(goal * Math.PI / 180.0);
     }
 
-    /**
-     * Get if arm angle is close to the setpoint
-     */
+
     public boolean armInPosition() {
         return armPIDController.atGoal();
     }
 
-    /**
-     * Get if wrist angle is close to the setpoint
-     */
+
     public boolean wristInPosition() {
         return wristPIDController.atGoal();
     }
 
-    /**
-     * Set arm to extended position
-     */
+
     public void extendArm() {
-        armSolenoid.set(Value.kReverse);
+        armIO.setArmSolenoid(armInputs, false);
     }
 
-    /**
-     * Set arm to retracted position
-     */
+
     public void retractArm() {
-        armSolenoid.set(Value.kForward);
+        armIO.setArmSolenoid(armInputs, true);
     }
 }
