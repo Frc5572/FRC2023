@@ -12,6 +12,10 @@ const nodeStatusTopic = "/nodeselector/node_status";
 const coneTippeddTopic = "/nodeselector/cone_tipped";
 const matchTimeTopic = "/nodeselector/match_time";
 const isAutoTopic = "/nodeselector/is_auto";
+const autoChooserOptions = "/Shuffleboard/Auto/Auto Chooser/options";
+const autoChooserActive = "/Shuffleboard/Auto/Auto Chooser/active";
+const autoChooserSelected = "/Shuffleboard/Auto/Auto Chooser/selected";
+
 
 let active = null;
 let tipped = false;
@@ -29,7 +33,7 @@ function displayActive(index) {
     active = index;
     $(".node.active").removeClass('active');
     let row = rowIdFromId(index[0]);
-    $(row).find("td").eq(index[1]).addClass("active");
+    $(row).find("div").eq(index[1]).addClass("active");
   }
   console.log(active);
 }
@@ -103,7 +107,7 @@ let client = new NT4_Client(
         let row = Math.floor(i / 9);
         let col = i - (row * 9);
         let rowId = rowIdFromId(row);
-        let colId = $(rowId).find("td").eq(col);
+        let colId = $(rowId).find("div").eq(col);
         if (value[i]) {
           colId.addClass("confirmed");
         } else {
@@ -120,6 +124,16 @@ let client = new NT4_Client(
     } else if (topic.name === isAutoTopic) {
       isAuto = value;
       displayTime(matchTime, isAuto);
+    } else if (topic.name == autoChooserOptions) {
+      // console.log("Auto Chooser Options - " + value);
+      // let values = value.split(",");
+      $("#autoChooser").children("option").remove();
+      for (let i = 0; i < value.length; i++) {
+        $("#autoChooser").append(new Option(value[i], value[i]));
+      }
+    } else if (topic.name == autoChooserActive) {
+      // console.log("Auto Chooser Active - " + value);
+      $("#autoChooser").val(value);
     }
   },
   () => {
@@ -144,6 +158,9 @@ window.addEventListener("load", () => {
       coneTippeddTopic,
       matchTimeTopic,
       isAutoTopic,
+      autoChooserActive,
+      autoChooserOptions,
+      autoChooserSelected
     ],
     false,
     false,
@@ -152,6 +169,8 @@ window.addEventListener("load", () => {
   client.publishTopic(nodeTopic, "int[]");
   client.publishTopic(nodeStatusTopic, "boolean[]");
   client.publishTopic(coneTippeddTopic, "boolean");
+  // client.publishTopic(autoChooserActive, "string");
+  client.publishTopic(autoChooserSelected, "string");
   client.connect();
 
   // Add node click listeners
@@ -168,7 +187,7 @@ window.addEventListener("load", () => {
     let row = active[0];
     let column = active[1];
     let rowId = rowIdFromId(row);
-    let colId = $(rowId).find("td").eq(column);
+    let colId = $(rowId).find("div").eq(column);
     let index = row * 9 + column;
     nodeStatus[index] = !nodeStatus[index];
     if (nodeStatus[index]) {
@@ -181,6 +200,10 @@ window.addEventListener("load", () => {
 
   });
 
+  $("#autoChooser").change(function () {
+    let value = $("#autoChooser").val();
+    client.addSample(autoChooserSelected, value);
+  })
   // each((cell, index) => {
   //   cell.addEventListener("click", () => {
   //     sendActive(index);

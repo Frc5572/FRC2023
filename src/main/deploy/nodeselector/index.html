@@ -14,62 +14,118 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <link rel="stylesheet" href="style.css">
-  <script src="jquery-3.7.1.min.js"></script>
-  <script src="index.js" type="module"></script>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/bootstrap.min-5.2.3.css">
+  <script src="./js/jquery-3.7.1.min.js"></script>
+  <script src="./js/bootstrap.bundle-5.2.3.min.js"></script>
+  <script src="./js/index.js" type="module"></script>
   <title>Node Selector &mdash; Banana Split</title>
 </head>
 
 <body>
-  <table>
-    <tbody>
-      <tr id="row-high">
-        <td class="node cone high">H1</td>
-        <td class="node cube high">H2</td>
-        <td class="node cone high">H3</td>
-        <td class="node cone-center high">H4</td>
-        <td class="node cube-center high">H5</td>
-        <td class="node cone-center high">H6</td>
-        <td class="node cone high">H7</td>
-        <td class="node cube high">H8</td>
-        <td class="node cone high">H9</td>
-      </tr>
-      <tr id="row-med">
-        <td class="node cone med">M1</td>
-        <td class="node cube med">M2</td>
-        <td class="node cone med">M3</td>
-        <td class="node cone-center med">M4</td>
-        <td class="node cube-center med">M5</td>
-        <td class="node cone-center med">M6</td>
-        <td class="node cone med">M7</td>
-        <td class="node cube med">M8</td>
-        <td class="node cone med">M9</td>
-      </tr>
-      <tr id="row-low">
-        <td class="node hybrid low">L1</td>
-        <td class="node hybrid low">L2</td>
-        <td class="node hybrid low">L3</td>
-        <td class="node hybrid-center low">L4</td>
-        <td class="node hybrid-center low">L5</td>
-        <td class="node hybrid-center low">L6</td>
-        <td class="node hybrid low">L7</td>
-        <td class="node hybrid low">L8</td>
-        <td class="node hybrid low">L9</td>
-      </tr>
-    </tbody>
-  </table>
-  <div>
-    <div id="time" class="time teleop-1">0:00</div>
-    <div id="confirm-node">
-      <div>CONFIRM</div>
+  <div class="container-fluid h-100 d-flex flex-column">
+    <div class="row h-25" id="row-high">
+      <div class="col-sm node cone high">
+        H1
+      </div>
+      <div class="col-sm node cube high">
+        H2
+      </div>
+      <div class="col-sm node cone high">
+        H3
+      </div>
+      <div class="col-sm node cone-center high">
+        H4
+      </div>
+      <div class="col-sm node cube-center high">
+        H5
+      </div>
+      <div class="col-sm node cone-center high">
+        H6
+      </div>
+      <div class="col-sm node cone high">
+        H7
+      </div>
+      <div class="col-sm node cube high">
+        H8
+      </div>
+      <div class="col-sm node cone high">
+        H9
+      </div>
     </div>
-    <div class="cone-orientation">
-      <svg viewbox="0 0 16 16">
-        <path
-          d="M7.03 1.88c.252-1.01 1.688-1.01 1.94 0l2.905 11.62H14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1h2.125L7.03 1.88z" />
-      </svg>
+    <div class="row h-25" id="row-med">
+      <div class="col-sm node cone med">
+        M1
+      </div>
+      <div class="col-sm node cube med">
+        M2
+      </div>
+      <div class="col-sm node cone med">
+        M3
+      </div>
+      <div class="col-sm node cone-center med">
+        M4
+      </div>
+      <div class="col-sm node cube-center med">
+        M5
+      </div>
+      <div class="col-sm node cone-center med">
+        M6
+      </div>
+      <div class="col-sm node cone med">
+        M7
+      </div>
+      <div class="col-sm node cube med">
+        M8
+      </div>
+      <div class="col-sm node cone med">
+        M9
+      </div>
+    </div>
+    <div class="row h-25" id="row-low">
+      <div class="col-sm node cone low">
+        L1
+      </div>
+      <div class="col-sm node cube low">
+        L2
+      </div>
+      <div class="col-sm node cone low">
+        L3
+      </div>
+      <div class="col-sm node cone-center low">
+        L4
+      </div>
+      <div class="col-sm node cube-center low">
+        L5
+      </div>
+      <div class="col-sm node cone-center low">
+        L6
+      </div>
+      <div class="col-sm node cone low">
+        L7
+      </div>
+      <div class="col-sm node cube low">
+        L8
+      </div>
+      <div class="col-sm node cone low">
+        L9
+      </div>
+    </div>
+    <div class="row h-25">
+      <div id="time" class="col-sm time teleop-1">0:00</div>
+      <div id="confirm-node" class="col-sm">
+        <div class="btn btn-lg btn-block btn-danger">CONFIRM</div>
+      </div>
+      <div class="cone-orientation col-sm" align="center">
+        <svg viewbox="0 0 16 16" width="50%">
+          <path
+            d="M7.03 1.88c.252-1.01 1.688-1.01 1.94 0l2.905 11.62H14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1h2.125L7.03 1.88z" />
+        </svg>
+      </div>
     </div>
   </div>
+
+
 </body>
 
 </html>

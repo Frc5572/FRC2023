@@ -1,9 +1,14 @@
+html {
+    height: 100%;
+}
+
 body {
     background-color: red;
     overscroll-behavior: none;
     overflow: hidden;
     font-family: sans-serif;
     user-select: none;
+    height: 100%;
 }
 
 table {
@@ -21,55 +26,55 @@ td {
     font-size: 5vw;
 }
 
-td.hybrid {
+div.hybrid {
     background-color: #777777;
 }
 
-td.cone {
+div.cone {
     background-color: #ffd91e;
 }
 
-td.cube {
+div.cube {
     background-color: #aa00ff;
 }
 
-td.hybrid-center {
+div.hybrid-center {
     background-color: #353535;
     color: white;
 }
 
-td.cone-center {
+div.cone-center {
     background-color: #968011;
     color: white;
 }
 
-td.cube-center {
+div.cube-center {
     background-color: #5a0088;
     color: white;
 }
 
-td.active {
+div.active {
     background-color: #00ff08;
     color: black;
 }
 
-td.confirmed {
+div.confirmed {
     background-color: blue;
     color: black;
 }
 
-td.confirmed.active {
+div.confirmed.active {
     /* background-color: red; */
     background: linear-gradient(45deg, #00ff08 50%, blue 50% 50%);
     color: black;
 }
 
 #time {
-    position: absolute;
+    /* position: absolute;
     left: 0%;
     width: 33%;
     bottom: 0%;
-    height: 20%;
+    height: 20%; */
     font-size: 18vh;
     text-align: center;
 }
@@ -95,11 +100,11 @@ td.confirmed.active {
 }
 
 div.cone-orientation {
-    position: absolute;
+    /* position: absolute;
     left: 66%;
     width: 33%;
     bottom: 0%;
-    height: 20%;
+    height: 20%; */
     background-color: #ffd91e;
 }
 
@@ -108,10 +113,10 @@ div.cone-orientation.tipped {
 }
 
 div.cone-orientation svg {
-    position: absolute;
+    /* position: absolute;
     top: 50%;
-    height: 80%;
-    transform: translate(-50%, -50%);
+    height: 80%; */
+    /* transform: translate(50%, 50%); */
     transition: transform 0.25s ease;
 }
 
@@ -120,23 +125,14 @@ div.cone-orientation svg {
 }
 
 div.cone-orientation.tipped svg {
-    transform: translate(-50%, -50%) rotate(90deg);
+    transform: rotate(90deg);
 }
 
-div#confirm-node {
-    position: absolute;
-    left: 33%;
-    width: 33%;
-    bottom: 0%;
-    height: 20%;
-    /* vertical-align: 50%; */
-    text-align: center;
-    line-height: 15;
-    background-color: purple;
-}
+
 
 div#confirm-node>div {
-    line-height: 1.5;
-    display: inline-block;
-    font-size: xxx-large;
+    /* line-height: 1.5;
+    display: inline-block; */
+    font-size: 18vh;
+    text-align: center;
 }

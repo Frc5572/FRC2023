@@ -33,6 +33,12 @@
   "NetworkTables": {
     "transitory": {
       "Shuffleboard": {
+        "Auto": {
+          "Auto Chooser": {
+            "open": true
+          },
+          "open": true
+        },
         "Main Driver": {
           "Next Position": {
             "open": true
