@@ -51,7 +51,8 @@ public class TeleopSwerve extends CommandBase {
         raxis = MathUtil.applyDeadband(raxis, Constants.STICK_DEADBAND);
 
         double angle_speed = Constants.Swerve.MAX_ANGULAR_VELOCITY;
-        double speed = Constants.Swerve.MAX_SPEED;
+        double speed_mul = controller.rightTrigger().getAsBoolean() ? 0.33 : 1.0;
+        double speed = Constants.Swerve.MAX_SPEED * speed_mul;
         if (arm.getArmAngle() > -70) {
             angle_speed /= 3;
             speed *= 0.80;
