@@ -15,6 +15,14 @@ const isAutoTopic = "/nodeselector/is_auto";
 const autoChooserOptions = "/Shuffleboard/Auto/Auto Chooser/options";
 const autoChooserActive = "/Shuffleboard/Auto/Auto Chooser/active";
 const autoChooserSelected = "/Shuffleboard/Auto/Auto Chooser/selected";
+const LevelOptions = "/Shuffleboard/Auto/Level/options";
+const LevelActive = "/Shuffleboard/Auto/Level/active";
+const LevelSelected = "/Shuffleboard/Auto/Level/selected";
+const ColumnOptions = "/Shuffleboard/Auto/Column/options";
+const ColumnActive = "/Shuffleboard/Auto/Column/active";
+const ColumnSelected = "/Shuffleboard/Auto/Column/selected";
+const fieldPos = "/Shuffleboard/Auto/Field Pos/Robot";
+const enableDock = "/Shuffleboard/Auto/Enable Dock";
 
 
 let active = null;
@@ -134,6 +142,29 @@ let client = new NT4_Client(
     } else if (topic.name == autoChooserActive) {
       // console.log("Auto Chooser Active - " + value);
       $("#autoChooser").val(value);
+    } else if (topic.name == enableDock) {
+      // console.log("Auto Chooser Active - " + value);
+      $("#enableDock").prop('checked', value);
+    } else if (topic.name == ColumnOptions) {
+      // console.log("Auto Chooser Options - " + value);
+      // let values = value.split(",");
+      $("#columnChooser").children("option").remove();
+      for (let i = 0; i < value.length; i++) {
+        $("#columnChooser").append(new Option(value[i], value[i]));
+      }
+    } else if (topic.name == ColumnActive) {
+      // console.log("Auto Chooser Active - " + value);
+      $("#columnChooser").val(value);
+    } else if (topic.name == LevelOptions) {
+      // console.log("Auto Chooser Options - " + value);
+      // let values = value.split(",");
+      $("#levelChooser").children("option").remove();
+      for (let i = 0; i < value.length; i++) {
+        $("#levelChooser").append(new Option(value[i], value[i]));
+      }
+    } else if (topic.name == LevelActive) {
+      // console.log("Auto Chooser Active - " + value);
+      $("#levelChooser").val(value);
     }
   },
   () => {
@@ -149,7 +180,20 @@ let client = new NT4_Client(
   }
 );
 
+function includeHTML() {
+  $("[w3-include-html]").each(function (i, el) {
+    // `this` is the div
+    $.get($(el).attr("w3-include-html"), function (data) {
+      $(el).html(data)
+      $(el).removeAttr("w3-include-html")
+    });
+  });
+}
+
+
+
 window.addEventListener("load", () => {
+  includeHTML()
   // Start NT connection
   client.subscribe(
     [
@@ -160,7 +204,15 @@ window.addEventListener("load", () => {
       isAutoTopic,
       autoChooserActive,
       autoChooserOptions,
-      autoChooserSelected
+      autoChooserSelected,
+      fieldPos,
+      enableDock,
+      LevelActive,
+      LevelOptions,
+      LevelSelected,
+      ColumnActive,
+      ColumnOptions,
+      ColumnSelected,
     ],
     false,
     false,
@@ -171,6 +223,9 @@ window.addEventListener("load", () => {
   client.publishTopic(coneTippeddTopic, "boolean");
   // client.publishTopic(autoChooserActive, "string");
   client.publishTopic(autoChooserSelected, "string");
+  client.publishTopic(enableDock, "boolean");
+  client.publishTopic(LevelSelected, "string");
+  client.publishTopic(ColumnSelected, "string");
   client.connect();
 
   // Add node click listeners
@@ -203,6 +258,18 @@ window.addEventListener("load", () => {
   $("#autoChooser").change(function () {
     let value = $("#autoChooser").val();
     client.addSample(autoChooserSelected, value);
+  })
+  $("#columnChooser").change(function () {
+    let value = $("#columnChooser").val();
+    client.addSample(ColumnSelected, value);
+  })
+  $("#levelChooser").change(function () {
+    let value = $("#levelChooser").val();
+    client.addSample(LevelSelected, value);
+  })
+  $("#enableDock").change(function () {
+    let value = $("#enableDock").prop('checked');
+    client.addSample(enableDock, value);
   })
   // each((cell, index) => {
   //   cell.addEventListener("click", () => {

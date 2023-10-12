@@ -75,7 +75,7 @@ div.confirmed.active {
     width: 33%;
     bottom: 0%;
     height: 20%; */
-    font-size: 18vh;
+    font-size: 10vh;
     text-align: center;
 }
 
@@ -133,6 +133,6 @@ div.cone-orientation.tipped svg {
 div#confirm-node>div {
     /* line-height: 1.5;
     display: inline-block; */
-    font-size: 18vh;
+    font-size: 10vh;
     text-align: center;
 }

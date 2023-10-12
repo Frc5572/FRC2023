@@ -1,16 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
 
 <head>
-  <!--
-      Copyright (c) 2023 FRC 6328
-      http://github.com/Mechanical-Advantage
-
-      Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file at
-      the root directory of this project.
-    -->
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -22,8 +13,9 @@
   <title>Node Selector &mdash; Banana Split</title>
 </head>
 
-<body>
-  <div class="container-fluid h-100 d-flex flex-column">
+<body style="height: 100%;">
+  <div class="container-fluid d-flex flex-column" style="height: 100%;">
+    <div w3-include-html="nav.html"></div>
     <div class="row h-25" id="row-high">
       <div class="col-sm node cone high">
         H1
@@ -116,7 +108,7 @@
       <div id="confirm-node" class="col-sm">
         <div class="btn btn-lg btn-block btn-danger">CONFIRM</div>
       </div>
-      <div class="cone-orientation col-sm" align="center">
+      <div class="cone-orientation col-sm text-center">
         <svg viewbox="0 0 16 16" width="50%">
           <path
             d="M7.03 1.88c.252-1.01 1.688-1.01 1.94 0l2.905 11.62H14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1h2.125L7.03 1.88z" />

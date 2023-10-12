@@ -1,16 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
 
 <head>
-  <!--
-      Copyright (c) 2023 FRC 6328
-      http://github.com/Mechanical-Advantage
-
-      Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file at
-      the root directory of this project.
-    -->
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -22,8 +13,36 @@
   <title>Node Selector &mdash; Banana Split</title>
 </head>
 
-<body>
-  <select id="autoChooser"></select>
+<body style="height: 100%;">
+  <div class="container-fluid d-flex flex-column" style="height: 100%;">
+    <div w3-include-html="nav.html"></div>
+    <div class="row">
+      <div class="col-sm">
+        <select id="autoChooser" class="form-select form-select-lg mb-3"></select>
+      </div>
+      <div class="col-sm">
+        <select id="columnChooser" class="form-select form-select-lg mb-3"></select>
+      </div>
+      <div class="col-sm">
+        <select id="levelChooser" class="form-select form-select-lg mb-3"></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="enableDock">
+          <label class="form-check-label" for="enableDock">
+            Enable Dock
+          </label>
+        </div>
+      </div>
+      <div class="col-sm">
+        <label for="waitAfterScore" class="form-label">Wait After Score</label>
+        <input type="range" class="form-range" min="0" max="10" step="1" id="waitAfterScore">
+      </div>
+      <div>
+      </div>
+    </div>
 </body>
 
 </html>
