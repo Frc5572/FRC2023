@@ -5,7 +5,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.pathplanner.PPSwerveControllerCommand1;
 import frc.robot.Constants;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Swerve.Swerve;
 
 /**
  * Parent class for all autonomous commands

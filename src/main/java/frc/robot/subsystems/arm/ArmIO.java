@@ -1,6 +1,8 @@
 package frc.robot.subsystems.arm;
 
 import org.littletonrobotics.junction.AutoLog;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
 
 public interface ArmIO {
 
@@ -9,25 +11,19 @@ public interface ArmIO {
     public static class ArmInputs {
         public double armAngle;
         public double wristAngle;
-        public double armVoltage;
-        public double wristVoltage;
-        public boolean extended;
+        public double shoulderPosition;
+        public double wristPosition;
     }
 
     /* Sets the numbers */
-    public void updateInputs(ArmInputs inputs){}
+    public void updateInputs(ArmInputs inputs);
 
-    public void setArmVoltage(ArmInputs inputs, double value){
-        inputs.armVoltage = value;
-    }
+    public void setArmVoltage(double inputs);
 
-    public void setWristVoltage(ArmInputs inputs, double value){
-        inputs.wristVoltage = value;
-    }
+    public void setWristVoltage(double inputs);
 
-    public void setArmSolenoid(ArmInputs inputs, boolean value){
-        inputs.extended = value;
-    }
+    public void setArmSolenoid(Value value);
+
 
 
 }
