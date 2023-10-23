@@ -136,3 +136,11 @@ div#confirm-node>div {
     font-size: 10vh;
     text-align: center;
 }
+
+.aprilgood {
+    background-color: #00ff08;
+}
+
+.aprilbad {
+    background-color: red;
+}

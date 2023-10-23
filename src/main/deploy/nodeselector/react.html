@@ -1,0 +1,47 @@
+<html>
+
+<head>
+
+    <title>Let’s React with npm</title>
+    <!-- Load React Libraries
+
+    Note: when deploying, replace “development.js” with “production.min.js”. -->
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+
+</head>
+
+
+
+<body>
+
+    <div id="input-field"></div>
+    <!-- This is embedded JavaScript. You can even place this in separate .js file -->
+
+    <script>
+        const element = React.createElement;
+
+        class InputField extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { name: '' };
+            }
+
+            render() {
+                return element('input', {
+                    onChange: e => this.setState({ name: e.target.value }),
+                    value: this.state.name,
+                    type: 'text'
+                });
+            }
+        }
+
+        const domContainer = document.querySelector('#input-field');
+        ReactDOM.render(element(InputField), domContainer);
+    </script>
+</body>
+
+</html>

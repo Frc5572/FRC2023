@@ -23,6 +23,7 @@ const ColumnActive = "/Shuffleboard/Auto/Column/active";
 const ColumnSelected = "/Shuffleboard/Auto/Column/selected";
 const fieldPos = "/Shuffleboard/Auto/Field Pos/Robot";
 const enableDock = "/Shuffleboard/Auto/Enable Dock";
+const aprilTagStatus = "/Shuffleboard/Auto/Currently Seeing April Tag";
 
 
 let active = null;
@@ -153,18 +154,23 @@ let client = new NT4_Client(
         $("#columnChooser").append(new Option(value[i], value[i]));
       }
     } else if (topic.name == ColumnActive) {
-      // console.log("Auto Chooser Active - " + value);
       $("#columnChooser").val(value);
     } else if (topic.name == LevelOptions) {
-      // console.log("Auto Chooser Options - " + value);
       // let values = value.split(",");
       $("#levelChooser").children("option").remove();
       for (let i = 0; i < value.length; i++) {
         $("#levelChooser").append(new Option(value[i], value[i]));
       }
     } else if (topic.name == LevelActive) {
-      // console.log("Auto Chooser Active - " + value);
       $("#levelChooser").val(value);
+    } else if (topic.name == aprilTagStatus) {
+      let element = $("#aprilTagStatus");
+      element.removeClass("aprilgood aprilbad");
+      if (value) {
+        element.addClass("aprilgood");
+      } else {
+        element.addClass("aprilbad");
+      }
     }
   },
   () => {
@@ -213,6 +219,7 @@ window.addEventListener("load", () => {
       ColumnActive,
       ColumnOptions,
       ColumnSelected,
+      aprilTagStatus,
     ],
     false,
     false,
@@ -268,7 +275,8 @@ window.addEventListener("load", () => {
     client.addSample(LevelSelected, value);
   })
   $("#enableDock").change(function () {
-    let value = $("#enableDock").prop('checked');
+    // let value = $("#enableDock").prop('checked');
+    let value = $("#enableDock").val() === "true";
     client.addSample(enableDock, value);
   })
   // each((cell, index) => {

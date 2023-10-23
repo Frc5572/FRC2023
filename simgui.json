@@ -37,13 +37,14 @@
           "Auto Chooser": {
             "open": true
           },
-          "open": true
+          "Column": {
+            "open": true
+          }
         },
         "Main Driver": {
           "Next Position": {
             "open": true
-          },
-          "open": true
+          }
         },
         "open": true
       },
