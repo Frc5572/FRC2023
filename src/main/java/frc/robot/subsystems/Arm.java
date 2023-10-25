@@ -29,7 +29,7 @@ public class Arm extends SubsystemBase {
     private final AbsoluteEncoder armEncoder = armMotor1.getAbsoluteEncoder(Type.kDutyCycle);
     private final DoubleSolenoid armSolenoid;
 
-    public DigitalInput armSense = new DigitalInput(Constants.Arm.ARM_PWM_PORT);
+    public DigitalInput armSense = new DigitalInput(Constants.Arm.ARM_PWM_DIO);
 
     ProfiledPIDController armPIDController =
         new ProfiledPIDController(Constants.Arm.PID.kP, Constants.Arm.PID.kI, Constants.Arm.PID.kD,
