@@ -3,9 +3,9 @@ package frc.robot;
 import java.util.Map;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -135,7 +135,7 @@ public class RobotContainer {
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    public RobotContainer(RobotBase robotBase) {
+    public RobotContainer() {
         ph.enableCompressorAnalog(90, 120);
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
@@ -174,7 +174,7 @@ public class RobotContainer {
             autoWaitChooser.addOption(String.valueOf(i), i);
         }
         // Configure the button bindings
-        configureButtonBindings(robotBase);
+        configureButtonBindings();
     }
 
     /**
@@ -183,9 +183,10 @@ public class RobotContainer {
      * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings(RobotBase robotBase) {
+    private void configureButtonBindings() {
 
-        Trigger armSensor = new Trigger(() -> this.s_Arm.armSense.get() && robotBase.isDisabled());
+        Trigger armSensor =
+            new Trigger(() -> this.s_Arm.armSense.get() && DriverStation.isDisabled());
 
         armSensor.onTrue(new DisabledInstantCommand(() -> s_Arm.setCoastMode()));
 
