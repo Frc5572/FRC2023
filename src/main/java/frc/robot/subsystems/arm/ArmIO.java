@@ -7,8 +7,8 @@ public interface ArmIO {
 
     @AutoLog
     public static class ArmInputs {
-        public double shoulderPosition;
-        public double wristPosition;
+        public double shoulderPosition = 0.0;
+        public double wristPosition = 0.0;
     }
 
     public default void updateInputs(ArmInputs inputs) {}
