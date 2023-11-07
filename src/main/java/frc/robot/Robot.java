@@ -18,8 +18,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.lib.util.KeyboardAndMouse;
+import frc.lib.util.KeyboardAndMouse.WASD;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.lib.util.ctre.CTREConfigs;
@@ -54,6 +57,8 @@ public class Robot extends TimedRobot {
     public IntegerPublisher timePublisher = table.getIntegerTopic("match_time").publish();
     public BooleanPublisher isAutoPublisher = table.getBooleanTopic("is_auto").publish();
 
+    WASD wasd;
+
     // private Ultrasonic ultrasonic = new Ultrasonic();
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -61,6 +66,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        wasd = KeyboardAndMouse.getInstance().wasd("w", "a", "s", "d");
         Arrays.fill(node_status, false);
         ctreConfigs = new CTREConfigs();
         // Instantiate our RobotContainer. This will perform all our button bindings, and put our
@@ -84,6 +90,9 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        KeyboardAndMouse.getInstance().update();
+        SmartDashboard.putNumber("LR", wasd.getX());
+        SmartDashboard.putNumber("UD", wasd.getY());
         // Runs the Scheduler. This is responsible for polling buttons, adding newly-scheduled
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods. This must be called from the robot's periodic

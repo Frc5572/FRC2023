@@ -1,10 +1,11 @@
 package frc.robot.commands.drive;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.lib.math.Conversions;
+import frc.lib.util.KeyboardAndMouse;
+import frc.lib.util.KeyboardAndMouse.LowPassKey;
+import frc.lib.util.KeyboardAndMouse.WASD;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
@@ -19,6 +20,8 @@ public class TeleopSwerve extends CommandBase {
     private Swerve swerveDrive;
     private CommandXboxController controller;
     private Arm arm;
+    private WASD wasd;
+    private LowPassKey shift, ctrl;
 
     /**
      * Creates an command for driving the swerve drive during tele-op
@@ -29,6 +32,10 @@ public class TeleopSwerve extends CommandBase {
      */
     public TeleopSwerve(Swerve swerveDrive, CommandXboxController controller, boolean fieldRelative,
         boolean openLoop, Arm arm) {
+        KeyboardAndMouse kam = KeyboardAndMouse.getInstance();
+        this.wasd = kam.wasd("w", "a", "s", "d");
+        this.shift = kam.lowPassKey("shift");
+        this.ctrl = kam.lowPassKey("ctrl");
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
         this.fieldRelative = fieldRelative;
@@ -39,19 +46,23 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void execute() {
-        double yaxis = -controller.getLeftY();
-        double xaxis = -controller.getLeftX();
-        double raxis = -controller.getRightX();
+        double yaxis = wasd.getY();
+        double xaxis = wasd.getX();
+        double raxis = KeyboardAndMouse.getInstance().getX() * 0.01;
 
         /* Deadbands */
         // yaxis = MathUtil.applyDeadband(yaxis, Constants.STICK_DEADBAND);
-        yaxis = Conversions.applySwerveCurve(yaxis, Constants.STICK_DEADBAND);
+        // yaxis = Conversions.applySwerveCurve(yaxis, Constants.STICK_DEADBAND);
         // xaxis = MathUtil.applyDeadband(xaxis, Constants.STICK_DEADBAND);
-        xaxis = Conversions.applySwerveCurve(xaxis, Constants.STICK_DEADBAND);
-        raxis = MathUtil.applyDeadband(raxis, Constants.STICK_DEADBAND);
+        // xaxis = Conversions.applySwerveCurve(xaxis, Constants.STICK_DEADBAND);
+        // raxis = MathUtil.applyDeadband(raxis, Constants.STICK_DEADBAND);
 
         double angle_speed = Constants.Swerve.MAX_ANGULAR_VELOCITY;
         double speed = Constants.Swerve.MAX_SPEED;
+
+        speed *= (1.0 - shift.get()) * 0.2;
+        speed *= (1.0 - ctrl.get()) * 0.4;
+
         if (arm.getArmAngle() > -70) {
             angle_speed /= 3;
             speed *= 0.80;
