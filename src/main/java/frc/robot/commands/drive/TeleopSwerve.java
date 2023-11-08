@@ -1,6 +1,10 @@
 package frc.robot.commands.drive;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.util.KeyboardAndMouse;
@@ -23,6 +27,13 @@ public class TeleopSwerve extends CommandBase {
     private WASD wasd;
     private LowPassKey shift, ctrl;
 
+    private double desiredAngle = 0.0;
+    private ProfiledPIDController thetaController =
+        new ProfiledPIDController(Constants.SwerveTransformPID.PID_TKP,
+            Constants.SwerveTransformPID.PID_TKI, Constants.SwerveTransformPID.PID_TKD,
+            new TrapezoidProfile.Constraints(Constants.SwerveTransformPID.MAX_ANGULAR_VELOCITY,
+                Constants.SwerveTransformPID.MAX_ANGULAR_ACCELERATION));
+
     /**
      * Creates an command for driving the swerve drive during tele-op
      *
@@ -35,20 +46,24 @@ public class TeleopSwerve extends CommandBase {
         KeyboardAndMouse kam = KeyboardAndMouse.getInstance();
         this.wasd = kam.wasd("w", "a", "s", "d");
         this.shift = kam.lowPassKey("shift");
-        this.ctrl = kam.lowPassKey("ctrl");
+        this.ctrl = kam.lowPassKey("control");
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
         this.controller = controller;
         this.arm = arm;
+        thetaController.enableContinuousInput(0, Units.degreesToRadians(360.0));
     }
 
     @Override
     public void execute() {
         double yaxis = wasd.getY();
         double xaxis = wasd.getX();
-        double raxis = KeyboardAndMouse.getInstance().getX() * 0.01;
+        double raxis = KeyboardAndMouse.getInstance().getX() * 0.0002;
+        desiredAngle += raxis;
+
+        SmartDashboard.putNumber("desiredAngle", desiredAngle);
 
         /* Deadbands */
         // yaxis = MathUtil.applyDeadband(yaxis, Constants.STICK_DEADBAND);
@@ -67,6 +82,8 @@ public class TeleopSwerve extends CommandBase {
             angle_speed /= 3;
             speed *= 0.80;
         }
+
+        thetaController.calculate(swerveDrive.getYaw().getRadians(), desiredAngle);
 
         Translation2d translation = new Translation2d(yaxis, xaxis).times(speed);
         double rotation = raxis * angle_speed;

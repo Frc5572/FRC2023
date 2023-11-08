@@ -2,6 +2,7 @@ package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.lib.util.KeyboardAndMouse;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -25,7 +26,7 @@ public class VariableArm extends CommandBase {
 
     @Override
     public void execute() {
-        double controllerValue = controller.getRightY();
-        arm.adjust(-(0.02 * 0.5 * controllerValue));
+        double raxis = KeyboardAndMouse.getInstance().getY() * 0.01;
+        arm.adjust(-(0.02 * 0.5 * raxis));
     }
 }

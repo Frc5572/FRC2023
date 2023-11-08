@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
+import frc.lib.util.KeyboardAndMouse;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.autos.CrossAndDock;
@@ -36,7 +37,6 @@ import frc.robot.commands.arm.CubeIntake;
 import frc.robot.commands.arm.DockArm;
 import frc.robot.commands.arm.ScoreArm;
 import frc.robot.commands.arm.VariableArm;
-import frc.robot.commands.drive.MoveToEngage;
 import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
@@ -183,30 +183,24 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        KeyboardAndMouse kam = KeyboardAndMouse.getInstance();
         /* Driver Buttons */
-        driver.start().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
-
-        driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
-        driver.rightTrigger().and(driver.leftTrigger()).and(operator.start())
-            .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
-        driver.rightTrigger().and(driver.leftTrigger())
-            .onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
-        driver.rightBumper().and(driver.leftBumper())
-            .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
-        driver.start()
+        kam.key("p").onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
+        kam.key("o").onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
+        kam.key("x")
             .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
 
         /* Operator Buttons */
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(15.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(15.0));
 
-        operator.b().onTrue(new ConeIntake(s_Arm)
+        kam.key("q").onTrue(new ConeIntake(s_Arm)
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
-        operator.a().onTrue(new CubeIntake(s_Arm)
+        kam.key("e").onTrue(new CubeIntake(s_Arm)
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
-        operator.x().onTrue(new ConeUpIntake(s_Arm)
+        kam.key("r").onTrue(new ConeUpIntake(s_Arm)
             .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
-        operator.y().onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
+        kam.key("f").onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
