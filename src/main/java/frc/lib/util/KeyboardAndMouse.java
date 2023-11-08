@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class KeyboardAndMouse {
 
     private static KeyboardAndMouse keyboard = new KeyboardAndMouse();
-    private double deltaX = 0, deltaY = 0;
-    private double x = 0, y = 0;
+    private double deltaX = 0;
+    private double deltaY = 0;
+    private double x = 0;
+    private double y = 0;
 
     private KeyboardAndMouse() {
         NetworkTableInstance instance = NetworkTableInstance.getDefault();
