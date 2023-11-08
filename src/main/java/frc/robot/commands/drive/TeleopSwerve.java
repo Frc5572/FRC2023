@@ -25,7 +25,8 @@ public class TeleopSwerve extends CommandBase {
     private CommandXboxController controller;
     private Arm arm;
     private WASD wasd;
-    private LowPassKey shift, ctrl;
+    private LowPassKey shift;
+    private LowPassKey ctrl;
 
     private double desiredAngle = 0.0;
     private ProfiledPIDController thetaController =

@@ -168,7 +168,10 @@ public class KeyboardAndMouse {
      * Simulate an axis using 4 buttons
      */
     public static class WASD {
-        LowPassKey left, right, up, down;
+        LowPassKey left;
+        LowPassKey right;
+        LowPassKey up;
+        LowPassKey down;
 
         private WASD(LowPassKey up, LowPassKey left, LowPassKey down, LowPassKey right) {
             this.left = left;
