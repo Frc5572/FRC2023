@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    background-color: red;
+    background-color: white !important;
     overscroll-behavior: none;
     overflow: hidden;
     font-family: sans-serif;
@@ -11,136 +11,11 @@ body {
     height: 100%;
 }
 
-table {
-    position: absolute;
-    left: 0%;
-    width: 100%;
-    top: 0%;
-    height: 80%;
-    border-spacing: 10px;
-    table-layout: fixed;
-}
-
-td {
-    text-align: center;
-    font-size: 5vw;
-}
-
-div.hybrid {
-    background-color: #777777;
-}
-
-div.cone {
-    background-color: #ffd91e;
-}
-
-div.cube {
-    background-color: #aa00ff;
-}
-
-div.hybrid-center {
-    background-color: #353535;
-    color: white;
-}
-
-div.cone-center {
-    background-color: #968011;
-    color: white;
-}
-
-div.cube-center {
-    background-color: #5a0088;
-    color: white;
-}
-
-div.active {
-    background-color: #00ff08;
-    color: black;
-}
-
-div.confirmed {
-    background-color: blue;
-    color: black;
-}
-
-div.confirmed.active {
-    /* background-color: red; */
-    background: linear-gradient(45deg, #00ff08 50%, blue 50% 50%);
-    color: black;
-}
-
-#time {
-    /* position: absolute;
-    left: 0%;
-    width: 33%;
-    bottom: 0%;
-    height: 20%; */
-    font-size: 10vh;
-    text-align: center;
-}
-
-#time.auto {
-    background-color: lightblue;
-    color: black;
-}
-
-#time.teleop-1 {
-    background-color: black;
-    color: white;
-}
-
-#time.teleop-2 {
-    background-color: orange;
-    color: black;
-}
-
-#time.teleop-3 {
-    background-color: red;
-    color: black;
-}
-
-div.cone-orientation {
-    /* position: absolute;
-    left: 66%;
-    width: 33%;
-    bottom: 0%;
-    height: 20%; */
-    background-color: #ffd91e;
-}
-
-div.cone-orientation.tipped {
-    background-color: #ff4000;
-}
-
-div.cone-orientation svg {
-    /* position: absolute;
-    top: 50%;
-    height: 80%; */
-    /* transform: translate(50%, 50%); */
-    transition: transform 0.25s ease;
-}
-
-div.cone-orientation svg {
-    left: 50%;
-}
-
-div.cone-orientation.tipped svg {
-    transform: rotate(90deg);
-}
-
-
-
-div#confirm-node>div {
-    /* line-height: 1.5;
-    display: inline-block; */
-    font-size: 10vh;
-    text-align: center;
-}
-
-.aprilgood {
-    background-color: #00ff08;
-}
-
-.aprilbad {
-    background-color: red;
+#theButton {
+    border: none;
+    background: none;
+    background-image: url(assests/resnick.jpg);
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+    background-size: cover;
 }
