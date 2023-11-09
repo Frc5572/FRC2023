@@ -8,9 +8,9 @@
 import { NT4_Client } from "./NT4.js";
 
 const buttonBool = "/Button/Stuff/pressed";
-const doNothing = "/Autos/Paths/doNothing";
-const crossAndDock = "/Autos/Paths/crossAndDock";
-const tripleScore = "/Autos/Paths/tripleScore";
+const autoChooserOptions = "/Shuffleboard/Auto/Auto Chooser/options";
+const autoChooserActive = "/Shuffleboard/Auto/Auto Chooser/active";
+const autoChooserSelected = "/Shuffleboard/Auto/Auto Chooser/selected";
 
 
 let bool = false;
@@ -21,10 +21,14 @@ let client = new NT4_Client(
     // New data
     if (topic.name == buttonBool) {
       bool = value;
-    } else if (topic.name == doNothing) {
-      $("#doNothing").val(value);
+    } else if (topic.name == autoChooserOptions) {
+      // console.log("Auto Chooser Options - " + value);
+      // let values = value.split(",");
+      $("#autoChooser").children("option").remove();
+      for (let i = 0; i < value.length; i++) {
+        $("#autoChooser").append(new Option(value[i], value[i]));
+      }
     }
-
   },
   () => {
     // Connected
@@ -57,14 +61,21 @@ window.addEventListener("load", () => {
   client.subscribe(
     [
       buttonBool,
+      autoChooserActive,
+      autoChooserOptions,
+      autoChooserSelected,
     ],
   );
   client.publishTopic(buttonBool, "boolean");
   client.connect();
-
+  client.publishTopic(autoChooserSelected, "string");
   // Add node click listeners
   $("#theButton").click(function () {
     client.addSample(buttonBool, !value);
+  })
+  $("#autoChooser").change(function () {
+    let value = $("#autoChooser").val();
+    client.addSample(autoChooserSelected, value);
   })
 
 });
