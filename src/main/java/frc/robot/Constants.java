@@ -73,7 +73,7 @@ public final class Constants {
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
-        public static final boolean IS_FIELD_RELATIVE = true;
+        public static final boolean IS_FIELD_RELATIVE = false;
         public static final boolean IS_OPEN_LOOP = false;
 
         public static final double OPEN_LOOP_RAMP = 0.25;

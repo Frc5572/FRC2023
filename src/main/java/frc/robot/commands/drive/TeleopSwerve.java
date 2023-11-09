@@ -59,9 +59,9 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void execute() {
-        double yaxis = wasd.getY();
-        double xaxis = wasd.getX();
-        double raxis = KeyboardAndMouse.getInstance().getX() * 0.0002;
+        double yaxis = wasd.getY() * 5.0;
+        double xaxis = -wasd.getX() * 5.0;
+        double raxis = -KeyboardAndMouse.getInstance().getX() * 0.005;
         desiredAngle += raxis;
 
         SmartDashboard.putNumber("desiredAngle", desiredAngle);
