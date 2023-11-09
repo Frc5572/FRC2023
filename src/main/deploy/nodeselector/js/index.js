@@ -8,6 +8,9 @@
 import { NT4_Client } from "./NT4.js";
 
 const buttonBool = "/Button/Stuff/pressed";
+const doNothing = "/Autos/Paths/doNothing";
+const crossAndDock = "/Autos/Paths/crossAndDock";
+const tripleScore = "/Autos/Paths/tripleScore";
 
 
 let bool = false;
@@ -18,6 +21,8 @@ let client = new NT4_Client(
     // New data
     if (topic.name == buttonBool) {
       bool = value;
+    } else if (topic.name == doNothing) {
+      $("#doNothing").val(value);
     }
 
   },
