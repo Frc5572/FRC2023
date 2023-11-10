@@ -1,0 +1,43 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+.grid {
+    width: 80vw;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.cell {
+    background-color: #0f0f0f;
+    aspect-ratio: 1 / 1;
+    border-radius: 5px;
+}
+
+.cell.cone {
+    background-color: yellow;
+    background-image: url(../cone.svg);
+    background-size: contain;
+}
+
+.cell.cube {
+    background-color: purple;
+    background-image: url(../cube.svg);
+    background-size: contain;
+}
+
+.cell.cube.selected {
+    background: linear-gradient(to bottom left, blue 49.9%, purple 50.1%);
+}
+
+.cell.cone.selected {
+    background: linear-gradient(to bottom left, blue 49.9%, yellow 50.1%);
+}
+
+.cell.done {
+    background: linear-gradient(to bottom left, green 49%, purple 51%);
+}
