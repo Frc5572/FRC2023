@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.DoubleJointedArmFeedforward;
 import frc.robot.Constants;
+import frc.robot.subsystems.arm.ArmIO.ArmInputs;
 
 /**
  * Creates the subsystem for the arm.
@@ -31,7 +32,9 @@ public class Arm extends SubsystemBase {
     private boolean reset0 = true;
 
     private ArmIO armIO;
-    private ArmInputsAutoLogged armInputs = new ArmInputsAutoLogged();
+    private ArmInputs armInputs = new ArmInputs();
+
+
 
     public Arm(ArmIO io) {
         armIO = io;
