@@ -1,7 +1,7 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.swerve2;
 
 import java.util.Map;
-import com.kauailabs.navx.frc.AHRS;
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,21 +17,15 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.util.PhotonCameraWrapper;
 import frc.lib.util.swerve.SwerveModule;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-/**
- * Creates swerve drive and commands for drive.
- */
 public class Swerve extends SubsystemBase {
-    private AHRS gyro = new AHRS(Constants.Swerve.navXID);
+
     private SwerveDrivePoseEstimator swerveOdometry;
-    public PhotonCameraWrapper cam = new PhotonCameraWrapper(Constants.CameraConstants.CAMERA_NAME,
-        Constants.CameraConstants.KCAMERA_TO_ROBOT.inverse());
-    private SwerveModule[] swerveMods;
-    private double fieldOffset = gyro.getYaw();
+
+    private double fieldOffset;
     private final Field2d field = new Field2d();
     private boolean hasInitialized = false;
     // private ComplexWidget fieldWidget = RobotContainer.mainDriverTab.add("Field Pos", field)
@@ -42,15 +36,22 @@ public class Swerve extends SubsystemBase {
         .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
         .withPosition(8, 4).withSize(2, 2).getEntry();
 
+    private SwerveIO io;
+    private SwerveInputsAutoLogged inputs = new SwerveInputsAutoLogged();
+
+    private SwerveModule swerveMods[] = new SwerveModule[4];
+
     /**
      * Initializes swerve modules.
      */
-    public Swerve() {
-        swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
-            new SwerveModule(1, Constants.Swerve.Mod1.constants),
-            new SwerveModule(2, Constants.Swerve.Mod2.constants),
-            new SwerveModule(3, Constants.Swerve.Mod3.constants)};
+    public Swerve(SwerveIO io) {
+        this.io = io;
 
+        for (int i = 0; i < 4; i++) {
+            swerveMods[i] = io.createSwerveModule(i, Constants.Swerve.SWERVE_CONSTANTS[i]);
+        }
+
+        io.updateInputs(inputs);
         swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.SWERVE_KINEMATICS, getYaw(),
             getPositions(), new Pose2d());
 
@@ -178,7 +179,7 @@ public class Swerve extends SubsystemBase {
      * Gets the rotation degree from swerve modules.
      */
     public Rotation2d getYaw() {
-        float yaw = gyro.getYaw();
+        float yaw = inputs.yaw;
         return (Constants.Swerve.INVERT_GYRO) ? Rotation2d.fromDegrees(-yaw)
             : Rotation2d.fromDegrees(yaw);
     }
@@ -187,36 +188,20 @@ public class Swerve extends SubsystemBase {
      * Gets the roll (pitch) degree from swerve modules.
      */
     public float getRoll() {
-        return gyro.getRoll();
+        return inputs.roll;
     }
 
     @Override
     public void periodic() {
-        Rotation2d yaw = getYaw();
-        swerveOdometry.update(yaw, getPositions());
-        SmartDashboard.putBoolean("photonGood", cam.latency() < 0.6);
-        if (!hasInitialized /* || DriverStation.isDisabled() */) {
-            var robotPose = cam.getInitialPose();
-            if (robotPose.isPresent()) {
-                swerveOdometry.resetPosition(getYaw(), getPositions(), robotPose.get());
-                hasInitialized = true;
-            }
-        } else {
-            var result = cam.getEstimatedGlobalPose(swerveOdometry.getEstimatedPosition());
-            if (result.isPresent()) {
-                var camPose = result.get();
-                if (camPose.targetsUsed.get(0).getArea() > 0.7) {
-                    swerveOdometry.addVisionMeasurement(camPose.estimatedPose.toPose2d(),
-                        camPose.timestampSeconds);
-                }
-                field.getObject("Cam Est Pose").setPose(camPose.estimatedPose.toPose2d());
-            } else {
-                field.getObject("Cam Est Pose").setPose(new Pose2d(-100, -100, new Rotation2d()));
-            }
+        io.updateInputs(inputs);
+        Logger.getInstance().processInputs("Swerve", inputs);
+
+        for (SwerveModule mod : swerveMods) {
+            mod.periodic();
         }
 
-        field.setRobotPose(getPose());
-        aprilTagTarget.setBoolean(cam.seesTarget());
+        Rotation2d yaw = getYaw();
+        swerveOdometry.update(yaw, getPositions());
 
         SmartDashboard.putBoolean("Has Initialized", hasInitialized);
         SmartDashboard.putNumber("Robot X", getPose().getX());

@@ -44,10 +44,12 @@ import frc.robot.commands.leds.MovingColorLEDs;
 import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.wrist.VariableIntake;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIO;
 import frc.robot.subsystems.arm.ArmIOSparkMax;
+import frc.robot.subsystems.swerve2.Swerve;
+import frc.robot.subsystems.swerve2.SwerveIO;
+import frc.robot.subsystems.swerve2.SwerveReal;
 import frc.robot.subsystems.wristIntake.WristIntake;
 
 /**
@@ -122,16 +124,10 @@ public class RobotContainer {
 
     /* Subsystems */
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
-    public final Swerve s_Swerve = new Swerve();
+    public final Swerve s_Swerve;
     // private final DropIntake s_dIntake = new DropIntake();
     private final Arm s_Arm;
     private final WristIntake s_wristIntake = new WristIntake();
-
-
-    public GenericEntry photonSeeing = mainDriverTab
-        .add("Photon Good", s_Swerve.cam.latency() < 0.6).withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
-        .withPosition(8, 0).withSize(2, 2).getEntry();
 
     private ArmIO armIO;
 
@@ -141,8 +137,12 @@ public class RobotContainer {
     public RobotContainer(boolean isReal) {
         if (isReal) {
             armIO = new ArmIOSparkMax(ph);
+            s_Swerve = new Swerve(new SwerveReal());
         } else {
             armIO = new ArmIO() {};
+            s_Swerve = new Swerve(new SwerveIO() {
+
+            });
         }
         s_Arm = new Arm(armIO);
         ph.enableCompressorAnalog(90, 120);

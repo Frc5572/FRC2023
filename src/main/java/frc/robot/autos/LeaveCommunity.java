@@ -6,7 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.FieldConstants;
 import frc.robot.commands.drive.MoveToPos;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.swerve2.Swerve;
 
 /**
  * Leaves community area.

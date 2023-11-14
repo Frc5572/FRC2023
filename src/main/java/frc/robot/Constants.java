@@ -181,7 +181,8 @@ public final class Constants {
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
 
-
+        public static final SwerveModuleConstants[] SWERVE_CONSTANTS =
+            {Mod0.constants, Mod1.constants, Mod2.constants, Mod3.constants};
 
     }
 
