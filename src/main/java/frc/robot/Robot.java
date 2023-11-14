@@ -37,6 +37,8 @@ public class Robot extends LoggedRobot {
     public static int column = 0;
     public static UsbCamera camera = CameraServer.startAutomaticCapture("Magazine Camera", 0);
 
+    PowerDistribution powerDistribution = null;
+
     // private Ultrasonic ultrasonic = new Ultrasonic();
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -48,7 +50,7 @@ public class Robot extends LoggedRobot {
         if (isReal()) {
             logger.addDataReceiver(new WPILOGWriter("/media/sda1"));
             logger.addDataReceiver(new NT4Publisher());
-            new PowerDistribution(1, ModuleType.kRev);
+            powerDistribution = new PowerDistribution(1, ModuleType.kRev);
         } else {
             String path = LogFileUtil.findReplayLog();
             logger.setReplaySource(new WPILOGReader(path));
@@ -134,4 +136,12 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {}
+
+    @Override
+    public void close() {
+        super.close();
+        if (powerDistribution != null) {
+            powerDistribution.close();
+        }
+    }
 }

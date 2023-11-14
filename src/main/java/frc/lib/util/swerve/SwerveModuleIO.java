@@ -4,8 +4,10 @@ import org.littletonrobotics.junction.AutoLog;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
+/** IO Class for SwerveModule */
 public interface SwerveModuleIO {
 
+    /** Inputs Class for SwerveModule */
     @AutoLog
     public static class SwerveModuleInputs {
         public double angleEncoderValue;

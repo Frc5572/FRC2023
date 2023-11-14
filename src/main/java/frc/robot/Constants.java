@@ -22,6 +22,9 @@ public final class Constants {
     public static final int DRIVER_ID = 0;
     public static final int OPERATOR_ID = 1;
 
+    /** number of seconds between each loop iteration. */
+    public static final double kDefaultPeriod = 0.02;
+
     /**
      * Motor CAN id's. PID constants for Swerve Auto Holonomic Drive Controller.
      */

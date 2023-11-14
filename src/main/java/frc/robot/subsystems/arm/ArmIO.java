@@ -2,8 +2,10 @@ package frc.robot.subsystems.arm;
 
 import org.littletonrobotics.junction.AutoLog;
 
+/** IO Class for Arm */
 public class ArmIO {
 
+    /** Inputs Class for Arm */
     @AutoLog
     public static class ArmInputs {
         public double armAngleRad;

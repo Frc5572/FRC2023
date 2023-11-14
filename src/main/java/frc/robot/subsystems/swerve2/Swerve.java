@@ -1,6 +1,5 @@
 package frc.robot.subsystems.swerve2;
 
-import java.util.Map;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,8 +10,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +18,7 @@ import frc.lib.util.swerve.SwerveModule;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
+/** Swerve drivebase subsystem */
 public class Swerve extends SubsystemBase {
 
     private SwerveDrivePoseEstimator swerveOdometry;
@@ -31,15 +29,18 @@ public class Swerve extends SubsystemBase {
     // private ComplexWidget fieldWidget = RobotContainer.mainDriverTab.add("Field Pos", field)
     // .withWidget(BuiltInWidgets.kField).withSize(8, 4) // make the widget 2x1
     // .withPosition(0, 0); // place it in the top-left corner
-    private GenericEntry aprilTagTarget = RobotContainer.autoTab
-        .add("Currently Seeing April Tag", false).withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
-        .withPosition(8, 4).withSize(2, 2).getEntry();
+
+    /*
+     * private GenericEntry aprilTagTarget = RobotContainer.autoTab
+     * .add("Currently Seeing April Tag", false).withWidget(BuiltInWidgets.kBooleanBox)
+     * .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
+     * .withPosition(8, 4).withSize(2, 2).getEntry();
+     */
 
     private SwerveIO io;
     private SwerveInputsAutoLogged inputs = new SwerveInputsAutoLogged();
 
-    private SwerveModule swerveMods[] = new SwerveModule[4];
+    private SwerveModule[] swerveMods = new SwerveModule[4];
 
     /**
      * Initializes swerve modules.
@@ -84,7 +85,7 @@ public class Swerve extends SubsystemBase {
     public void driveWithTwist(Translation2d translation, double rotation, boolean fieldRelative,
         boolean isOpenLoop) {
 
-        double dt = TimedRobot.kDefaultPeriod;
+        double dt = Constants.kDefaultPeriod;
 
         ChassisSpeeds chassisSpeeds = fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(),

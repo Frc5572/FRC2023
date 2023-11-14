@@ -1,5 +1,6 @@
-package frc.robot.subsystems.wristIntake;
+package frc.robot.subsystems.wrist_intake;
 
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -10,7 +11,7 @@ import frc.robot.Constants;
 public class WristIntake extends SubsystemBase {
 
     private boolean invertForCone = true;
-    private WristIntakeIOFalcon500 io;
+    private WristIntakeIO io;
 
     private WristIntakeInputsAutoLogged wristIntakeAutoLogged = new WristIntakeInputsAutoLogged();
 
@@ -18,13 +19,16 @@ public class WristIntake extends SubsystemBase {
     /**
      * Create Wrist Intake Subsystem
      */
-    public WristIntake() {
-        io = new WristIntakeIOFalcon500();
+    public WristIntake(WristIntakeIO io) {
+        this.io = io;
+        io.updateInputs(wristIntakeAutoLogged);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Wrist Intake Current", io.getOutputCurrentAmps());
+        io.updateInputs(wristIntakeAutoLogged);
+        Logger.getInstance().processInputs("WristIntake", wristIntakeAutoLogged);
+        SmartDashboard.putNumber("Wrist Intake Current", wristIntakeAutoLogged.outputCurrentAmps);
     }
 
     // Runs wrist intake motor to intake a game piece.
@@ -62,7 +66,7 @@ public class WristIntake extends SubsystemBase {
      * Get if motor is stalling by checking if the stator current exceeds a constant
      */
     public boolean getVoltageSpike(boolean passedTime) {
-        return io.getOutputCurrentAmps() > Constants.Wrist.STALL_CURRENT;
+        return wristIntakeAutoLogged.outputCurrentAmps > Constants.Wrist.STALL_CURRENT;
     }
 
     public void setInvert(boolean invert) {

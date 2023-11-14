@@ -6,7 +6,7 @@ import frc.lib.util.Scoring;
 import frc.robot.commands.arm.ScoreArm;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.swerve2.Swerve;
-import frc.robot.subsystems.wristIntake.WristIntake;
+import frc.robot.subsystems.wrist_intake.WristIntake;
 
 
 /**

@@ -16,7 +16,7 @@ import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.drive.TurnToAngle;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.swerve2.Swerve;
-import frc.robot.subsystems.wristIntake.WristIntake;
+import frc.robot.subsystems.wrist_intake.WristIntake;
 
 /**
  * Leaves community, and docks.

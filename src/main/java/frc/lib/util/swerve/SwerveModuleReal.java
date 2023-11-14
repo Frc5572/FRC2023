@@ -9,6 +9,9 @@ import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
+/**
+ * Implementation for the real robot
+ */
 public class SwerveModuleReal implements SwerveModuleIO {
 
     private TalonFX angleMotor; // Output
@@ -17,6 +20,9 @@ public class SwerveModuleReal implements SwerveModuleIO {
 
     private SwerveModuleConstants constants;
 
+    /**
+     * Initializer for real swerve module. Configures with defaults.
+     */
     public SwerveModuleReal(SwerveModuleConstants constants) {
         this.constants = constants;
 

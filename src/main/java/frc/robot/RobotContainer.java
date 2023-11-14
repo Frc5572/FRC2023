@@ -50,7 +50,9 @@ import frc.robot.subsystems.arm.ArmIOSparkMax;
 import frc.robot.subsystems.swerve2.Swerve;
 import frc.robot.subsystems.swerve2.SwerveIO;
 import frc.robot.subsystems.swerve2.SwerveReal;
-import frc.robot.subsystems.wristIntake.WristIntake;
+import frc.robot.subsystems.wrist_intake.WristIntake;
+import frc.robot.subsystems.wrist_intake.WristIntakeIO;
+import frc.robot.subsystems.wrist_intake.WristIntakeIOFalcon500;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -127,7 +129,7 @@ public class RobotContainer {
     public final Swerve s_Swerve;
     // private final DropIntake s_dIntake = new DropIntake();
     private final Arm s_Arm;
-    private final WristIntake s_wristIntake = new WristIntake();
+    private final WristIntake s_wristIntake;
 
     private ArmIO armIO;
 
@@ -138,9 +140,13 @@ public class RobotContainer {
         if (isReal) {
             armIO = new ArmIOSparkMax(ph);
             s_Swerve = new Swerve(new SwerveReal());
+            s_wristIntake = new WristIntake(new WristIntakeIOFalcon500());
         } else {
             armIO = new ArmIO() {};
             s_Swerve = new Swerve(new SwerveIO() {
+
+            });
+            s_wristIntake = new WristIntake(new WristIntakeIO() {
 
             });
         }

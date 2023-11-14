@@ -2,7 +2,7 @@ package frc.robot.commands.wrist;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.wristIntake.WristIntake;
+import frc.robot.subsystems.wrist_intake.WristIntake;
 
 /**
  * Consistent wrist operation for Autonomous.

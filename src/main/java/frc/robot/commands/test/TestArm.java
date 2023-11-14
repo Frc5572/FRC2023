@@ -2,7 +2,6 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.lib.util.ArmPosition;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.Robot;
@@ -25,7 +24,6 @@ public class TestArm extends CommandBase {
         SmartDashboard.putNumber("Targeted Column", Robot.column);
         GamePiece gamePiece = Scoring.getGamePiece();
         SmartDashboard.putString("Targeted Game Piece", gamePiece.toString());
-        ArmPosition position = Scoring.getScoreParameters();
         // arm.enablePID();
         // arm.setArmGoal(position.getArmAngle());
         arm.setArmGoal(60);

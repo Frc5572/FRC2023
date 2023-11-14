@@ -3,7 +3,7 @@ package frc.robot.commands.wrist;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.util.Scoring;
 import frc.robot.Constants;
-import frc.robot.subsystems.wristIntake.WristIntake;
+import frc.robot.subsystems.wrist_intake.WristIntake;
 
 /**
  * Command to raise the Drop Down Intake to the top position

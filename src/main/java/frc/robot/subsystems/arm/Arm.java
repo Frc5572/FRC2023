@@ -38,6 +38,7 @@ public class Arm extends SubsystemBase {
      */
     public Arm(ArmIO armIO) {
         io = armIO;
+        io.updateInputs(armInputs);
 
 
         this.wristPIDController.setIntegratorRange(Constants.Wrist.PID.MIN_INTEGRAL,

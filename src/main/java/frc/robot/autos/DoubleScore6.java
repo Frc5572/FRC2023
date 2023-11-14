@@ -14,15 +14,12 @@ import frc.robot.commands.drive.MoveToPos;
 import frc.robot.commands.wrist.AutoWrist;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.swerve2.Swerve;
-import frc.robot.subsystems.wristIntake.WristIntake;
+import frc.robot.subsystems.wrist_intake.WristIntake;
 
 /**
  * Score a second game piece
  */
 public class DoubleScore6 extends TrajectoryBase {
-
-    private double maxVel = 6;
-    private double maxAccel = 4;
     // private double armAngle = -60.0;
     // private double wristAngle = 3.0;
     Pose2d aprilTag7 = FieldConstants.aprilTags.get(7).toPose2d();

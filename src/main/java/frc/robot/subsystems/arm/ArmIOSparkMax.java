@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import frc.robot.Constants;
 
+/** Real Class for Arm */
 public class ArmIOSparkMax extends ArmIO {
 
     private final CANSparkMax armMotor1 =
@@ -23,6 +24,7 @@ public class ArmIOSparkMax extends ArmIO {
         new CANSparkMax(Constants.Wrist.WRIST_MOTOR_ID, MotorType.kBrushless);
     private final AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
+    /** Initializer for real Arm */
     public ArmIOSparkMax(PneumaticHub ph) {
         // ARM
         armMotor1.restoreFactoryDefaults();
