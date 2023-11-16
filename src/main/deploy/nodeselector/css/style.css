@@ -5,7 +5,7 @@
 }
 
 .grid {
-    width: 80vw;
+    width: min(80vw, 80%);
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 1rem;
@@ -31,13 +31,33 @@
 }
 
 .cell.cube.selected {
-    background: linear-gradient(to bottom left, blue 49.9%, purple 50.1%);
+    background: linear-gradient(to bottom left, purple 50%, blue 50%);
 }
 
 .cell.cone.selected {
-    background: linear-gradient(to bottom left, blue 49.9%, yellow 50.1%);
+    background: linear-gradient(to bottom left, yellow 50%, blue 50%);
 }
 
-.cell.done {
-    background: linear-gradient(to bottom left, green 49%, purple 51%);
+.cell.cube.done {
+    background: linear-gradient(to bottom left, green 50%, purple 50%);
+}
+
+.cell.cone.done {
+    background: linear-gradient(to bottom left, green 50%, yellow 50%)
+}
+
+.cell.done.selected {
+    background: linear-gradient(to bottom left, green 50%, blue 50%);
+}
+
+.bottom-bar {
+    position: absolute;
+    bottom: 2vh;
+    width: 80vw;
+    left: 10vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
 }

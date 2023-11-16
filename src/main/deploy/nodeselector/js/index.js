@@ -1,8 +1,8 @@
 import { NT4_Client } from "./NT4.js";
 
 let _ = new NT4_Client();
-let currentTargetRow = 0;
-let currentTargetColumn = 0;
+let currentTargetRow = -1;
+let currentTargetColumn = -1;
 let posList = Array(3);
 posList[0] = Array(9).fill(false);
 posList[1] = Array(9).fill(false);
@@ -37,10 +37,18 @@ $(".cell").on("click", (x) => {
     let column = target.getAttribute("col");
     currentTargetColumn = column;
     console.log([row, column])
-    // console.log([currentTargetRow, currentTargetColumn])
 });
 
 $("#gridConfirm").on("click", () => {
-    posList[currentTargetRow][currentTargetColumn] = true;
-    $(`div[row=${currentTargetRow}][col=${currentTargetColumn}]`).removeClass("selected").addClass("done");
+    if (posList[currentTargetRow][currentTargetColumn] != true) {
+        posList[currentTargetRow][currentTargetColumn] = true;
+        $(`div[row=${currentTargetRow}][col=${currentTargetColumn}]`).removeClass("selected").addClass("done");
+        currentTargetRow = -1;
+        currentTargetColumn = -1;
+    } else {
+        posList[currentTargetRow][currentTargetColumn] = false;
+        $(`div[row=${currentTargetRow}][col=${currentTargetColumn}]`).removeClass("done");
+    }
+
+
 })
