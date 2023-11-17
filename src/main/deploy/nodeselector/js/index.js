@@ -4,6 +4,7 @@ let _ = new NT4_Client();
 let currentTargetRow = -1;
 let currentTargetColumn = -1;
 let posList = Array(3);
+let selected = false;
 posList[0] = Array(9).fill(false);
 posList[1] = Array(9).fill(false);
 posList[2] = Array(9).fill(false);
@@ -31,11 +32,18 @@ $(".cell").on("click", (x) => {
     while (!target.classList.contains("cell")) {
         target = target.parentNode;
     }
-    target.classList.add("selected");
+    $("#gridConfirm").removeClass("btn-danger").addClass("btn-success");
     let row = target.getAttribute("row");
-    currentTargetRow = row;
     let column = target.getAttribute("col");
-    currentTargetColumn = column;
+    if (currentTargetRow == row && currentTargetColumn == column) {
+        target.classList.remove("selected");
+        currentTargetRow = -1;
+        currentTargetColumn = -1;
+    } else {
+        target.classList.add("selected");
+        currentTargetRow = row;
+        currentTargetColumn = column;
+    }
     console.log([row, column])
 });
 
@@ -43,12 +51,12 @@ $("#gridConfirm").on("click", () => {
     if (posList[currentTargetRow][currentTargetColumn] != true) {
         posList[currentTargetRow][currentTargetColumn] = true;
         $(`div[row=${currentTargetRow}][col=${currentTargetColumn}]`).removeClass("selected").addClass("done");
+        $("#gridConfirm").removeClass("btn-success").addClass("btn-danger");
         currentTargetRow = -1;
         currentTargetColumn = -1;
     } else {
         posList[currentTargetRow][currentTargetColumn] = false;
         $(`div[row=${currentTargetRow}][col=${currentTargetColumn}]`).removeClass("done");
     }
-
-
 })
+

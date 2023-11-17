@@ -5,11 +5,9 @@
 }
 
 .grid {
-    width: min(80vw, 80%);
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 1rem;
-    padding: 1rem;
 }
 
 .cell {
@@ -54,10 +52,56 @@
     position: absolute;
     bottom: 2vh;
     width: 80vw;
-    left: 10vw;
+    left: 1vw;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
     gap: 2rem;
+}
+
+.under-grid {
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: center;
+    gap: 1rem;
+}
+
+#dockArm {
+    height: 7vh;
+    width: 8vw;
+}
+
+.under-grid>.left {
+    width: 50%;
+}
+
+.under-grid>.right {
+    width: 50%;
+}
+
+.under-grid>.right>.intake-positions {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1vw;
+}
+
+body {
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+#main {
+    display: flex;
+    flex-direction: row;
+}
+
+#leftside {
+    width: 80vw;
+}
+
+#rightside {
+    width: 20vw;
 }
