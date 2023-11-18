@@ -1,0 +1,6 @@
+- [Modal Timer Event](https://blender.stackexchange.com/questions/28673/update-viewport-while-running-script)
+- [Application Handlers](https://docs.blender.org/api/current/bpy.app.handlers.html)
+- [Properties](https://docs.blender.org/api/current/bpy.props.html)
+- [Python Threading](https://realpython.com/intro-to-python-threading/)
+- [bpy Tree View](https://blender.stackexchange.com/a/250405)
+- [bpy UI List](https://blender.stackexchange.com/a/30446)
