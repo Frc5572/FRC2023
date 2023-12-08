@@ -59,7 +59,7 @@
 }
 
 .under-grid {
-    margin-top: 2vh;
+    margin-top: 3vh;
     display: flex;
     flex-direction: row;
     align-items: left;
@@ -67,23 +67,109 @@
     gap: 1rem;
 }
 
+#gridConfirm {
+    height: 9vh;
+    width: 10vw;
+}
+
 #dockArm {
-    height: 7vh;
-    width: 8vw;
+    height: 9vh;
+    width: 10vw;
 }
 
 .under-grid>.left {
-    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 15%;
+    gap: 1.5vh;
+
+}
+
+.under-grid>.middle {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    gap: 1.5vh;
 }
 
 .under-grid>.right {
-    width: 50%;
+    width: 25%;
 }
 
-.under-grid>.right>.intake-positions {
+#cone {
+    height: 9vh;
+    width: 8vw;
+}
+
+#cone-tipped {
+    height: 9vh;
+    width: 8vw;
+}
+
+#cube {
+    height: 9vh;
+    width: 8vw;
+}
+
+.under-grid>.middle>.leds {
     display: flex;
     flex-direction: column;
+    gap: 2vh;
+}
+
+#flash-yellow {
+    background-color: yellow;
+    height: 9vh;
+    width: 10vw;
+    font-weight: bold;
+}
+
+#flash-purple {
+    background-color: purple;
+    height: 9vh;
+    width: 10vw;
+    color: white;
+    font-weight: bold;
+}
+
+#flash-police {
+    background: linear-gradient(to left, blue 50%, red 50%);
+    height: 9vh;
+    width: 10vw;
+    color: white;
+    font-weight: bold;
+}
+
+.under-grid>.middle>.intake-positions {
     margin-left: 1vw;
+    width: 50%;
+    position: relative;
+}
+
+.under-grid>.middle>.intake-positions>* {
+    gap: 1.5vh;
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#wUp {
+    height: 10vh;
+    width: 10vw;
+}
+
+#wDown {
+    height: 10vh;
+    width: 10vw;
+}
+
+.under-grid>.right>.wrist-control {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5vw;
+    gap: 1.5vh;
 }
 
 body {
