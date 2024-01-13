@@ -19,13 +19,14 @@ public class ClimbPlatform extends Command {
     private double startTime;
     private int endCount = 0;
 
-    private PIDController pidController = new PIDController(-.006, 0, 0);
+    private PIDController pidController = new PIDController(0, 0, 0);
 
     /**
      * Test April tag transform
      */
     public ClimbPlatform(Swerve swerve) {
         this.swerve = swerve;
+        pidController.setP(-.006);
         this.addRequirements(swerve);
     }
 

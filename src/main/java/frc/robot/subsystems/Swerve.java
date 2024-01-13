@@ -143,9 +143,10 @@ public class Swerve extends SubsystemBase {
         return swerveOdometry.getEstimatedPosition();
     }
 
-    public ChassisSpeeds getChassisSpeeds(){
+    public ChassisSpeeds getChassisSpeeds() {
         return chassisSpeeds;
     }
+
     /**
      * Resets the robot's position on the field.
      *

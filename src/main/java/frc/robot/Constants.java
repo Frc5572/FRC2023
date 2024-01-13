@@ -70,7 +70,8 @@ public final class Constants {
         public static final double TRACK_WIDTH = Units.inchesToMeters(22);
         // Left-Right Distance
         public static final double WHEEL_BASE = Units.inchesToMeters(22);
-        public static final double ROBOT_RADIUS = Math.sqrt(Math.pow(TRACK_WIDTH/2,2) + Math.pow(WHEEL_BASE/2,2));
+        public static final double ROBOT_RADIUS =
+            Math.sqrt(Math.pow(TRACK_WIDTH / 2, 2) + Math.pow(WHEEL_BASE / 2, 2));
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 

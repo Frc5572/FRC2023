@@ -1,6 +1,5 @@
 package frc.lib.util;
 
-import java.io.IOException;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -10,7 +9,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -31,15 +29,14 @@ public class PhotonCameraWrapper {
         // Change the name of your camera here to whatever it is in the PhotonVision UI.
         photonCamera = new PhotonCamera(cameraName);
 
-        
-            // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the
-            // field.
-            AprilTagFieldLayout fieldLayout =
-                AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
-            // Create pose estimator
-            photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO,
-                photonCamera, robotToCam);
-            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT);
+
+        // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the
+        // field.
+        AprilTagFieldLayout fieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+        // Create pose estimator
+        photonPoseEstimator = new PhotonPoseEstimator(fieldLayout,
+            PoseStrategy.MULTI_TAG_PNP_ON_RIO, photonCamera, robotToCam);
+        photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT);
     }
 
     /**
