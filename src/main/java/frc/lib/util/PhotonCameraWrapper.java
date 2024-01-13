@@ -31,22 +31,15 @@ public class PhotonCameraWrapper {
         // Change the name of your camera here to whatever it is in the PhotonVision UI.
         photonCamera = new PhotonCamera(cameraName);
 
-        try {
+        
             // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the
             // field.
             AprilTagFieldLayout fieldLayout =
                 AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
             // Create pose estimator
-            photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP,
+            photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO,
                 photonCamera, robotToCam);
             photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT);
-        } catch (IOException e) {
-            // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we
-            // don't know
-            // where the tags are.
-            DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
-            photonPoseEstimator = null;
-        }
     }
 
     /**

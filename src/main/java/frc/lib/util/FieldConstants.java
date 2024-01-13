@@ -249,7 +249,7 @@ public class FieldConstants {
      * the rightmost point on the BLUE ALLIANCE wall.
      */
     public static Translation2d allianceFlip(Translation2d translation) {
-        if (DriverStation.getAlliance() == Alliance.Red) {
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
             return new Translation2d(fieldLength - translation.getX(), translation.getY());
         } else {
             return translation;
@@ -265,7 +265,7 @@ public class FieldConstants {
      * @return Pose2d flipped to Red Alliance
      */
     public static Pose2d allianceFlip(Pose2d pose) {
-        if (DriverStation.getAlliance() == Alliance.Red) {
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
             return new Pose2d(fieldLength - pose.getX(), pose.getY(),
                 new Rotation2d(-pose.getRotation().getCos(), pose.getRotation().getSin()));
         } else {

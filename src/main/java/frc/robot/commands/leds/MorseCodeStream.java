@@ -3,7 +3,7 @@ package frc.robot.commands.leds;
 import java.util.ArrayList;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.MorseCode;
 import frc.robot.subsystems.LEDs;
 
@@ -13,7 +13,7 @@ import frc.robot.subsystems.LEDs;
  * <p>
  * DOES NOT WORK YET
  */
-public class MorseCodeStream extends CommandBase {
+public class MorseCodeStream extends Command {
     private LEDs leds;
     private int index = 0;
     private ArrayList<Boolean> finalWord = new ArrayList<Boolean>();

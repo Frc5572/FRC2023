@@ -1,6 +1,9 @@
 package frc.lib.util;
 
 import java.util.Map;
+import java.util.Optional;
+
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -70,9 +73,9 @@ public class Scoring {
         int column = Robot.column;
         // int level = Robot.level;
         Rotation2d rotation = Rotation2d.fromDegrees(180);
-        if (DriverStation.getAlliance() == Alliance.Blue) {
+        if (DriverStation.getAlliance().get() == Alliance.Blue) {
             basePos = FieldConstants.aprilTags.get(8).toPose2d();
-        } else if (DriverStation.getAlliance() == Alliance.Red) {
+        } else if (DriverStation.getAlliance().get() == Alliance.Red) {
             basePos = FieldConstants.aprilTags.get(3).toPose2d();
         }
         Map<Integer, Translation2d> columns =

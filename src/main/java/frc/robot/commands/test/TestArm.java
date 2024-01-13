@@ -1,7 +1,7 @@
 package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.ArmPosition;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
@@ -11,7 +11,7 @@ import frc.robot.subsystems.Arm;
 /**
  * Test April tag transform
  */
-public class TestArm extends CommandBase {
+public class TestArm extends Command {
 
     Arm arm;
 

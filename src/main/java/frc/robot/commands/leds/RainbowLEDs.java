@@ -1,12 +1,12 @@
 package frc.robot.commands.leds;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDs;
 
 /**
  * Command to create a sliding rainbow pattern
  */
-public class RainbowLEDs extends CommandBase {
+public class RainbowLEDs extends Command {
     private LEDs leds;
     private int m_rainbowFirstPixelHue = 0;
     private int ledLength;

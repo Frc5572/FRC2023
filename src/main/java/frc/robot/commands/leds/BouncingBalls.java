@@ -2,13 +2,13 @@ package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDs;
 
 /**
  * Command to move LEDs back and forth like a Cylon eye
  */
-public class BouncingBalls extends CommandBase {
+public class BouncingBalls extends Command {
     private final LEDs leds;
     private int ballCount;
     private double gravity = -9.81;

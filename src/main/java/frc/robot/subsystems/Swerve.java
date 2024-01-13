@@ -31,6 +31,7 @@ public class Swerve extends SubsystemBase {
     public PhotonCameraWrapper cam = new PhotonCameraWrapper(Constants.CameraConstants.CAMERA_NAME,
         Constants.CameraConstants.KCAMERA_TO_ROBOT.inverse());
     private SwerveModule[] swerveMods;
+    private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
     private double fieldOffset = gyro.getYaw();
     private final Field2d field = new Field2d();
     private boolean hasInitialized = false;
@@ -127,6 +128,7 @@ public class Swerve extends SubsystemBase {
      * @param chassisSpeeds The desired Chassis Speeds
      */
     public void setModuleStates(ChassisSpeeds chassisSpeeds) {
+        this.chassisSpeeds = chassisSpeeds;
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(swerveModuleStates);
@@ -141,6 +143,9 @@ public class Swerve extends SubsystemBase {
         return swerveOdometry.getEstimatedPosition();
     }
 
+    public ChassisSpeeds getChassisSpeeds(){
+        return chassisSpeeds;
+    }
     /**
      * Resets the robot's position on the field.
      *

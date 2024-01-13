@@ -1,13 +1,13 @@
 package frc.robot.commands.arm;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Arm;
 
 /**
  * Command to move the arm slightly
  */
-public class VariableArm extends CommandBase {
+public class VariableArm extends Command {
 
     private Arm arm;
     private CommandXboxController controller;

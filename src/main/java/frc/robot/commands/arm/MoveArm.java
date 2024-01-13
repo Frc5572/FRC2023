@@ -1,14 +1,14 @@
 package frc.robot.commands.arm;
 
 import java.util.function.Supplier;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.ArmPosition;
 import frc.robot.subsystems.Arm;
 
 /**
  * This command will move the arm to a requested angle.
  */
-public class MoveArm extends CommandBase {
+public class MoveArm extends Command {
     private Arm arm;
     private Supplier<ArmPosition> armPositionSupplier;
     private double armAngle;

@@ -1,14 +1,14 @@
 package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.math.Conversions;
 import frc.robot.subsystems.LEDs;
 
 /**
  * Command to move LEDs back and forth like a Cylon eye
  */
-public class FireLEDs extends CommandBase {
+public class FireLEDs extends Command {
     private final LEDs leds;
     private int end;
     private int start;

@@ -5,14 +5,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 /**
  * Test April tag transform
  */
-public class ClimbPlatform extends CommandBase {
+public class ClimbPlatform extends Command {
 
     private Swerve swerve;
     private boolean beenTilted = false;

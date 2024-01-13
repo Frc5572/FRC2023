@@ -2,7 +2,7 @@ package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.math.Conversions;
 import frc.robot.subsystems.LEDs;
 
@@ -12,7 +12,7 @@ import frc.robot.subsystems.LEDs;
  * <p>
  * Doesn't really work
  */
-public class MeteorRain extends CommandBase {
+public class MeteorRain extends Command {
     private final LEDs leds;
     private int numLEDs;
     private boolean meteorRandomDecay = true;
