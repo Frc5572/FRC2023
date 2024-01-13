@@ -2,12 +2,12 @@ package frc.lib.util;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * Creates a new WaitCommand. This command will do nothing, and end after the specified duration.
  */
-public class DynamicWaitCommand extends CommandBase {
+public class DynamicWaitCommand extends Command {
     protected Timer m_timer = new Timer();
     private double m_duration = 0;
     private final DoubleSupplier secondsSupplier;

@@ -1,13 +1,13 @@
 package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDs;
 
 /**
  * Command to flash the LED strip between 2 colors
  */
-public class FlashingLEDColor extends CommandBase {
+public class FlashingLEDColor extends Command {
     private LEDs leds;
     private int ledLength;
     private int flashingDelay = 0;

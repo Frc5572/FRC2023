@@ -23,14 +23,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
-import frc.robot.autos.CrossAndDock;
-import frc.robot.autos.DoubleScore;
-import frc.robot.autos.DoubleScore6;
-import frc.robot.autos.MiddleScoreEngage;
-import frc.robot.autos.Score1;
-import frc.robot.autos.Score1Dock;
-import frc.robot.autos.TripleScore;
-import frc.robot.autos.TripleScore6;
 import frc.robot.commands.arm.ConeIntake;
 import frc.robot.commands.arm.ConeUpIntake;
 import frc.robot.commands.arm.CubeIntake;
@@ -142,22 +134,10 @@ public class RobotContainer {
         s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-        autoChooser.addOption("Move to Score", new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Middle Score and Engage",
-            new MiddleScoreEngage(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Cross and Dock", new CrossAndDock(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Score 1 Dock", new Score1Dock(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Score 1", new Score1(s_Swerve, s_Arm, s_wristIntake));
-        // autoChooser.addOption("Second Game Piece",
+    
         // new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         // autoChooser.addOption("SecondGamePieceScore",
         // new SecondGamePieceScore(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Double Score - 8 (Bump) ;)",
-            new DoubleScore(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Triple Score - 8 (Bump) ;)",
-            new TripleScore(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Double Score - 6", new DoubleScore6(s_Swerve, s_Arm, s_wristIntake));
-        autoChooser.addOption("Triple Score - 6", new TripleScore6(s_Swerve, s_Arm, s_wristIntake));
 
         levelsChooser.setDefaultOption("0", 0);
         for (int i = 0; i < 3; i++) {

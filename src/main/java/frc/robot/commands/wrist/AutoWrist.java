@@ -1,13 +1,13 @@
 package frc.robot.commands.wrist;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.WristIntake;
 
 /**
  * Consistent wrist operation for Autonomous.
  */
-public class AutoWrist extends CommandBase {
+public class AutoWrist extends Command {
 
     private WristIntake intake;
     private double speed;

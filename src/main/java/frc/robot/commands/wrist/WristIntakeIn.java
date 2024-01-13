@@ -1,13 +1,13 @@
 package frc.robot.commands.wrist;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.WristIntake;
 
 /**
  * Command to raise the Drop Down Intake to the top position
  */
-public class WristIntakeIn extends CommandBase {
+public class WristIntakeIn extends Command {
     private WristIntake intake;
 
     /**

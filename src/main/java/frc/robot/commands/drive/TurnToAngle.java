@@ -9,14 +9,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 /**
  * This command will turn the robot to a specified angle.
  */
-public class TurnToAngle extends CommandBase {
+public class TurnToAngle extends Command {
 
     private Swerve swerve;
     private boolean isRelative;
@@ -57,7 +57,7 @@ public class TurnToAngle extends CommandBase {
         } else {
             targetPose2d = new Pose2d(startPos.getTranslation(), Rotation2d.fromDegrees(goal));
         }
-        if (DriverStation.getAlliance() == Alliance.Red) {
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
             targetPose2d = new Pose2d(targetPose2d.getTranslation(),
                 targetPose2d.getRotation().rotateBy(Rotation2d.fromDegrees(180)));
         }

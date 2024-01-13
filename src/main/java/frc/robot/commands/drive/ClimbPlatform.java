@@ -5,27 +5,28 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 /**
  * Test April tag transform
  */
-public class ClimbPlatform extends CommandBase {
+public class ClimbPlatform extends Command {
 
     private Swerve swerve;
     private boolean beenTilted = false;
     private double startTime;
     private int endCount = 0;
 
-    private PIDController pidController = new PIDController(-.006, 0, 0);
+    private PIDController pidController = new PIDController(0, 0, 0);
 
     /**
      * Test April tag transform
      */
     public ClimbPlatform(Swerve swerve) {
         this.swerve = swerve;
+        pidController.setP(-.006);
         this.addRequirements(swerve);
     }
 

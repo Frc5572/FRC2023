@@ -1,12 +1,12 @@
 package frc.robot.commands.arm;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
 
 /**
  * This command will move the arm to a requested angle.
  */
-public class ArmMoving extends CommandBase {
+public class ArmMoving extends Command {
     private Arm arm;
     private double goal;
 

@@ -1,13 +1,13 @@
 package frc.robot.commands.wrist;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.WristIntake;
 
 /**
  * Variable controlled intake speed.
  */
-public class VariableIntake extends CommandBase {
+public class VariableIntake extends Command {
     private WristIntake intake;
     private CommandXboxController controller;
 
