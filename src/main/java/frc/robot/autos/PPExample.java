@@ -8,7 +8,7 @@ public class PPExample {
 
     public PPExample(Swerve swerve) {
         this.swerve = swerve;
-        PathPlannerPath examplepath = new PathPlannerPath.fromPathFile("Example Path")
+        PathPlannerPath examplepath = new PathPlannerPath.fromPathFile("Example Path");
 
     }
 }
