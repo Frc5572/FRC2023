@@ -2,8 +2,6 @@ package frc.lib.util;
 
 import java.util.Map;
 import java.util.Optional;
-
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -69,6 +67,7 @@ public class Scoring {
      * @return Position to align to score
      */
     public static Pose2d getScoreAlignment(double xPosition) {
+        Optional<Alliance> ally = DriverStation.getAlliance();
         Pose2d basePos = new Pose2d();
         int column = Robot.column;
         // int level = Robot.level;

@@ -24,6 +24,7 @@
 package frc.lib.util;
 
 import java.util.Map;
+import java.util.Optional;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -249,8 +250,13 @@ public class FieldConstants {
      * the rightmost point on the BLUE ALLIANCE wall.
      */
     public static Translation2d allianceFlip(Translation2d translation) {
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            return new Translation2d(fieldLength - translation.getX(), translation.getY());
+        Optional<Alliance> ally = DriverStation.getAlliance();
+        if (ally.isPresent()) {
+            if (ally.get() == Alliance.Red) {
+                return new Translation2d(fieldLength - translation.getX(), translation.getY());
+            } else {
+                return translation;
+            }
         } else {
             return translation;
         }
@@ -265,9 +271,14 @@ public class FieldConstants {
      * @return Pose2d flipped to Red Alliance
      */
     public static Pose2d allianceFlip(Pose2d pose) {
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            return new Pose2d(fieldLength - pose.getX(), pose.getY(),
-                new Rotation2d(-pose.getRotation().getCos(), pose.getRotation().getSin()));
+        Optional<Alliance> ally = DriverStation.getAlliance();
+        if (ally.isPresent()) {
+            if (ally.get() == Alliance.Red) {
+                return new Pose2d(fieldLength - pose.getX(), pose.getY(),
+                    new Rotation2d(-pose.getRotation().getCos(), pose.getRotation().getSin()));
+            } else {
+                return pose;
+            }
         } else {
             return pose;
         }
