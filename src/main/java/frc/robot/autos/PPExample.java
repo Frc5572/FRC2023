@@ -18,8 +18,10 @@ public class PPExample extends SequentialCommandGroup {
     public PPExample(Swerve swerve) {
         this.swerve = swerve;
         PathPlannerPath examplepath = PathPlannerPath.fromPathFile("Example Path");
-        FollowPathCommand exmpmpleCommand =
-            new FollowPathCommand(examplepath, null, null, null, null, null, null, swerve);
-
+        FollowPathCommand exampleCommand =
+            new FollowPathCommand(examplepath, () -> swerve.getPose(),
+                () -> swerve.getChassisSpeeds(), null, null, null, null, swerve);
+        addCommands(exampleCommand);
     }
+
 }

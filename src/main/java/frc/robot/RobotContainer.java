@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
+import frc.robot.autos.PPExample;
 import frc.robot.commands.arm.ConeIntake;
 import frc.robot.commands.arm.ConeUpIntake;
 import frc.robot.commands.arm.CubeIntake;
@@ -134,7 +135,8 @@ public class RobotContainer {
         s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-    
+        autoChooser.setDefaultOption("Example Auto", new PPExample(s_Swerve));
+
         // new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         // autoChooser.addOption("SecondGamePieceScore",
         // new SecondGamePieceScore(s_Swerve, s_Arm, s_wristIntake));
