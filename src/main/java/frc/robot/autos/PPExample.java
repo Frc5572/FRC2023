@@ -2,26 +2,22 @@ package frc.robot.autos;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.path.PathPlannerPath;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Swerve;
 
-public class PPExample extends SequentialCommandGroup {
+public class PPExample extends TrajectoryBase {
     public Swerve swerve;
 
-    private PIDController pidX = new PIDController(Constants.SwerveTransformPID.PID_XKP,
-        Constants.SwerveTransformPID.PID_XKI, Constants.SwerveTransformPID.PID_XKD);
-    private PIDController pidTheta = new PIDController(Constants.SwerveTransformPID.PID_TKP,
-        Constants.SwerveTransformPID.PID_TKI, Constants.SwerveTransformPID.PID_TKD);
-
     public PPExample(Swerve swerve) {
-        this.swerve = swerve;
+        super(swerve);
         PathPlannerPath examplepath = PathPlannerPath.fromPathFile("Example Path");
-        FollowPathCommand exampleCommand =
-            new FollowPathCommand(examplepath, () -> swerve.getPose(),
-                () -> swerve.getChassisSpeeds(), null, null, null, null, swerve);
-        addCommands(exampleCommand);
+        Pose2d initialState = examplepath.getPreviewStartingHolonomicPose();
+        FollowPathCommand exampleCommand = baseSwerveCommand(examplepath);
+        addCommands(new InstantCommand(() -> swerve.zeroGyro()),
+            new InstantCommand(() -> swerve.resetOdometry(
+                new Pose2d(initialState.getTranslation(), initialState.getRotation()))),
+            exampleCommand);
     }
 
 }

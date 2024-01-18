@@ -84,15 +84,14 @@ public class RobotContainer {
             .withSize(2, 2);
     public static GenericEntry enableDockWidget = autoTab.add("Enable Dock", true)
         .withWidget(BuiltInWidgets.kToggleSwitch).withPosition(10, 1).withSize(2, 1).getEntry();
-    public ComplexWidget cameraFeed = mainDriverTab.add("Camera Feed", Robot.camera)
-        .withWidget(BuiltInWidgets.kCameraStream).withPosition(0, 0).withSize(6, 5).withProperties(
-            Map.of("Show crosshair", false, "Show controls", false, "Rotation", "QUARTER_CCW"));
+    // public ComplexWidget cameraFeed = mainDrivethe, "Show controls", false, "Rotation",
+    // "QUARTER_CCW"));
     public ComplexWidget autoWaitWidget =
         autoTab.add("Wait After Score", autoWaitChooser).withWidget(BuiltInWidgets.kComboBoxChooser)
             .withProperties(Map.of("Show Glyph", true, "Glyph", "CLOCK_ALT")).withPosition(10, 2)
             .withSize(2, 1);
 
-    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private final SendableChooser<String> autoChooser = new SendableChooser<>();
     public ComplexWidget autoChooserWidget = autoTab.add("Auto Chooser", autoChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(10, 0).withSize(2, 1);
 
@@ -134,8 +133,7 @@ public class RobotContainer {
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
         s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
-        autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-        autoChooser.setDefaultOption("Example Auto", new PPExample(s_Swerve));
+        autoChooser.setDefaultOption("Example Auto", "example");
 
         // new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         // autoChooser.addOption("SecondGamePieceScore",
@@ -293,6 +291,10 @@ public class RobotContainer {
         // vision);
         Robot.level = levelsChooser.getSelected();
         Robot.column = columnsChooser.getSelected();
-        return new DockArm(s_Arm, s_wristIntake).withTimeout(.2).andThen(autoChooser.getSelected());
+        Command autocommand = new WaitCommand(1.0);
+        if (autoChooser.getSelected() == "example") {
+            autocommand = new PPExample(s_Swerve);
+        }
+        return new DockArm(s_Arm, s_wristIntake).withTimeout(.2).andThen(autocommand);
     }
 }
