@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.59,
-      "y": 7.21
+      "x": 2.32,
+      "y": 5.43
     },
     "rotation": 0
   },
@@ -20,13 +20,37 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 1.0
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "New Path"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Newer Path"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Newest Path"
           }
         }
       ]
