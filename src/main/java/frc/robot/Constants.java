@@ -1,6 +1,9 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -64,7 +67,6 @@ public final class Constants {
         public static final edu.wpi.first.wpilibj.SPI.Port navXID =
             edu.wpi.first.wpilibj.SPI.Port.kMXP;
         public static final boolean INVERT_GYRO = true; // Always ensure Gyro is CCW+ CW-
-
         /* Drivetrain Constants */
         // Front-Back distance.
         public static final double TRACK_WIDTH = Units.inchesToMeters(22);
@@ -72,6 +74,8 @@ public final class Constants {
         public static final double WHEEL_BASE = Units.inchesToMeters(22);
         public static final double ROBOT_RADIUS =
             Math.sqrt(Math.pow(TRACK_WIDTH / 2, 2) + Math.pow(WHEEL_BASE / 2, 2));
+        public static final Translation2d MOD0_MODOFFSET =
+            new Translation2d(WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0);
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -183,7 +187,12 @@ public final class Constants {
                 DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
         }
 
-
+        public static final HolonomicPathFollowerConfig pathFollowerConfig =
+            new HolonomicPathFollowerConfig(new PIDConstants(5.0, 0, 0), // Translation constants
+                new PIDConstants(5.0, 0, 0), // Rotation constants
+                MAX_SPEED, MOD0_MODOFFSET.getNorm(), // Drive base radius (distance from center
+                                                     // to furthest module)
+                new ReplanningConfig());
 
     }
 

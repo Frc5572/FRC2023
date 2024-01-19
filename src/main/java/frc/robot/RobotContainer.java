@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.util.Map;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -133,7 +134,8 @@ public class RobotContainer {
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
         s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
-        autoChooser.setDefaultOption("Example Auto", "example");
+        autoChooser.setDefaultOption("Example Path", "example");
+        autoChooser.addOption("Example Auto", "auto");
 
         // new SecondGamePiece(s_Swerve, s_Arm, s_wristIntake));
         // autoChooser.addOption("SecondGamePieceScore",
@@ -292,9 +294,24 @@ public class RobotContainer {
         Robot.level = levelsChooser.getSelected();
         Robot.column = columnsChooser.getSelected();
         Command autocommand = new WaitCommand(1.0);
-        if (autoChooser.getSelected() == "example") {
-            autocommand = new PPExample(s_Swerve);
+        String stuff = autoChooser.getSelected();
+        switch (stuff) {
+            case "example":
+                autocommand = new PPExample(s_Swerve);
+                break;
+            case "auto":
+                // List<PathPlannerPath> paths =
+                // PathPlannerAuto.getPathGroupFromAutoFile("New Auto");
+                // Pose2d initialState = paths.get(0).getPreviewStartingHolonomicPose();
+                // s_Swerve.resetOdometry(initialState);
+                autocommand = new InstantCommand(() -> s_Swerve
+                    .resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile("New Auto")))
+                        .andThen(new PathPlannerAuto("New Auto"));
+
+                break;
         }
-        return new DockArm(s_Arm, s_wristIntake).withTimeout(.2).andThen(autocommand);
+
+        // return new DockArm(s_Arm, s_wristIntake).withTimeout(.2).andThen(autocommand);
+        return autocommand;
     }
 }

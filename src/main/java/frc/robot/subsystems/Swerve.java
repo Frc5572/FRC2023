@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
+import java.util.Optional;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,6 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,6 +59,10 @@ public class Swerve extends SubsystemBase {
         RobotContainer.autoTab.add("Field Pos", field).withWidget(BuiltInWidgets.kField)
             .withSize(8, 6) // make the widget 2x1
             .withPosition(0, 0); // place it in the top-left corner
+
+        AutoBuilder.configureHolonomic(this::getPose, this::resetOdometry, this::getChassisSpeeds,
+            this::setModuleStates, Constants.Swerve.pathFollowerConfig, (() -> shouldFlipPath()),
+            this);
     }
 
     /**
@@ -128,6 +136,7 @@ public class Swerve extends SubsystemBase {
     public Pose2d getPose() {
         return swerveOdometry.getEstimatedPosition();
     }
+
 
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[swerveMods.length];
@@ -264,5 +273,15 @@ public class Swerve extends SubsystemBase {
 
     public void zeroGyro() {
         gyro.zeroYaw();
+    }
+
+    public static boolean shouldFlipPath() {
+        Optional<Alliance> ally = DriverStation.getAlliance();
+        if (ally.isPresent()) {
+            return ally.get() == Alliance.Red;
+        }
+        return false;
+
+
     }
 }
