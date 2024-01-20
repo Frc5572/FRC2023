@@ -2,8 +2,10 @@ package frc.lib.util.swerve;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -21,7 +23,10 @@ public class SwerveModule {
     private double angleOffset;
     private TalonFX angleMotor;
     private TalonFX driveMotor;
-    private CANCoder angleEncoder;
+    private CANcoder angleEncoder;
+    private TalonFXConfiguration swerveAngleFXConfig = new TalonFXConfiguration();
+    private TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
+    private CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
     private double lastAngle;
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.DRIVE_KS,
         Constants.Swerve.DRIVE_KV, Constants.Swerve.DRIVE_KA);
@@ -37,7 +42,7 @@ public class SwerveModule {
         angleOffset = constants.angleOffset;
 
         /* Angle Encoder Config */
-        angleEncoder = new CANCoder(constants.cancoderID, "canivore");
+        angleEncoder = new CANcoder(constants.cancoderID, "canivore");
         configAngleEncoder();
 
         /* Angle Motor Config */
