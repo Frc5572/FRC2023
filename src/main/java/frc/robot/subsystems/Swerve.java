@@ -281,10 +281,18 @@ public class Swerve extends SubsystemBase {
         this.hasInitialized = false;
     }
 
+    /**
+     * Zero the Gyro
+     */
     public void zeroGyro() {
         gyro.zeroYaw();
     }
 
+    /**
+     * Whether or not to flip the path if on Red Alliance
+     *
+     * @return True if the path needs to be flipped when on Red Alliance
+     */
     public boolean shouldFlipPath() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
