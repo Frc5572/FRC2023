@@ -1,12 +1,9 @@
 package frc.robot.autos;
 
-import java.util.Optional;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -42,17 +39,7 @@ public class TrajectoryBase extends SequentialCommandGroup {
         FollowPathHolonomic command = new FollowPathHolonomic(trajectory, swerve::getPose,
             swerve::getChassisSpeeds, swerve::setModuleStates, pidX, pidTheta,
             Constants.Swerve.MAX_SPEED, Constants.Swerve.ROBOT_RADIUS, new ReplanningConfig(),
-            () -> shouldFlipPath(), swerve);
+            () -> swerve.shouldFlipPath(), swerve);
         return command;
-    }
-
-    public static boolean shouldFlipPath() {
-        Optional<Alliance> ally = DriverStation.getAlliance();
-        if (ally.isPresent()) {
-            return ally.get() == Alliance.Red;
-        }
-        return false;
-
-
     }
 }

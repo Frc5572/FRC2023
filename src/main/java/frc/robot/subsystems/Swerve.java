@@ -138,6 +138,11 @@ public class Swerve extends SubsystemBase {
     }
 
 
+    /**
+     * Get the current Swerve Module States
+     *
+     * @return The current {@link SwerveModuleStates}
+     */
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[swerveMods.length];
         for (int i = 0; i < swerveMods.length; i++) {
@@ -146,6 +151,11 @@ public class Swerve extends SubsystemBase {
         return states;
     }
 
+    /**
+     * Get the current Chassis Speeds
+     *
+     * @return The current {@link ChassisSpeeds}
+     */
     public ChassisSpeeds getChassisSpeeds() {
         return Constants.Swerve.SWERVE_KINEMATICS.toChassisSpeeds(getModuleStates());
     }
@@ -275,7 +285,7 @@ public class Swerve extends SubsystemBase {
         gyro.zeroYaw();
     }
 
-    public static boolean shouldFlipPath() {
+    public boolean shouldFlipPath() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
             return ally.get() == Alliance.Red;

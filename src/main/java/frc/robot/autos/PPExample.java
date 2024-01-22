@@ -6,9 +6,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Swerve;
 
+/**
+ * Path Planner Example Auto
+ */
 public class PPExample extends TrajectoryBase {
     public Swerve swerve;
 
+    /**
+     * Path Planner Example Auto
+     *
+     * @param swerve The {@link Swerve} subsystem
+     */
     public PPExample(Swerve swerve) {
         super(swerve);
         PathPlannerPath examplepath = PathPlannerPath.fromPathFile("Example Path");
@@ -19,5 +27,4 @@ public class PPExample extends TrajectoryBase {
                 new Pose2d(initialState.getTranslation(), initialState.getRotation()))),
             exampleCommand);
     }
-
 }

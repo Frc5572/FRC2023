@@ -293,7 +293,7 @@ public class RobotContainer {
         // vision);
         Robot.level = levelsChooser.getSelected();
         Robot.column = columnsChooser.getSelected();
-        Command autocommand = new WaitCommand(1.0);
+        Command autocommand;
         String stuff = autoChooser.getSelected();
         switch (stuff) {
             case "example":
@@ -309,6 +309,8 @@ public class RobotContainer {
                         .andThen(new PathPlannerAuto("New Auto"));
 
                 break;
+            default:
+                autocommand = new WaitCommand(1.0);
         }
 
         // return new DockArm(s_Arm, s_wristIntake).withTimeout(.2).andThen(autocommand);
