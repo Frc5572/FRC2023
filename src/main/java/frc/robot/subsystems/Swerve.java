@@ -141,7 +141,7 @@ public class Swerve extends SubsystemBase {
     /**
      * Get the current Swerve Module States
      *
-     * @return The current {@link SwerveModuleStates}
+     * @return An array of the current {@link SwerveModuleState}
      */
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[swerveMods.length];
