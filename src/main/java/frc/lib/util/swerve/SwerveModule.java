@@ -168,7 +168,7 @@ public class SwerveModule {
     /**
      * Gets the Swerve module state
      *
-     * @return Swerve module state
+     * @return The current Swerve Module State {@link SwerveModuleState}
      */
     public SwerveModuleState getState() {
         double velocity = Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(),

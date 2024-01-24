@@ -1,18 +1,20 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
+import java.util.Optional;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,7 +33,6 @@ public class Swerve extends SubsystemBase {
     public PhotonCameraWrapper cam = new PhotonCameraWrapper(Constants.CameraConstants.CAMERA_NAME,
         Constants.CameraConstants.KCAMERA_TO_ROBOT.inverse());
     private SwerveModule[] swerveMods;
-    private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
     private double fieldOffset = gyro.getYaw();
     private final Field2d field = new Field2d();
     private boolean hasInitialized = false;
@@ -58,6 +59,10 @@ public class Swerve extends SubsystemBase {
         RobotContainer.autoTab.add("Field Pos", field).withWidget(BuiltInWidgets.kField)
             .withSize(8, 6) // make the widget 2x1
             .withPosition(0, 0); // place it in the top-left corner
+
+        AutoBuilder.configureHolonomic(this::getPose, this::resetOdometry, this::getChassisSpeeds,
+            this::setModuleStates, Constants.Swerve.pathFollowerConfig, (() -> shouldFlipPath()),
+            this);
     }
 
     /**
@@ -83,22 +88,11 @@ public class Swerve extends SubsystemBase {
      */
     public void driveWithTwist(Translation2d translation, double rotation, boolean fieldRelative,
         boolean isOpenLoop) {
-
-        double dt = TimedRobot.kDefaultPeriod;
-
         ChassisSpeeds chassisSpeeds = fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(),
                 rotation, getFieldRelativeHeading())
             : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-
-        Pose2d robot_pose_vel =
-            new Pose2d(chassisSpeeds.vxMetersPerSecond * dt, chassisSpeeds.vyMetersPerSecond * dt,
-                Rotation2d.fromRadians(chassisSpeeds.omegaRadiansPerSecond * dt));
-        Twist2d twist_vel = new Pose2d().log(robot_pose_vel);
-        ChassisSpeeds updated =
-            new ChassisSpeeds(twist_vel.dx / dt, twist_vel.dy / dt, twist_vel.dtheta / dt);
-
-        setModuleStates(updated);
+        setModuleStates(chassisSpeeds);
     }
 
     /**
@@ -128,9 +122,9 @@ public class Swerve extends SubsystemBase {
      * @param chassisSpeeds The desired Chassis Speeds
      */
     public void setModuleStates(ChassisSpeeds chassisSpeeds) {
-        this.chassisSpeeds = chassisSpeeds;
+        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
         SwerveModuleState[] swerveModuleStates =
-            Constants.Swerve.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+            Constants.Swerve.SWERVE_KINEMATICS.toSwerveModuleStates(targetSpeeds);
         setModuleStates(swerveModuleStates);
     }
 
@@ -143,8 +137,27 @@ public class Swerve extends SubsystemBase {
         return swerveOdometry.getEstimatedPosition();
     }
 
+
+    /**
+     * Get the current Swerve Module States
+     *
+     * @return An array of the current {@link SwerveModuleState}
+     */
+    public SwerveModuleState[] getModuleStates() {
+        SwerveModuleState[] states = new SwerveModuleState[swerveMods.length];
+        for (int i = 0; i < swerveMods.length; i++) {
+            states[i] = swerveMods[i].getState();
+        }
+        return states;
+    }
+
+    /**
+     * Get the current Chassis Speeds
+     *
+     * @return The current {@link ChassisSpeeds}
+     */
     public ChassisSpeeds getChassisSpeeds() {
-        return chassisSpeeds;
+        return Constants.Swerve.SWERVE_KINEMATICS.toChassisSpeeds(getModuleStates());
     }
 
     /**
@@ -266,5 +279,27 @@ public class Swerve extends SubsystemBase {
      */
     public void resetInitialized() {
         this.hasInitialized = false;
+    }
+
+    /**
+     * Zero the Gyro
+     */
+    public void zeroGyro() {
+        gyro.zeroYaw();
+    }
+
+    /**
+     * Whether or not to flip the path if on Red Alliance
+     *
+     * @return True if the path needs to be flipped when on Red Alliance
+     */
+    public boolean shouldFlipPath() {
+        Optional<Alliance> ally = DriverStation.getAlliance();
+        if (ally.isPresent()) {
+            return ally.get() == Alliance.Red;
+        }
+        return false;
+
+
     }
 }
