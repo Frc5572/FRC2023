@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
-import frc.lib.util.ctre.CTREConfigs;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,7 +17,6 @@ import frc.lib.util.ctre.CTREConfigs;
  * project.
  */
 public class Robot extends TimedRobot {
-    public static CTREConfigs ctreConfigs;
 
     private Command m_autonomousCommand;
 
@@ -35,7 +33,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        ctreConfigs = new CTREConfigs();
         // Instantiate our RobotContainer. This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();

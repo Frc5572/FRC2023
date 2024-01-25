@@ -48,10 +48,19 @@ public class Swerve extends SubsystemBase {
      * Initializes swerve modules.
      */
     public Swerve() {
-        swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
-            new SwerveModule(1, Constants.Swerve.Mod1.constants),
-            new SwerveModule(2, Constants.Swerve.Mod2.constants),
-            new SwerveModule(3, Constants.Swerve.Mod3.constants)};
+        swerveMods = new SwerveModule[] {
+            new SwerveModule(0, Constants.Swerve.Mod0.DRIVE_MOTOR_ID,
+                Constants.Swerve.Mod0.ANGLE_MOTOR_ID, Constants.Swerve.Mod0.CAN_CODER_ID,
+                Constants.Swerve.Mod0.ANGLE_OFFSET),
+            new SwerveModule(1, Constants.Swerve.Mod1.DRIVE_MOTOR_ID,
+                Constants.Swerve.Mod1.ANGLE_MOTOR_ID, Constants.Swerve.Mod1.CAN_CODER_ID,
+                Constants.Swerve.Mod1.ANGLE_OFFSET),
+            new SwerveModule(2, Constants.Swerve.Mod2.DRIVE_MOTOR_ID,
+                Constants.Swerve.Mod2.ANGLE_MOTOR_ID, Constants.Swerve.Mod2.CAN_CODER_ID,
+                Constants.Swerve.Mod2.ANGLE_OFFSET),
+            new SwerveModule(3, Constants.Swerve.Mod3.DRIVE_MOTOR_ID,
+                Constants.Swerve.Mod3.ANGLE_MOTOR_ID, Constants.Swerve.Mod3.CAN_CODER_ID,
+                Constants.Swerve.Mod3.ANGLE_OFFSET)};
 
         swerveOdometry = new SwerveDrivePoseEstimator(Constants.Swerve.SWERVE_KINEMATICS, getYaw(),
             getPositions(), new Pose2d());
@@ -249,8 +258,8 @@ public class Swerve extends SubsystemBase {
 
         for (SwerveModule mod : swerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
-                mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated",
+                mod.getCANcoder().getDegrees());
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle",
                 mod.getState().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
                 mod.getState().speedMetersPerSecond);
