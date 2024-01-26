@@ -136,7 +136,8 @@ public final class Constants {
         /* Motor Inverts */
         public static final InvertedValue DRIVE_MOTOR_INVERT =
             InvertedValue.CounterClockwise_Positive;
-        public static final InvertedValue ANGLE_MOTOT_INVERT = InvertedValue.Clockwise_Positive;
+        public static final InvertedValue ANGLE_MOTOT_INVERT =
+            InvertedValue.CounterClockwise_Positive;
 
         /* Angle Encoder Invert */
         public static final SensorDirectionValue CAN_CODER_INVERT =

@@ -55,7 +55,7 @@ public class SwerveModule {
         /* Angle Encoder Config */
         swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.CAN_CODER_INVERT;
 
-        angleEncoder = new CANcoder(cancoderID);
+        angleEncoder = new CANcoder(cancoderID, "canivore");
         angleEncoder.getConfigurator().apply(swerveCANcoderConfig);
 
         /* Angle Motor Config */
@@ -81,7 +81,7 @@ public class SwerveModule {
         swerveAngleFXConfig.Slot0.kP = Constants.Swerve.ANGLE_KP;
         swerveAngleFXConfig.Slot0.kI = Constants.Swerve.ANGLE_KI;
         swerveAngleFXConfig.Slot0.kD = Constants.Swerve.ANGLE_KD;
-        mAngleMotor = new TalonFX(angleMotorID);
+        mAngleMotor = new TalonFX(angleMotorID, "canivore");
         mAngleMotor.getConfigurator().apply(swerveAngleFXConfig);
         resetToAbsolute();
 
@@ -118,7 +118,7 @@ public class SwerveModule {
             Constants.Swerve.CLOSED_LOOP_RAMP;
         swerveDriveFXConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod =
             Constants.Swerve.CLOSED_LOOP_RAMP;
-        mDriveMotor = new TalonFX(driveMotorID);
+        mDriveMotor = new TalonFX(driveMotorID, "canivore");
         mDriveMotor.getConfigurator().apply(swerveDriveFXConfig);
         mDriveMotor.getConfigurator().setPosition(0.0);
     }
