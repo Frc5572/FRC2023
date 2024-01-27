@@ -18,7 +18,7 @@ public interface SwerveIO {
     public default void updateInputs(SwerveInputs inputs) {}
 
     /**
-     * Create a Swerve Module for the repsective IO Layer
+     * Create a Swerve Module for the respective IO Layer
      *
      * @param moduleNumber The Module Number
      * @param driveMotorID The Drive Motor CAN ID
