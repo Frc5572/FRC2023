@@ -17,6 +17,16 @@ public interface SwerveIO {
 
     public default void updateInputs(SwerveInputs inputs) {}
 
+    /**
+     * Create a Swerve Module for the repsective IO Layer
+     *
+     * @param moduleNumber The Module Number
+     * @param driveMotorID The Drive Motor CAN ID
+     * @param angleMotorID The Angle Motor CAN ID
+     * @param cancoderID The CANCode CAN ID
+     * @param angleOffset The Angle Offset in {@link Rotation2d}
+     * @return {@link SwerveModule}
+     */
     public default SwerveModule createSwerveModule(int moduleNumber, int driveMotorID,
         int angleMotorID, int cancoderID, Rotation2d angleOffset) {
         return new SwerveModule(moduleNumber, driveMotorID, angleMotorID, cancoderID, angleOffset,

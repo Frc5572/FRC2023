@@ -12,7 +12,7 @@ public class Conversions {
      * @param circumference Wheel Circumference: (in Meters)
      * @return Wheel Velocity: (in Meters per Second)
      */
-    public static double RPSToMPS(double wheelRPS, double circumference) {
+    public static double rpsToMPS(double wheelRPS, double circumference) {
         double wheelMPS = wheelRPS * circumference;
         return wheelMPS;
     }
@@ -22,7 +22,7 @@ public class Conversions {
      * @param circumference Wheel Circumference: (in Meters)
      * @return Wheel Velocity: (in Rotations per Second)
      */
-    public static double MPSToRPS(double wheelMPS, double circumference) {
+    public static double mpsToRPS(double wheelMPS, double circumference) {
         double wheelRPS = wheelMPS / circumference;
         return wheelRPS;
     }

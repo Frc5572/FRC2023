@@ -88,7 +88,7 @@ public class SwerveModule {
             io.setDriveMotor(driveDutyCycle);
             inputs.driveMotorSelectedSensorVelocity = driveDutyCycle.Output;
         } else {
-            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond,
+            driveVelocity.Velocity = Conversions.mpsToRPS(desiredState.speedMetersPerSecond,
                 Constants.Swerve.WHEEL_CIRCUMFERENCE);
             driveVelocity.FeedForward =
                 driveFeedForward.calculate(desiredState.speedMetersPerSecond);
@@ -122,7 +122,7 @@ public class SwerveModule {
      */
     public SwerveModuleState getState() {
         return new SwerveModuleState(
-            Conversions.RPSToMPS(inputs.driveMotorSelectedSensorVelocity,
+            Conversions.rpsToMPS(inputs.driveMotorSelectedSensorVelocity,
                 Constants.Swerve.WHEEL_CIRCUMFERENCE),
             Rotation2d.fromRotations(inputs.angleMotorSelectedPosition));
     }

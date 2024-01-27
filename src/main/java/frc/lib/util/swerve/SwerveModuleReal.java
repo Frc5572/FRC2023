@@ -8,6 +8,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Constants;
 
+/**
+ * Swerve Module with real motors and sensors
+ */
 public class SwerveModuleReal implements SwerveModuleIO {
     private TalonFX mAngleMotor;
     private TalonFX mDriveMotor;
