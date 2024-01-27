@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.swerve.Swerve;
 
 /**
  * Creates an command for driving the swerve drive during tele-op
@@ -59,7 +59,7 @@ public class TeleopSwerve extends Command {
 
         Translation2d translation = new Translation2d(yaxis, xaxis).times(speed);
         double rotation = raxis * angle_speed;
-        swerveDrive.driveWithTwist(translation, rotation, fieldRelative, openLoop);
+        swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
 
     }
 }
