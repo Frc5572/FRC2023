@@ -68,6 +68,10 @@ public class SwerveModule {
      */
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+        Logger.recordOutput("/ServeModule" + moduleNumber + "/DesiredState/Angle",
+            desiredState.angle);
+        Logger.recordOutput("/ServeModule" + moduleNumber + "/DesiredState/Speed",
+            desiredState.speedMetersPerSecond);
         io.setAngleMotor(anglePosition.withPosition(desiredState.angle.getRotations()));
         setSpeed(desiredState, isOpenLoop);
     }
@@ -89,7 +93,7 @@ public class SwerveModule {
             driveVelocity.FeedForward =
                 driveFeedForward.calculate(desiredState.speedMetersPerSecond);
             io.setDriveMotor(driveVelocity);
-            inputs.driveMotorSelectedSensorVelocity = driveDutyCycle.Output;
+            inputs.driveMotorSelectedSensorVelocity = driveVelocity.Velocity;
         }
     }
 

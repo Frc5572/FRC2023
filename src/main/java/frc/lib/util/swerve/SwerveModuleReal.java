@@ -53,7 +53,7 @@ public class SwerveModuleReal implements SwerveModuleIO {
         swerveAngleFXConfig.Slot0.kD = Constants.Swerve.ANGLE_KD;
 
         mAngleMotor.getConfigurator().apply(swerveAngleFXConfig);
-        mAngleMotor.setInverted(Constants.Swerve.ANGLE_MOTOT_INVERT);
+        mAngleMotor.setInverted(Constants.Swerve.ANGLE_MOTOR_INVERT);
     }
 
     private void configDriveMotor() {

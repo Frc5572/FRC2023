@@ -107,26 +107,26 @@ public final class Constants {
         public static final boolean DRIVE_ENABLE_CURRENT_LIMIT = true;
 
         /* Angle Motor PID Values */
-        public static final double ANGLE_KP = 0.6;
+        public static final double ANGLE_KP = 100;
         public static final double ANGLE_KI = 0.0;
-        public static final double ANGLE_KD = 12.0;
+        public static final double ANGLE_KD = 0.0;
         public static final double ANGLE_KF = 0.0;
 
         /* Drive Motor PID Values */
-        public static final double DRIVE_KP = 0.10;
+        public static final double DRIVE_KP = 0.12;
         public static final double DRIVE_KI = 0.0;
         public static final double DRIVE_KD = 0.0;
         public static final double DRIVE_KF = 0.0;
 
         /* Drive Motor Characterization Values */
-        public static final double DRIVE_KS = (0.667 / 12);
+        public static final double DRIVE_KS = (0.667);
         // divide by 12 to convert from volts to percent output for CTRE
-        public static final double DRIVE_KV = (2.44 / 12);
-        public static final double DRIVE_KA = (0.27 / 12);
+        public static final double DRIVE_KV = (2.44);
+        public static final double DRIVE_KA = (0.27);
 
         /* Swerve Profiling Values */
         public static final double MAX_SPEED = 4; // meters per second
-        public static final double MAX_ANGULAR_VELOCITY = 4.0;
+        public static final double MAX_ANGULAR_VELOCITY = 10.0;
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -134,7 +134,7 @@ public final class Constants {
 
         /* Motor Inverts */
         public static final boolean DRIVE_MOTOR_INVERT = false;
-        public static final boolean ANGLE_MOTOT_INVERT = false;
+        public static final boolean ANGLE_MOTOR_INVERT = false;
 
         /* Angle Encoder Invert */
         public static final SensorDirectionValue CAN_CODER_INVERT =

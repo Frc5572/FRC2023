@@ -1,6 +1,7 @@
 package frc.robot.subsystems.swerve;
 
 import java.util.Optional;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -84,7 +85,7 @@ public class Swerve extends SubsystemBase {
      */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.MAX_SPEED);
-
+        Logger.recordOutput("Swerve/DesiredStates", desiredStates);
         for (SwerveModule mod : swerveMods) {
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
@@ -116,6 +117,7 @@ public class Swerve extends SubsystemBase {
      *
      * @return Array of Swerve Module States
      */
+    @AutoLogOutput(key = "Swerve/CurrentStates")
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (SwerveModule mod : swerveMods) {
@@ -142,6 +144,7 @@ public class Swerve extends SubsystemBase {
      *
      * @return Pose2d on the field
      */
+    @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
     }
