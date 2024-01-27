@@ -1,9 +1,11 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -13,7 +15,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import frc.lib.math.DoubleJointedArmFeedforward;
 import frc.lib.math.DoubleJointedArmFeedforward.JointConfig;
-import frc.lib.util.swerve.SwerveModuleConstants;
 
 /**
  * Constants file.
@@ -128,15 +129,16 @@ public final class Constants {
         public static final double MAX_ANGULAR_VELOCITY = 4.0;
 
         /* Neutral Modes */
-        public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Coast;
-        public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
+        public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
         /* Motor Inverts */
         public static final boolean DRIVE_MOTOR_INVERT = false;
         public static final boolean ANGLE_MOTOT_INVERT = false;
 
         /* Angle Encoder Invert */
-        public static final boolean CAN_CODER_INVERT = false;
+        public static final SensorDirectionValue CAN_CODER_INVERT =
+            SensorDirectionValue.CounterClockwise_Positive;
 
         /* Module Specific Constants */
         /**
@@ -146,9 +148,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 6;
             public static final int ANGLE_MOTOR_ID = 8;
             public static final int CAN_CODER_ID = 4;
-            public static final double ANGLE_OFFSET = 138.604;
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(
-                DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(138.604);
         }
 
         /**
@@ -158,9 +158,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 1;
             public static final int ANGLE_MOTOR_ID = 4;
             public static final int CAN_CODER_ID = 1;
-            public static final double ANGLE_OFFSET = 280.107;
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(
-                DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(280.107);
         }
 
         /**
@@ -170,9 +168,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 3;
             public static final int ANGLE_MOTOR_ID = 2;
             public static final int CAN_CODER_ID = 2;
-            public static final double ANGLE_OFFSET = 121.553;
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(
-                DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(121.553);
         }
 
         /**
@@ -182,9 +178,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 7;
             public static final int ANGLE_MOTOR_ID = 5;
             public static final int CAN_CODER_ID = 3;
-            public static final double ANGLE_OFFSET = 248.027;
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(
-                DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(248.027);
         }
 
         public static final HolonomicPathFollowerConfig pathFollowerConfig =

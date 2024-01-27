@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
+import frc.robot.Robot.RobotRunType;
 import frc.robot.autos.PPExample;
 import frc.robot.commands.arm.ConeIntake;
 import frc.robot.commands.arm.ConeUpIntake;
@@ -40,8 +41,10 @@ import frc.robot.commands.leds.PoliceLEDs;
 import frc.robot.commands.wrist.VariableIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.WristIntake;
+import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveIO;
+import frc.robot.subsystems.swerve.SwerveReal;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -114,21 +117,34 @@ public class RobotContainer {
 
     /* Subsystems */
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
-    public final Swerve s_Swerve = new Swerve();
+    public Swerve s_Swerve;
     // private final DropIntake s_dIntake = new DropIntake();
     private final Arm s_Arm = new Arm(ph);
     private final WristIntake s_wristIntake = new WristIntake();
 
 
-    public GenericEntry photonSeeing = mainDriverTab
-        .add("Photon Good", s_Swerve.cam.latency() < 0.6).withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
-        .withPosition(8, 0).withSize(2, 2).getEntry();
+    // public GenericEntry photonSeeing = mainDriverTab
+    // .add("Photon Good", s_Swerve.cam.latency() < 0.6).withWidget(BuiltInWidgets.kBooleanBox)
+    // .withProperties(Map.of("Color when true", "green", "Color when false", "red"))
+    // .withPosition(8, 0).withSize(2, 2).getEntry();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    public RobotContainer() {
+    public RobotContainer(RobotRunType runtimeType) {
+        autoChooser.setDefaultOption("Wait 1 Second", "wait");
+        switch (runtimeType) {
+            case kReal:
+                s_Swerve = new Swerve(new SwerveReal());
+                break;
+            case kSimulation:
+                // drivetrain = new Drivetrain(new DrivetrainSim() {});
+                break;
+            default:
+                s_Swerve = new Swerve(new SwerveIO() {});
+        }
+
+
         ph.enableCompressorAnalog(90, 120);
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
             Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
