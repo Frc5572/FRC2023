@@ -4,7 +4,6 @@ import java.util.Map;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
@@ -20,28 +19,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.DisabledInstantCommand;
 import frc.lib.util.Scoring;
 import frc.lib.util.Scoring.GamePiece;
 import frc.robot.Robot.RobotRunType;
 import frc.robot.autos.PPExample;
-import frc.robot.commands.arm.ConeIntake;
-import frc.robot.commands.arm.ConeUpIntake;
-import frc.robot.commands.arm.CubeIntake;
-import frc.robot.commands.arm.DockArm;
-import frc.robot.commands.arm.ScoreArm;
-import frc.robot.commands.arm.VariableArm;
-import frc.robot.commands.drive.MoveToEngage;
-import frc.robot.commands.drive.MoveToScore;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.leds.FlashingLEDColor;
 import frc.robot.commands.leds.MovingColorLEDs;
-import frc.robot.commands.leds.PoliceLEDs;
-import frc.robot.commands.wrist.VariableIntake;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.WristIntake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveReal;
@@ -119,8 +105,8 @@ public class RobotContainer {
     private LEDs leds = new LEDs(Constants.LEDConstants.LED_COUNT, Constants.LEDConstants.PWM_PORT);
     public Swerve s_Swerve;
     // private final DropIntake s_dIntake = new DropIntake();
-    private final Arm s_Arm = new Arm(ph);
-    private final WristIntake s_wristIntake = new WristIntake();
+    // private final Arm s_Arm = new Arm(ph);
+    // private final WristIntake s_wristIntake = new WristIntake();
 
 
     // public GenericEntry photonSeeing = mainDriverTab
@@ -147,8 +133,8 @@ public class RobotContainer {
 
         ph.enableCompressorAnalog(90, 120);
         s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver,
-            Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP, s_Arm));
-        s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
+            Constants.Swerve.IS_FIELD_RELATIVE, Constants.Swerve.IS_OPEN_LOOP));
+        // s_wristIntake.setDefaultCommand(new VariableIntake(s_wristIntake, operator));
         leds.setDefaultCommand(new MovingColorLEDs(leds, Color.kRed, 8, false));
         autoChooser.setDefaultOption("Example Path", "example");
         autoChooser.addOption("Example Auto", "auto");
@@ -183,23 +169,23 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
 
-        Trigger armSensor =
-            new Trigger(() -> this.s_Arm.armSense.get() && DriverStation.isDisabled());
+        // Trigger armSensor =
+        // new Trigger(() -> this.s_Arm.armSense.get() && DriverStation.isDisabled());
 
-        armSensor.onTrue(new DisabledInstantCommand(() -> s_Arm.setCoastMode()));
+        // armSensor.onTrue(new DisabledInstantCommand(() -> s_Arm.setCoastMode()));
 
-        armSensor.onFalse(new DisabledInstantCommand(() -> s_Arm.setBrakeMode()));
+        // armSensor.onFalse(new DisabledInstantCommand(() -> s_Arm.setBrakeMode()));
 
         /* Driver Buttons */
         driver.start().onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
 
         driver.y().onTrue(new DisabledInstantCommand(() -> s_Swerve.resetFieldRelativeOffset()));
-        driver.rightTrigger().and(driver.leftTrigger()).and(operator.start())
-            .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
+        // driver.rightTrigger().and(driver.leftTrigger()).and(operator.start())
+        // .whileTrue(new MoveToScore(s_Swerve, s_Arm, s_wristIntake));
         driver.rightTrigger().and(driver.leftTrigger())
             .onTrue(new InstantCommand(() -> s_Swerve.resetInitialized()));
-        driver.rightBumper().and(driver.leftBumper())
-            .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
+        // driver.rightBumper().and(driver.leftBumper())
+        // .whileTrue(new MoveToEngage(s_Swerve, s_Arm, s_wristIntake));
         driver.start()
             .whileTrue(new InstantCommand(() -> s_Swerve.wheelsIn(), s_Swerve).repeatedly());
 
@@ -207,13 +193,13 @@ public class RobotContainer {
         operator.leftBumper().onTrue(new FlashingLEDColor(leds, Color.kYellow).withTimeout(15.0));
         operator.rightBumper().onTrue(new FlashingLEDColor(leds, Color.kPurple).withTimeout(15.0));
 
-        operator.b().onTrue(new ConeIntake(s_Arm)
-            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
-        operator.a().onTrue(new CubeIntake(s_Arm)
-            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
-        operator.x().onTrue(new ConeUpIntake(s_Arm)
-            .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
-        operator.y().onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
+        // operator.b().onTrue(new ConeIntake(s_Arm)
+        // .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
+        // operator.a().onTrue(new CubeIntake(s_Arm)
+        // .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(false))));
+        // operator.x().onTrue(new ConeUpIntake(s_Arm)
+        // .alongWith(new InstantCommand(() -> s_wristIntake.setInvert(true))));
+        // operator.y().onTrue(new DockArm(s_Arm, s_wristIntake).withTimeout(.1).repeatedly());
 
         operator.povUp().onTrue(
             new DisabledInstantCommand(() -> Robot.level = MathUtil.clamp(Robot.level + 1, 0, 2)));
@@ -225,19 +211,19 @@ public class RobotContainer {
                 Robot.level = MathUtil.clamp(Robot.level - 1, 0, 2);
             }
         }));
-        operator.povRight().onTrue(new DisabledInstantCommand(() -> {
-            Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8);
-            s_wristIntake.setInvert(Scoring.getGamePiece() == Scoring.GamePiece.CONE);
-        }));
-        operator.povLeft().onTrue(new DisabledInstantCommand(() -> {
-            Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8);
-            s_wristIntake.setInvert(Scoring.getGamePiece() == Scoring.GamePiece.CONE);
-        }));
-        operator.rightTrigger().and(operator.leftTrigger())
-            .whileTrue(new ScoreArm(s_Arm, s_wristIntake));
-        operator.back().toggleOnTrue(new PoliceLEDs(leds));
-        new Trigger(() -> Math.abs(operator.getRightY()) > 0.2)
-            .whileTrue(new VariableArm(s_Arm, operator));
+        // operator.povRight().onTrue(new DisabledInstantCommand(() -> {
+        // Robot.column = MathUtil.clamp(Robot.column + 1, 0, 8);
+        // s_wristIntake.setInvert(Scoring.getGamePiece() == Scoring.GamePiece.CONE);
+        // }));
+        // operator.povLeft().onTrue(new DisabledInstantCommand(() -> {
+        // Robot.column = MathUtil.clamp(Robot.column - 1, 0, 8);
+        // s_wristIntake.setInvert(Scoring.getGamePiece() == Scoring.GamePiece.CONE);
+        // }));
+        // operator.rightTrigger().and(operator.leftTrigger())
+        // .whileTrue(new ScoreArm(s_Arm, s_wristIntake));
+        // operator.back().toggleOnTrue(new PoliceLEDs(leds));
+        // new Trigger(() -> Math.abs(operator.getRightY()) > 0.2)
+        // .whileTrue(new VariableArm(s_Arm, operator));
 
         // operator.povUp().whileTrue(new MoveArm(s_Arm, 110, 0));
         // operator.povDown().whileTrue(new MoveArm(s_Arm, 45, 0));
