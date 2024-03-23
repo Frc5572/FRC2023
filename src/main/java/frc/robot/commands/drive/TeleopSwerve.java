@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.math.Conversions;
 import frc.robot.Constants;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.swerve.Swerve;
 
 /**
@@ -18,7 +17,6 @@ public class TeleopSwerve extends Command {
     private boolean openLoop;
     private Swerve swerveDrive;
     private CommandXboxController controller;
-    private Arm arm;
 
     /**
      * Creates an command for driving the swerve drive during tele-op
@@ -28,13 +26,12 @@ public class TeleopSwerve extends Command {
      * @param openLoop Open or closed loop system
      */
     public TeleopSwerve(Swerve swerveDrive, CommandXboxController controller, boolean fieldRelative,
-        boolean openLoop, Arm arm) {
+        boolean openLoop) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
         this.controller = controller;
-        this.arm = arm;
     }
 
     @Override
@@ -52,10 +49,6 @@ public class TeleopSwerve extends Command {
 
         double angle_speed = Constants.Swerve.MAX_ANGULAR_VELOCITY;
         double speed = Constants.Swerve.MAX_SPEED;
-        if (arm.getArmAngle() > -70) {
-            angle_speed /= 3;
-            speed *= 0.80;
-        }
 
         Translation2d translation = new Translation2d(yaxis, xaxis).times(speed);
         double rotation = raxis * angle_speed;
